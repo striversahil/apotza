@@ -1,4 +1,4 @@
-// File: /home/sahildev/Development/Projects/Apotza/Application/app/layout.tsx
+// File: /home/sahildev/Development/apotza/apps/app/app/layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

@@ -1,5 +1,8 @@
 {
-  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/page": "app/page.js",
+  "/project/page": "app/project/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
   "/project/[appId]/page": "app/project/[appId]/page.js",
+  "/dashboard/[workspaceId]/page": "app/dashboard/[workspaceId]/page.js",
   "/project/[appId]/edit/page": "app/project/[appId]/edit/page.js"
 }

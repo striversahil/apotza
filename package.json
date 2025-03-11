@@ -1,0 +1,27 @@
+{
+  "name": "apotza",
+  "version": "1.0.0",
+  "description": "Automation Workflow for Your need",
+  "main": "index.js",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "packageManager": "npm@8.5.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/striversahil/apotza.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/striversahil/apotza/issues"
+  },
+  "homepage": "https://github.com/striversahil/apotza#readme"
+}

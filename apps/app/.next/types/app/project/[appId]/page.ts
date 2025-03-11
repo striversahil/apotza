@@ -1,4 +1,4 @@
-// File: /home/sahildev/Development/Projects/Apotza/Application/app/project/[appId]/page.tsx
+// File: /home/sahildev/Development/apotza/apps/app/app/project/[appId]/page.tsx
 import * as entry from '../../../../../app/project/[appId]/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
