@@ -4,7 +4,6 @@
 
 import { redirect, usePathname, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
-import useBackend from "./hooks/useBackend";
 import Loading from "./components/utils/loading";
 import { useQuery } from "@tanstack/react-query";
 

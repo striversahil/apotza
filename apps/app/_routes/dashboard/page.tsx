@@ -8,7 +8,7 @@ import { useQueryData } from "@/hooks/useQueryData";
 type Props = {};
 
 const page = (props: Props) => {
-  const { data, isLoading, error } = useQueryData("user", getUserInfo);
+  const { data, isLoading, error } = useQueryData(["user"], getUserInfo);
 
   console.log(data);
   if (isLoading) {
