@@ -13,7 +13,7 @@
     "apps/*",
     "packages/*"
   ],
-  "packageManager": "npm@8.5.0",
+  "packageManager": "pnpm@10.6.2",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/striversahil/apotza.git"
@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/striversahil/apotza/issues"
   },
-  "homepage": "https://github.com/striversahil/apotza#readme"
+  "homepage": "https://github.com/striversahil/apotza#readme",
+  "dependencies": {
+    "turbo": "^2.4.4"
+  }
 }
