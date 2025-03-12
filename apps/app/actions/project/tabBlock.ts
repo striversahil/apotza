@@ -1,4 +1,4 @@
-import { useCurrentTab } from "../../app/project/_hooks/useCurrentTab";
+import { useCurrentTab } from "../../pages/project/_hooks/useCurrentTab";
 import { useMutationData } from "@/hooks/useMutation";
 import axios from "axios";
 
