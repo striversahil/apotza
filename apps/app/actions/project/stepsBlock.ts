@@ -1,4 +1,4 @@
-import { useCurrentTab } from "../../_routes/project/_hooks/useCurrentTab";
+import { useCurrentTab } from "../../pages/project/_hooks/useCurrentTab";
 import { useMutationData } from "@/hooks/useMutation";
 import axios from "axios";
 import { toast } from "sonner";

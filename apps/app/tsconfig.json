@@ -6,6 +6,7 @@
         "name": "next"
       }
     ],
+    "baseUrl": "../",
     "paths": {
       "@/routes/*": ["../_routes/*"],
       "@/components/*": ["../components/*"],
@@ -20,6 +21,7 @@
   },
   "include": [
     "**/*.ts",
+    "global.d.ts",
     "**/*.tsx",
     "next-env.d.ts",
     "next.config.js",

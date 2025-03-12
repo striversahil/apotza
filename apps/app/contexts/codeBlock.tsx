@@ -1,5 +1,4 @@
 import { createContext, ReactNode, useContext, useState } from "react";
-import React from "react";
 
 interface CodeBlockContext {
   codeBlock: any | null;
