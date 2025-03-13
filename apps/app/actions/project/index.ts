@@ -1,13 +1,16 @@
-import { useMutationData } from "@/hooks/useMutation";
-import { useQueryData } from "@/hooks/useQueryData";
+import { useMutationData } from "../../hooks/useMutation";
+import { useQueryData } from "../../hooks/useQueryData";
 import axios from "axios";
 
 axios.defaults.withCredentials = true; // Global axios config to enable cookies
-const codeBlock = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/codeblock";
-const project = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/project";
-const component = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/component";
-const stepsBlock = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/stepblock";
-const section = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/section";
+const codeBlock =
+  (import.meta.env.VITE_PUBLIC_BASE_URL as string) + "/codeblock";
+const project = (import.meta.env.VITE_PUBLIC_BASE_URL as string) + "/project";
+const component =
+  (import.meta.env.VITE_PUBLIC_BASE_URL as string) + "/component";
+const stepsBlock =
+  (import.meta.env.VITE_PUBLIC_BASE_URL as string) + "/stepblock";
+const section = (import.meta.env.VITE_PUBLIC_BASE_URL as string) + "/section";
 
 // Here the Index i.e. Most Used Common Get Actions will be Handled for Project
 

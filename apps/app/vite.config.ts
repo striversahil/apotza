@@ -1,5 +1,6 @@
 import path from "path";
 import { defineConfig } from "vite";
+const postcss = require("./postcss.config.js");
 import tsconfigPaths from "vite-tsconfig-paths";
 import react from "@vitejs/plugin-react";
 
@@ -10,9 +11,15 @@ export default defineConfig({
       "@/src": path.resolve(__dirname, "./src"),
     },
   },
+  define: {
+    "process.env": process.env,
+  },
   server: {
     port: 3001,
     host: "localhost",
   },
-  plugins: [react(), tsconfigPaths()],
+  css: {
+    postcss,
+  },
+  plugins: [react()],
 });

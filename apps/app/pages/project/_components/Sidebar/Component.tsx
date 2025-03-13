@@ -8,7 +8,7 @@ import { Input } from "../../../../components/ui/input";
 import { useDraggable } from "@dnd-kit/core";
 import React, { useState } from "react";
 import { ReferenceSidebarComponents } from "../../../../packages/common/referenceSidebarComponents";
-import { cn } from "@/lib/utils";
+import { cn } from "../../../../lib/utils";
 import {
   Popover,
   PopoverContent,

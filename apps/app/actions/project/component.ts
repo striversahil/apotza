@@ -1,9 +1,9 @@
-import { useMutationData } from "@/hooks/useMutation";
-import { useQueryData } from "@/hooks/useQueryData";
+import { useMutationData } from "../../hooks/useMutation";
+import { useQueryData } from "../../hooks/useQueryData";
 import axios from "axios";
 
 axios.defaults.withCredentials = true; // Global axios config to enable cookies
-const source = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/component";
+const source = (import.meta.env.VITE_PUBLIC_BASE_URL as string) + "/component";
 
 const ComponentAction = {
   add: (section_id: string) => {

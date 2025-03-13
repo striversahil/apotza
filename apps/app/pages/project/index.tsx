@@ -1,13 +1,13 @@
-"use client";
 import ProjectAction from "../../api/project/project";
 import { Skeleton } from "../../components/ui/skeleton";
-import { useQueryData } from "@/hooks/useQueryData";
-import { redirect } from "next/navigation";
+import { useQueryData } from "../../hooks/useQueryData";
+import { useNavigate } from "react-router";
 import React from "react";
 
 type Props = {};
 
 const ProjectIndex = (props: Props) => {
+  const redirect = useNavigate();
   const { isLoading, data } = useQueryData(["project"], ProjectAction.getOne);
 
   if (isLoading) {
@@ -19,14 +19,14 @@ const ProjectIndex = (props: Props) => {
   }
 
   if (data && data.statusCode === 401) {
-    redirect("/login");
+    redirect("/auth/login");
   }
 
   if (data && data.statusCode === 200) {
     redirect(`/project/${data.payload._id}`);
   }
 
-  return <div>{JSON.stringify(data)}</div>;
+  return <div>Hello there</div>;
 };
 
 export default ProjectIndex;

@@ -7,7 +7,7 @@ import {
 
 import { authenticate, authController } from "../middleware/auth.middleware";
 
-const router = Router();
+const router: Router = Router();
 
 router.route("/").get(authenticate, UserInfo);
 

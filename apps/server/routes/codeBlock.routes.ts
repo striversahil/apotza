@@ -7,7 +7,7 @@ import {
   updateCodeBlockName,
 } from "../controllers/project/codeBlock/_codeBlock.controller";
 
-const router = Router();
+const router: Router = Router();
 router.route("/").get(getAllCodeBlock);
 
 router.route("/:id").get(getCodeBlock);

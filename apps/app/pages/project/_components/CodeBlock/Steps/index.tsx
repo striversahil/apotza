@@ -1,8 +1,6 @@
-import { useQueryData } from "@/hooks/useQueryData";
 import { useClickOutside } from "@mantine/hooks";
 import React from "react";
 import HeaderChange from "../Tab/HeaderChange";
-import { useMutationData } from "@/hooks/useMutation";
 import { PlusCircle } from "lucide-react";
 import { Popover } from "../../../../../components/ui/popover";
 import { PopoverTrigger } from "@radix-ui/react-popover";

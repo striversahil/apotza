@@ -8,7 +8,7 @@ import {
   updateCoordinates,
 } from "../controllers/project/components/_component.controller";
 
-const router = Router();
+const router: Router = Router();
 
 router.route("/getAll/:id").get(getComponents);
 

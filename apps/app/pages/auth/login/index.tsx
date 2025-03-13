@@ -1,9 +1,10 @@
 import Login from "../_components/Logins";
 
 const SignIn = () => {
+  console.log(import.meta.env.VITE_PUBLIC_BASE_URL as string);
   return (
-    <div className="w-full h-screen bg-red-500">
-      {/* <Login look={"signin"} /> */}
+    <div className="w-full h-screen">
+      <Login look={"signin"} />
     </div>
   );
   // return (

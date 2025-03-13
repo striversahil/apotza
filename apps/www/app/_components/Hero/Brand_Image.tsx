@@ -7,9 +7,8 @@ const Brand_Image = (props: Props) => {
   return (
     <div className="hidden lg:flex absolute left-[180px] rounded-3xl">
       <div className="w-fit h-fit">
-        <Image
-          src="/brand/hero-dashboard.avif"
-          alt="Vercel Logo"
+        <image
+          href="/brand/hero-dashboard.avif"
           width={1700}
           height={800}
           className=""

@@ -1,6 +1,5 @@
-import { useQueryData } from "@/hooks/useQueryData";
-import { redirect, useRouter } from "next/navigation";
 import { useCallback } from "react";
+import { useNavigate } from "react-router";
 
 interface WorkspaceData {
   data: {
@@ -10,7 +9,7 @@ interface WorkspaceData {
 }
 
 export const ApplicationSelectionBoxes = ({ data, isLoading }: any) => {
-  const router = useRouter();
+  const navigate = useNavigate();
   const applications = [
     {
       id: 1,
@@ -40,7 +39,7 @@ export const ApplicationSelectionBoxes = ({ data, isLoading }: any) => {
 
   const handleClick = () => {
     if (data) {
-      router.push(`/project/${data.payload.projects[0]}`);
+      navigate(`/project/${data.payload.projects[0]}`);
     }
     console.log(data.payload._id);
   };

@@ -8,7 +8,7 @@ import {
   getStepBlock,
 } from "../controllers/project/stepBlock/_stepBlock.controller";
 
-const router = Router();
+const router: Router = Router();
 router.route("/getAll/:id").get(getAllSteps);
 
 router.route("/:id").get(getStepBlock);

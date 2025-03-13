@@ -29,12 +29,18 @@ export const authenticate = (
       );
   }
   // Todo : Verify Token Safely
-  jwt.verify(token, "sahil", async (err: any, decoded: any) => {
+  console.log(token);
+  jwt.verify(token as string, "sahil", async (err: any, decoded: any) => {
     if (err) {
+      console.log(err);
       return res
         .status(200)
         .json(
-          new ApiResponse(401, {}, "Error in token. \n Redirecting to login...")
+          new ApiResponse(
+            401,
+            { ...err },
+            "Error in token. \n Redirecting to login..."
+          )
         );
     }
     // Passing the User to the next middleware

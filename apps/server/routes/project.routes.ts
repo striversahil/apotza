@@ -6,7 +6,7 @@ import {
   updateName,
 } from "../controllers/project/project/_project.controller";
 
-const router = Router();
+const router: Router = Router();
 
 router.route("/").get(projectInfo);
 

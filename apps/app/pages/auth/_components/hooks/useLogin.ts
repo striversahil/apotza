@@ -1,6 +1,6 @@
-import useZodForm from "@hooks/useZodForm";
+import useZodForm from "../../../../hooks/useZodForm";
 import { formSchema } from "../Logins/schema";
-import { useMutationData } from "@hooks/useMutation";
+import { useMutationData } from "../../../../hooks/useMutation";
 import { userLogin } from "../../../../api/user";
 
 interface formData {

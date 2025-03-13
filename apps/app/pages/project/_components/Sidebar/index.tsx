@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import CompSidebar from "./Component";
 import { LaptopMinimal, PanelLeftClose, Component } from "lucide-react";
-import Image from "next/image";
 import {
   Tooltip,
   TooltipTrigger,
@@ -21,11 +20,10 @@ const Sidebar = (props: Props) => {
       <div className="w-fit h-full bg-inherit flex-col bg-slate-900 space-y-10 border-r border-slate-700">
         <Tooltip>
           <TooltipTrigger>
-            <Image
-              src={"/apotzalogo.jpg"}
+            <image
+              href={"/apotzalogo.jpg"}
               width={50}
               height={50}
-              alt="brand_pic"
               className="m-2 bg-white/20 rounded-xl cursor-pointer hover:animate-pulse"
               onClick={() => window.location.reload()}
             />

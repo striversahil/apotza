@@ -15,5 +15,5 @@ export const Usercookie: object = {
   httpOnly: true,
   secure: isProduction,
   sameSite: isProduction ? "none" : "lax",
-  maxAge: 1000 * 60 * 60 * 24 * 2, // 2 days of cookie
+  maxAge: 1000 * 60 * 60 * 24 * 5, // 5 days of cookie
 };
