@@ -2,11 +2,10 @@
 
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useMutationData } from "../../hooks/useMutation";
-import { redirect } from "next/navigation";
 import axios from "axios";
 
 axios.defaults.withCredentials = true; // Global axios config to enable cookies
-const source = process.env.NEXT_PUBLIC_BASE_URL;
+const source = import.meta.env.NEXT_PUBLIC_BASE_URL;
 
 // ++++++++++++++++++++         User Actions                +++++++++++++++++++++++++++++++++++++++
 export const getUserInfo = async () => {

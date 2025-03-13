@@ -1,5 +1,4 @@
 "use client";
-import { usePathname } from "next/navigation";
 import { getWorkspaceInfo } from "../../../api/user";
 import { ApplicationSelectionBoxes } from "../_components/application";
 import React from "react";
@@ -9,7 +8,7 @@ import {
   SidebarRail,
   SidebarTrigger,
 } from "../../../components/ui/Sidebar/sidebar";
-import { useQueryData } from "@/hooks/useQueryData";
+import { useQueryData } from "../../../hooks/useQueryData";
 
 type Props = {
   params: {
@@ -18,9 +17,6 @@ type Props = {
 };
 
 const WorkspaceId = () => {
-  // Next js is not allowing me to put this data into JSX
-  const path = usePathname();
-
   const { data, isLoading } = useQueryData(["workspace"], getWorkspaceInfo);
 
   return (

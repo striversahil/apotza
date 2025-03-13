@@ -14,5 +14,5 @@ export default defineConfig({
     port: 3001,
     host: "localhost",
   },
-  plugins: [react(), tsconfigPaths()],
+  plugins: [react()],
 });

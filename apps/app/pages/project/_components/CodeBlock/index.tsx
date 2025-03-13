@@ -6,7 +6,6 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 import { useOpen } from "../../_hooks/useOpenCode";
 import PanelResizeHandleComp from "../utils/PanelResizeHandle";
-import { useQueryData } from "@/hooks/useQueryData";
 import CodeBlockAction from "../../../../api/project/codeBlock";
 import { TabsContent } from "@radix-ui/react-tabs";
 import ProjectAction from "../../../../actions/project";

@@ -2,7 +2,6 @@
 import { useDraggable, useDroppable } from "@dnd-kit/core";
 import ProjectAction from "../../../../actions/project";
 import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
 import Section from "./Section";
 
 const EditorCanvas = () => {

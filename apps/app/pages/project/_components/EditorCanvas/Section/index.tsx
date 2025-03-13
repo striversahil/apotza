@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "../../../../../lib/utils";
 import { useDroppable } from "@dnd-kit/core";
 import React, {
   CSSProperties,
@@ -11,8 +11,6 @@ import { Resizable } from "re-resizable";
 import ResizableBox from "../ResizableBox/ResizableBox";
 import { Input } from "../../../../../components/ui/input";
 import { Label } from "../../../../../components/ui/label";
-const _ = require("lodash");
-import Image from "next/image";
 import DeleteSection from "./DeleteSection";
 import AddSection from "./AddSection";
 import Component from "../Component";
@@ -51,12 +49,11 @@ const Section = (props: Props) => {
           {isOver && (
             <div className="relative w-full h-full bg-blue-500">
               <div className="absolute inset-2 rounded-lg bg-white/20 overflow-clip">
-                <Image
-                  src="/slug.webp"
+                <image
+                  href="/slug.webp"
                   width={rect?.current?.width}
                   height={rect?.current?.height}
                   className="w-full h-full opacity-70 "
-                  alt="slug"
                 />
               </div>
             </div>

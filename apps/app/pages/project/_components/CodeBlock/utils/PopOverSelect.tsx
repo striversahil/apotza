@@ -14,10 +14,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "../../../../../components/ui/popover";
-import Image from "next/image";
 import StepsBlockAction from "../../../../../actions/project/stepsBlock";
 import TabBlockAction from "../../../../../actions/project/tabBlock";
-import languages from "@/packages/common/Json/languages.json";
+import languages from "../../../../../packages/common/Json/languages.json";
 
 type PopOver = {
   setOpen: (open: boolean) => void;
@@ -66,13 +65,7 @@ export function ComboPopAPI(props: PopOver) {
                   }}
                   className=" p-1 py-2 rounded-md border-none cursor-pointer flex items-center gap-2"
                 >
-                  <Image
-                    src={language.icon_href}
-                    alt={language.label}
-                    width={20}
-                    height={20}
-                    priority
-                  />
+                  <image href={language.icon_href} width={20} height={20} />
                   <span className="w-full text-left">{language.label}</span>
                 </CommandItem>
               ))}

@@ -7,8 +7,6 @@ import {
 import React from "react";
 import { Outlet } from "react-router";
 
-const queryClient = new QueryClient();
-
 export default async function WorkspaceLayout() {
   // const { workspaceId } = props.workspaceId;
   // await queryClient.prefetchQuery({
@@ -18,8 +16,8 @@ export default async function WorkspaceLayout() {
   // });
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
+    <div>
       <Outlet />
-    </HydrationBoundary>
+    </div>
   );
 }

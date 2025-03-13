@@ -3,7 +3,7 @@ import Login from "../_components/Logins";
 const SignIn = () => {
   return (
     <div className="w-full h-screen bg-red-500">
-      {/* <Login look={"signin"} /> */}
+      <Login look={"signin"} />
     </div>
   );
   // return (

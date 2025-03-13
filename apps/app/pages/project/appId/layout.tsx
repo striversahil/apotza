@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { UtilityProvider } from "../../../contexts/utils";
 import { Outlet } from "react-router";
 
-const ProjectIndexLayout = (props: Props) => {
+const ProjectIndexLayout = () => {
   return (
     <div>
       <UtilityProvider>

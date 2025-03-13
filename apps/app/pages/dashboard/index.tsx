@@ -1,11 +1,12 @@
 "use client";
-import { redirect, useRouter } from "next/navigation";
+import { useNavigate } from "react-router";
 import { getUserInfo } from "../../api/user";
-import { useQueryData } from "@/hooks/useQueryData";
+import { useQueryData } from "../../hooks/useQueryData";
 
 type Props = {};
 
 const Dashboard = (props: Props) => {
+  const redirect = useNavigate();
   const { data, isLoading, error } = useQueryData(["user"], getUserInfo);
 
   console.log(data);

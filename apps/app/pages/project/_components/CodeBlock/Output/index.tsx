@@ -1,5 +1,5 @@
 import ProjectAction from "../../../../../actions/project";
-import { cn } from "@/lib/utils";
+import { cn } from "../../../../../lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { BatteryCharging, CheckCircle, Dot } from "lucide-react";
 import React from "react";
