@@ -19,14 +19,14 @@ const ProjectIndex = (props: Props) => {
   }
 
   if (data && data.statusCode === 401) {
-    redirect("/login");
+    redirect("/auth/login");
   }
 
   if (data && data.statusCode === 200) {
     redirect(`/project/${data.payload._id}`);
   }
 
-  return <div>{JSON.stringify(data)}</div>;
+  return <div>Hello there</div>;
 };
 
 export default ProjectIndex;

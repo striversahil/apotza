@@ -4,7 +4,7 @@ import { useQueryData } from "../../hooks/useQueryData";
 import axios from "axios";
 
 axios.defaults.withCredentials = true; // Global axios config to enable cookies
-const source = (import.meta.env.NEXT_PUBLIC_BASE_URL as string) + "/codeblock";
+const source = (import.meta.env.VITE_PUBLIC_BASE_URL as string) + "/codeblock";
 
 const TabBlockAction = {
   useAdd: () => {

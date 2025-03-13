@@ -5,7 +5,7 @@ import axios from "axios";
 import { toast } from "sonner";
 
 axios.defaults.withCredentials = true; // Global axios config to enable cookies
-const source = (import.meta.env.NEXT_PUBLIC_BASE_URL as string) + "/stepblock";
+const source = (import.meta.env.VITE_PUBLIC_BASE_URL as string) + "/stepblock";
 
 // const currentTab = localStorage.getItem("currentTab") as string;
 

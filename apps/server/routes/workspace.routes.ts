@@ -5,7 +5,7 @@ import {
   WorkSpaceInfo,
 } from "../controllers/auth/workspace.controller";
 
-const router = Router();
+const router: Router = Router();
 
 // WorkSpace Routes
 router.route("/").get(WorkSpaceInfo);

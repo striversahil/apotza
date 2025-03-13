@@ -6,7 +6,7 @@ import {
   getAllSections,
 } from "../controllers/project/sections/_section.controller";
 
-const router = Router();
+const router: Router = Router();
 
 // router.route("/").get(newSection);
 

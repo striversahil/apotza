@@ -6,6 +6,7 @@ import {
   RouterProvider,
   Routes,
 } from "react-router-dom";
+import "./index.css";
 import SignIn from "../pages/auth/login";
 import SignUp from "../pages/auth/signup";
 import DashboardLayout from "app/pages/dashboard/layout";

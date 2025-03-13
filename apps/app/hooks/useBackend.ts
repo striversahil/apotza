@@ -23,7 +23,7 @@
 //   method = "get",
 //   payload = {},
 // }: Props): Promise<Data> => {
-//   const href = `${process.env.NEXT_PUBLIC_BASE_URL}/${endpoint}`;
+//   const href = `${process.env.VITE_PUBLIC_BASE_URL}/${endpoint}`;
 
 //   const response: AxiosResponse = await axios[method](href, payload, {
 //     withCredentials: true,

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 axios.defaults.withCredentials = true; // Global axios config to enable cookies
-const source = import.meta.env.NEXT_PUBLIC_BASE_URL;
+const source = import.meta.env.VITE_PUBLIC_BASE_URL;
 
 class ProjectAPI {
   static async getOne() {

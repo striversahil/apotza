@@ -4,13 +4,13 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true; // Global axios config to enable cookies
 const codeBlock =
-  (import.meta.env.NEXT_PUBLIC_BASE_URL as string) + "/codeblock";
-const project = (import.meta.env.NEXT_PUBLIC_BASE_URL as string) + "/project";
+  (import.meta.env.VITE_PUBLIC_BASE_URL as string) + "/codeblock";
+const project = (import.meta.env.VITE_PUBLIC_BASE_URL as string) + "/project";
 const component =
-  (import.meta.env.NEXT_PUBLIC_BASE_URL as string) + "/component";
+  (import.meta.env.VITE_PUBLIC_BASE_URL as string) + "/component";
 const stepsBlock =
-  (import.meta.env.NEXT_PUBLIC_BASE_URL as string) + "/stepblock";
-const section = (import.meta.env.NEXT_PUBLIC_BASE_URL as string) + "/section";
+  (import.meta.env.VITE_PUBLIC_BASE_URL as string) + "/stepblock";
+const section = (import.meta.env.VITE_PUBLIC_BASE_URL as string) + "/section";
 
 // Here the Index i.e. Most Used Common Get Actions will be Handled for Project
 

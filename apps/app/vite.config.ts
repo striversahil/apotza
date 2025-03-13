@@ -1,6 +1,6 @@
 import path from "path";
 import { defineConfig } from "vite";
-import postcss from "./postcss.config.js";
+const postcss = require("./postcss.config.js");
 import tsconfigPaths from "vite-tsconfig-paths";
 import react from "@vitejs/plugin-react";
 
