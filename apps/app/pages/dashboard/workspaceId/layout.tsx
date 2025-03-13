@@ -7,7 +7,7 @@ import {
 import React from "react";
 import { Outlet } from "react-router";
 
-export default async function WorkspaceLayout() {
+export default function WorkspaceLayout() {
   // const { workspaceId } = props.workspaceId;
   // await queryClient.prefetchQuery({
   //   queryKey: ["workspace"],

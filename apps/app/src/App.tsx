@@ -22,7 +22,11 @@ import ProjectWorkflow from "../pages/project/appId/workflow";
 function App() {
   return (
     <Routes>
-      <Route path="/" index element={<div>Home</div>} />
+      <Route
+        path="/"
+        index
+        element={<div className="text-green-400 bg-blue-500">Home</div>}
+      />
       {/* <Route path="/" element={<App />} /> */}
       {/* Authentication Routes */}
       <Route path="auth">
