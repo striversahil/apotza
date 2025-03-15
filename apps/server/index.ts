@@ -1,5 +1,3 @@
-import connectDB from "./database";
-
 import httpServer from "./app";
 import { configDotenv } from "dotenv";
 
@@ -20,11 +18,3 @@ const Server = () => {
     );
   });
 };
-
-connectDB()
-  .then(() => {
-    Server();
-  })
-  .catch((err) => {
-    console.log("⚠️ Error connecting to Database with Mongoose", err);
-  });
