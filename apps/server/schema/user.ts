@@ -8,6 +8,9 @@ import {
   json,
   jsonb,
 } from "drizzle-orm/pg-core";
+import { Project } from "./project";
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++ Tables +++++++++++++++++++++++++++++++++++++++++++++++++
 
 export const users = pgTable("user", {
   id: serial("id").primaryKey().unique(),
@@ -20,7 +23,7 @@ export const users = pgTable("user", {
 
 export const userProfile = pgTable("user_profile", {
   id: serial("id").primaryKey().unique(),
-  userId: serial("user_id")
+  user: serial("user")
     .notNull()
     .references(() => users.id),
   firstName: text("first_name").notNull(),
@@ -34,7 +37,7 @@ export const userProfile = pgTable("user_profile", {
 
 export const Workspace = pgTable("workspace", {
   id: serial("id").primaryKey().unique(),
-  userId: serial("user_id")
+  user: serial("user")
     .notNull()
     .references(() => users.id),
   name: text("name").notNull(),
@@ -42,18 +45,21 @@ export const Workspace = pgTable("workspace", {
   createdAt: text("created_at").notNull().default("now()"),
 });
 
+// ++++++++++++++++++++++++++++++++++++++++++++++ Relations ++++++++++++++++++++++++++++++++++++++++++++++
+
 export const userProfileRelation = relations(userProfile, ({ one }) => ({
   user: one(users, {
-    fields: [userProfile.userId],
+    fields: [userProfile.user],
     references: [users.id],
   }),
 }));
 
-export const workspaceRelation = relations(Workspace, ({ one }) => ({
+export const workspaceRelation = relations(Workspace, ({ one, many }) => ({
   user: one(users, {
-    fields: [Workspace.userId],
+    fields: [Workspace.user],
     references: [users.id],
   }),
+  projects: many(Project),
 }));
 
 export const userRelation = relations(users, ({ many }) => ({
