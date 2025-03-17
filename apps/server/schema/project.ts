@@ -7,5 +7,6 @@ export const Project = pgTable("project", {
     .notNull()
     .references(() => Workspace.id),
   name: text("name").notNull(),
+  codeblock: text("codeBlock"),
   createdAt: text("created_at").notNull().default("now()"),
 });

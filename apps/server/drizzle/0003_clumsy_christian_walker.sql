@@ -1,1 +1,0 @@
-ALTER TABLE "users" ADD COLUMN "highschool" boolean DEFAULT true NOT NULL;

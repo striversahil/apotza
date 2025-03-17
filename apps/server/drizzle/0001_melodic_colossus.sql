@@ -1,1 +1,0 @@
-ALTER TABLE "users" ADD COLUMN "created_at" text DEFAULT 'now()' NOT NULL;
