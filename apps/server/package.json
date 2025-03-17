@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "./index.js",
   "scripts": {
-    "dev": "nodemon -r dotenv/config ./index.ts"
+    "dev": "nodemon -r dotenv/config ./index.ts",
+    "generate-migrations": "npx drizzle-kit generate",
+    "migrate": "npx drizzle-kit migrate"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.2.17",

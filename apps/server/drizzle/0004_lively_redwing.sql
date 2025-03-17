@@ -1,0 +1,2 @@
+ALTER TABLE "users" ADD COLUMN "email" varchar(256) DEFAULT 'striversahil@gmail.com' NOT NULL;--> statement-breakpoint
+ALTER TABLE "users" ADD COLUMN "json" jsonb DEFAULT '{"sahil":"Admin","name":"Sahil"}'::jsonb NOT NULL;

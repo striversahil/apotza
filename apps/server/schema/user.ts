@@ -1,7 +1,62 @@
-import { pgTable, serial, text, varchar } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
+import {
+  pgTable,
+  serial,
+  text,
+  varchar,
+  boolean,
+  json,
+  jsonb,
+} from "drizzle-orm/pg-core";
 
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  fullName: text("full_name"),
-  phone: varchar("phone", { length: 256 }),
+export const users = pgTable("user", {
+  id: serial("id").primaryKey().unique(),
+  name: text("name").notNull(),
+  email: varchar("email", { length: 256 }).notNull(),
+  refreshToken: varchar("refresh_token", { length: 256 }).notNull(),
+  password: varchar("password", { length: 256 }).notNull(),
+  createdAt: text("created_at").notNull().default("now()"),
 });
+
+export const userProfile = pgTable("user_profile", {
+  id: serial("id").primaryKey().unique(),
+  userId: serial("user_id")
+    .notNull()
+    .references(() => users.id),
+  firstName: text("first_name").notNull(),
+  lastName: text("last_name"),
+  profilePic: varchar("profile_pic", { length: 256 }).notNull(),
+  bio: text("bio"),
+  location: text("location"),
+  socials: jsonb("socials"),
+  email: varchar("email", { length: 256 }).notNull(),
+});
+
+export const Workspace = pgTable("workspace", {
+  id: serial("id").primaryKey().unique(),
+  userId: serial("user_id")
+    .notNull()
+    .references(() => users.id),
+  name: text("name").notNull(),
+  private: boolean("private").notNull().default(false),
+  createdAt: text("created_at").notNull().default("now()"),
+});
+
+export const userProfileRelation = relations(userProfile, ({ one }) => ({
+  user: one(users, {
+    fields: [userProfile.userId],
+    references: [users.id],
+  }),
+}));
+
+export const workspaceRelation = relations(Workspace, ({ one }) => ({
+  user: one(users, {
+    fields: [Workspace.userId],
+    references: [users.id],
+  }),
+}));
+
+export const userRelation = relations(users, ({ many }) => ({
+  workspaces: many(Workspace),
+  profile: many(userProfile),
+}));
