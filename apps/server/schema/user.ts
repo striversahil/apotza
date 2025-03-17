@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { InferSelectModel, relations } from "drizzle-orm";
 import {
   pgTable,
   serial,
@@ -7,6 +7,7 @@ import {
   boolean,
   json,
   jsonb,
+  timestamp,
 } from "drizzle-orm/pg-core";
 import { Project } from "./project";
 
@@ -18,14 +19,16 @@ export const users = pgTable("user", {
   email: varchar("email", { length: 256 }).notNull(),
   refreshToken: varchar("refresh_token", { length: 256 }).notNull(),
   password: varchar("password", { length: 256 }).notNull(),
-  createdAt: text("created_at").notNull().default("now()"),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
+
+export type UserType = InferSelectModel<typeof users>;
 
 export const userProfile = pgTable("user_profile", {
   id: serial("id").primaryKey().unique(),
-  user: serial("user")
+  user: serial("user_id")
     .notNull()
-    .references(() => users.id),
+    .references(() => users.id, { onDelete: "cascade" }),
   firstName: text("first_name").notNull(),
   lastName: text("last_name"),
   profilePic: varchar("profile_pic", { length: 256 }).notNull(),
@@ -33,17 +36,22 @@ export const userProfile = pgTable("user_profile", {
   location: text("location"),
   socials: jsonb("socials"),
   email: varchar("email", { length: 256 }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
+
+export type UserProfileType = InferSelectModel<typeof userProfile>;
 
 export const Workspace = pgTable("workspace", {
   id: serial("id").primaryKey().unique(),
-  user: serial("user")
+  user: serial("user_id")
     .notNull()
-    .references(() => users.id),
+    .references(() => users.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
   private: boolean("private").notNull().default(false),
-  createdAt: text("created_at").notNull().default("now()"),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
+
+export type WorkspaceType = InferSelectModel<typeof Workspace>;
 
 // ++++++++++++++++++++++++++++++++++++++++++++++ Relations ++++++++++++++++++++++++++++++++++++++++++++++
 

@@ -1,35 +1,47 @@
-import { pgTable, serial, text } from "drizzle-orm/pg-core";
+import { jsonb, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 import { Workspace } from "./user";
-import { relations } from "drizzle-orm";
+import { InferSelectModel, relations } from "drizzle-orm";
 
 export const Project = pgTable("project", {
-  id: serial("id").primaryKey().unique(),
-  workspace: serial("workspace")
+  id: serial("id").primaryKey(),
+  workspace: serial("workspace_id")
     .notNull()
-    .references(() => Workspace.id),
+    .references(() => Workspace.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
-  createdAt: text("created_at").notNull().default("now()"),
+  details: text("details").notNull().default("Some details about this project"),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
+
+export type ProjectInterface = InferSelectModel<typeof Project>;
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++ Components Tables +++++++++++++++++++++++++++++++++++++++++++++++++
 
 export const Section = pgTable("section", {
-  id: serial("id").primaryKey().unique(),
-  project: serial("project")
+  id: serial("id").primaryKey(),
+  project: serial("project_id")
     .notNull()
-    .references(() => Project.id),
+    .references(() => Project.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
-  createdAt: text("created_at").notNull().default("now()"),
+  layout: jsonb("layout").notNull().default({}),
+  appearence: jsonb("appearence").notNull().default({}),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
 
+export type SectionInterface = InferSelectModel<typeof Section>;
+
 export const Component = pgTable("component", {
-  id: serial("id").primaryKey().unique(),
-  section: serial("section")
+  id: serial("id").primaryKey(),
+  section: serial("section_id")
     .notNull()
-    .references(() => Section.id),
+    .references(() => Section.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
-  createdAt: text("created_at").notNull().default("now()"),
+  coordinates: jsonb("coordinates").notNull().default({}),
+  payload: jsonb("payload").notNull().default({}), // Contains the component data
+  configuration: jsonb("configuration").notNull().default({}), // Contains the component configuration
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
+
+export type ComponentInterface = InferSelectModel<typeof Component>;
 
 export const componentRelations = relations(Component, ({ one, many }) => ({
   section: one(Section, {
@@ -49,21 +61,29 @@ export const sectionRelations = relations(Section, ({ one, many }) => ({
 // ++++++++++++++++++++++++++++++++++++++++++++++++ CodeBlock Tables +++++++++++++++++++++++++++++++++++++++++++++++++
 export const CodeBlock = pgTable("codeblock", {
   id: serial("id").primaryKey().unique(),
-  project: serial("project")
+  project: serial("project_id")
     .notNull()
-    .references(() => Project.id),
+    .references(() => Project.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
-  createdAt: text("created_at").notNull().default("now()"),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
+
+export type CodeBlockInterface = InferSelectModel<typeof CodeBlock>;
 
 export const StepBlock = pgTable("stepblock", {
   id: serial("id").primaryKey().unique(),
-  codeblock: serial("codeblock")
+  codeblock: serial("codeblock_id")
     .notNull()
-    .references(() => CodeBlock.id),
+    .references(() => CodeBlock.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
-  createdAt: text("created_at").notNull().default("now()"),
+  code: text("code").notNull(),
+  language: text("language").notNull(),
+  output: text("output").notNull(),
+  stdout: text("stdout").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
+
+export type StepBlockInterface = InferSelectModel<typeof StepBlock>;
 
 export const codeBlockRelations = relations(CodeBlock, ({ one, many }) => ({
   project: one(Project, {

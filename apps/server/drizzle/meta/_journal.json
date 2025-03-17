@@ -15,6 +15,20 @@
       "when": 1742203838940,
       "tag": "0001_cultured_typhoid_mary",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1742209903900,
+      "tag": "0002_curious_strong_guy",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1742211293340,
+      "tag": "0003_cool_gideon",
+      "breakpoints": true
     }
   ]
 }
