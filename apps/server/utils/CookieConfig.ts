@@ -1,14 +1,3 @@
-import { User } from "../../models/auth/user.model";
-export * from "./user/registerUser";
-export * from "./user/signIn";
-export * from "./user/userInfo";
-
-export type UserType = {
-  name?: string;
-  email: string;
-  password: string;
-};
-
 const isProduction = process.env.NODE_ENV === "production";
 export const Usercookie: object = {
   // creating cookie

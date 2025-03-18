@@ -1,9 +1,5 @@
 import { Router } from "express";
-import {
-  signIN,
-  registerUser,
-  UserInfo,
-} from "../controllers/auth/user.controller";
+import { signIN, registerUser, UserInfo } from "../controllers/user.controller";
 
 import { authenticate, authController } from "../middleware/auth.middleware";
 

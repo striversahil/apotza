@@ -5,7 +5,7 @@ import {
   deleteCodeBlock,
   getAllCodeBlock,
   updateCodeBlockName,
-} from "../controllers/project/codeBlock/_codeBlock.controller";
+} from "../controllers/codeBlock.controller";
 
 const router: Router = Router();
 router.route("/").get(getAllCodeBlock);
