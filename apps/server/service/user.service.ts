@@ -1,5 +1,5 @@
 /**
- * Workspace Service : It will Assume that You have done all the Validation Checks
+ * User Service : It will Assume that You have done all the Validation Checks
  */
 
 import { eq } from "drizzle-orm";
@@ -43,44 +43,37 @@ class UserService {
   static async createUser(
     name: string,
     email: string,
-    password: string
+    password: string,
+    refreshToken: string
   ): Promise<any> {
     /**
      * (Create User) Return : User Object Containing User Details
      */
     try {
-      const isUserExists = await this.getUserByEmail(email);
-      if (!isUserExists) return null;
-
-      const hashed_password = await PasswordService.hashPassword(password);
-
-      const accessToken = TokensService.generateAccessToken(isUserExists);
-      const refreshToken = TokensService.generateRefreshToken(isUserExists.id);
-
-      const user = await db
+      const [user] = await db
         .insert(users)
         .values({
           name: name,
           email: email,
-          password: hashed_password,
+          password: password,
           refreshToken: refreshToken,
         })
         .returning();
 
-      return { user, accessToken, refreshToken };
+      return user;
     } catch (error) {
       throw new Error(JSON.stringify(error));
     }
   }
 
-  static async updateUser(userId: number, data: any): Promise<any> {
+  static async updateUser(userId: number, clause = {}): Promise<any> {
     /**
      * (Update User) Return : User Object Containing User Details
      */
     try {
       return await db
         .update(users)
-        .set(data)
+        .set(clause)
         .where(eq(users.id, userId))
         .returning();
     } catch (error) {
