@@ -18,9 +18,9 @@ class StepBlockController {
 
   static async getStep(req: Request, res: Response) {
     try {
-      const { id } = req.body;
+      const { id } = req.params;
       if (!id) return ErrorResponse(res, "StepBlock does not exist");
-      const stepBlock = await StepBlockService.getById(id);
+      const stepBlock = await StepBlockService.getById(parseInt(id));
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be fetched");
       SuccessResponse(res, "StepBlock fetched successfully", stepBlock);
@@ -37,6 +37,19 @@ class StepBlockController {
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be deleted");
       SuccessResponse(res, "StepBlock deleted successfully", stepBlock);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async codeUpdate(req: Request, res: Response) {
+    try {
+      const { id, code } = req.body;
+      if (!id || !code) return ErrorResponse(res, "StepBlock does not exist");
+      const stepBlock = await StepBlockService.update(id, { code });
+      if (!stepBlock)
+        return ErrorResponse(res, "StepBlock could not be updated");
+      SuccessResponse(res, "StepBlock updated successfully", stepBlock);
     } catch (error) {
       console.log(error);
     }
