@@ -4,7 +4,7 @@
 
 import { eq } from "drizzle-orm";
 import { db } from "../database";
-import { Workspace, WorkspaceType } from "../schema/user";
+import { User, UserType, Workspace, WorkspaceType } from "../schema/user";
 
 class WorkspaceService {
   static async getById(workspaceId: number): Promise<WorkspaceType | null> {
@@ -23,15 +23,17 @@ class WorkspaceService {
     }
   }
 
-  static async getAll(userId: number): Promise<WorkspaceType[] | null> {
+  static async getAll(userId: number): Promise<UserType | null> {
     /**
      * (Get All Workspace) Return : Workspace Object Containing Workspace with Populated Details
      */
     try {
-      const workspaces = await db
-        .select()
-        .from(Workspace)
-        .where(eq(Workspace.user, userId));
+      const [workspaces] = await db.query.User.findMany({
+        with: {
+          workspaces: true,
+        },
+        where: eq(User.id, userId),
+      });
       return workspaces ? workspaces : null;
     } catch (error) {
       throw new Error(error as string);
