@@ -15,6 +15,7 @@ import { Tabs as TabsRoot } from "../../../../components/ui/tabs";
 import { TooltipProvider } from "../../../../components/ui/Tooltip/tooltip";
 import { useCurrentTab } from "../../_hooks/useCurrentTab";
 import { useDragEnd } from "../../_hooks/usedragEnd";
+import ProjectAction from "../../../../actions/project";
 
 type Props = {};
 
@@ -29,6 +30,9 @@ const ProjectEdit = (props: Props) => {
   } = useDragEnd();
 
   const { openConfig, handleOpenConfig } = useOpen();
+
+  const { isLoading, data } = ProjectAction.getProject();
+  console.log("data", data);
 
   return (
     <DndContext

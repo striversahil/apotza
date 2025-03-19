@@ -1,7 +1,7 @@
 import useZodForm from "../../../../hooks/useZodForm";
 import { formSchema } from "../Logins/schema";
 import { useMutationData } from "../../../../hooks/useMutation";
-import { userLogin } from "../../../../api/user";
+import { userLogin, userSignup } from "../../../../api/user";
 
 interface formData {
   name: string;

@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
 import { ErrorResponse, SuccessResponse } from "../utils/ApiResponse";
-import SectionService from "../service/section.service";
-import { deleteComponent } from "./project/components/deleteComponent";
 import ComponentService from "../service/component.service";
 
 class ComponentController {
@@ -20,9 +18,9 @@ class ComponentController {
 
   static async getComponent(res: Response, req: Request) {
     try {
-      const { id } = req.body;
+      const { id } = req.params;
       if (!id) return ErrorResponse(res, "Component does not exist");
-      const component = await ComponentService.getById(id);
+      const component = await ComponentService.getById(parseInt(id));
       if (!component)
         return ErrorResponse(res, "Component could not be fetched");
       SuccessResponse(res, "Component fetched successfully", component);

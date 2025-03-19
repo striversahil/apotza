@@ -17,9 +17,9 @@ class SectionController {
 
   static async getSection(req: Request, res: Response) {
     try {
-      const { id } = req.body;
+      const { id } = req.params;
       if (!id) return ErrorResponse(res, "Section does not exist");
-      const section = await SectionService.getById(id);
+      const section = await SectionService.getById(parseInt(id));
       if (!section) return ErrorResponse(res, "Section could not be fetched");
       SuccessResponse(res, "Section fetched successfully", section);
     } catch (error) {

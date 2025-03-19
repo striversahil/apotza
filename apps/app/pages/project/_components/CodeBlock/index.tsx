@@ -17,8 +17,16 @@ type Props = {};
 
 const CodeBlock = ({}: Props) => {
   const { openCode, handleOpenCode } = useOpen();
+  const [codeBlocks, setCodeBlocks] = useState<any>([]);
 
-  const { isLoading, data } = ProjectAction.getCodeBlocks();
+  const { isLoading, data } = ProjectAction.getProject();
+  console.log("data", data);
+
+  // useEffect(() => {
+  //   if (data) {
+  //     setCodeBlocks(data.payload.codeBlocks);
+  //   }
+  // }, [data]);
 
   return (
     <>
@@ -38,19 +46,17 @@ const CodeBlock = ({}: Props) => {
           onCollapse={handleOpenCode}
         >
           <div className="ml-1 h-full bg-slate-800">
-            {!isLoading &&
-              data.payload &&
-              data.payload.map((item: any, index: number) => {
-                return (
-                  <TabsContent
-                    key={index}
-                    className="w-full h-full"
-                    value={index.toString()}
-                  >
-                    <StepEditorRoot value={item} />
-                  </TabsContent>
-                );
-              })}
+            {/* {codeBlocks.map((item: any, index: number) => {
+              return (
+                <TabsContent
+                  key={index}
+                  className="w-full h-full"
+                  value={index.toString()}
+                >
+                  <StepEditorRoot value={item} />
+                </TabsContent>
+              );
+            })} */}
           </div>
         </Panel>
       )}
