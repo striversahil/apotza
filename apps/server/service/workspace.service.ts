@@ -2,69 +2,67 @@
  * Workspace Service : It will Assume that You have done all the Validation Checks
  */
 
-import { User } from "../models/auth/user.model";
-import {
-  Workspace,
-  WorkspaceInterface,
-} from "../models/workspace/workspace.model";
+import { eq } from "drizzle-orm";
+import { db } from "../database";
+import { Workspace, WorkspaceType } from "../schema/user";
 
 class WorkspaceService {
-  static async getWorkspace(
-    workspaceId: string
-  ): Promise<WorkspaceInterface | null> {
+  static async getById(workspaceId: number): Promise<WorkspaceType | null> {
     /**
      * (Get Workspace By Id) Return : Workspace Object Containing Workspace with Populated Details
      */
     try {
-      return await Workspace.findById(workspaceId)
-        .populate("user")
-        .populate([
-          {
-            path: "projects",
-            match: { _id: { $exists: true } },
-          },
-          {
-            path: "members",
-            match: { _id: { $exists: true } },
-          },
-        ]);
+      const [workspace] = await db
+        .select()
+        .from(Workspace)
+        .where(eq(Workspace.id, workspaceId))
+        .limit(1);
+      return workspace ? workspace : null;
     } catch (error) {
       throw new Error(error as string);
     }
   }
 
-  static async create(userId: string): Promise<WorkspaceInterface | null> {
+  static async getAll(userId: number): Promise<WorkspaceType[] | null> {
+    /**
+     * (Get All Workspace) Return : Workspace Object Containing Workspace with Populated Details
+     */
+    try {
+      const workspaces = await db
+        .select()
+        .from(Workspace)
+        .where(eq(Workspace.user, userId));
+      return workspaces ? workspaces : null;
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
+  static async new(userId: number): Promise<WorkspaceType | null> {
     /**
      * (Create Workspace) Return : Workspace Object Containing Workspace Details
      */
     try {
-      const workspace = new Workspace({ user: userId });
-      await workspace.save();
-      const user = await User.findByIdAndUpdate(userId, {
-        $push: { workspaces: workspace._id },
-      });
-      if (!user) return null;
-      return workspace;
+      const [workspace] = await db
+        .insert(Workspace)
+        .values({ name: "Untitled Workspace", user: userId })
+        .returning();
+      return workspace ? workspace : null;
     } catch (error) {
       throw new Error(error as string);
     }
   }
 
-  static async deleteWorkspace(
-    workspaceId: string,
-    userId: string
-  ): Promise<WorkspaceInterface | null> {
+  static async delete(workspaceId: number): Promise<WorkspaceType | null> {
     /**
      * (Delete Workspace) Return : null
      */
     try {
-      const workspace = await Workspace.findByIdAndDelete(workspaceId);
-      if (!workspace) return null;
-      const user = await User.findByIdAndUpdate(userId, {
-        $pull: { workspaces: workspaceId },
-      });
-      if (!user) return null;
-      return workspace;
+      const [workspace] = await db
+        .delete(Workspace)
+        .where(eq(Workspace.id, workspaceId))
+        .returning();
+      return workspace ? workspace : null;
     } catch (error) {
       throw new Error(error as string);
     }

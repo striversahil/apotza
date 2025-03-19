@@ -13,7 +13,7 @@ import { Project } from "./project";
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++ Tables +++++++++++++++++++++++++++++++++++++++++++++++++
 
-export const users = pgTable("user", {
+export const User = pgTable("user", {
   id: serial("id").primaryKey().unique(),
   name: text("name").notNull(),
   email: varchar("email", { length: 256 }).notNull(),
@@ -22,13 +22,13 @@ export const users = pgTable("user", {
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
 
-export type UserType = InferSelectModel<typeof users>;
+export type UserType = InferSelectModel<typeof User>;
 
-export const userProfile = pgTable("user_profile", {
+export const Profile = pgTable("user_profile", {
   id: serial("id").primaryKey().unique(),
   user: serial("user_id")
     .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
+    .references(() => User.id, { onDelete: "cascade" }),
   firstName: text("first_name").notNull(),
   lastName: text("last_name"),
   profilePic: varchar("profile_pic", { length: 256 }).notNull(),
@@ -39,15 +39,15 @@ export const userProfile = pgTable("user_profile", {
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
 
-export type UserProfileType = InferSelectModel<typeof userProfile>;
+export type ProfileType = InferSelectModel<typeof Profile>;
 
 export const Workspace = pgTable("workspace", {
   id: serial("id").primaryKey().unique(),
   user: serial("user_id")
     .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
+    .references(() => User.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
-  private: boolean("private").notNull().default(false),
+  private: boolean("private").notNull().default(true),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
 
@@ -55,22 +55,64 @@ export type WorkspaceType = InferSelectModel<typeof Workspace>;
 
 // ++++++++++++++++++++++++++++++++++++++++++++++ Relations ++++++++++++++++++++++++++++++++++++++++++++++
 
-export const userProfileRelation = relations(userProfile, ({ one }) => ({
-  user: one(users, {
-    fields: [userProfile.user],
-    references: [users.id],
+export const userProfileRelation = relations(Profile, ({ one }) => ({
+  user: one(User, {
+    fields: [Profile.user],
+    references: [User.id],
   }),
 }));
 
 export const workspaceRelation = relations(Workspace, ({ one, many }) => ({
-  user: one(users, {
+  user: one(User, {
     fields: [Workspace.user],
-    references: [users.id],
+    references: [User.id],
   }),
   projects: many(Project),
 }));
 
-export const userRelation = relations(users, ({ many }) => ({
+export const userRelation = relations(User, ({ many }) => ({
   workspaces: many(Workspace),
-  profile: many(userProfile),
+  profile: many(Profile),
 }));
+
+// const workspaceWithRelations = await db
+//   .select()
+//   .from(Workspace)
+//   .leftJoin(users, workspaceRelation.user)
+//   .leftJoin(Project, workspaceRelation.projects);
+
+// Spit's Output like this
+// [
+//   {
+//     "id": 1,
+//     "name": "Workspace A",
+//     "user": {
+//       "id": 101,
+//       "name": "User One"
+//     },
+//     "projects": [
+//       {
+//         "id": 201,
+//         "name": "Project X"
+//       },
+//       {
+//         "id": 202,
+//         "name": "Project Y"
+//       }
+//     ]
+//   },
+//   {
+//     "id": 2,
+//     "name": "Workspace B",
+//     "user": {
+//       "id": 102,
+//       "name": "User Two"
+//     },
+//     "projects": [
+//       {
+//         "id": 203,
+//         "name": "Project Z"
+//       }
+//     ]
+//   }
+// ]

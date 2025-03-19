@@ -4,11 +4,11 @@
 
 import { eq } from "drizzle-orm";
 import { db } from "../database";
-import { users, UserType } from "../schema/user";
+import { User, UserType } from "../schema/user";
 import PasswordService from "../utils/passwordService";
 import TokensService from "../utils/AccessRefreshToken";
 
-class UserService {
+class Userervice {
   static async getUserById(userId: number): Promise<any> {
     /**
      * (Get User By Id) Return : User Object Containing User Details
@@ -16,8 +16,8 @@ class UserService {
     try {
       const [user] = await db
         .select()
-        .from(users)
-        .where(eq(users.id, userId))
+        .from(User)
+        .where(eq(User.id, userId))
         .limit(1);
       return user ? user : null;
     } catch (error) {
@@ -27,10 +27,7 @@ class UserService {
 
   static async getUserByEmail(email: string): Promise<UserType | null> {
     try {
-      const [user] = await db
-        .select()
-        .from(users)
-        .where(eq(users.email, email));
+      const [user] = await db.select().from(User).where(eq(User.email, email));
 
       return user ?? null; // More concise: If user exists, return it; otherwise, return null.
     } catch (error) {
@@ -48,7 +45,7 @@ class UserService {
      */
     try {
       const [user] = await db
-        .insert(users)
+        .insert(User)
         .values({
           name: name,
           email: email,
@@ -69,9 +66,9 @@ class UserService {
      */
     try {
       return await db
-        .update(users)
+        .update(User)
         .set(clause)
-        .where(eq(users.id, userId))
+        .where(eq(User.id, userId))
         .returning();
     } catch (error) {
       throw new Error(error as string);
@@ -83,11 +80,11 @@ class UserService {
      * (Delete User) Return : User Object Containing User Details
      */
     try {
-      return await db.delete(users).where(eq(users.id, userId)).returning();
+      return await db.delete(User).where(eq(User.id, userId)).returning();
     } catch (error) {
       throw new Error(error as string);
     }
   }
 }
 
-export default UserService;
+export default Userervice;
