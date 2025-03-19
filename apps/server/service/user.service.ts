@@ -80,7 +80,12 @@ class Userervice {
      * (Delete User) Return : User Object Containing User Details
      */
     try {
-      return await db.delete(User).where(eq(User.id, userId)).returning();
+      const [user] = await db
+        .delete(User)
+        .where(eq(User.id, userId))
+        .returning();
+
+      return user ? user : null;
     } catch (error) {
       throw new Error(error as string);
     }

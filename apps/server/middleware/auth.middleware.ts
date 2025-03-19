@@ -30,7 +30,6 @@ export const authenticate = (
       );
   }
   // Todo : Verify Token Safely
-  console.log(token);
   jwt.verify(token as string, "sahil", async (err: any, decoded: any) => {
     if (err) {
       console.log(err);

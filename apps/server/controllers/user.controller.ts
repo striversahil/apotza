@@ -8,6 +8,14 @@ class UserController {
   static async login(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
+      if (!email || !password) {
+        res.status(400).json({
+          success: false,
+          message: "All Fields are required",
+          payload: null,
+        });
+        return;
+      }
 
       const user = await UserService.getUserByEmail(email);
       if (!user) {
@@ -122,6 +130,27 @@ class UserController {
         success: true,
         message: "User Signed Out Successfully 🚀",
         payload: null,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        success: false,
+        message: "Internal Server Error ⚠️",
+        error: error,
+      });
+    }
+  }
+
+  static async deleteUser(req: Request, res: Response) {
+    try {
+      const userId = req.user.id;
+      console.log("userId", userId);
+      const deleted_user = await UserService.deleteUser(userId);
+      res.clearCookie("access_token");
+      res.status(200).json({
+        success: true,
+        message: "User Deleted Successfully 🚀",
+        payload: deleted_user,
       });
     } catch (error) {
       console.log(error);
