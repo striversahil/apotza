@@ -3,6 +3,17 @@ import jwt from "jsonwebtoken";
 import ApiResponse from "../helper/ApiResponse";
 import generateAccessRefreshToken from "../utils/generateAccessRefreshToken";
 
+declare global {
+  namespace Express {
+    interface Request {
+      user: {
+        id: number;
+        email: string;
+        username: string;
+      };
+    }
+  }
+}
 
 export const authenticate = (
   req: Request,

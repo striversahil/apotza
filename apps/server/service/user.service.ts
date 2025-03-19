@@ -4,7 +4,7 @@
 
 import { eq } from "drizzle-orm";
 import { db } from "../database";
-import { users } from "../schema/user";
+import { users, UserType } from "../schema/user";
 import PasswordService from "../utils/passwordService";
 import TokensService from "../utils/AccessRefreshToken";
 
@@ -25,26 +25,23 @@ class UserService {
     }
   }
 
-  static async getUserByEmail(email: string): Promise<any> {
-    /**
-     * (Get User By Email) Return : User Object Containing User Details
-     */
+  static async getUserByEmail(email: string): Promise<UserType | null> {
     try {
       const [user] = await db
         .select()
         .from(users)
         .where(eq(users.email, email));
-      return user ? user : null;
+
+      return user ?? null; // More concise: If user exists, return it; otherwise, return null.
     } catch (error) {
-      throw new Error(error as string);
+      throw new Error(error instanceof Error ? error.message : String(error));
     }
   }
 
   static async createUser(
     name: string,
     email: string,
-    password: string,
-    refreshToken: string
+    password: string
   ): Promise<any> {
     /**
      * (Create User) Return : User Object Containing User Details
@@ -56,7 +53,7 @@ class UserService {
           name: name,
           email: email,
           password: password,
-          refreshToken: refreshToken,
+          refreshToken: "",
         })
         .returning();
 

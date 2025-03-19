@@ -14,7 +14,7 @@ class TokensService {
     return accessToken;
   }
 
-  static generateRefreshToken(id: string) {
+  static generateRefreshToken(id: number) {
     const refreshToken = jwt.sign(
       {
         id: id,

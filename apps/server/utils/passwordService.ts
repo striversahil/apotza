@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 class PasswordService {
   private password = "";
   private hashedPassword = "";

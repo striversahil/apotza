@@ -1,25 +1,25 @@
-import { Router } from "express";
-import {
-  deleteComponent,
-  getComponents,
-  getComponent,
-  newComponent,
-  updateComponent,
-  updateCoordinates,
-} from "../controllers/project/components/_component.controller";
+// import { Router } from "express";
+// import {
+//   deleteComponent,
+//   getComponents,
+//   getComponent,
+//   newComponent,
+//   updateComponent,
+//   updateCoordinates,
+// } from "../controllers/project/components/_component.controller";
 
-const router: Router = Router();
+// const router: Router = Router();
 
-router.route("/getAll/:id").get(getComponents);
+// router.route("/getAll/:id").get(getComponents);
 
-router.route("/").post(newComponent);
+// router.route("/").post(newComponent);
 
-router.route("/:id").get(getComponent);
+// router.route("/:id").get(getComponent);
 
-router.route("/delete").post(deleteComponent);
+// router.route("/delete").post(deleteComponent);
 
-router.route("/update/").post(updateComponent);
+// router.route("/update/").post(updateComponent);
 
-router.route("/coordinates").post(updateCoordinates);
+// router.route("/coordinates").post(updateCoordinates);
 
-export default router;
+// export default router;

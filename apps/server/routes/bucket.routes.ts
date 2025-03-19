@@ -1,7 +1,7 @@
-import { Router } from "express";
+// import { Router } from "express";
 
-const router: Router = Router();
+// const router: Router = Router();
 
-router.route("");
+// router.route("");
 
-export default router;
+// export default router;

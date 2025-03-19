@@ -1,15 +1,15 @@
 import { Router } from "express";
-import { signIN, registerUser, UserInfo } from "../controllers/user.controller";
 
 import { authenticate, authController } from "../middleware/auth.middleware";
+import UserController from "../controllers/user.controller";
 
 const router: Router = Router();
 
-router.route("/").get(authenticate, UserInfo);
+router.route("/").get(authenticate, UserController.getUser);
 
-router.route("/signup").post(registerUser);
+router.route("/signup").post(UserController.signUp);
 
-router.route("/signin").post(signIN);
+router.route("/signin").post(UserController.login);
 
 // Middleware Testing
 router.route("/auth").get(authenticate, authController);
