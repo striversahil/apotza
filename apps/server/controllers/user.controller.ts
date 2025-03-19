@@ -21,12 +21,14 @@ class UserController {
         password,
         user.password
       );
-      if (!isVerified)
+      if (!isVerified) {
         res.status(400).json({
           success: false,
           message: "Password is incorrect",
           payload: null,
         });
+        return;
+      }
 
       const accessToken = TokensService.generateAccessToken(
         user.id,
@@ -45,6 +47,7 @@ class UserController {
         message: "User Signed In Successfully 🚀",
         payload: user,
       });
+      return;
     } catch (error) {
       console.log(error);
       res.status(500).json({
@@ -52,6 +55,7 @@ class UserController {
         message: "Internal Server Error ⚠️",
         error: error,
       });
+      return;
     }
   }
 
