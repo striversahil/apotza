@@ -97,43 +97,7 @@ class workspaceController {
       return;
     }
   }
-  static async getAllWorkspaces(req: Request, res: Response) {
-    try {
-      if (!req.user) {
-        res.status(400).json({
-          success: false,
-          message: "User is not authenticated",
-          payload: null,
-        });
-        return;
-      }
-      const workspaces = await WorkspaceService.getAll(req.user.id);
-      console.log(workspaces);
 
-      if (!workspaces) {
-        res.status(500).json({
-          success: false,
-          message: "Workspaces could not be fetched",
-          payload: null,
-        });
-        return;
-      }
-      res.status(200).json({
-        success: true,
-        message: "Workspaces fetched successfully",
-        payload: workspaces,
-      });
-      return;
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({
-        success: false,
-        message: "Internal Server Error ⚠️",
-        error: error,
-      });
-      return;
-    }
-  }
   static async deleteWorkspace(req: Request, res: Response) {
     try {
       const workspaceId = req.cookies.workspace_id;

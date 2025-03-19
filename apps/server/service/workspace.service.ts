@@ -24,23 +24,6 @@ class WorkspaceService {
     }
   }
 
-  static async getAll(userId: number): Promise<UserType | null> {
-    /**
-     * (Get All Workspace) Return : Workspace Object Containing Workspace with Populated Details
-     */
-    try {
-      const [workspaces] = await db.query.User.findMany({
-        with: {
-          workspaces: true,
-        },
-        where: eq(User.id, userId),
-      });
-      return workspaces ? workspaces : null;
-    } catch (error) {
-      throw new Error(error as string);
-    }
-  }
-
   static async new(userId: number): Promise<WorkspaceType | null> {
     /**
      * (Create Workspace) Return : Workspace Object Containing Workspace Details

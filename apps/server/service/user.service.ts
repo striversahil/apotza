@@ -9,16 +9,17 @@ import PasswordService from "../utils/passwordService";
 import TokensService from "../utils/AccessRefreshToken";
 
 class Userervice {
-  static async getUserById(userId: number): Promise<any> {
+  static async getUserById(userId: number): Promise<UserType | null> {
     /**
      * (Get User By Id) Return : User Object Containing User Details
      */
     try {
-      const [user] = await db
-        .select()
-        .from(User)
-        .where(eq(User.id, userId))
-        .limit(1);
+      const user = await db.query.User.findFirst({
+        with: {
+          workspaces: true,
+        },
+        where: eq(User.id, userId),
+      });
       return user ? user : null;
     } catch (error) {
       throw new Error(error as string);

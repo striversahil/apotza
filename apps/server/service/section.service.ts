@@ -1,58 +1,45 @@
-import { Project } from "../models/project/project.model";
-import { Section } from "../models/project/section.model";
+import { eq } from "drizzle-orm";
+import { db } from "../database";
 import SectionDefault from "../package/common/section_column/sectionDefault.json";
+import { Section, SectionInterface } from "../schema";
 
 class SectionService {
-  static async getAll(project_id: string): Promise<any | null> {
+  static async getById(id: number): Promise<SectionInterface | null> {
     try {
-      const codeBlock = await Project.findById(project_id).populate("sections");
-      return codeBlock;
-    } catch (error) {
-      throw new Error(error as string);
-    }
-  }
-
-  static async getById(id: string): Promise<any | null> {
-    try {
-      return await Section.findById(id);
-    } catch (error) {
-      throw new Error(error as string);
-    }
-  }
-
-  static async create(project_id: string): Promise<any | null> {
-    try {
-      const newSection = new Section({
-        name: "New Section",
-        layout: SectionDefault.layout,
-        appearence: SectionDefault.appearance,
-      });
-      await newSection.save();
-      await Project.findByIdAndUpdate(project_id, {
-        $push: {
-          sections: newSection._id,
+      const section = await db.query.Section.findFirst({
+        with: {
+          components: true,
         },
+        where: eq(Section.id, id),
       });
-      return newSection;
+      return section ? section : null;
     } catch (error) {
       throw new Error(error as string);
     }
   }
 
-  static async delete(
-    section_id: string,
-    project_id: string
-  ): Promise<any | null> {
+  static async create(project_id: number): Promise<SectionInterface | null> {
     try {
-      const section = await Section.findByIdAndDelete(section_id);
-      if (!section) return null;
-      const project = await Project.findByIdAndUpdate(project_id, {
-        $pull: {
-          sections: section_id,
-        },
-      });
-      if (!project) return null;
-      return section;
+      const [section] = await db
+        .insert(Section)
+        .values({
+          name: "Untitled Section",
+          project: project_id,
+        })
+        .returning();
+      return section ? section : null;
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
+  static async delete(section_id: number): Promise<SectionInterface | null> {
+    try {
+      const [section] = await db
+        .delete(Section)
+        .where(eq(Section.id, section_id))
+        .returning();
+      return section ? section : null;
     } catch (error) {
       throw new Error(error as string);
     }

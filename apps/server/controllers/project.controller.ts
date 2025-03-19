@@ -18,18 +18,6 @@ class ProjectController {
     }
   }
 
-  static async getAllProjects(req: Request, res: Response) {
-    try {
-      const workspace_id = req.cookies.workspace_id;
-      if (!workspace_id) return ErrorResponse(res, "User is not authenticated");
-      const projects = await ProjectService.getAll(workspace_id);
-      if (!projects) return ErrorResponse(res, "Projects could not be fetched");
-      SuccessResponse(res, "Projects fetched successfully", projects);
-      return;
-    } catch (error) {
-      console.log(error);
-    }
-  }
   static async createProject(req: Request, res: Response) {
     try {
       const workspace_id = req.cookies.workspace_id;
