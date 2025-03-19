@@ -12,11 +12,12 @@ class WorkspaceService {
      * (Get Workspace By Id) Return : Workspace Object Containing Workspace with Populated Details
      */
     try {
-      const [workspace] = await db
-        .select()
-        .from(Workspace)
-        .where(eq(Workspace.id, workspaceId))
-        .limit(1);
+      const workspace = await db.query.Workspace.findFirst({
+        with: {
+          projects: true,
+        },
+        where: eq(Workspace.id, workspaceId),
+      });
       return workspace ? workspace : null;
     } catch (error) {
       throw new Error(error as string);
