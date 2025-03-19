@@ -1,6 +1,5 @@
 import { eq } from "drizzle-orm";
 import { db } from "../database";
-import SectionDefault from "../package/common/section_column/sectionDefault.json";
 import { Section, SectionInterface } from "../schema";
 
 class SectionService {

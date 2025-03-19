@@ -1,4 +1,4 @@
-import { Project, ProjectInterface, Workspace, WorkspaceType } from "../schema";
+import { Project, ProjectInterface } from "../schema";
 import { db } from "../database";
 import { eq } from "drizzle-orm";
 

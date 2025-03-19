@@ -9,11 +9,12 @@ import { CodeBlock, CodeBlockInterface } from "../schema";
 class CodeBlockService {
   static async getById(id: number): Promise<CodeBlockInterface | null> {
     try {
-      const [codeBlock] = await db
-        .select()
-        .from(CodeBlock)
-        .where(eq(CodeBlock.id, id))
-        .limit(1);
+      const codeBlock = await db.query.CodeBlock.findFirst({
+        with: {
+          stepBlocks: true,
+        },
+        where: eq(CodeBlock.id, id),
+      });
 
       return codeBlock ? codeBlock : null;
     } catch (error) {
