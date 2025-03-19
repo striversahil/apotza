@@ -5,10 +5,14 @@ import { eq } from "drizzle-orm";
 class ProjectService {
   static async create(workspace_id: number): Promise<ProjectInterface | null> {
     try {
-      const [project] = await db.insert(Project).values({
-        name: "Untitled Project",
-        workspace: workspace_id,
-      });
+      const [project] = await db
+        .insert(Project)
+        .values({
+          name: "Untitled Project",
+          workspace: workspace_id,
+        })
+        .returning();
+      console.log(project);
       return project ? project : null;
     } catch (error) {
       throw new Error(error as string);

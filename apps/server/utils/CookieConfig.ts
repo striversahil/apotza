@@ -15,3 +15,11 @@ export const workspaceCookie: object = {
   sameSite: isProduction ? "none" : "lax",
   maxAge: 1000 * 60 * 60 * 24 * 15, // 15 days of cookie
 };
+
+export const projectCookie: object = {
+  // creating cookie
+  httpOnly: true,
+  secure: isProduction,
+  sameSite: isProduction ? "none" : "lax",
+  maxAge: 1000 * 60 * 60 * 24 * 15,
+};

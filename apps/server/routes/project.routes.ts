@@ -1,19 +1,16 @@
-// import { Router } from "express";
-// import {
-//   deleteProject,
-//   newProject,
-//   projectInfo,
-//   updateName,
-// } from "../controllers/project/project/_project.controller";
+import { Router } from "express";
+import ProjectController from "../controllers/project.controller";
 
-// const router: Router = Router();
+const router: Router = Router();
 
-// router.route("/").get(projectInfo);
+router.route("/").get(ProjectController.getProject);
 
-// router.route("/").post(newProject);
+router.route("/all").get(ProjectController.getAllProjects);
 
-// router.route("/").delete(deleteProject);
+router.route("/new").get(ProjectController.createProject);
 
-// router.route("/name").post(updateName);
+router.route("/delete").get(ProjectController.deleteProject);
 
-// export default router;
+router.route("/name").post(ProjectController.updateName);
+
+export default router;
