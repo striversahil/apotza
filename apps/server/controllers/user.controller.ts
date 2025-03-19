@@ -11,25 +11,25 @@ class UserController {
 
       const user = await UserService.getUserByEmail(email);
       if (!user)
-        res
+        return res
           .status(404)
           .json({ success: false, payload: null, message: "User not found" });
 
       const isVerified = await PasswordService.verifyPassword(
         password,
-        user.password!
+        user.password
       );
       if (!isVerified)
-        res.status(400).json({
+        return res.status(400).json({
           success: false,
-          payload: null,
           message: "Password is incorrect",
+          payload: null,
         });
 
       const accessToken = TokensService.generateAccessToken(
         user.id,
         user.email,
-        user.password
+        user.name
       );
       const refreshToken = TokensService.generateRefreshToken(user.id);
 
@@ -38,17 +38,17 @@ class UserController {
       });
 
       res.cookie("access_token", accessToken, Usercookie);
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
-        payload: user,
         message: "User Signed In Successfully 🚀",
+        payload: user,
       });
     } catch (error) {
       console.log(error);
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
-        error: error,
         message: "Internal Server Error ⚠️",
+        error: error,
       });
     }
   }
@@ -58,10 +58,10 @@ class UserController {
       const { name, email, password } = req.body;
       const user = await UserService.getUserByEmail(email);
       if (!user) {
-        res.status(400).json({
+        return res.status(400).json({
           success: false,
-          payload: null,
           message: "User Already Exists with this email.",
+          payload: null,
         });
       }
       const hashed_password = await PasswordService.hashPassword(password);
@@ -77,21 +77,62 @@ class UserController {
       const accessToken = TokensService.generateAccessToken(
         userCreated.id,
         email,
-        hashed_password
+        name
       );
 
       res.cookie("access_token", accessToken, Usercookie);
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
-        payload: user,
         message: "User Signed Up Successfully 🚀",
+        payload: user,
       });
     } catch (error) {
       console.log(error);
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
-        error: error,
         message: "Internal Server Error ⚠️",
+        error: error,
+      });
+    }
+  }
+
+  static async logout(req: Request, res: Response) {
+    try {
+      res.clearCookie("access_token", Usercookie);
+      return res.status(200).json({
+        success: true,
+        message: "User Signed Out Successfully 🚀",
+        payload: null,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        success: false,
+        message: "Internal Server Error ⚠️",
+        error: error,
+      });
+    }
+  }
+
+  static async getUser(req: Request, res: Response) {
+    try {
+      const user = await UserService.getUserById(req.user.id);
+      if (!user) {
+        return res
+          .status(404)
+          .json({ success: false, payload: null, message: "User not found" });
+      }
+      return res.status(200).json({
+        success: true,
+        message: "User Fetched Successfully 🚀",
+        payload: user,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        success: false,
+        message: "Internal Server Error ⚠️",
+        error: error,
       });
     }
   }

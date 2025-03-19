@@ -3,16 +3,6 @@ import jwt from "jsonwebtoken";
 import ApiResponse from "../helper/ApiResponse";
 import generateAccessRefreshToken from "../utils/generateAccessRefreshToken";
 
-declare global {
-  namespace Express {
-    interface Request {
-      user: {
-        email: string;
-        _id: string;
-      };
-    }
-  }
-}
 
 export const authenticate = (
   req: Request,
@@ -60,6 +50,15 @@ export const authenticate = (
 
     if (Expiry_left_in_hours < 20) {
       const tokenResponse = await generateAccessRefreshToken(decoded.email);
+      const isProduction = process.env.NODE_ENV === "production";
+
+      res.cookie("access_token", tokenResponse.accessToken, {
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
+        maxAge: 1000 * 60 * 60 * 24 * 2, // 2 days
+      });
+
       if (!tokenResponse) {
         return res
           .status(500)
@@ -71,13 +70,6 @@ export const authenticate = (
             )
           );
       }
-      const isProduction = process.env.NODE_ENV === "production";
-      res.cookie("access_token", tokenResponse.accessToken, {
-        httpOnly: true,
-        secure: isProduction,
-        sameSite: isProduction ? "none" : "lax",
-        maxAge: 1000 * 60 * 60 * 24 * 2, // 2 days
-      });
     }
 
     req.user = decoded;

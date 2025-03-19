@@ -4,9 +4,9 @@ class TokensService {
   static generateAccessToken(id: number, email: string, username: string) {
     const accessToken = jwt.sign(
       {
-        id: user.id,
-        email: user.email,
-        username: user.username,
+        id: id,
+        email: email,
+        username: username,
       },
       process.env.ACCESS_TOKEN_SECRET as string,
       { expiresIn: process.env.ACCESS_TOKEN_EXPIRY as any }
@@ -23,6 +23,10 @@ class TokensService {
       { expiresIn: process.env.REFRESH_TOKEN_EXPIRY as any }
     );
     return refreshToken;
+  }
+
+  static verifyAccessToken(token: string) {
+    return jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string);
   }
 }
 

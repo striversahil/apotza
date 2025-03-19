@@ -19,7 +19,7 @@ class UserService {
         .from(users)
         .where(eq(users.id, userId))
         .limit(1);
-      return user;
+      return user ? user : null;
     } catch (error) {
       throw new Error(error as string);
     }
@@ -34,7 +34,7 @@ class UserService {
         .select()
         .from(users)
         .where(eq(users.email, email));
-      return user;
+      return user ? user : null;
     } catch (error) {
       throw new Error(error as string);
     }
@@ -60,7 +60,7 @@ class UserService {
         })
         .returning();
 
-      return user;
+      return user ? user : null;
     } catch (error) {
       throw new Error(JSON.stringify(error));
     }
