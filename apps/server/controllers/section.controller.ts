@@ -14,6 +14,7 @@ class SectionController {
       console.log(error);
     }
   }
+
   static async getSection(req: Request, res: Response) {
     try {
       const { id } = req.body;
@@ -25,6 +26,7 @@ class SectionController {
       console.log(error);
     }
   }
+
   static async deleteSection(req: Request, res: Response) {
     try {
       const { id } = req.body;
@@ -36,6 +38,7 @@ class SectionController {
       console.log(error);
     }
   }
+
   static async temp(req: Request, res: Response) {
     try {
     } catch (error) {

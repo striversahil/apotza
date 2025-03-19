@@ -60,6 +60,7 @@ class ComponentService {
         .insert(Component)
         .values({
           name: metadata.name,
+          section : metadata.section_id,
           coordinates: { ...metadata.coordinates },
           payload: payload,
           configuration: metadata.configuration,
