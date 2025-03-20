@@ -11,17 +11,17 @@ type Props = {
 
 const StepEditorRoot = (props: Props) => {
   // const [currentStep, setCurrentStep] = useState("");
-  const [codeBlock, setCodeBlock] = useState<any>(null);
+  const [codeBlock, setCodeBlock] = useState<any>([]);
 
   if (!props.value) {
     return;
   }
 
-  const { data } = ProjectAction.getAllSteps(props.value.id);
+  const { data } = ProjectAction.getCodeBlock(props.value.id);
 
   useEffect(() => {
     if (data) {
-      setCodeBlock(data.payload);
+      setCodeBlock(data.payload.stepBlocks);
     }
   }, [data]);
 
@@ -40,19 +40,16 @@ const StepEditorRoot = (props: Props) => {
     return (
       <div className="w-full h-full">
         {/* {currentStep && ( */}
-        <TabRoot
-          className="w-full h-full"
-          defaultValue={codeBlock.steps[0]?._id}
-        >
+        <TabRoot className="w-full h-full" defaultValue={codeBlock.id}>
           <PanelGroup direction="horizontal" className="">
             <Panel defaultSize={20} minSize={20} maxSize={50}>
               <Steps value={codeBlock} />
             </Panel>
             <PanelResizeHandle className="p-[1px] cursor-row-resize hover:bg-blue-500" />
             <Panel defaultSize={80} minSize={20} maxSize={80}>
-              {codeBlock.steps.map((item: any, index: number) => (
+              {codeBlock.map((item: any, index: number) => (
                 <TabsContent
-                  value={item._id}
+                  value={item.id}
                   className="w-full h-full"
                   key={index}
                 >

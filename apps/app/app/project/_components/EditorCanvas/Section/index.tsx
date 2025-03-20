@@ -26,14 +26,14 @@ const Section = (props: Props) => {
   const [Components, setComponents] = React.useState<any>([]);
 
   const { isOver, setNodeRef, rect, active } = useDroppable({
-    id: props.value._id,
+    id: props.value.id,
   });
 
-  const { data } = ProjectAction.getComponents(props.value._id);
+  const { data } = ProjectAction.getProject();
 
   useEffect(() => {
     if (data) {
-      setComponents(data.payload);
+      setComponents(data.payload.sections);
       console.log(data);
     }
   }, [data]);

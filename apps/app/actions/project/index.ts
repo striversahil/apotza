@@ -28,26 +28,12 @@ const ProjectAction = {
       }
     );
   },
-  getCodeBlocks: () => {
-    return useQueryData(["ProjectAction.getCodeBlocks"], async () => {
-      const response = await axios.get(`${codeBlock}`);
-      return response.data;
-    });
-  },
+
   getStep: (id: string) => {
     return useQueryData(
       [`ProjectAction.getOneStep-${id}` as string],
       async () => {
         const response = await axios.get(`${stepsBlock}/${id}`);
-        return response.data;
-      }
-    );
-  },
-  getAllSteps: (id: string) => {
-    return useQueryData(
-      [`ProjectAction.getAllSteps-${id}` as string],
-      async () => {
-        const response = await axios.get(`${stepsBlock}/getAll/${id}`);
         return response.data;
       }
     );
@@ -64,22 +50,9 @@ const ProjectAction = {
     );
   },
 
-  getSections: () => {
-    return useQueryData(["ProjectAction.getSections"], async () => {
-      const response = await axios.get(`${section}`);
-      return response.data;
-    });
-  },
-
   getComponent: (id: string) => {
     return useQueryData([`ProjectAction.getComponent-${id}`], async () => {
       const response = await axios.get(`${component}/${id}`);
-      return response.data;
-    });
-  },
-  getComponents: (id: string) => {
-    return useQueryData([`ProjectAction.getComponents-${id}`], async () => {
-      const response = await axios.get(`${component}/getAll/${id}`);
       return response.data;
     });
   },

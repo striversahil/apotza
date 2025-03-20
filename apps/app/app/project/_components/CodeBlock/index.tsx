@@ -19,7 +19,7 @@ type Props = {};
 const CodeBlock = ({}: Props) => {
   const { openCode, handleOpenCode } = useOpen();
 
-  const { isLoading, data } = ProjectAction.getCodeBlocks();
+  const { isLoading, data } = ProjectAction.getProject();
 
   return (
     <>
@@ -41,7 +41,7 @@ const CodeBlock = ({}: Props) => {
           <div className="ml-1 h-full bg-slate-800">
             {!isLoading &&
               data.payload &&
-              data.payload.map((item: any, index: number) => {
+              data.payload.codeblocks.map((item: any, index: number) => {
                 return (
                   <TabsContent
                     key={index}

@@ -25,7 +25,7 @@ type Props = {
 };
 
 const Tabs = (props: Props) => {
-  const { isLoading, data } = ProjectAction.getCodeBlocks();
+  const { isLoading, data } = ProjectAction.getProject();
   const [currentTab, setCurrentTab] = useState("0");
 
   const [open, setOpen] = React.useState(false);
@@ -46,7 +46,7 @@ const Tabs = (props: Props) => {
           </Popover>
         </div>
         {data &&
-          data.payload.map((item: any, index: number) => (
+          data.payload.codeblocks.map((item: any, index: number) => (
             <div
               className={cn(
                 `flex bg-white/10 p-1 rounded-md border  border-white/20 hover:bg-white/30  select-none cursor-pointer items-center gap-2`,

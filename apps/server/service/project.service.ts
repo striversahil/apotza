@@ -7,7 +7,7 @@ class ProjectService {
     try {
       const project = await db.query.Project.findFirst({
         with: {
-          codeBlocks: true,
+          codeblocks: true,
           sections: true,
         },
         where: eq(Project.id, id),

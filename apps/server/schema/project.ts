@@ -105,6 +105,6 @@ export const projectRelations = relations(Project, ({ one, many }) => ({
     fields: [Project.workspace],
     references: [Workspace.id],
   }),
-  codeBlocks: many(CodeBlock),
+  codeblocks: many(CodeBlock),
   sections: many(Section),
 }));

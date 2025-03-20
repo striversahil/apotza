@@ -10,7 +10,7 @@ export const useDragEnd = () => {
   const [IsDropped, setIsDropped] = React.useState(false);
   const [isDragging, setIsDragging] = React.useState(false);
 
-  const { data, refetch } = ProjectAction.getComponents(activeId);
+  const { data, refetch } = ProjectAction.getProject();
   const { mutate: mutateAdd } = ComponentAction.add(activeId);
   const { mutate: mutateUpdate } = ComponentAction.update(activeId);
 
@@ -22,7 +22,7 @@ export const useDragEnd = () => {
 
   React.useEffect(() => {
     if (data) {
-      setData(data.payload);
+      setData(data.payload.components);
     }
   }, [data]);
 

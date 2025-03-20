@@ -7,7 +7,7 @@ import Section from "./Section";
 
 const EditorCanvas = () => {
   const [Sections, setSections] = useState<any>([]);
-  const { isLoading, data } = ProjectAction.getSections();
+  const { isLoading, data } = ProjectAction.getProject();
 
   useEffect(() => {
     if (data) {
