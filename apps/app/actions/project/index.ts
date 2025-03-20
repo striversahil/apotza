@@ -1,16 +1,13 @@
-import { useMutationData } from "../../hooks/useMutation";
-import { useQueryData } from "../../hooks/useQueryData";
+import { useMutationData } from "@/hooks/useMutation";
+import { useQueryData } from "@/hooks/useQueryData";
 import axios from "axios";
 
 axios.defaults.withCredentials = true; // Global axios config to enable cookies
-const codeBlock =
-  (import.meta.env.VITE_PUBLIC_BASE_URL as string) + "/codeblock";
-const project = (import.meta.env.VITE_PUBLIC_BASE_URL as string) + "/project";
-const component =
-  (import.meta.env.VITE_PUBLIC_BASE_URL as string) + "/component";
-const stepsBlock =
-  (import.meta.env.VITE_PUBLIC_BASE_URL as string) + "/stepblock";
-const section = (import.meta.env.VITE_PUBLIC_BASE_URL as string) + "/section";
+const codeBlock = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/codeblock";
+const project = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/project";
+const component = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/component";
+const stepsBlock = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/stepblock";
+const section = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/section";
 
 // Here the Index i.e. Most Used Common Get Actions will be Handled for Project
 
@@ -31,11 +28,26 @@ const ProjectAction = {
       }
     );
   },
+  getCodeBlocks: () => {
+    return useQueryData(["ProjectAction.getCodeBlocks"], async () => {
+      const response = await axios.get(`${codeBlock}`);
+      return response.data;
+    });
+  },
   getStep: (id: string) => {
     return useQueryData(
       [`ProjectAction.getOneStep-${id}` as string],
       async () => {
         const response = await axios.get(`${stepsBlock}/${id}`);
+        return response.data;
+      }
+    );
+  },
+  getAllSteps: (id: string) => {
+    return useQueryData(
+      [`ProjectAction.getAllSteps-${id}` as string],
+      async () => {
+        const response = await axios.get(`${stepsBlock}/getAll/${id}`);
         return response.data;
       }
     );
@@ -52,9 +64,22 @@ const ProjectAction = {
     );
   },
 
+  getSections: () => {
+    return useQueryData(["ProjectAction.getSections"], async () => {
+      const response = await axios.get(`${section}`);
+      return response.data;
+    });
+  },
+
   getComponent: (id: string) => {
     return useQueryData([`ProjectAction.getComponent-${id}`], async () => {
       const response = await axios.get(`${component}/${id}`);
+      return response.data;
+    });
+  },
+  getComponents: (id: string) => {
+    return useQueryData([`ProjectAction.getComponents-${id}`], async () => {
+      const response = await axios.get(`${component}/getAll/${id}`);
       return response.data;
     });
   },

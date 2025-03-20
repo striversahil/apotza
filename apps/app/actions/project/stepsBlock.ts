@@ -1,11 +1,10 @@
-import { useCurrentTab } from "../../pages/project/_hooks/useCurrentTab";
-import { useMutationData } from "../../hooks/useMutation";
-import { useQueryData } from "../../hooks/useQueryData";
+import { useCurrentTab } from "../../app/project/_hooks/useCurrentTab";
+import { useMutationData } from "@/hooks/useMutation";
 import axios from "axios";
 import { toast } from "sonner";
 
 axios.defaults.withCredentials = true; // Global axios config to enable cookies
-const source = (import.meta.env.VITE_PUBLIC_BASE_URL as string) + "/stepblock";
+const source = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/stepblock";
 
 // const currentTab = localStorage.getItem("currentTab") as string;
 

@@ -1,14 +1,32 @@
 {
-  "extends": "../../packages/typescript-config/react-library.json",
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "jsx": "preserve",
+    "esModuleInterop": true,
+    "allowImportingTsExtensions": true,
+    "incremental": false,
+    "isolatedModules": true,
+    "lib": ["es2022", "DOM", "DOM.Iterable"],
+    "moduleDetection": "force",
+    "noUncheckedIndexedAccess": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ES2022",
     "plugins": [
       {
         "name": "next"
       }
     ],
-    "baseUrl": "../",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "allowJs": true,
+    "noEmit": true,
     "paths": {
-      "@/routes/*": ["../_routes/*"],
+      "@/app/*": ["../app/*"],
       "@/components/*": ["../components/*"],
       "@/packages/*": ["./packages/*"],
       "@/api/*": ["./api/*"],
@@ -21,7 +39,6 @@
   },
   "include": [
     "**/*.ts",
-    "global.d.ts",
     "**/*.tsx",
     "next-env.d.ts",
     "next.config.js",
