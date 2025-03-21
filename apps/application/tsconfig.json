@@ -26,7 +26,6 @@
     "allowJs": true,
     "noEmit": true,
     "paths": {
-      "@/app/*": ["../app/*"],
       "@/components/*": ["../components/*"],
       "@/packages/*": ["./packages/*"],
       "@/api/*": ["./api/*"],
