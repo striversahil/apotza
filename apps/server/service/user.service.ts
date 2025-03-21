@@ -1,44 +1,38 @@
 /**
- * Workspace Service : It will Assume that You have done all the Validation Checks
+ * User Service : It will Assume that You have done all the Validation Checks
  */
 
-import { User } from "../models/auth/user.model";
+import { eq } from "drizzle-orm";
+import { db } from "../database";
+import { User, UserType } from "../schema/user";
+import PasswordService from "../utils/passwordService";
+import TokensService from "../utils/AccessRefreshToken";
 
-class UserService {
-  static async login(email: string, password: string): Promise<any> {
-    /**
-     * (Login User) Return : User Object Containing User Details
-     */
-    try {
-      const CurrentUser = await User.findOne({ email });
-      if (!CurrentUser) return null;
-      const isVerified = await CurrentUser.isCorrectPassword(password);
-      if (!isVerified) return null;
-      return CurrentUser;
-    } catch (error) {
-      throw new Error(error as string);
-    }
-  }
-
-  static async getUser(userId: string): Promise<any> {
+class Userervice {
+  static async getUserById(userId: number): Promise<UserType | null> {
     /**
      * (Get User By Id) Return : User Object Containing User Details
      */
     try {
-      return await User.findById(userId);
+      const user = await db.query.User.findFirst({
+        with: {
+          workspaces: true,
+        },
+        where: eq(User.id, userId),
+      });
+      return user ? user : null;
     } catch (error) {
       throw new Error(error as string);
     }
   }
 
-  static async getUserByEmail(email: string): Promise<any> {
-    /**
-     * (Get User By Email) Return : User Object Containing User Details
-     */
+  static async getUserByEmail(email: string): Promise<UserType | null> {
     try {
-      return await User.findOne({ email });
+      const [user] = await db.select().from(User).where(eq(User.email, email));
+
+      return user ?? null; // More concise: If user exists, return it; otherwise, return null.
     } catch (error) {
-      throw new Error(error as string);
+      throw new Error(error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -46,16 +40,57 @@ class UserService {
     name: string,
     email: string,
     password: string
-  ): Promise<InstanceType<typeof User>> {
+  ): Promise<any> {
     /**
      * (Create User) Return : User Object Containing User Details
      */
     try {
-      return await User.create({ name, email, password });
+      const [user] = await db
+        .insert(User)
+        .values({
+          name: name,
+          email: email,
+          password: password,
+          refreshToken: "",
+        })
+        .returning();
+
+      return user ? user : null;
+    } catch (error) {
+      throw new Error(JSON.stringify(error));
+    }
+  }
+
+  static async updateUser(userId: number, clause = {}): Promise<any> {
+    /**
+     * (Update User) Return : User Object Containing User Details
+     */
+    try {
+      return await db
+        .update(User)
+        .set(clause)
+        .where(eq(User.id, userId))
+        .returning();
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
+  static async deleteUser(userId: number): Promise<any> {
+    /**
+     * (Delete User) Return : User Object Containing User Details
+     */
+    try {
+      const [user] = await db
+        .delete(User)
+        .where(eq(User.id, userId))
+        .returning();
+
+      return user ? user : null;
     } catch (error) {
       throw new Error(error as string);
     }
   }
 }
 
-export default UserService;
+export default Userervice;

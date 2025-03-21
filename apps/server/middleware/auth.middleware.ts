@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import ApiResponse from "../helper/ApiResponse";
-import generateAccessRefreshToken from "../utils/generateAccessRefreshToken";
 
 declare global {
   namespace Express {
     interface Request {
       user: {
+        id: number;
         email: string;
-        _id: string;
+        username: string;
       };
     }
   }
@@ -29,7 +29,6 @@ export const authenticate = (
       );
   }
   // Todo : Verify Token Safely
-  console.log(token);
   jwt.verify(token as string, "sahil", async (err: any, decoded: any) => {
     if (err) {
       console.log(err);
@@ -58,27 +57,29 @@ export const authenticate = (
     // Todo : Check for Expiry Reality
     console.log(Expiry_left_in_hours);
 
-    if (Expiry_left_in_hours < 20) {
-      const tokenResponse = await generateAccessRefreshToken(decoded.email);
-      if (!tokenResponse) {
-        return res
-          .status(500)
-          .json(
-            new ApiResponse(
-              500,
-              {},
-              "User could not be authenticated due to server error"
-            )
-          );
-      }
-      const isProduction = process.env.NODE_ENV === "production";
-      res.cookie("access_token", tokenResponse.accessToken, {
-        httpOnly: true,
-        secure: isProduction,
-        sameSite: isProduction ? "none" : "lax",
-        maxAge: 1000 * 60 * 60 * 24 * 2, // 2 days
-      });
-    }
+    // if (Expiry_left_in_hours < 20) {
+    //   const tokenResponse = await generateAccessRefreshToken(decoded.email);
+    //   const isProduction = process.env.NODE_ENV === "production";
+
+    //   res.cookie("access_token", tokenResponse.accessToken, {
+    //     httpOnly: true,
+    //     secure: isProduction,
+    //     sameSite: isProduction ? "none" : "lax",
+    //     maxAge: 1000 * 60 * 60 * 24 * 2, // 2 days
+    //   });
+
+    //   if (!tokenResponse) {
+    //     return res
+    //       .status(500)
+    //       .json(
+    //         new ApiResponse(
+    //           500,
+    //           {},
+    //           "User could not be authenticated due to server error"
+    //         )
+    //       );
+    //   }
+    // }
 
     req.user = decoded;
   });

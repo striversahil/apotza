@@ -1,7 +1,6 @@
-import connectDB from "./database";
-
 import httpServer from "./app";
 import { configDotenv } from "dotenv";
+import { connectDB } from "./database";
 
 const now = new Date();
 
@@ -11,7 +10,7 @@ configDotenv({
 
 const PORT = process.env.PORT;
 
-const Server = () => {
+connectDB().then(() => {
   httpServer.listen(PORT, () => {
     console.log(
       "Server is running on port :",
@@ -19,12 +18,4 @@ const Server = () => {
       `\n Date : ${now.toLocaleDateString()} \n Time : ${now.toLocaleTimeString()}`
     );
   });
-};
-
-connectDB()
-  .then(() => {
-    Server();
-  })
-  .catch((err) => {
-    console.log("⚠️ Error connecting to Database with Mongoose", err);
-  });
+});

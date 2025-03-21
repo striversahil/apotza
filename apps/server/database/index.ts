@@ -1,27 +1,25 @@
-import mongoose from "mongoose";
+import "dotenv/config";
+import { sql } from "drizzle-orm";
 
-const db_Name = "Apotza_Backend";
+import * as schema from "../schema";
 
-const connectDB = async () => {
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
+
+const connectionString = process.env.DATABASE_CONNECTION_URL!;
+
+// Disable prefetch as it is not supported for "Transaction" pool mode
+export const client = postgres(connectionString, { prepare: false });
+export const db = drizzle(client, { schema });
+export const connectDB = async () => {
   try {
-    if (mongoose.connection.readyState < 1) {
-      const connectionInstance = await mongoose.connect(
-        `${process.env.MONGODB_URI as string}/${
-          db_Name as string
-        }?retryWrites=true&w=majority`
-      );
-      if (connectionInstance) {
-        console.log(
-          `Connected to database Successfully ✨ : ${connectionInstance.connection.host}`
-        );
-      }
+    // Test query to verify database connection
+    const result = await db.execute(sql`SELECT 1`);
+    if (result) {
+      console.log("Connected to database Successfully ✨");
     }
-    console.log("Already Connected to database 🚀");
   } catch (error) {
-    console.log(
-      `${error as Error} \n ⚠️${" "} Error connecting to Database with Mongoose`
-    );
+    console.error("Failed to connect to the database:", error);
+    throw error;
   }
 };
-
-export default connectDB;

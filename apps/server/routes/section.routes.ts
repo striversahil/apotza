@@ -1,22 +1,15 @@
 import { Router } from "express";
-import {
-  newSection,
-  deleteSection,
-  getSection,
-  getAllSections,
-} from "../controllers/project/sections/_section.controller";
+import SectionController from "../controllers/section.controller";
 
 const router: Router = Router();
 
 // router.route("/").get(newSection);
 
-router.route("/").get(getAllSections);
+router.route("/").post(SectionController.createSection);
 
-router.route("/").post(newSection);
+router.route("/:id").get(SectionController.getSection);
 
-router.route("/:id").get(getSection);
-
-router.route("/delete").post(deleteSection);
+router.route("/delete").post(SectionController.deleteSection);
 
 // router.route("/update/").post(updateComponent);
 

@@ -1,21 +1,14 @@
 import { Router } from "express";
-import {
-  newCodeBlock,
-  getCodeBlock,
-  deleteCodeBlock,
-  getAllCodeBlock,
-  updateCodeBlockName,
-} from "../controllers/project/codeBlock/_codeBlock.controller";
+import CodeBlockController from "../controllers/codeBlock.controller";
 
 const router: Router = Router();
-router.route("/").get(getAllCodeBlock);
 
-router.route("/:id").get(getCodeBlock);
+router.route("/:id").get(CodeBlockController.getCodeBlock);
 
-router.route("/").post(newCodeBlock);
+router.route("/").post(CodeBlockController.create);
 
-router.route("/name").post(updateCodeBlockName);
+// router.route("/name").post(CodeBlockController.updateCodeBlockName);
 
-router.route("/:id").delete(deleteCodeBlock);
+router.route("/delete").post(CodeBlockController.deleteCodeblock);
 
 export default router;

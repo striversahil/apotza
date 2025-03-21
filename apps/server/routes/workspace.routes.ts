@@ -1,17 +1,13 @@
 import { Router } from "express";
-import {
-  deleteWorkspace,
-  newWorkspace,
-  WorkSpaceInfo,
-} from "../controllers/auth/workspace.controller";
+import workspaceController from "../controllers/workspace.controller";
 
 const router: Router = Router();
 
 // WorkSpace Routes
-router.route("/").get(WorkSpaceInfo);
+router.route("/").get(workspaceController.getWorkspace);
 
-router.route("/new").get(newWorkspace);
+router.route("/new").get(workspaceController.createWorkspace);
 
-router.route("/delete").get(deleteWorkspace);
+router.route("/delete").get(workspaceController.deleteWorkspace);
 
 export default router;

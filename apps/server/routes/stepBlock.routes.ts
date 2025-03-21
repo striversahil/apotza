@@ -1,25 +1,17 @@
 import { Router } from "express";
-import {
-  addStep,
-  deleteStep,
-  duplicate,
-  updateCode,
-  getAllSteps,
-  getStepBlock,
-} from "../controllers/project/stepBlock/_stepBlock.controller";
+import StepBlockController from "../controllers/stepBlock.controller";
 
 const router: Router = Router();
-router.route("/getAll/:id").get(getAllSteps);
 
-router.route("/:id").get(getStepBlock);
+router.route("/:id").get(StepBlockController.getStep);
 
-router.route("/").post(addStep);
+router.route("/").post(StepBlockController.createStep);
 
 // router.route("/name").post(updateCodeBlockName);
 
-router.route("/duplicate").post(duplicate);
-router.route("/code").post(updateCode);
+// router.route("/duplicate").post(duplicate);
+router.route("/code").post(StepBlockController.codeUpdate);
 
-router.route("/delete").post(deleteStep);
+router.route("/delete").post(StepBlockController.deleteStep);
 
 export default router;

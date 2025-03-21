@@ -1,25 +1,18 @@
 import { Router } from "express";
-import {
-  deleteComponent,
-  getComponents,
-  getComponent,
-  newComponent,
-  updateComponent,
-  updateCoordinates,
-} from "../controllers/project/components/_component.controller";
+import ComponentController from "../controllers/component.controller";
 
 const router: Router = Router();
 
-router.route("/getAll/:id").get(getComponents);
+// router.route("/getAll/:id").get(getComponents);
 
-router.route("/").post(newComponent);
+router.route("/").post(ComponentController.create);
 
-router.route("/:id").get(getComponent);
+router.route("/:id").get(ComponentController.getComponent);
 
-router.route("/delete").post(deleteComponent);
+router.route("/delete").post(ComponentController.deleteComponent);
 
-router.route("/update/").post(updateComponent);
+// router.route("/update/").post(ComponentController.coordinateUpdate);
 
-router.route("/coordinates").post(updateCoordinates);
+// router.route("/coordinates").post(updateCoordinates);
 
 export default router;

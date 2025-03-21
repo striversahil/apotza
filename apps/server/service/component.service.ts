@@ -2,96 +2,72 @@
  * Component Service : It will Assume that You have done all the Validation Checks
  */
 
-import {
-  Component,
-  ComponentInterface,
-} from "../models/project/component.model";
-import { ProjectInterface } from "../models/project/project.model";
-import { Project } from "../models/project/project.model";
-import { Section } from "../models/project/section.model";
+import { eq } from "drizzle-orm";
+import { Component, ComponentInterface } from "../schema";
+import { db } from "../database";
 
 class ComponentService {
-  static async getAll(section_id: string): Promise<any[] | null> {
+  static async getById(id: number): Promise<ComponentInterface | null> {
     try {
-      const project = await Section.findById(section_id).populate(
-        "components",
-        " _id name"
-      );
-      if (!project) return null;
-      return project.components || null;
-    } catch (error) {
-      throw new Error(error as string);
-    }
-  }
+      const [component] = await db
+        .select()
+        .from(Component)
+        .where(eq(Component.id, id))
+        .limit(1);
 
-  static async getById(id: string): Promise<ComponentInterface | null> {
-    try {
-      return await Component.findById(id);
+      return component ? component : null;
     } catch (error) {
       throw new Error(error as string);
     }
   }
 
   static async updateComponent(
-    metadata: any,
-    payload: any
+    id: number,
+    clause = {}
   ): Promise<ComponentInterface | null> {
     try {
-      const component = await Component.findByIdAndUpdate(
-        metadata._id,
-        {
-          name: metadata.name,
-          coordinates: metadata.coordinates,
-          payload: payload,
-          configuration: metadata.configuration,
-        },
-        { new: true }
-      );
-      return component;
+      const [component] = await db
+        .update(Component)
+        .set(clause)
+        .where(eq(Component.id, id))
+        .returning();
+
+      return component ? component : null;
     } catch (error) {
       throw new Error(error as string);
     }
   }
 
-  static async coordinatesUpdate(id: string, coordinates: any) {
-    try {
-      return await Component.findByIdAndUpdate(id, {
-        $inc: {
-          "coordinates.x": coordinates.x,
-          "coordinates.y": coordinates.y,
-        },
-      });
-    } catch (error) {
-      throw new Error(error as string);
-    }
-  }
+  // static async coordinatesUpdate(id: string, coordinates: any) {
+  //   try {
+  //     return await Component.findByIdAndUpdate(id, {
+  //       $inc: {
+  //         "coordinates.x": coordinates.x,
+  //         "coordinates.y": coordinates.y,
+  //       },
+  //     });
+  //   } catch (error) {
+  //     throw new Error(error as string);
+  //   }
+  // }
 
   static async create(
-    section_id: string,
     metadata: any,
     payload: any
   ): Promise<ComponentInterface | null> {
     try {
-      const newComponent = new Component({
-        name: metadata.name,
-        coordinates: {
-          x: metadata.coordinates.x,
-          y: metadata.coordinates.y,
-        },
-        payload: payload,
-        configuration: metadata.configuration,
-      });
-      await Section.findByIdAndUpdate(
-        section_id,
-        {
-          $push: {
-            components: newComponent._id,
-          },
-        },
-        { new: true }
-      );
-      await newComponent.save();
-      return newComponent;
+      const [component] = await db
+        .insert(Component)
+        .values({
+          name: metadata.name,
+          section : metadata.section_id,
+          coordinates: { ...metadata.coordinates },
+          payload: payload,
+          configuration: metadata.configuration,
+        })
+        .returning();
+
+      return component ? component : null;
     } catch (error) {
       throw new Error(error as string);
     }
@@ -102,20 +78,13 @@ class ComponentService {
   //     return await Component.findByIdAndUpdate(id, Component);
   //   }
 
-  static async delete(
-    componentId: string,
-    section_id: string
-  ): Promise<ComponentInterface | null> {
+  static async delete(componentId: number): Promise<ComponentInterface | null> {
     try {
-      const component = await Component.findByIdAndDelete(componentId);
-      if (!component) return null;
-      const project = await Section.findByIdAndUpdate(section_id, {
-        $pull: {
-          components: componentId,
-        },
-      });
-      if (!project) return null;
-      return component;
+      const [component] = await db
+        .delete(Component)
+        .where(eq(Component.id, componentId))
+        .returning();
+      return component ? component : null;
     } catch (error) {
       throw new Error(error as string);
     }
