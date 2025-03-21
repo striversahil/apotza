@@ -2,6 +2,11 @@ import { Request, Response } from "express";
 import ProjectService from "../service/project.service";
 import { projectCookie } from "../utils/CookieConfig";
 import { ErrorResponse, SuccessResponse } from "../utils/ApiResponse";
+import CodeBlockService from "../service/codeblock.service";
+import StepBlockService from "../service/stepblock.service";
+import TemplateInit from "../common/templateProject.json";
+import SectionService from "../service/section.service";
+import ComponentService from "../service/component.service";
 
 class ProjectController {
   static async getProject(req: Request, res: Response) {
@@ -24,6 +29,30 @@ class ProjectController {
       const project = await ProjectService.create(workspace_id);
       if (!project) return ErrorResponse(res, "Project could not be created");
       res.cookie("project_id", project.id, projectCookie);
+      // Create Default CodeBlocks with Template
+      for (const codeblock of TemplateInit.codeBlocks) {
+        const codeBlock = await CodeBlockService.create(
+          project.id,
+          codeblock.name
+        );
+        if (!codeBlock)
+          return ErrorResponse(res, "CodeBlock could not be created");
+        for (const stepblock of codeblock.stepBlocks) {
+          await StepBlockService.create(codeBlock.id, stepblock.language);
+        }
+      }
+      for (const section of TemplateInit.sections) {
+        const section_ = await SectionService.create(project.id);
+        if (!section_)
+          return ErrorResponse(res, "Section could not be created");
+        for (const component of section.components) {
+          await ComponentService.create(
+            component.metadata,
+            component.payload,
+            section_.id
+          );
+        }
+      }
       SuccessResponse(res, "Project created successfully", project);
       return;
     } catch (error) {

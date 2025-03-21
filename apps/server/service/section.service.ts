@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm";
 import { db } from "../database";
 import { Section, SectionInterface } from "../schema";
+import sectionDefault from "../common/sectionDefault.json";
 
 class SectionService {
   static async getById(id: number): Promise<SectionInterface | null> {
@@ -24,6 +25,8 @@ class SectionService {
         .values({
           name: "Untitled Section",
           project: project_id,
+          layout: sectionDefault.layout,
+          appearence: sectionDefault.appearance,
         })
         .returning();
       return section ? section : null;

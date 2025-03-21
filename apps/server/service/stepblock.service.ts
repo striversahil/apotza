@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { db } from "../database";
-import languageDefault from "../package/common/codeBlock/defaultLanguageOutput.json";
+import languageDefault from "../common/defaultLanguageOutput.json";
 import { StepBlock, StepBlockInterface } from "../schema";
 
 class StepBlockService {

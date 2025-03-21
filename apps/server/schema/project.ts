@@ -60,7 +60,7 @@ export const sectionRelations = relations(Section, ({ one, many }) => ({
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++ CodeBlock Tables +++++++++++++++++++++++++++++++++++++++++++++++++
 export const CodeBlock = pgTable("codeblock", {
-  id: serial("id").primaryKey().unique(),
+  id: serial("id").primaryKey(),
   project: serial("project_id")
     .notNull()
     .references(() => Project.id, { onDelete: "cascade" }),
@@ -71,7 +71,7 @@ export const CodeBlock = pgTable("codeblock", {
 export type CodeBlockInterface = InferSelectModel<typeof CodeBlock>;
 
 export const StepBlock = pgTable("stepblock", {
-  id: serial("id").primaryKey().unique(),
+  id: serial("id").primaryKey(),
   codeblock: serial("codeblock_id")
     .notNull()
     .references(() => CodeBlock.id, { onDelete: "cascade" }),

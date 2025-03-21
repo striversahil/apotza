@@ -53,14 +53,15 @@ class ComponentService {
 
   static async create(
     metadata: any,
-    payload: any
+    payload: any,
+    section_id?: number
   ): Promise<ComponentInterface | null> {
     try {
       const [component] = await db
         .insert(Component)
         .values({
           name: metadata.name,
-          section : metadata.section_id,
+          section: metadata.section_id || section_id,
           coordinates: { ...metadata.coordinates },
           payload: payload,
           configuration: metadata.configuration,
