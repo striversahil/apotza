@@ -53,7 +53,8 @@ class ProjectController {
           );
         }
       }
-      SuccessResponse(res, "Project created successfully", project);
+      const project_ = await ProjectService.getById(project.id);
+      SuccessResponse(res, "Project created successfully", project_);
       return;
     } catch (error) {
       console.log(error);

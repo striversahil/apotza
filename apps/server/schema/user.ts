@@ -28,7 +28,7 @@ export const Profile = pgTable("user_profile", {
   id: serial("id").primaryKey().unique(),
   user: serial("user_id")
     .notNull()
-    .references(() => User.id, { onDelete: "cascade" }),
+    .references(() => User.id, { onDelete: "cascade" , onUpdate: "cascade" }),
   firstName: text("first_name").notNull(),
   lastName: text("last_name"),
   profilePic: varchar("profile_pic", { length: 256 }).notNull(),
@@ -45,7 +45,7 @@ export const Workspace = pgTable("workspace", {
   id: serial("id").primaryKey().unique(),
   user: serial("user_id")
     .notNull()
-    .references(() => User.id, { onDelete: "cascade" }),
+    .references(() => User.id, { onDelete: "cascade" , onUpdate: "cascade" }),
   name: text("name").notNull(),
   private: boolean("private").notNull().default(true),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),

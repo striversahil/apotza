@@ -2,7 +2,7 @@ import useZodForm from "@/hooks/useZodForm";
 import { formSchema } from "../Logins/schema";
 import { useMutationData } from "@/hooks/useMutation";
 import { useQuery } from "@/tanstack/react-query";
-import { userLogin } from "../../../../api/user";
+import { userLogin, userSignup } from "../../../../api/user";
 
 interface formData {
   name: string;
@@ -14,7 +14,7 @@ interface formData {
 export const useLogin = () => {
   const { mutate, isPending } = useMutationData(
     ["user-login"],
-    (FormData: formData) => userLogin(FormData),
+    (FormData: formData) => userSignup(FormData),
     "userinfo"
     // () => {
     //   console.log("User updated successfully!");

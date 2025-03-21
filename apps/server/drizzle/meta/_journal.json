@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1742361151421,
-      "tag": "0000_blue_loners",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1742568900221,
-      "tag": "0001_certain_hardball",
+      "when": 1742576212605,
+      "tag": "0000_quiet_gunslinger",
       "breakpoints": true
     }
   ]

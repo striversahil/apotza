@@ -6,7 +6,10 @@ export const Project = pgTable("project", {
   id: serial("id").primaryKey(),
   workspace: serial("workspace_id")
     .notNull()
-    .references(() => Workspace.id, { onDelete: "cascade" }),
+    .references(() => Workspace.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
   name: text("name").notNull(),
   details: text("details").notNull().default("Some details about this project"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
@@ -20,7 +23,7 @@ export const Section = pgTable("section", {
   id: serial("id").primaryKey(),
   project: serial("project_id")
     .notNull()
-    .references(() => Project.id, { onDelete: "cascade" }),
+    .references(() => Project.id, { onDelete: "cascade", onUpdate: "cascade" }),
   name: text("name").notNull(),
   layout: jsonb("layout").notNull().default({}),
   appearence: jsonb("appearence").notNull().default({}),
@@ -33,7 +36,7 @@ export const Component = pgTable("component", {
   id: serial("id").primaryKey(),
   section: serial("section_id")
     .notNull()
-    .references(() => Section.id, { onDelete: "cascade" }),
+    .references(() => Section.id, { onDelete: "cascade", onUpdate: "cascade" }),
   name: text("name").notNull(),
   coordinates: jsonb("coordinates").notNull().default({}),
   payload: jsonb("payload").notNull().default({}), // Contains the component data
@@ -63,7 +66,7 @@ export const CodeBlock = pgTable("codeblock", {
   id: serial("id").primaryKey(),
   project: serial("project_id")
     .notNull()
-    .references(() => Project.id, { onDelete: "cascade" }),
+    .references(() => Project.id, { onDelete: "cascade", onUpdate: "cascade" }),
   name: text("name").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
@@ -74,7 +77,10 @@ export const StepBlock = pgTable("stepblock", {
   id: serial("id").primaryKey(),
   codeblock: serial("codeblock_id")
     .notNull()
-    .references(() => CodeBlock.id, { onDelete: "cascade" }),
+    .references(() => CodeBlock.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
   name: text("name").notNull(),
   code: text("code").notNull(),
   language: text("language").notNull(),
