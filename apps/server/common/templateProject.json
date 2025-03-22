@@ -3,50 +3,19 @@
   "codeBlocks": [
     {
       "name": "Python CodeBlock",
-      "stepBlocks": [
-        {
-          "language": "python"
-        },
-        {
-          "language": "javascript"
-        },
-        {
-          "language": "python"
-        }
-      ]
+      "stepBlocks": ["python", "python", "javascript", "python"]
     },
     {
       "name": "SQL CodeBlock",
-      "stepBlocks": [
-        {
-          "language": "mysql"
-        },
-        {
-          "language": "postgresql"
-        }
-      ]
+      "stepBlocks": ["mysql", "mysql", "mysql", "mysql"]
     },
     {
       "name": "GraphQL CodeBlock",
-      "stepBlocks": [
-        {
-          "language": "graphql"
-        },
-        {
-          "language": "graphql"
-        }
-      ]
+      "stepBlocks": ["graphql", "graphql", "graphql", "graphql"]
     },
     {
       "name": "JSON CodeBlock",
-      "stepBlocks": [
-        {
-          "language": "json"
-        },
-        {
-          "language": "javascript"
-        }
-      ]
+      "stepBlocks": ["restapi", "graphql", "restapi", "mysql"]
     }
   ],
   "sections": [

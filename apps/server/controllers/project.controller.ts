@@ -37,9 +37,13 @@ class ProjectController {
         );
         if (!codeBlock)
           return ErrorResponse(res, "CodeBlock could not be created");
-        for (const stepblock of codeblock.stepBlocks) {
-          await StepBlockService.create(codeBlock.id, stepblock.language);
-        }
+        console.log(codeblock.stepBlocks);
+        const stepBlocks = await StepBlockService.createMultiple(
+          codeBlock.id,
+          codeblock.stepBlocks
+        );
+        if (!stepBlocks)
+          return ErrorResponse(res, "StepBlock could not be created");
       }
       for (const section of TemplateInit.sections) {
         const section_ = await SectionService.create(project.id);

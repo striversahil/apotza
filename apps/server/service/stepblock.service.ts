@@ -47,6 +47,41 @@ class StepBlockService {
     }
   }
 
+  static async createMultiple(
+    codeBlock_id: number,
+    language: string[]
+  ): Promise<StepBlockInterface[] | null> {
+    try {
+      const payload = language.map((lang: string) => {
+        const item = languageDefault.find((item: any) => {
+          if (item.value === lang) {
+            return item;
+          }
+        });
+        return item;
+      });
+      console.log(payload);
+      if (!payload[0]) return null;
+      const Insert = payload.map((item: any) => ({
+        name: item.label,
+        codeblock: codeBlock_id,
+        code: item.code,
+        language: item.value,
+        output: item.stdout,
+        stdout: item.stdout,
+      }));
+      if (!Insert) return null;
+      const newStepBlock = await db
+        .insert(StepBlock)
+        .values(Insert)
+        .returning();
+
+      return newStepBlock ? newStepBlock : null;
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
   static async update(
     stepBlock_id: number,
     clause = {}
