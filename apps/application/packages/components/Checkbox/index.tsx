@@ -13,6 +13,7 @@ const Checkbox = ({
     <div className="w-full flex justify-center items-center">
       <Input
         type="checkbox"
+        readOnly
         checked={payload.checked}
         style={{
           // fontSize: `${configuration.fontSize}px`,

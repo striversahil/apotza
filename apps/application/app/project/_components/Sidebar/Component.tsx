@@ -9,11 +9,6 @@ import { useDraggable } from "@dnd-kit/core";
 import React, { useState } from "react";
 import { ReferenceSidebarComponents } from "../../../../common/referenceSidebarComponents";
 import { cn } from "@/lib/utils";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../../../../components/ui/popover";
 import { Component as ComponentIcon } from "lucide-react";
 import { MatchComponent } from "@/packages/components/match_component";
 import PopOver from "./PopOver";
@@ -61,16 +56,6 @@ const CompSidebar = ({ children }: SidebarProps) => {
     );
   };
 
-  // const handleCompEvent = (event: any, item: any) => {
-  //   const client = {
-  //     x: event.clientX,
-  //     y: event.clientY,
-  //   };
-  //   // setOpen(false);
-  //   setComponent({ ...item, client });
-  // };
-
-  // console.log("Rendered CompSidebar");
   return (
     <div>
       <Tooltip>
@@ -86,26 +71,13 @@ const CompSidebar = ({ children }: SidebarProps) => {
       </Tooltip>
       {open && (
         <PopOver setOpened={setOpen}>
-          <div className="bg-gray-800 w-full h-full rounded-md">
-            <div className="flex items-center justify-center">
-              <Input
-                className=" text-white bg-white/20 p-2 rounded-lg w-full "
-                placeholder="Search ..."
-              ></Input>
-            </div>
-            <div className=" py-[10%]">
-              <div className="relative grid grid-cols-2 gap-5 mx-2">
-                {ReferenceSidebarComponents.map(
-                  (item: Record<string, any>, index: number) => (
-                    <Draggable key={index} {...item} />
-                  )
-                )}
-              </div>
-            </div>
-          </div>
+          {ReferenceSidebarComponents.map(
+            (item: Record<string, any>, index: number) => (
+              <Draggable key={index} {...item} />
+            )
+          )}
         </PopOver>
       )}
-      {/* {Component && <Draggable {...Component} />} */}
     </div>
   );
 };

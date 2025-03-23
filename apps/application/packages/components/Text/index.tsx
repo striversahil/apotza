@@ -2,6 +2,7 @@ import React from "react";
 import { Input } from "../../../components/ui/input";
 import { cn } from "@/lib/utils";
 import Default from "./default.json";
+import { Label } from "../../../components/ui/label";
 
 const TextComponent = ({
   configuration = Default.configuration,
@@ -10,17 +11,25 @@ const TextComponent = ({
   console.log("configuration", configuration);
   console.log("payload", payload);
   return (
-    <div className="w-[1000px] flex justify-center items-center">
-      {/* {payload.text} */}
-      <Input
-        value={payload.text}
+    <div
+      className="w-[200px] flex justify-center items-center "
+      style={{
+        paddingTop: `${configuration.paddingY}px`,
+        paddingBottom: `${configuration.paddingY}px`,
+        paddingLeft: `${configuration.paddingX}px`,
+        paddingRight: `${configuration.paddingX}px`,
+        backgroundColor: `${configuration.backgroundColor}`,
+        borderRadius: `${configuration.borderRadius}px`,
+      }}
+    >
+      <Label
         style={{
           fontSize: `${configuration.fontSize}px`,
-          padding: `${configuration.padding}px`,
-          backgroundColor: `${configuration.backgroundColor}`,
           color: `${configuration.color}`,
         }}
-      />
+      >
+        {payload.text}
+      </Label>
     </div>
   );
 };
