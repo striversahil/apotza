@@ -10,7 +10,7 @@ const TextComponent = ({
   console.log("configuration", configuration);
   console.log("payload", payload);
   return (
-    <div className="w-[2000px] flex justify-center items-center">
+    <div className="w-[1000px] flex justify-center items-center">
       {/* {payload.text} */}
       <Input
         value={payload.text}

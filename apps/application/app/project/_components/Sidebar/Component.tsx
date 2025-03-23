@@ -16,6 +16,7 @@ import {
 } from "../../../../components/ui/popover";
 import { Component as ComponentIcon } from "lucide-react";
 import { MatchComponent } from "@/packages/components/match_component";
+import PopOver from "./PopOver";
 
 type SidebarProps = {
   children?: React.ReactNode;
@@ -24,7 +25,6 @@ type SidebarProps = {
 const CompSidebar = ({ children }: SidebarProps) => {
   // Draggable Component
 
-  const [Component, setComponent] = React.useState<any>(null);
   const [open, setOpen] = React.useState(false);
   const Draggable = ({ id, title, target, client }: any) => {
     const { attributes, listeners, setNodeRef, transform, isDragging } =
@@ -41,9 +41,6 @@ const CompSidebar = ({ children }: SidebarProps) => {
       <div
         ref={setNodeRef}
         style={{
-          position: "fixed",
-          top: client.y,
-          left: client.x,
           transform: transform
             ? `translate(${transform.x}px, ${transform.y}px)`
             : undefined,
@@ -51,45 +48,44 @@ const CompSidebar = ({ children }: SidebarProps) => {
         {...attributes}
         {...listeners}
         className={cn(
-          "relative  ",
+          "relative ",
           isDragging
-            ? "cursor-grabbing bg-blue-400/70"
-            : "cursor-grab text-center bg-white/20"
+            ? "cursor-grabbing"
+            : "cursor-grab p-2 rounded-lg  text-center bg-white/20"
         )}
+        onMouseUp={() => setOpen(false)}
       >
         <div className="absolute inset-0"></div>
-        <div>{Component}</div>
+        <div>{isDragging ? Component : title}</div>
       </div>
     );
   };
 
-  const handleCompEvent = (event: any, item: any) => {
-    const client = {
-      x: event.clientX,
-      y: event.clientY,
-    };
-    // setOpen(false);
-    setComponent({ ...item, client });
-  };
+  // const handleCompEvent = (event: any, item: any) => {
+  //   const client = {
+  //     x: event.clientX,
+  //     y: event.clientY,
+  //   };
+  //   // setOpen(false);
+  //   setComponent({ ...item, client });
+  // };
 
   // console.log("Rendered CompSidebar");
   return (
     <div>
-      <Popover open={open} onOpenChange={setOpen}>
-        <Tooltip>
-          <PopoverTrigger>
-            <TooltipTrigger>
-              <div
-                className="w-fit justify-center cursor-pointer hover:bg-white/10 p-2 duration-200 rounded-md"
-                onClick={() => setOpen(!open)}
-              >
-                <ComponentIcon />
-              </div>
-            </TooltipTrigger>
-          </PopoverTrigger>
-          <TooltipContent>Components</TooltipContent>
-        </Tooltip>
-        <PopoverContent side="right" className="w-[300px]  h-full z-50">
+      <Tooltip>
+        <TooltipTrigger>
+          <div
+            className="w-fit justify-center cursor-pointer hover:bg-white/10 p-2 duration-200 rounded-md"
+            onClick={() => setOpen(!open)}
+          >
+            <ComponentIcon />
+          </div>
+        </TooltipTrigger>
+        <TooltipContent>Components</TooltipContent>
+      </Tooltip>
+      {open && (
+        <PopOver setOpened={setOpen}>
           <div className="bg-gray-800 w-full h-full rounded-md">
             <div className="flex items-center justify-center">
               <Input
@@ -101,20 +97,15 @@ const CompSidebar = ({ children }: SidebarProps) => {
               <div className="relative grid grid-cols-2 gap-5 mx-2">
                 {ReferenceSidebarComponents.map(
                   (item: Record<string, any>, index: number) => (
-                    <div
-                      className=" p-2 rounded-lg text-center bg-white/20"
-                      onMouseDown={(e) => handleCompEvent(e, item)}
-                    >
-                      {item.title}
-                    </div>
+                    <Draggable key={index} {...item} />
                   )
                 )}
               </div>
             </div>
           </div>
-        </PopoverContent>
-      </Popover>
-      {Component && <Draggable {...Component} />}
+        </PopOver>
+      )}
+      {/* {Component && <Draggable {...Component} />} */}
     </div>
   );
 };
