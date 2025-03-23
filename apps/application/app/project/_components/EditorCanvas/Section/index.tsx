@@ -6,7 +6,7 @@ import { Label } from "../../../../../components/ui/label";
 import Image from "next/image";
 import DeleteSection from "./DeleteSection";
 import AddSection from "./AddSection";
-import Component from "../Component";
+import DraggableComponent from "../Component";
 import ProjectAction from "../../../../../actions/project";
 
 type Props = {
@@ -20,12 +20,12 @@ const Section = (props: Props) => {
     id: props.value.id,
   });
 
-  const { data } = ProjectAction.getProject();
+  const { data } = ProjectAction.getSection(props.value.id as string);
 
   useEffect(() => {
     if (data) {
-      setComponents(data.payload.sections);
       console.log(data);
+      setComponents(data.payload.components);
     }
   }, [data]);
 
@@ -36,7 +36,6 @@ const Section = (props: Props) => {
           ref={setNodeRef}
           className={cn(
             "relative w-full h-full border border-pink-400 flex items-center justify-center pointer-events-auto"
-            // active && "bg-pink-400"
           )}
         >
           {isOver && (
@@ -52,16 +51,12 @@ const Section = (props: Props) => {
               </div>
             </div>
           )}
-          <Label className="absolute top-[50px] left-[70px]">
-            {props.value._id + props.value.name}
-          </Label>
+          {/* <Label className="absolute top-[50px] left-[70px]">
+            {props.value.id + props.value.name}
+          </Label> */}
           {Components &&
             Components.map((item: any, index: number) => (
-              <>
-                <Component value={item} />
-              </>
-              // <div key={index} className="w-full h-full">
-              // </div>
+              <DraggableComponent {...item} />
             ))}
           <DeleteSection id={props.value._id} />
         </div>

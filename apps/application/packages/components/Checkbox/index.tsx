@@ -7,8 +7,6 @@ const Checkbox = ({
   configuration = Default.configuration,
   payload = Default.payload,
 }: any) => {
-  console.log("configuration", configuration);
-  console.log("payload", payload);
   return (
     <div className="w-full flex justify-center items-center">
       <Input

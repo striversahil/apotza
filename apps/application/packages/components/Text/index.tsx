@@ -8,8 +8,6 @@ const TextComponent = ({
   configuration = Default.configuration,
   payload = Default.payload,
 }: any) => {
-  console.log("configuration", configuration);
-  console.log("payload", payload);
   return (
     <div
       className="w-[200px] flex justify-center items-center "

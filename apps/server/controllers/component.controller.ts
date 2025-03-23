@@ -31,6 +31,12 @@ class ComponentController {
 
   static async coordinateUpdate(res: Response, req: Request) {
     try {
+      const { id, x, y } = req.body;
+      if (!id || !x || !y) return ErrorResponse(res, "Provide all fields");
+      const component = await ComponentService.updateComponent(id, { coordinates : { x, y } });
+      if (!component)
+        return ErrorResponse(res, "Component could not be updated");
+      SuccessResponse(res, "Component updated successfully", component);
     } catch (error) {
       console.log(error);
     }

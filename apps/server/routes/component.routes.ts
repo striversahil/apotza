@@ -13,6 +13,6 @@ router.route("/delete").post(ComponentController.deleteComponent);
 
 // router.route("/update/").post(ComponentController.coordinateUpdate);
 
-// router.route("/coordinates").post(updateCoordinates);
+router.route("/coordinates").post(ComponentController.coordinateUpdate);
 
 export default router;
