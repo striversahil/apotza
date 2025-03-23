@@ -21,7 +21,7 @@ class CodeBlockController {
     try {
       const { id } = req.params;
       if (!id) return ErrorResponse(res, "CodeBlock does not exist");
-      const codeBlock = await CodeBlockService.getById(parseInt(id));
+      const codeBlock = await CodeBlockService.getById(id);
       if (!codeBlock)
         return ErrorResponse(res, "CodeBlock could not be fetched");
       SuccessResponse(res, "CodeBlock fetched successfully", codeBlock);

@@ -20,7 +20,7 @@ class ComponentController {
     try {
       const { id } = req.params;
       if (!id) return ErrorResponse(res, "Component does not exist");
-      const component = await ComponentService.getById(parseInt(id));
+      const component = await ComponentService.getById(id);
       if (!component)
         return ErrorResponse(res, "Component could not be fetched");
       SuccessResponse(res, "Component fetched successfully", component);

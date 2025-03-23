@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import IDEeditor from "./IDEeditor";
-import languages from "@/packages/common/Json/languages.json";
+import languages from "@/common/Json/languages.json";
 import Image from "next/image";
 
 type Props = {

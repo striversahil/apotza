@@ -1,23 +1,16 @@
-import React, { useRef } from "react";
 import CompSidebar from "./Component";
-import { LaptopMinimal, PanelLeftClose, Component } from "lucide-react";
 import Image from "next/image";
 import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
 } from "../../../../components/ui/Tooltip/tooltip";
-import {
-  PopoverContent,
-  PopoverTrigger,
-  Popover,
-} from "@radix-ui/react-popover";
 
 type Props = {};
 
 const Sidebar = (props: Props) => {
   return (
-    <div className="flex z-10 duration-1000">
+    <div className="flex z-10 duration-1000 ">
       <div className="w-fit h-full bg-inherit flex-col bg-slate-900 space-y-10 border-r border-slate-700">
         <Tooltip>
           <TooltipTrigger>
@@ -30,7 +23,7 @@ const Sidebar = (props: Props) => {
               onClick={() => window.location.reload()}
             />
           </TooltipTrigger>
-          <TooltipContent>Apotza</TooltipContent>
+          <TooltipContent side="right">Apotza 🥰</TooltipContent>
         </Tooltip>
         {/* Todo : Add Navigations as per need */}
         <div className="w-full flex flex-col justify-center items-center gap-5">

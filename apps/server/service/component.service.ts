@@ -7,7 +7,7 @@ import { Component, ComponentInterface } from "../schema";
 import { db } from "../database";
 
 class ComponentService {
-  static async getById(id: number): Promise<ComponentInterface | null> {
+  static async getById(id: string): Promise<ComponentInterface | null> {
     try {
       const [component] = await db
         .select()
@@ -22,7 +22,7 @@ class ComponentService {
   }
 
   static async updateComponent(
-    id: number,
+    id: string,
     clause = {}
   ): Promise<ComponentInterface | null> {
     try {
@@ -54,7 +54,7 @@ class ComponentService {
   static async create(
     metadata: any,
     payload: any,
-    section_id?: number
+    section_id?: string
   ): Promise<ComponentInterface | null> {
     try {
       const [component] = await db
@@ -79,7 +79,7 @@ class ComponentService {
   //     return await Component.findByIdAndUpdate(id, Component);
   //   }
 
-  static async delete(componentId: number): Promise<ComponentInterface | null> {
+  static async delete(componentId: string): Promise<ComponentInterface | null> {
     try {
       const [component] = await db
         .delete(Component)

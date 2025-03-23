@@ -21,7 +21,7 @@ const HeaderChange = (props: Props) => {
     mutate({ metadata: { _id: props.value._id }, payload: { name: value } });
   };
   const { mount, setMount, ref, EnterClick, ValueChange, value } =
-    useClickOutsideEnter(Mutation, props.value.name);
+    useClickOutsideEnter(Mutation, props.value);
 
   return (
     <div>

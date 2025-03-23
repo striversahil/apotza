@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack --port 3001",
+    "dev": "next dev --turbopack --port 3000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint --max-warnings 0",
@@ -56,6 +56,6 @@
     "@types/react-dom": "18.3.0",
     "prettier": "^3.2.5",
     "tailwindcss": "^3.4.17",
-    "typescript": "5.5.4"
+    "typescript": "5.8.2"
   }
 }

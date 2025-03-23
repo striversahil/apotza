@@ -1,17 +1,26 @@
 import { Input } from "../../../components/ui/input";
 import { cn } from "@/lib/utils";
 import React from "react";
+import Default from "./default.json";
 
-const Checkbox = ({ payload, configuration }: any) => {
+const Checkbox = ({
+  configuration = Default.configuration,
+  payload = Default.payload,
+}: any) => {
+  console.log("configuration", configuration);
+  console.log("payload", payload);
   return (
-    <div>
+    <div className="w-full flex justify-center items-center">
       <Input
         type="checkbox"
         checked={payload.checked}
-        className={cn(
-          "size-4 bg-background shadow-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
-          `p-${configuration.padding}px`
-        )}
+        style={{
+          // fontSize: `${configuration.fontSize}px`,
+          scale: `${configuration.scale}`,
+          borderRadius: `${configuration.borderRadius}px`,
+          color: `${configuration.backgroundColor}`,
+          // color: `${configuration.color}`,
+        }}
       />
     </div>
   );

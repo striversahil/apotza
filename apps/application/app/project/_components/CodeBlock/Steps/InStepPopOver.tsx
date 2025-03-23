@@ -18,7 +18,7 @@ type Props = {
   index: number;
   id: string;
 };
-import languages from "@/packages/common/Json/languages.json";
+import languages from "@/common/Json/languages.json";
 import Image from "next/image";
 import { TabsTrigger } from "@radix-ui/react-tabs";
 
@@ -39,7 +39,7 @@ const InStepPopOver = (props: Props) => {
   return (
     <div>
       <div className="bg-white/20 w-full p-2 rounded-md flex items-center justify-center">
-        <TabsTrigger className="w-full" value={props.value._id}>
+        <TabsTrigger className="w-full" value={props.value.id}>
           <div className="font-bold flex-1 flex w-full text-center cursor-pointer">
             <Image
               src={languageHref}

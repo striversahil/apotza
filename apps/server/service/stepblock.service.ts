@@ -5,7 +5,7 @@ import { StepBlock, StepBlockInterface } from "../schema";
 
 class StepBlockService {
   static async getById(
-    stepBlock_id: number
+    stepBlock_id: string
   ): Promise<StepBlockInterface | null> {
     try {
       const [stepBlock] = await db
@@ -19,7 +19,7 @@ class StepBlockService {
   }
 
   static async create(
-    codeBlock_id: number,
+    codeBlock_id: string,
     language: string
   ): Promise<StepBlockInterface | null> {
     try {
@@ -48,7 +48,7 @@ class StepBlockService {
   }
 
   static async createMultiple(
-    codeBlock_id: number,
+    codeBlock_id: string,
     language: string[]
   ): Promise<StepBlockInterface[] | null> {
     try {
@@ -83,7 +83,7 @@ class StepBlockService {
   }
 
   static async update(
-    stepBlock_id: number,
+    stepBlock_id: string,
     clause = {}
   ): Promise<StepBlockInterface | null> {
     try {
@@ -99,7 +99,7 @@ class StepBlockService {
   }
 
   static async delete(
-    stepBlock_id: number
+    stepBlock_id: string
   ): Promise<StepBlockInterface | null> {
     try {
       const [stepBlock] = await db

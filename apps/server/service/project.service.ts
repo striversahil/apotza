@@ -3,7 +3,7 @@ import { db } from "../database";
 import { eq } from "drizzle-orm";
 
 class ProjectService {
-  static async getById(id: number): Promise<ProjectInterface | null> {
+  static async getById(id: string): Promise<ProjectInterface | null> {
     try {
       const project = await db.query.Project.findFirst({
         with: {
@@ -18,7 +18,7 @@ class ProjectService {
     }
   }
 
-  static async create(workspace_id: number): Promise<ProjectInterface | null> {
+  static async create(workspace_id: string): Promise<ProjectInterface | null> {
     try {
       const [project] = await db
         .insert(Project)
@@ -33,7 +33,7 @@ class ProjectService {
     }
   }
 
-  static async update(id: number, clause: {}) {
+  static async update(id: string, clause: {}) {
     try {
       const [project] = await db
         .update(Project)
@@ -46,7 +46,7 @@ class ProjectService {
     }
   }
 
-  static async delete(id: number): Promise<ProjectInterface | null> {
+  static async delete(id: string): Promise<ProjectInterface | null> {
     try {
       const [project] = await db
         .delete(Project)

@@ -22,7 +22,7 @@ class workspaceController {
         });
         return;
       }
-      const workspace = await WorkspaceService.getById(parseInt(workspaceId));
+      const workspace = await WorkspaceService.getById(workspaceId);
 
       if (!workspace) {
         res.status(500).json({

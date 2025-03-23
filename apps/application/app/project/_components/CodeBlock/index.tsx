@@ -39,8 +39,7 @@ const CodeBlock = ({}: Props) => {
           onCollapse={handleOpenCode}
         >
           <div className="ml-1 h-full bg-slate-800">
-            {!isLoading &&
-              data.payload &&
+            {data &&
               data.payload.codeblocks.map((item: any, index: number) => {
                 return (
                   <TabsContent

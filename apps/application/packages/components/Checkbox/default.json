@@ -1,0 +1,11 @@
+{
+  "configuration": {
+    "padding": 2,
+    "scale": 0.5,
+    "borderRadius": 25,
+    "backgroundColor": "orange"
+  },
+  "payload": {
+    "checked": true
+  }
+}

@@ -1,15 +1,20 @@
-import { jsonb, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  jsonb,
+  pgTable,
+  serial,
+  text,
+  timestamp,
+  uuid,
+} from "drizzle-orm/pg-core";
 import { Workspace } from "./user";
 import { InferSelectModel, relations } from "drizzle-orm";
 
 export const Project = pgTable("project", {
-  id: serial("id").primaryKey(),
-  workspace: serial("workspace_id")
-    .notNull()
-    .references(() => Workspace.id, {
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    }),
+  id: uuid("id").defaultRandom().primaryKey(),
+  workspace: uuid("workspace_id").references(() => Workspace.id, {
+    onDelete: "cascade",
+    onUpdate: "cascade",
+  }),
   name: text("name").notNull(),
   details: text("details").notNull().default("Some details about this project"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
@@ -20,10 +25,11 @@ export type ProjectInterface = InferSelectModel<typeof Project>;
 // +++++++++++++++++++++++++++++++++++++++++++++++++ Components Tables +++++++++++++++++++++++++++++++++++++++++++++++++
 
 export const Section = pgTable("section", {
-  id: serial("id").primaryKey(),
-  project: serial("project_id")
-    .notNull()
-    .references(() => Project.id, { onDelete: "cascade", onUpdate: "cascade" }),
+  id: uuid("id").defaultRandom().primaryKey(),
+  project: uuid("project_id").references(() => Project.id, {
+    onDelete: "cascade",
+    onUpdate: "cascade",
+  }),
   name: text("name").notNull(),
   layout: jsonb("layout").notNull().default({}),
   appearence: jsonb("appearence").notNull().default({}),
@@ -33,10 +39,11 @@ export const Section = pgTable("section", {
 export type SectionInterface = InferSelectModel<typeof Section>;
 
 export const Component = pgTable("component", {
-  id: serial("id").primaryKey(),
-  section: serial("section_id")
-    .notNull()
-    .references(() => Section.id, { onDelete: "cascade", onUpdate: "cascade" }),
+  id: uuid("id").defaultRandom().primaryKey(),
+  section: uuid("section_id").references(() => Section.id, {
+    onDelete: "cascade",
+    onUpdate: "cascade",
+  }),
   name: text("name").notNull(),
   coordinates: jsonb("coordinates").notNull().default({}),
   payload: jsonb("payload").notNull().default({}), // Contains the component data
@@ -63,10 +70,11 @@ export const sectionRelations = relations(Section, ({ one, many }) => ({
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++ CodeBlock Tables +++++++++++++++++++++++++++++++++++++++++++++++++
 export const CodeBlock = pgTable("codeblock", {
-  id: serial("id").primaryKey(),
-  project: serial("project_id")
-    .notNull()
-    .references(() => Project.id, { onDelete: "cascade", onUpdate: "cascade" }),
+  id: uuid("id").defaultRandom().primaryKey(),
+  project: uuid("project_id").references(() => Project.id, {
+    onDelete: "cascade",
+    onUpdate: "cascade",
+  }),
   name: text("name").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
@@ -74,13 +82,11 @@ export const CodeBlock = pgTable("codeblock", {
 export type CodeBlockInterface = InferSelectModel<typeof CodeBlock>;
 
 export const StepBlock = pgTable("stepblock", {
-  id: serial("id").primaryKey(),
-  codeblock: serial("codeblock_id")
-    .notNull()
-    .references(() => CodeBlock.id, {
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    }),
+  id: uuid("id").defaultRandom().primaryKey(),
+  codeblock: uuid("codeblock_id").references(() => CodeBlock.id, {
+    onDelete: "cascade",
+    onUpdate: "cascade",
+  }),
   name: text("name").notNull(),
   code: text("code").notNull(),
   language: text("language").notNull(),

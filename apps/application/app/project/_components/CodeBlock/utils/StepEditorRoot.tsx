@@ -4,6 +4,7 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import Steps from "../Steps";
 import EditorCode from "../Editor";
 import ProjectAction from "../../../../../actions/project";
+import HeaderChange from "../Tab/HeaderChange";
 
 type Props = {
   value?: any;
@@ -11,7 +12,7 @@ type Props = {
 
 const StepEditorRoot = (props: Props) => {
   // const [currentStep, setCurrentStep] = useState("");
-  const [codeBlock, setCodeBlock] = useState<any>([]);
+  const [codeBlock, setCodeBlock] = useState<any>(null);
 
   if (!props.value) {
     return;
@@ -24,25 +25,15 @@ const StepEditorRoot = (props: Props) => {
       setCodeBlock(data.payload.stepBlocks);
     }
   }, [data]);
+  // const currentStep = codeBlock.steps[0]?._id;
 
-  if (!codeBlock) {
-    return (
-      <div className="w-full h-full animate-pulse">
-        <div className="bg-white/10 h-full"></div>
-      </div>
-    );
-  }
-  // console.log(data.payload);
-
-  if (codeBlock) {
-    // const currentStep = codeBlock.steps[0]?._id;
-
-    return (
-      <div className="w-full h-full">
-        {/* {currentStep && ( */}
-        <TabRoot className="w-full h-full" defaultValue={codeBlock.id}>
+  return (
+    <div className="w-full h-full">
+      {codeBlock && (
+        <TabRoot className="w-full h-full" defaultValue={codeBlock[0].id}>
           <PanelGroup direction="horizontal" className="">
             <Panel defaultSize={20} minSize={20} maxSize={50}>
+              <HeaderChange value={data.payload.name} />
               <Steps value={codeBlock} />
             </Panel>
             <PanelResizeHandle className="p-[1px] cursor-row-resize hover:bg-blue-500" />
@@ -59,10 +50,9 @@ const StepEditorRoot = (props: Props) => {
             </Panel>
           </PanelGroup>
         </TabRoot>
-        {/* )} */}
-      </div>
-    );
-  }
+      )}
+    </div>
+  );
 };
 
 export default StepEditorRoot;

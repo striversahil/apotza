@@ -4,7 +4,7 @@ import { Section, SectionInterface } from "../schema";
 import sectionDefault from "../common/sectionDefault.json";
 
 class SectionService {
-  static async getById(id: number): Promise<SectionInterface | null> {
+  static async getById(id: string): Promise<SectionInterface | null> {
     try {
       const section = await db.query.Section.findFirst({
         with: {
@@ -18,7 +18,7 @@ class SectionService {
     }
   }
 
-  static async create(project_id: number): Promise<SectionInterface | null> {
+  static async create(project_id: string): Promise<SectionInterface | null> {
     try {
       const [section] = await db
         .insert(Section)
@@ -35,7 +35,7 @@ class SectionService {
     }
   }
 
-  static async delete(section_id: number): Promise<SectionInterface | null> {
+  static async delete(section_id: string): Promise<SectionInterface | null> {
     try {
       const [section] = await db
         .delete(Section)

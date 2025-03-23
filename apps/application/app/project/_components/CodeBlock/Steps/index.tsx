@@ -11,20 +11,20 @@ import { Tabs, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 
 type Props = {
   value?: any;
+  name?: string;
 };
 // Space Left Because Wanna Introduce Drag n Drop Feature here
 
-const Steps = ({ value }: Props) => {
+const Steps = ({ value, name }: Props) => {
   const [open, setOpen] = React.useState(false);
 
   return (
     <div className=" border-r border-slate-500 w-full h-full">
-      <HeaderChange value={value} />
       <div className="w-full h-full">
         <TabsList className="flex flex-col overflow-y-scroll items-center justify-start w-full h-full gap-2 p-2">
-          {value.steps.map((item: any, index: number) => (
+          {value.map((item: any, index: number) => (
             <div key={index} className="w-full">
-              <InStepPopOver value={item} id={value._id} index={index} />
+              <InStepPopOver value={item} id={value.id} index={index} />
             </div>
           ))}
         </TabsList>

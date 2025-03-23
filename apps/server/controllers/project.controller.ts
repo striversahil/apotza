@@ -13,7 +13,7 @@ class ProjectController {
     try {
       const projectId = req.cookies.project_id;
       if (!projectId) return ErrorResponse(res, "Project does not exist");
-      const project = await ProjectService.getById(parseInt(projectId));
+      const project = await ProjectService.getById(projectId);
 
       if (!project) return ErrorResponse(res, "Project could not be fetched");
       SuccessResponse(res, "Project fetched successfully", project);

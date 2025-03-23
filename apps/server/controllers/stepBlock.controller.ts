@@ -20,7 +20,7 @@ class StepBlockController {
     try {
       const { id } = req.params;
       if (!id) return ErrorResponse(res, "StepBlock does not exist");
-      const stepBlock = await StepBlockService.getById(parseInt(id));
+      const stepBlock = await StepBlockService.getById(id);
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be fetched");
       SuccessResponse(res, "StepBlock fetched successfully", stepBlock);

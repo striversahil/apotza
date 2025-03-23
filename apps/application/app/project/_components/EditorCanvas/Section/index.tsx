@@ -1,17 +1,8 @@
 import { cn } from "@/lib/utils";
 import { useDroppable } from "@dnd-kit/core";
-import React, {
-  CSSProperties,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-} from "react";
-import { Resizable } from "re-resizable";
+import React, { useEffect } from "react";
 import ResizableBox from "../ResizableBox/ResizableBox";
-import { Input } from "../../../../../components/ui/input";
 import { Label } from "../../../../../components/ui/label";
-const _ = require("lodash");
 import Image from "next/image";
 import DeleteSection from "./DeleteSection";
 import AddSection from "./AddSection";

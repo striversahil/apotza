@@ -17,7 +17,7 @@ import {
 import Image from "next/image";
 import StepsBlockAction from "../../../../../actions/project/stepsBlock";
 import TabBlockAction from "../../../../../actions/project/tabBlock";
-import languages from "@/packages/common/Json/languages.json";
+import languages from "@/common/Json/languages.json";
 
 type PopOver = {
   setOpen: (open: boolean) => void;

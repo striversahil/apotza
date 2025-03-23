@@ -10,7 +10,6 @@ type Props = {
 
 const Output = (props: Props) => {
   const [activeTab, setActiveTab] = React.useState("output");
-  const { data, isLoading } = ProjectAction.getStep(props.value._id);
 
   return (
     <div className="border-t border-blue-500  w-full h-full">
@@ -65,9 +64,9 @@ const Output = (props: Props) => {
         <div className="relative flex-1 h-fit overflow-auto ">
           <div className="absolute inset-2 rounded-md  bg-white/10">
             <div className="absolute inset-2 flex items-center rounded-md bg-[#1e293b]">
-              <TabsContent value="output">{data.payload.output}</TabsContent>
-              <TabsContent value="code">{data.payload.code}</TabsContent>
-              <TabsContent value="stdout">{data.payload.stdout}</TabsContent>
+              <TabsContent value="output">{props.value.output}</TabsContent>
+              <TabsContent value="code">{props.value.code}</TabsContent>
+              <TabsContent value="stdout">{props.value.stdout}</TabsContent>
             </div>
           </div>
         </div>
