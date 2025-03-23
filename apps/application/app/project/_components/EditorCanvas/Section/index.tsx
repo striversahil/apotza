@@ -55,9 +55,7 @@ const Section = (props: Props) => {
             {props.value.id + props.value.name}
           </Label> */}
           {Components &&
-            Components.map((item: any, index: number) => (
-              <DraggableComponent {...item} />
-            ))}
+            Components.map((item: any) => <DraggableComponent {...item} />)}
           <DeleteSection id={props.value._id} />
         </div>
       </ResizableBox>

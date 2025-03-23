@@ -3,7 +3,7 @@
  */
 
 import { eq } from "drizzle-orm";
-import { Component, ComponentInterface } from "../schema";
+import { Component, ComponentInterface, Section } from "../schema";
 import { db } from "../database";
 
 class ComponentService {
@@ -33,6 +33,28 @@ class ComponentService {
         .returning();
 
       return component ? component : null;
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
+  static async getAllComponents(
+    project_id: string
+  ): Promise<ComponentInterface[] | null> {
+    try {
+      const sections = await db.query.Section.findMany({
+        with: {
+          components: true,
+        },
+        where: eq(Section.project, project_id),
+      });
+      const componentId: ComponentInterface[] = [];
+      sections.forEach((section) => {
+        section.components.forEach((component) => {
+          componentId.push(component);
+        });
+      });
+      return componentId ? componentId : null;
     } catch (error) {
       throw new Error(error as string);
     }

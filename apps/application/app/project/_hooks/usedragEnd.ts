@@ -10,22 +10,21 @@ export const useDragEnd = () => {
   const [IsDropped, setIsDropped] = React.useState(false);
   const [isDragging, setIsDragging] = React.useState(false);
 
-  const { data, refetch } = ProjectAction.getSection(activeId);
+  const { data } = ProjectAction.getComponents();
   const { mutate: mutateAdd } = ComponentAction.add(activeId);
-  const { mutate: mutateUpdate } = ComponentAction.update(activeId);
+  const { mutate: mutateUpdate } = ComponentAction.coordinatesUpdate(activeId);
 
-  useEffect(() => {
-    if (activeId) {
-      refetch();
-    }
-  }, [activeId, refetch]);
+  // useEffect(() => {
+  //   if (activeId) {
+  //     refetch();
+  //   }
+  // }, [activeId, refetch]);
 
   useEffect(() => {
     if (data) {
-      console.log(data);
-      setData(data.payload.components);
+      setData(data.payload);
     }
-  }, [data, refetch]);
+  }, [data]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
@@ -39,7 +38,9 @@ export const useDragEnd = () => {
 
       // Check if the active item is already in the array
       // if (!Data || event.active.id) return null;
-      const PresentElement = Data.find((item) => item.id === event.active.id);
+      const PresentElement = Data.find(
+        (item: any) => item.id === event.active.id
+      );
 
       // If the active item is not in the array, add it
       if (!PresentElement) {
@@ -60,17 +61,10 @@ export const useDragEnd = () => {
         });
         // Else We are modifying it from the Array
       } else {
-        console.log(PresentElement);
         mutateUpdate({
-          metadata: {
-            id: PresentElement.id,
-          },
-          payload: {
-            coordinates: {
-              x: event.delta.x,
-              y: event.delta.y,
-            },
-          },
+          id: PresentElement.id,
+          x: event.delta.x,
+          y: event.delta.y,
         });
       }
       setIsDropped(true);

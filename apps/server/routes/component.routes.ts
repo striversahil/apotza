@@ -7,6 +7,8 @@ const router: Router = Router();
 
 router.route("/").post(ComponentController.create);
 
+router.route("/").get(ComponentController.getComponents);
+
 router.route("/:id").get(ComponentController.getComponent);
 
 router.route("/delete").post(ComponentController.deleteComponent);

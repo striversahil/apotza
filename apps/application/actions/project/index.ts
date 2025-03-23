@@ -57,6 +57,13 @@ const ProjectAction = {
     });
   },
 
+  getComponents: () => {
+    return useQueryData(["ProjectAction.getComponents"], async () => {
+      const response = await axios.get(`${component}`);
+      return response.data;
+    });
+  },
+
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++ Project Specific Actions +++++++++++++++++++++++++++++++++++++++++++++++++++++++
   useNameChange: () => {
     return useMutationData(

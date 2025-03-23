@@ -14,7 +14,7 @@ interface formData {
 export const useLogin = () => {
   const { mutate, isPending } = useMutationData(
     ["user-login"],
-    (FormData: formData) => userSignup(FormData),
+    (FormData: formData) => userLogin(FormData),
     "userinfo"
     // () => {
     //   console.log("User updated successfully!");

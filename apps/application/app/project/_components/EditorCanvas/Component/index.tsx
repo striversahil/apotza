@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useDraggable } from "@dnd-kit/core";
-import ProjectAction from "../../../../../actions/project";
 
 interface ComponentInterface {
   name: string;
