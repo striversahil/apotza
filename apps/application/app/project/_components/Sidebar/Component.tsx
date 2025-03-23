@@ -21,16 +21,19 @@ const CompSidebar = ({ children }: SidebarProps) => {
   // Draggable Component
 
   const [open, setOpen] = React.useState(false);
+  const [Dragging, setDragging] = React.useState(false);
   const Draggable = ({ id, title, target, client }: any) => {
     const { attributes, listeners, setNodeRef, transform, isDragging } =
       useDraggable({
-        id: id,
+        id: target,
         data: {
           type: "item",
         },
       });
 
-    const Component = MatchComponent[target];
+    const { Component } = MatchComponent[target]!;
+    if (isDragging) setDragging(true);
+    else setDragging(false);
 
     return (
       <div
@@ -69,8 +72,9 @@ const CompSidebar = ({ children }: SidebarProps) => {
         </TooltipTrigger>
         <TooltipContent>Components</TooltipContent>
       </Tooltip>
+
       {open && (
-        <PopOver setOpened={setOpen}>
+        <PopOver setOpened={setOpen} isDragging={Dragging}>
           {ReferenceSidebarComponents.map(
             (item: Record<string, any>, index: number) => (
               <Draggable key={index} {...item} />

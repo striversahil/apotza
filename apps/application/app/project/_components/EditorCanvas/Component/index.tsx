@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useDraggable } from "@dnd-kit/core";
+import { MatchComponent } from "@/packages/components/match_component";
 
 interface ComponentInterface {
   name: string;
@@ -12,6 +13,7 @@ interface ComponentInterface {
 
 const DraggableComponent = ({
   id,
+  name,
   coordinates,
   payload,
   configuration,
@@ -29,6 +31,7 @@ const DraggableComponent = ({
     left: coordinates.x,
     top: coordinates.y,
   };
+  const { Component } = MatchComponent?.[name]!;
 
   return (
     <div
@@ -45,7 +48,7 @@ const DraggableComponent = ({
       key={id}
     >
       {/* Your content here */}
-      <div>{id}</div>
+      <Component {...({ configuration, payload } as any)} />
     </div>
   );
 };

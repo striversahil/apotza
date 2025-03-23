@@ -2,13 +2,13 @@
   "configuration": {
     "padding": 0,
     "fontSize": 25,
-    "color": "yellow",
+    "color": "red",
     "paddingX": 10,
     "paddingY": 10,
-    "backgroundColor": "green",
+    "backgroundColor": "yellow",
     "borderRadius": 25
   },
   "payload": {
-    "text": "Hello World"
+    "text": "Nikhil Is Nigger 😂🤣"
   }
 }

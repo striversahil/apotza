@@ -5,13 +5,20 @@ import { Input } from "../../../../components/ui/input";
 type Props = {
   children: React.ReactNode;
   setOpened: React.Dispatch<React.SetStateAction<boolean>>;
+  isDragging: boolean;
 };
 
 const PopOver = ({ setOpened, ...props }: Props) => {
   const ref = useClickOutside(() => setOpened(false));
 
   return (
-    <div className="fixed w-[300px]  h-[300px] z-50" ref={ref}>
+    <div
+      className="fixed w-[300px]  h-[300px] z-50"
+      ref={ref}
+      onMouseLeave={() => {
+        if (!props.isDragging) setOpened(false);
+      }}
+    >
       <div className="bg-gray-800 w-full h-full rounded-md">
         <div className="flex flex-col items-center justify-center p-2">
           <h1 className="text-white text-2xl font-bold">Components</h1>

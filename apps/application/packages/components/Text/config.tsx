@@ -2,7 +2,7 @@ import React from "react";
 import { Input } from "../../../components/ui/input";
 import { Label } from "../../../components/ui/label";
 
-const TextConfigPanel = ({
+export const Config = ({
   selectedItem,
   updateItem,
 }: {
@@ -61,5 +61,3 @@ const TextConfigPanel = ({
     </>
   );
 };
-
-export default TextConfigPanel;

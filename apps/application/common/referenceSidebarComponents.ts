@@ -5,22 +5,10 @@ const id = () => {
 
 export const ReferenceSidebarComponents = [
   {
-    id: id(),
     title: "Label",
     target: "text",
   },
   {
-    id: id(),
-    title: "Checkbox",
-    target: "checkbox",
-  },
-  {
-    id: id(),
-    title: "Label",
-    target: "text",
-  },
-  {
-    id: id(),
     title: "Checkbox",
     target: "checkbox",
   },

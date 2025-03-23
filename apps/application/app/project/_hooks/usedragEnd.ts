@@ -1,7 +1,9 @@
 import ProjectAction from "../../../actions/project";
 import ComponentAction from "../../../actions/project/component";
 import { PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { ReferenceSidebarComponents } from "../../../common/referenceSidebarComponents";
 import React, { useEffect } from "react";
+import { MatchComponent } from "@/packages/components/match_component";
 
 export const useDragEnd = () => {
   const [Data, setData] = React.useState<Record<string, any>[]>([]);
@@ -44,20 +46,18 @@ export const useDragEnd = () => {
 
       // If the active item is not in the array, add it
       if (!PresentElement) {
+        const { Default } = MatchComponent[event.active.id]!;
         mutateAdd({
           metadata: {
-            name: "Component " + Date.now(),
-            section_id: activeId,
+            name: event.active.id,
+            section_id: event.over.id,
             coordinates: {
               x: mouseX,
               y: mouseY,
             },
-            configuration: {
-              type: "component",
-              name: "Component " + Date.now(),
-            },
+            configuration: Default.configuration,
           },
-          payload: { Json_Data: "Component " + Date.now() },
+          payload: Default.payload,
         });
         // Else We are modifying it from the Array
       } else {

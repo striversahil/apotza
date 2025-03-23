@@ -13,7 +13,10 @@ const ComponentAction = {
         const response = await axios.post(`${source}`, payload);
         return response.data;
       },
-      [[`ProjectAction.getOneSection-${section_id}`]]
+      [
+        [`ProjectAction.getOneSection-${section_id}`],
+        ["ProjectAction.getComponents"],
+      ]
     );
     return { mutate };
   },
@@ -24,7 +27,10 @@ const ComponentAction = {
         const response = await axios.post(`${source}/coordinates`, payload);
         return response.data;
       },
-      [[`ProjectAction.getOneSection-${section_id}`]]
+      [
+        [`ProjectAction.getOneSection-${section_id}`],
+        ["ProjectAction.getComponents"],
+      ]
     );
     return { mutate };
   },

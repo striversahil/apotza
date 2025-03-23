@@ -7,7 +7,7 @@ type Props = {
   updateItem: (newData: any) => void;
 };
 
-const CheckboxConfigPanel = ({ selectedItem, updateItem }: Props) => {
+export const Config = ({ selectedItem, updateItem }: Props) => {
   return (
     <>
       <h2 className="text-lg font-bold mb-4">Text Settings</h2>
@@ -45,5 +45,3 @@ const CheckboxConfigPanel = ({ selectedItem, updateItem }: Props) => {
     </>
   );
 };
-
-export default CheckboxConfigPanel;

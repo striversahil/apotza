@@ -1,11 +1,22 @@
-import Checkbox from "./Checkbox";
-import TextComponent from "./Text";
+import * as Checkbox from "./Checkbox";
+import * as Text from "./Text";
 
 interface MatchComponent {
-  [key: string]: React.JSX.Element;
+  Component: React.FC;
+  Default: any;
 }
 
-export const MatchComponent: MatchComponent = {
-  text: <TextComponent />,
-  checkbox: <Checkbox />,
+interface MatchComponentProps {
+  [key: string]: MatchComponent;
+}
+
+export const MatchComponent: MatchComponentProps = {
+  text: {
+    Component: Text.Component,
+    Default: Text.Default,
+  },
+  checkbox: {
+    Component: Checkbox.Component,
+    Default: Checkbox.Default,
+  },
 };
