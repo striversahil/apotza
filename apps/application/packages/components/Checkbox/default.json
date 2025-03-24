@@ -1,9 +1,9 @@
 {
   "configuration": {
     "padding": 2,
-    "scale": 0.5,
+    "scale": 1,
     "borderRadius": 25,
-    "backgroundColor": "orange"
+    "backgroundColor": "green"
   },
   "payload": {
     "checked": true

@@ -32,8 +32,8 @@ const CompSidebar = ({ children }: SidebarProps) => {
       });
 
     const { Component } = MatchComponent[target]!;
-    if (isDragging) setDragging(true);
-    else setDragging(false);
+    // if (isDragging) setDragging(true);
+    // if (!isDragging) setDragging(false);
 
     return (
       <div
@@ -54,7 +54,7 @@ const CompSidebar = ({ children }: SidebarProps) => {
         onMouseUp={() => setOpen(false)}
       >
         <div className="absolute inset-0"></div>
-        <div>{isDragging ? Component : title}</div>
+        <div>{isDragging ? <Component /> : title}</div>
       </div>
     );
   };

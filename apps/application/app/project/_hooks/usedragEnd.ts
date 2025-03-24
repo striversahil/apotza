@@ -1,3 +1,4 @@
+"use client";
 import ProjectAction from "../../../actions/project";
 import ComponentAction from "../../../actions/project/component";
 import { PointerSensor, useSensor, useSensors } from "@dnd-kit/core";

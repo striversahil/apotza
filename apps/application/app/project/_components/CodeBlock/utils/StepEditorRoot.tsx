@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { Tabs as TabRoot, TabsContent } from "@radix-ui/react-tabs";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";

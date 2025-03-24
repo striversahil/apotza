@@ -1,3 +1,4 @@
+"use client";
 import { useClickOutside } from "@mantine/hooks";
 import React from "react";
 

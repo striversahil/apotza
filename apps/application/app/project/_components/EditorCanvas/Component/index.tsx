@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useDraggable } from "@dnd-kit/core";
 import { MatchComponent } from "@/packages/components/match_component";
+import ResizableBox from "../ResizableBox/ResizableBox";
 
 interface ComponentInterface {
   name: string;
@@ -34,13 +35,13 @@ const DraggableComponent = ({
   const { Component } = MatchComponent?.[name]!;
 
   return (
-    <div
+    <ResizableBox
       ref={setNodeRef}
       style={style}
       {...attributes}
       {...listeners}
       className={cn(
-        "bg-white rounded shadow-md touch-none px-1 w-fit text-black  outline",
+        "relative bg-white rounded shadow-md touch-none px-1 w-fit text-black  outline",
         isDragging
           ? "cursor-grabbing outline-green-300"
           : "cursor-grab  outline-pink-400"
@@ -49,7 +50,7 @@ const DraggableComponent = ({
     >
       {/* Your content here */}
       <Component {...({ configuration, payload } as any)} />
-    </div>
+    </ResizableBox>
   );
 };
 

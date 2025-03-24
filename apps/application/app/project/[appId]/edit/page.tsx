@@ -4,7 +4,6 @@ import EditorCanvas from "../../_components/EditorCanvas";
 import { PanelGroup, Panel, PanelResizeHandle } from "react-resizable-panels";
 import { PanelRightOpen } from "lucide-react";
 
-import { useEffect, useState } from "react";
 import Sidebar from "../../_components/Sidebar";
 import CodeBlock from "../../_components/CodeBlock";
 import ConfigFolder from "../../_components/Config";
@@ -40,7 +39,7 @@ const page = (props: Props) => {
       // }}
       sensors={sensors}
     >
-      <TabsRoot>
+      <TabsRoot defaultValue={"0"}>
         <TooltipProvider>
           <div className="relative flex min-h-screen bg-slate-950">
             <Sidebar />

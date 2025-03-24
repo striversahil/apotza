@@ -1,11 +1,16 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { debounce } from "lodash";
 
-type Props = {
-  children: React.ReactNode;
-};
-
-const ResizableBox = ({ children }: Props) => {
+const ResizableBox = forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, children, style, ...props }, ref) => {
   const [width, setWidth] = useState(200);
   const [height, setHeight] = useState(200);
   const DOMref = useRef<HTMLDivElement>(null);
@@ -76,35 +81,35 @@ const ResizableBox = ({ children }: Props) => {
   }, [handleMouseUp]);
 
   return (
-    <div className="relative">
+    <div className="relative p-5 " ref={DOMref} style={style}>
       <div
-        ref={DOMref}
+        ref={ref}
         style={{
-          // width: `${width}px`,
+          width: `${width}px`,
           height: `${height}px`,
-          //     resize: "both",
           overflow: "hidden",
         }}
-        className="relative border shadow-md"
+        {...props}
+        className={className}
       >
         {children}
         {/* Resizable Handle */}
-        <div
-          onMouseDown={handleMouseDownX}
-          className="absolute right-0 top-0 h-full w-1 bg-gray-600 cursor-e-resize"
-        />
-        <div
-          onMouseDown={handleMouseDownY}
-          className="absolute bottom-0 w-full  h-1 bg-gray-600 cursor-n-resize "
-        />
-        <div
-          className="absolute bottom-0 right-0 h-2 w-2 rounded-full bg-gray-600 cursor-nw-resize"
-          onMouseDown={handleMouseDownCommon}
-        />
       </div>
+      <div
+        onMouseDown={handleMouseDownX}
+        className="absolute right-0 top-0 h-full w-1 bg-gray-600 cursor-e-resize"
+      />
+      <div
+        onMouseDown={handleMouseDownY}
+        className="absolute bottom-0 w-full  h-1 bg-gray-600 cursor-n-resize "
+      />
+      <div
+        className="absolute bottom-0 right-0 h-2 w-2 rounded-full bg-gray-600 cursor-nw-resize"
+        onMouseDown={handleMouseDownCommon}
+      />
       {/* Resizable Handle */}
     </div>
   );
-};
+});
 
 export default ResizableBox;

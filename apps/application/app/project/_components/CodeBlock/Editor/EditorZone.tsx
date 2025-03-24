@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect } from "react";
 import IDEeditor from "./IDEeditor";
 import languages from "@/common/Json/languages.json";

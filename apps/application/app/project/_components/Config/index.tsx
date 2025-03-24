@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { PanelRightClose, PanelRightOpen } from "lucide-react";
 import ConfigRoute from "./ConfigRoute";

@@ -16,7 +16,7 @@ const IDEeditor = (props: Props) => {
 
     if (code !== props.value.code) {
       mutate({
-        metadata: { _id: props.value._id },
+        metadata: { id: props.value.id },
         payload: {
           code: code,
         },
