@@ -26,6 +26,7 @@ const EditorCanvas = () => {
       {Sections.map((item: any, index: number) => (
         <Section key={index} value={item} />
       ))}
+
       {/* <div
         className={`w-full min-h-screen h-full` + (isOver ? " bg-white/5" : "")}
         ref={setNodeRef}

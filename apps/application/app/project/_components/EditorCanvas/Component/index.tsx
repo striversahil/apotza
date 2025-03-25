@@ -5,22 +5,13 @@ import { MatchComponent } from "@/packages/components/match_component";
 import ResizableBox from "../ResizableBox/ResizableBox";
 
 interface ComponentInterface {
-  name: string;
-  id: string;
-  layout: any;
-  coordinates: any;
+  value: any;
 }
 
-const DraggableComponent = ({
-  id,
-  name,
-  layout,
-  coordinates,
-  ...props
-}: ComponentInterface) => {
+const DraggableComponent = ({ value }: ComponentInterface) => {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
-      id: id,
+      id: value.id,
     });
 
   const style = {
@@ -28,14 +19,14 @@ const DraggableComponent = ({
       ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
       : undefined,
     position: "absolute" as const,
-    left: coordinates.x,
-    top: coordinates.y,
+    left: value.coordinates.x,
+    top: value.coordinates.y,
   };
-  const { Component } = MatchComponent?.[name]!;
+  const { Component } = MatchComponent?.[value.name]!;
 
   return (
     <ResizableBox
-      layout={layout}
+      value={value}
       ref={setNodeRef}
       style={style}
       {...attributes}
@@ -46,10 +37,10 @@ const DraggableComponent = ({
           ? "cursor-grabbing outline-green-300"
           : "cursor-grab  outline-pink-400"
       )}
-      key={id}
+      key={value.id}
     >
       {/* Your content here */}
-      <Component {...props} />
+      <Component {...value} />
     </ResizableBox>
   );
 };

@@ -9,16 +9,15 @@ import { debounce } from "lodash";
 import { toast } from "sonner";
 
 interface Props {
-  children: React.ReactNode;
-  layout: any;
+  value: any;
 }
 
 const ResizableBox = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & Props
->(({ className, children, style = {}, layout, ...props }, ref) => {
-  const [width, setWidth] = useState(layout.width || 200);
-  const [height, setHeight] = useState(layout.height || 200);
+>(({ className, children, style = {}, value, ...props }, ref) => {
+  const [width, setWidth] = useState(value.layout.width || 200);
+  const [height, setHeight] = useState(value.layout.height || 200);
   const DOMref = useRef<HTMLDivElement>(null);
   const initialX = useRef(0);
   const initialY = useRef(0);
@@ -93,7 +92,7 @@ const ResizableBox = forwardRef<
       style={style}
       onClick={(e) => {
         e.stopPropagation();
-        toast(`Width: ${width}, Height: ${height}`);
+        toast(`${((width * height) / 100).toFixed()}`);
       }}
     >
       <div
@@ -111,14 +110,14 @@ const ResizableBox = forwardRef<
       </div>
       <div
         onMouseDown={handleMouseDownX}
-        className="absolute right-0 top-0 h-full rounded-full w-1 bg-gray-600 cursor-e-resize"
-      />
+        className="absolute right-0 top-0 h-full rounded-full w-1 hover:bg-blue-500 cursor-e-resize"
+      ></div>
       <div
         onMouseDown={handleMouseDownY}
-        className="absolute bottom-0 w-full rounded-full h-1 bg-gray-600 cursor-n-resize "
+        className="absolute bottom-0 w-full rounded-full h-1 hover:bg-blue-500 cursor-n-resize "
       />
       <div
-        className="absolute bottom-0 right-0 h-2 w-2 rounded-full bg-gray-600 cursor-nw-resize"
+        className="absolute bottom-0 right-0 h-4 w-4 rounded-full hover:bg-blue-500 cursor-nw-resize"
         onMouseDown={handleMouseDownCommon}
       />
       {/* Resizable Handle */}

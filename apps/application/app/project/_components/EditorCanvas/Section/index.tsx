@@ -17,7 +17,7 @@ type Props = {
 const Section = (props: Props) => {
   const [Components, setComponents] = React.useState<any>([]);
 
-  const { isOver, setNodeRef, rect, active } = useDroppable({
+  const { isOver, setNodeRef } = useDroppable({
     id: props.value.id,
   });
 
@@ -32,23 +32,43 @@ const Section = (props: Props) => {
 
   return (
     <div className="w-full h-full">
-      <ResizableBox layout={props.value.layout}>
+      <ResizableBox value={props.value}>
         <div
           ref={setNodeRef}
           className={cn(
-            "relative w-full h-full border border-pink-400 flex items-center justify-center pointer-events-auto"
+            "relative w-full h-full border border-white/30 rounded-lg flex items-center justify-center pointer-events-auto"
           )}
         >
           {isOver && (
-            <div className="relative w-full h-full bg-blue-500">
-              <div className="absolute inset-2 rounded-lg bg-white/20 overflow-clip">
-                <Image
-                  src="/slug.webp"
-                  width={rect?.current?.width}
-                  height={rect?.current?.height}
-                  className="w-full h-full opacity-70 "
-                  alt="slug"
-                />
+            <div className="relative w-full h-full  ">
+              <div className="absolute inset-1 rounded-lg  overflow-clip outline outline-blue-500">
+                <div
+                  style={{
+                    //                 backgroundImage: `
+                    //        linear-gradient(to right, rgb(215, 215, 215) 1px, transparent 1px),
+                    //        linear-gradient(rgb(215, 215, 215) 1px, transparent 1px)
+                    // `,
+                    //                 backgroundSize: "24px 24px",
+                    //                 borderBottom: "1px solid rgb(215, 215, 215)",
+                    //                 borderTopColor: "rgb(215, 215, 215)",
+                    //                 borderRight: "1px solid rgb(215, 215, 215)",
+                    //                 borderLeftColor: "rgb(215, 215, 215)",
+                    //                 borderTopStyle: "dashed",
+                    //                 borderLeftStyle: "dashed",
+                    height: "100%",
+                    opacity: 0.5,
+                    width: "100%",
+                    // backgroundColor: "#bd99ff",
+                    backgroundImage: `
+radial-gradient(at 12% 14%, hsla(265,74%,65%,1) 0px, transparent 50%),
+radial-gradient(at 32% 65%, hsla(235,74%,75%,1) 0px, transparent 50%),
+radial-gradient(at 77% 18%, hsla(265,75%,65%,1) 0px, transparent 50%),
+radial-gradient(at 31% 49%, hsla(235,75%,65%,1) 0px, transparent 50%),
+radial-gradient(at 34% 70%, hsla(265,75%,65%,1) 0px, transparent 50%),
+radial-gradient(at 85% 85%, hsla(235,75%,65%,1) 0px, transparent 50%),
+radial-gradient(at 11% 90%, hsla(265,75%,65%,1) 0px, transparent 50%)`,
+                  }}
+                ></div>
               </div>
             </div>
           )}
@@ -56,7 +76,7 @@ const Section = (props: Props) => {
             {props.value.id + props.value.name}
           </Label> */}
           {Components &&
-            Components.map((item: any) => <DraggableComponent {...item} />)}
+            Components.map((item: any) => <DraggableComponent value={item} />)}
           <DeleteSection id={data?.payload.id} />
         </div>
       </ResizableBox>
