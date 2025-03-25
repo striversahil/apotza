@@ -39,14 +39,14 @@ const page = (props: Props) => {
       // }}
       sensors={sensors}
     >
-      <TabsRoot defaultValue={"0"}>
-        <TooltipProvider>
-          <div className="relative flex min-h-screen bg-slate-950">
-            <Sidebar />
-            <main className="relative flex-1 min-h-screen min-w-screen">
-              {/* Main Resizable Pannel Start's Here */}
-              <PanelGroup direction="horizontal">
-                <Panel defaultSize={80}>
+      <TooltipProvider>
+        <div className="relative flex min-h-screen bg-slate-950">
+          <Sidebar />
+          <main className="relative flex-1 min-h-screen min-w-screen">
+            {/* Main Resizable Pannel Start's Here */}
+            <PanelGroup direction="horizontal">
+              <Panel defaultSize={80}>
+                <TabsRoot defaultValue={"0"} className="h-full">
                   <PanelGroup direction="vertical">
                     <Panel defaultSize={60} className="relative">
                       <Header />
@@ -57,37 +57,37 @@ const page = (props: Props) => {
 
                     <CodeBlock />
                   </PanelGroup>
-                </Panel>
-                {openConfig && (
-                  <PanelResizeHandle className="p-[2px] cursor-row-resize hover:bg-blue-500" />
-                )}
-                {openConfig && (
-                  <Panel
-                    defaultSize={20}
-                    minSize={10}
-                    collapsible
-                    onCollapse={handleOpenConfig}
-                    maxSize={40}
-                  >
-                    <ConfigFolder
-                      handleOpen={handleOpenConfig}
-                      // selectedItem={activeId}
-                    />
-                  </Panel>
-                )}
-              </PanelGroup>
-              {!openConfig && (
-                <div
-                  className="fixed top-2 right-0 p-2 bg-black/50 rounded-md cursor-pointer hover:bg-white/10"
-                  onClick={() => handleOpenConfig()}
-                >
-                  <PanelRightOpen />
-                </div>
+                </TabsRoot>
+              </Panel>
+              {openConfig && (
+                <PanelResizeHandle className="p-[2px] cursor-row-resize hover:bg-blue-500" />
               )}
-            </main>
-          </div>
-        </TooltipProvider>
-      </TabsRoot>
+              {openConfig && (
+                <Panel
+                  defaultSize={20}
+                  minSize={10}
+                  collapsible
+                  onCollapse={handleOpenConfig}
+                  maxSize={40}
+                >
+                  <ConfigFolder
+                    handleOpen={handleOpenConfig}
+                    // selectedItem={activeId}
+                  />
+                </Panel>
+              )}
+            </PanelGroup>
+            {!openConfig && (
+              <div
+                className="fixed top-2 right-0 p-2 bg-black/50 rounded-md cursor-pointer hover:bg-white/10"
+                onClick={() => handleOpenConfig()}
+              >
+                <PanelRightOpen />
+              </div>
+            )}
+          </main>
+        </div>
+      </TooltipProvider>
     </DndContext>
   );
 };

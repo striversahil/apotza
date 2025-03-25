@@ -7,17 +7,16 @@ import ResizableBox from "../ResizableBox/ResizableBox";
 interface ComponentInterface {
   name: string;
   id: string;
-  payload: string; // Here my Component Payload i.e. Data will Come
-  configuration: object; // This will Contain Component Configuration
+  layout: any;
   coordinates: any;
 }
 
 const DraggableComponent = ({
   id,
   name,
+  layout,
   coordinates,
-  payload,
-  configuration,
+  ...props
 }: ComponentInterface) => {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
@@ -36,6 +35,7 @@ const DraggableComponent = ({
 
   return (
     <ResizableBox
+      layout={layout}
       ref={setNodeRef}
       style={style}
       {...attributes}
@@ -49,7 +49,7 @@ const DraggableComponent = ({
       key={id}
     >
       {/* Your content here */}
-      <Component {...({ configuration, payload } as any)} />
+      <Component {...props} />
     </ResizableBox>
   );
 };

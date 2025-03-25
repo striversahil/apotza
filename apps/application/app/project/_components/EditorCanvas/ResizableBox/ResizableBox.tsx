@@ -6,13 +6,19 @@ import React, {
   useState,
 } from "react";
 import { debounce } from "lodash";
+import { toast } from "sonner";
+
+interface Props {
+  children: React.ReactNode;
+  layout: any;
+}
 
 const ResizableBox = forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, children, style, ...props }, ref) => {
-  const [width, setWidth] = useState(200);
-  const [height, setHeight] = useState(200);
+  React.HTMLAttributes<HTMLDivElement> & Props
+>(({ className, children, style = {}, layout, ...props }, ref) => {
+  const [width, setWidth] = useState(layout.width || 200);
+  const [height, setHeight] = useState(layout.height || 200);
   const DOMref = useRef<HTMLDivElement>(null);
   const initialX = useRef(0);
   const initialY = useRef(0);
@@ -81,7 +87,15 @@ const ResizableBox = forwardRef<
   }, [handleMouseUp]);
 
   return (
-    <div className="relative p-5 " ref={DOMref} style={style}>
+    <div
+      className="relative p-1 w-fit"
+      ref={DOMref}
+      style={style}
+      onClick={(e) => {
+        e.stopPropagation();
+        toast(`Width: ${width}, Height: ${height}`);
+      }}
+    >
       <div
         ref={ref}
         style={{
@@ -97,11 +111,11 @@ const ResizableBox = forwardRef<
       </div>
       <div
         onMouseDown={handleMouseDownX}
-        className="absolute right-0 top-0 h-full w-1 bg-gray-600 cursor-e-resize"
+        className="absolute right-0 top-0 h-full rounded-full w-1 bg-gray-600 cursor-e-resize"
       />
       <div
         onMouseDown={handleMouseDownY}
-        className="absolute bottom-0 w-full  h-1 bg-gray-600 cursor-n-resize "
+        className="absolute bottom-0 w-full rounded-full h-1 bg-gray-600 cursor-n-resize "
       />
       <div
         className="absolute bottom-0 right-0 h-2 w-2 rounded-full bg-gray-600 cursor-nw-resize"

@@ -99,14 +99,15 @@ const InStepPopOver = (props: Props) => {
       </div>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger className="w-full flex justify-center cursor-pointer">
-          <Tooltip>
+          <PlusCircle className="size-4 hover:size-6 duration-200 active:rotate-90" />
+          {/* <Tooltip>
             <TooltipTrigger>
               <PlusCircle className="size-4 hover:size-6 duration-200 active:rotate-90" />
             </TooltipTrigger>
             <TooltipContent>
               <span className="text-sm">Add Step</span>
             </TooltipContent>
-          </Tooltip>
+          </Tooltip> */}
         </PopoverTrigger>
         <ComboPopAPI
           setOpen={setOpen}

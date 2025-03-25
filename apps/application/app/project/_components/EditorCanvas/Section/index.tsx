@@ -8,6 +8,7 @@ import DeleteSection from "./DeleteSection";
 import AddSection from "./AddSection";
 import DraggableComponent from "../Component";
 import ProjectAction from "../../../../../actions/project";
+import { TabsTrigger } from "@radix-ui/react-tabs";
 
 type Props = {
   value?: any;
@@ -31,7 +32,7 @@ const Section = (props: Props) => {
 
   return (
     <div className="w-full h-full">
-      <ResizableBox>
+      <ResizableBox layout={props.value.layout}>
         <div
           ref={setNodeRef}
           className={cn(

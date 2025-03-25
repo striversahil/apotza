@@ -6,10 +6,8 @@ import ProjectService from "../service/project.service";
 class ComponentController {
   static async create(req: Request, res: Response) {
     try {
-      const { metadata, payload } = req.body;
-      if (!metadata || !payload)
-        return ErrorResponse(res, "Provide all fields");
-      const component = await ComponentService.create(metadata, payload);
+      if (!req.body) return ErrorResponse(res, "Provide all fields");
+      const component = await ComponentService.create({ ...req.body });
       if (!component) return ErrorResponse(res, "Section could not be created");
       SuccessResponse(res, "Component created successfully", component);
     } catch (error) {
@@ -34,7 +32,7 @@ class ComponentController {
     try {
       const projectId = req.cookies.project_id;
       if (!projectId) return ErrorResponse(res, "Project does not exist");
-      const components = await ComponentService.getAllComponents(projectId);
+      const components = await ComponentService.getAllComponentsId(projectId);
       console.log(components);
       if (!components)
         return ErrorResponse(res, "Components could not be fetched");

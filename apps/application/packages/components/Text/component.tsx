@@ -15,7 +15,7 @@ export const Component = ({
 }: Props) => {
   return (
     <div
-      className="w-[100px] flex justify-center items-center"
+      className="flex select-none justify-center items-center"
       style={{
         paddingTop: `${configuration.paddingY}px`,
         paddingBottom: `${configuration.paddingY}px`,

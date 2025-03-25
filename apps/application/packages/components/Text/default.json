@@ -8,6 +8,12 @@
     "backgroundColor": "green",
     "borderRadius": 25
   },
+  "layout": {
+    "layout": "grid",
+    "padding": 0,
+    "width": "200",
+    "height": "50"
+  },
   "payload": {
     "text": "Hello World ✨"
   }

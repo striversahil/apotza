@@ -49,13 +49,13 @@ class ProjectController {
         const section_ = await SectionService.create(project.id);
         if (!section_)
           return ErrorResponse(res, "Section could not be created");
-        for (const component of section.components) {
-          await ComponentService.create(
-            component.metadata,
-            component.payload,
-            section_.id
-          );
-        }
+        // for (const component of section.components) {
+        //   await ComponentService.create(
+        //     component.metadata,
+        //     component.payload,
+        //     section_.id
+        //   );
+        // }
       }
       const project_ = await ProjectService.getById(project.id);
       SuccessResponse(res, "Project created successfully", project_);

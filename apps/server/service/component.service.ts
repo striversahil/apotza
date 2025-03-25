@@ -38,9 +38,9 @@ class ComponentService {
     }
   }
 
-  static async getAllComponents(
+  static async getAllComponentsId(
     project_id: string
-  ): Promise<ComponentInterface[] | null> {
+  ): Promise<string[] | null> {
     try {
       const sections = await db.query.Section.findMany({
         with: {
@@ -48,10 +48,10 @@ class ComponentService {
         },
         where: eq(Section.project, project_id),
       });
-      const componentId: ComponentInterface[] = [];
+      const componentId: string[] = [];
       sections.forEach((section) => {
         section.components.forEach((component) => {
-          componentId.push(component);
+          componentId.push(component.id);
         });
       });
       return componentId ? componentId : null;
@@ -60,36 +60,16 @@ class ComponentService {
     }
   }
 
-  // static async coordinatesUpdate(id: string, coordinates: any) {
-  //   try {
-  //     return await Component.findByIdAndUpdate(id, {
-  //       $inc: {
-  //         "coordinates.x": coordinates.x,
-  //         "coordinates.y": coordinates.y,
-  //       },
-  //     });
-  //   } catch (error) {
-  //     throw new Error(error as string);
-  //   }
-  // }
-
-  static async create(
-    metadata: any,
-    payload: any,
-    section_id?: string
-  ): Promise<ComponentInterface | null> {
+  static async create(...payload: any): Promise<ComponentInterface | null> {
     try {
+      const slug = { ...payload[0] };
+
       const [component] = await db
         .insert(Component)
         .values({
-          name: metadata.name,
-          section: metadata.section_id || section_id,
-          coordinates: { ...metadata.coordinates },
-          payload: payload,
-          configuration: metadata.configuration,
+          ...slug,
         })
         .returning();
-
       return component ? component : null;
     } catch (error) {
       throw new Error(error as string);

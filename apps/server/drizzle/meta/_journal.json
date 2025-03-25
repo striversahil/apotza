@@ -8,6 +8,13 @@
       "when": 1742698135240,
       "tag": "0000_mean_ultron",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1742876352464,
+      "tag": "0001_next_elektra",
+      "breakpoints": true
     }
   ]
 }

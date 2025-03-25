@@ -41,29 +41,26 @@ export const useDragEnd = () => {
 
       // Check if the active item is already in the array
       // if (!Data || event.active.id) return null;
-      const PresentElement = Data.find(
-        (item: any) => item.id === event.active.id
-      );
+      const PresentElement = Data.find((item: any) => item === event.active.id);
+
+      console.log(PresentElement);
 
       // If the active item is not in the array, add it
       if (!PresentElement) {
         const { Default } = MatchComponent[event.active.id]!;
         mutateAdd({
-          metadata: {
-            name: event.active.id,
-            section_id: event.over.id,
-            coordinates: {
-              x: mouseX,
-              y: mouseY,
-            },
-            configuration: Default.configuration,
+          name: event.active.id,
+          section: event.over.id,
+          coordinates: {
+            x: mouseX,
+            y: mouseY,
           },
-          payload: Default.payload,
+          ...Default,
         });
         // Else We are modifying it from the Array
       } else {
         mutateUpdate({
-          id: PresentElement.id,
+          id: PresentElement,
           x: event.delta.x,
           y: event.delta.y,
         });

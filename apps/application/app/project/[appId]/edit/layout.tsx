@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { UtilityProvider } from "../../../../contexts/utils";
 
 type Props = {
   children: React.ReactNode;
@@ -7,7 +8,7 @@ type Props = {
 const RootLayout = (props: Props) => {
   return (
     <div suppressHydrationWarning suppressContentEditableWarning>
-      {props.children}
+      <UtilityProvider>{props.children}</UtilityProvider>
     </div>
   );
 };
