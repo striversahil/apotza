@@ -117,7 +117,7 @@ const ResizableBox = forwardRef<
         className="absolute bottom-0 w-full rounded-full h-1 hover:bg-blue-500 cursor-n-resize "
       />
       <div
-        className="absolute bottom-0 right-0 h-4 w-4 rounded-full hover:bg-blue-500 cursor-nw-resize"
+        className="absolute bottom-0 right-0 h-4 w-4 rounded-full cursor-nw-resize"
         onMouseDown={handleMouseDownCommon}
       />
       {/* Resizable Handle */}

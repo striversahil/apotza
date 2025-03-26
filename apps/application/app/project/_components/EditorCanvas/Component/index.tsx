@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { useDraggable } from "@dnd-kit/core";
 import { MatchComponent } from "@/packages/components/match_component";
 import ResizableBox from "../ResizableBox/ResizableBox";
+import { useUtility } from "../../../../../contexts/utils";
 
 interface ComponentInterface {
   value: any;
@@ -22,6 +23,9 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
     left: value.coordinates.x,
     top: value.coordinates.y,
   };
+
+  // const { currentTab, currentStep }: any = useUtility();
+  // console.log(currentTab);
   const { Component } = MatchComponent?.[value.name]!;
 
   return (
@@ -32,10 +36,10 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
       {...attributes}
       {...listeners}
       className={cn(
-        "relative bg-white rounded shadow-md touch-none px-1 w-fit text-black  outline",
+        "relative  rounded shadow-md touch-none p-1 focus:outline hover:outline hover:outline-[2px]  text-black ",
         isDragging
-          ? "cursor-grabbing outline-green-300"
-          : "cursor-grab  outline-pink-400"
+          ? "cursor-grabbing outline-green-500"
+          : "cursor-grab  outline-blue-400"
       )}
       key={value.id}
     >

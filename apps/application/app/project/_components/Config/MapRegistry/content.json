@@ -1,0 +1,11 @@
+{
+  "title": "text",
+  "label": "text",
+  "options": "list",
+  "defaultSelected": "text",
+  "defaultChecked": "boolean",
+  "description": "text",
+  "header": "text",
+  "data": "text",
+  "columns": "list"
+}

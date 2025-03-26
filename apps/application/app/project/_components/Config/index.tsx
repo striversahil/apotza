@@ -22,7 +22,7 @@ const ConfigFolder = ({ handleOpen }: Props) => {
   }, [data]);
 
   return (
-    <div className="relative w-full h-full bg-slate-900 border-l border-slate-500 ">
+    <div className="relative w-full h-full px-4 py-2 bg-slate-900 border-l border-slate-500 ">
       <div
         className="absolute z-50 top-2 right-0 p-2 bg-black/50 rounded-md cursor-pointer hover:bg-white/10"
         onClick={handleOpen}

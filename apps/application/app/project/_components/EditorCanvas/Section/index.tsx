@@ -36,7 +36,7 @@ const Section = (props: Props) => {
         <div
           ref={setNodeRef}
           className={cn(
-            "relative w-full h-full border border-white/30 rounded-lg flex items-center justify-center pointer-events-auto"
+            "relative w-full h-full hover:border  border-white/40 rounded-lg flex items-center justify-center pointer-events-auto"
           )}
         >
           {isOver && (
