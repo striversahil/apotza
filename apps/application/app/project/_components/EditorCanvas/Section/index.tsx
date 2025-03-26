@@ -9,19 +9,30 @@ import AddSection from "./AddSection";
 import DraggableComponent from "../Component";
 import ProjectAction from "../../../../../actions/project";
 import { TabsTrigger } from "@radix-ui/react-tabs";
+import { useComponent } from "../../../../../contexts/component";
 
 type Props = {
   value?: any;
 };
 
-const Section = (props: Props) => {
+const Section = ({ value, ...props }: Props) => {
   const [Components, setComponents] = React.useState<any>([]);
+  const [currentValue, setCurrentValue] = React.useState(value);
 
   const { isOver, setNodeRef } = useDroppable({
-    id: props.value.id,
+    id: currentValue.id,
   });
 
-  const { data } = ProjectAction.getSection(props.value.id as string);
+  const { data } = ProjectAction.getSection(currentValue.id as string);
+
+  const { Component: component } = useComponent() || {};
+
+  useEffect(() => {
+    if (component.id === currentValue.id) {
+      setCurrentValue(component);
+      console.log("section_rendering");
+    }
+  }, [component]);
 
   useEffect(() => {
     if (data) {
@@ -32,16 +43,17 @@ const Section = (props: Props) => {
 
   return (
     <div className="w-full h-full">
-      <ResizableBox value={props.value}>
+      <ResizableBox value={currentValue}>
         <div
           ref={setNodeRef}
           className={cn(
-            "relative w-full h-full hover:border  border-white/40 rounded-lg flex items-center justify-center pointer-events-auto"
+            "relative w-full h-full border border-white/20 hover:border-white/50 rounded-xl flex items-center justify-center pointer-events-auto",
+            isOver && "hover:border-white/0"
           )}
         >
           {isOver && (
             <div className="relative w-full h-full  ">
-              <div className="absolute inset-1 rounded-lg  overflow-clip outline outline-blue-500">
+              <div className="absolute inset-0 rounded-xl  overflow-clip border-[3px] border-blue-500">
                 <div
                   style={{
                     //                 backgroundImage: `

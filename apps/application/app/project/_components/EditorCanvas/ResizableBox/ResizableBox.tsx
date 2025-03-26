@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { debounce } from "lodash";
 import { toast } from "sonner";
+import { useComponent } from "../../../../../contexts/component";
 
 interface Props {
   value: any;
@@ -24,6 +25,8 @@ const ResizableBox = forwardRef<
   const isResizing = useRef(false);
   const initialWidth = useRef<number>(0);
   const initialHeight = useRef<number>(0);
+
+  const { setComponent } = useComponent() || {};
 
   const handleMouseX = useRef((e: MouseEvent) => {
     //UseRef because it won't will cause rerender's and i was not having any dependency
@@ -92,6 +95,7 @@ const ResizableBox = forwardRef<
       style={style}
       onClick={(e) => {
         e.stopPropagation();
+        setComponent(value);
         toast(`${((width * height) / 100).toFixed()}`);
       }}
     >

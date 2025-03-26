@@ -1,5 +1,6 @@
 import { TabsContent } from "@radix-ui/react-tabs";
 import React from "react";
+import { useComponent } from "../../../../../contexts/component";
 
 type Props = {
   value: any;
@@ -8,6 +9,7 @@ type Props = {
 const ConfigRoute = (props: Props) => {
   // console.log("from config route", props.value);
   // const value = JSON.stringify(props.value);
+
   return (
     <div className="text-sm space-y-2 ">
       ConfigRoute <br />

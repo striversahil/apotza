@@ -36,8 +36,13 @@ export const useDragEnd = () => {
   const handleDragEnd = (event: any) => {
     if (event.over?.id) {
       setActiveId(event.over.id);
+
+      // Get the current mouse position , Currently not finding any way to get it
       const mouseX = event.activatorEvent.clientX;
       const mouseY = event.activatorEvent.clientY;
+
+      const dropArea = document.getElementById(event.over.id); // Get the drop area element
+      const dropRect = dropArea?.getBoundingClientRect(); // Get its position
 
       // Check if the active item is already in the array
       // if (!Data || event.active.id) return null;
@@ -52,8 +57,8 @@ export const useDragEnd = () => {
           name: event.active.id,
           section: event.over.id,
           coordinates: {
-            x: mouseX,
-            y: mouseY,
+            x: 245, // mouseX,
+            y: 145, // mouseY,
           },
           ...Default,
         });

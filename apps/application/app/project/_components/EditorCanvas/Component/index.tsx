@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { use, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useDraggable } from "@dnd-kit/core";
 import { MatchComponent } from "@/packages/components/match_component";
 import ResizableBox from "../ResizableBox/ResizableBox";
 import { useUtility } from "../../../../../contexts/utils";
+import { useComponent } from "../../../../../contexts/component";
 
 interface ComponentInterface {
   value: any;
@@ -15,33 +16,43 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
       id: value.id,
     });
 
+  const [currentValue, setCurrentValue] = React.useState(value);
+
+  const { Component: component } = useComponent() || {};
+
+  useEffect(() => {
+    if (component.id === currentValue.id) {
+      setCurrentValue(component);
+    }
+  }, [component]);
+
   const style = {
     transform: transform
       ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
       : undefined,
     position: "absolute" as const,
-    left: value.coordinates.x,
-    top: value.coordinates.y,
+    left: currentValue.coordinates.x,
+    top: currentValue.coordinates.y,
   };
 
   // const { currentTab, currentStep }: any = useUtility();
   // console.log(currentTab);
-  const { Component } = MatchComponent?.[value.name]!;
+  const { Component } = MatchComponent?.[currentValue.name]!;
 
   return (
     <ResizableBox
-      value={value}
+      value={currentValue}
       ref={setNodeRef}
       style={style}
       {...attributes}
       {...listeners}
       className={cn(
-        "relative  rounded shadow-md touch-none p-1 focus:outline hover:outline hover:outline-[2px]  text-black ",
+        "relative rounded-lg touch-none focus:outline outline-[2px] hover:outline  text-black ",
         isDragging
           ? "cursor-grabbing outline-green-500"
           : "cursor-grab  outline-blue-400"
       )}
-      key={value.id}
+      key={currentValue.id}
     >
       {/* Your content here */}
       <Component {...value} />

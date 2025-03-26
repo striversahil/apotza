@@ -22,7 +22,7 @@ const EditorCanvas = () => {
 
   // This whole Component is a drag and drop zone
   return (
-    <div className="relative w-full p-1 pb-[200px] flex flex-col gap-2 overflow-hidden">
+    <div className="relative w-full p-[1px] pb-[200px] flex flex-col gap-2 overflow-hidden">
       {Sections.map((item: any, index: number) => (
         <Section key={index} value={item} />
       ))}
