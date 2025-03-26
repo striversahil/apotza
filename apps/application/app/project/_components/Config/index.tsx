@@ -15,19 +15,18 @@ type Props = {
 const ConfigFolder = ({ handleOpen }: Props) => {
   const [Config, setConfig] = useState<any>(null);
   const { Component } = useComponent() || {};
-  const { isLoading, data, refetch } = ProjectAction.getComponent(Component);
+  // const { isLoading, data, refetch } = ProjectAction.getComponent(
+  //   Component?.id || ""
+  // );
 
-  useEffect(() => {
-    if (Component) {
-      // console.log("Component", Component);
-      refetch();
-
-      if (data) {
-        console.log("data", data);
-        setConfig(data.payload);
-      }
-    }
-  }, [data, Component]);
+  // useEffect(() => {
+  //   if (Component) {
+  //     refetch();
+  //   }
+  //   if (data) {
+  //     setConfig(data.payload);
+  //   }
+  // }, [data, Component]);
 
   return (
     <div className="relative w-full h-full px-4 py-2 bg-slate-900 border-l border-slate-500 ">
@@ -38,10 +37,10 @@ const ConfigFolder = ({ handleOpen }: Props) => {
         <PanelRightClose />
       </div>
       <div className="flex flex-col gap-2">
-        {Config &&
-          Object.keys(Config).map((item: any, index: number) => (
+        {Component &&
+          Object.keys(Component).map((item: any, index: number) => (
             <div key={index}>
-              <ConfigRoute value={Config[item]} />
+              <div>{item}</div>
             </div>
           ))}
       </div>

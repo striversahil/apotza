@@ -25,12 +25,11 @@ const Section = ({ value, ...props }: Props) => {
 
   const { data } = ProjectAction.getSection(currentValue.id as string);
 
-  const { Component: component } = useComponent() || {};
+  const { UpdatedComponent: component } = useComponent() || {};
 
   useEffect(() => {
-    if (component.id === currentValue.id) {
+    if (component?.id === currentValue.id) {
       setCurrentValue(component);
-      console.log("section_rendering");
     }
   }, [component]);
 

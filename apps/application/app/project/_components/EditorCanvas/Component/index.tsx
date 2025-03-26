@@ -18,21 +18,22 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
 
   const [currentValue, setCurrentValue] = React.useState(value);
 
-  const { Component: component } = useComponent() || {};
+  const { UpdatedComponent: component } = useComponent() || {};
+  // Setting the Component State from the Context
 
   useEffect(() => {
-    if (component.id === currentValue.id) {
+    if (component?.id === currentValue.id) {
       setCurrentValue(component);
     }
-  }, [component]);
+  }, [component, value]);
 
   const style = {
     transform: transform
       ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
       : undefined,
     position: "absolute" as const,
-    left: currentValue.coordinates.x,
-    top: currentValue.coordinates.y,
+    left: value.coordinates.x,
+    top: value.coordinates.y,
   };
 
   // const { currentTab, currentStep }: any = useUtility();
@@ -41,7 +42,7 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
 
   return (
     <ResizableBox
-      value={currentValue}
+      value={value}
       ref={setNodeRef}
       style={style}
       {...attributes}
@@ -52,10 +53,10 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
           ? "cursor-grabbing outline-green-500"
           : "cursor-grab  outline-blue-400"
       )}
-      key={currentValue.id}
+      key={value.id}
     >
       {/* Your content here */}
-      <Component {...value} />
+      <Component {...currentValue} />
     </ResizableBox>
   );
 };
