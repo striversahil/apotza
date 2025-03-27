@@ -23,7 +23,7 @@ const Section = ({ value, ...props }: Props) => {
     id: currentValue.id,
   });
 
-  const { data } = ProjectAction.getSection(currentValue.id as string);
+  const { data } = ProjectAction.getSection(value.id as string);
 
   const { UpdatedComponent: component } = useComponent() || {};
 
