@@ -1,20 +1,35 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Input } from "../../../../../../components/ui/input";
+import _ from "lodash";
+import useDebouncedUpdate from "../utils/debouce";
 
 type Props = {
   location: Array<string>;
-  value: string;
+  initialvalue: string;
 };
 
 // I will get Full Config of the Component Here
 
-const TextInput = ({ location, value }: Props) => {
+const TextInput = ({ location, initialvalue }: Props) => {
+  const [value, setValue] = React.useState<string>(initialvalue);
+
+  const update = useDebouncedUpdate(location, value);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+    update();
+  };
+
   return (
-    <Input
-      defaultValue={value}
-      value={value}
-      onChange={(e) => console.log(e.target.value)}
-    />
+    <div className="flex justify-between items-center gap-2">
+      <div className="font-bold text-sm">{location[location.length - 1]}:</div>
+      <Input
+        defaultValue={initialvalue}
+        value={value}
+        onChange={handleChange}
+        className=""
+      />
+    </div>
   );
 };
 

@@ -1,5 +1,13 @@
-import { useComponent } from "../../../../../contexts/component";
+import { useComponent } from "../../../../../../contexts/component";
 import _ from "lodash";
+
+/**
+ * Updates the value of a nested object
+ *
+ * @param Route - Array of keys to navigate to
+ * @param value - Value to update
+ * @returns
+ */
 
 const updateValue = (Route: Array<string>, value: any) => {
   const { UpdatedComponent = {}, setUpdatedComponent } = useComponent() || {};
