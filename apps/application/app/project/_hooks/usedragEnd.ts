@@ -36,6 +36,7 @@ export const useDragEnd = () => {
   const handleDragEnd = (event: any) => {
     if (event.over?.id) {
       setActiveId(event.over.id);
+      console.log(event.over.id);
 
       // Get the current mouse position , Currently not finding any way to get it
       const mouseX = event.activatorEvent.clientX;

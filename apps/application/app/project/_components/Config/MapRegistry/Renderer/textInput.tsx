@@ -10,14 +10,13 @@ type Props = {
 
 // I will get Full Config of the Component Here
 
-const TextInput = ({ location, initialvalue }: Props) => {
+const TextInput: React.FC<Props> = ({ location, initialvalue }: Props) => {
   const [value, setValue] = React.useState<string>(initialvalue);
 
-  const update = useDebouncedUpdate(location, value);
+  useDebouncedUpdate(location, value);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
-    update();
   };
 
   return (

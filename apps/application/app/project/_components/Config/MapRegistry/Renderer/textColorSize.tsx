@@ -23,17 +23,16 @@ type Props = {
 
 // I will get Full Config of the Component Here
 
-const TextColorSize = ({ location, initialvalue }: Props) => {
+const TextColorSize: React.FC<Props> = ({ location, initialvalue }: Props) => {
   const [value, setValue] = React.useState<TextColorSizeProps>(initialvalue);
 
-  const update = useDebouncedUpdate(location, value);
+  useDebouncedUpdate(location, value);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue((prev) => ({
       ...prev,
       value: e.target.value,
     }));
-    update();
   };
 
   return (

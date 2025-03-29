@@ -11,10 +11,6 @@
   },
   "appearance": {
     "background_color": "#ffffff",
-    "border": {
-      "color": "#000000",
-      "width": 0,
-      "style": "solid"
-    }
+    "border": "none"
   }
 }

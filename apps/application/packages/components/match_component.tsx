@@ -1,8 +1,15 @@
 import * as Checkbox from "./Checkbox";
 import * as Text from "./Text";
 
+type Props = {
+  content: any;
+  appearance: any;
+  layout: any;
+  interaction: any;
+};
+
 interface MatchComponent {
-  Component: React.FC;
+  Component: React.FC<Props>;
   Default: any;
 }
 
@@ -12,11 +19,11 @@ interface MatchComponentProps {
 
 export const MatchComponent: MatchComponentProps = {
   text: {
-    Component: Text.Component,
+    Component: ({ ...props }) => <Text.Component {...props} />,
     Default: Text.Default,
   },
   checkbox: {
-    Component: Checkbox.Component,
+    Component: ({ ...props }) => <Checkbox.Component {...props} />,
     Default: Checkbox.Default,
   },
 };

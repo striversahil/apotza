@@ -62,12 +62,10 @@ class ComponentService {
 
   static async create(...payload: any): Promise<ComponentInterface | null> {
     try {
-      const slug = { ...payload[0] };
-
       const [component] = await db
         .insert(Component)
         .values({
-          ...slug,
+          ...payload[0],
         })
         .returning();
       return component ? component : null;

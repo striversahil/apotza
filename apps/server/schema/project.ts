@@ -31,8 +31,9 @@ export const Section = pgTable("section", {
     onUpdate: "cascade",
   }),
   name: text("name").notNull(),
-  layout: jsonb("layout").notNull().default({ width: 1000, height: 200 }),
-  appearence: jsonb("appearence").notNull().default({}),
+  content: jsonb("content").notNull().default({}), // Contains the component data
+  layout: jsonb("layout").default({ width: 200, height: 200 }),
+  appearance: jsonb("appearance").notNull().default({}),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
 
@@ -46,9 +47,10 @@ export const Component = pgTable("component", {
   }),
   name: text("name").notNull(),
   coordinates: jsonb("coordinates").notNull().default({}),
+  content: jsonb("content").notNull().default({}), // Contains the component data
   layout: jsonb("layout").default({ width: 200, height: 200 }),
-  payload: jsonb("payload").notNull().default({}), // Contains the component data
-  configuration: jsonb("configuration").notNull().default({}), // Contains the component configuration
+  appearance: jsonb("appearance").notNull().default({}),
+  interaction: jsonb("interaction").notNull().default({}),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
 

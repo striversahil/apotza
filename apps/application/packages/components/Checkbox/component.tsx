@@ -35,6 +35,9 @@ export const Component = ({
         required={interaction.required}
         disabled={interaction.disabled}
         className="mr-2 w-4 h-4"
+        onChange={(e) => {
+          console.info(e.target.checked);
+        }}
       />
       <Label
         className="text-white"

@@ -22,8 +22,10 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
   // Setting the Component State from the Context
 
   useEffect(() => {
-    if (component?.id === currentValue.id) {
+    if (component?.id === value.id) {
       setCurrentValue(component);
+    } else {
+      setCurrentValue(value);
     }
   }, [component, value]);
 
@@ -38,7 +40,7 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
 
   // const { currentTab, currentStep }: any = useUtility();
   // console.log(currentTab);
-  const { Component } = MatchComponent?.[currentValue.name]!;
+  const { Component } = MatchComponent?.[value.name]!;
 
   return (
     <ResizableBox

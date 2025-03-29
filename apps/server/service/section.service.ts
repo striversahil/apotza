@@ -26,7 +26,7 @@ class SectionService {
           name: "Untitled Section",
           project: project_id,
           layout: sectionDefault.layout,
-          appearence: sectionDefault.appearance,
+          appearance: sectionDefault.appearance,
         })
         .returning();
       return section ? section : null;

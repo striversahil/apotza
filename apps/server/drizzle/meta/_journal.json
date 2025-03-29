@@ -15,6 +15,20 @@
       "when": 1742876352464,
       "tag": "0001_next_elektra",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1743226614654,
+      "tag": "0002_even_microbe",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1743230707482,
+      "tag": "0003_fuzzy_trauma",
+      "breakpoints": true
     }
   ]
 }
