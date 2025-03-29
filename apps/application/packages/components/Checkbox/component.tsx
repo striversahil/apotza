@@ -5,29 +5,46 @@ import Default from "./default.json";
 import { Label } from "../../../components/ui/label";
 
 type Props = {
-  configuration?: any;
-  payload?: any;
+  content: typeof Default.content;
+  appearance: typeof Default.appearance;
+  layout: typeof Default.layout;
+  interaction?: typeof Default.interaction;
+  eventHandler?: typeof Default.eventHandler;
 };
 
 export const Component = ({
-  configuration = Default.configuration,
-  payload = Default.payload,
+  content = Default.content,
+  appearance = Default.appearance,
+  layout = Default.layout,
+  interaction = Default.interaction,
 }: Props) => {
   return (
-    <div className="w-full flex flex-col justify-center items-center gap-2">
+    <div
+      className="flex"
+      style={{
+        width: `${layout.width}px`,
+        height: `${layout.height}px`,
+        visibility: layout.visible ? "visible" : "hidden",
+        alignItems: `${appearance.verticalAlign}`,
+        justifyContent: `${appearance.horizontalAlign}`,
+      }}
+    >
       <Input
         type="checkbox"
-        readOnly
-        checked={payload.checked}
-        style={{
-          // fontSize: `${configuration.fontSize}px`,
-          scale: `${configuration.scale}`,
-          borderRadius: `${configuration.borderRadius}px`,
-          color: `${configuration.backgroundColor}`,
-          // color: `${configuration.color}`,
-        }}
+        checked={content.defaultChecked}
+        required={interaction.required}
+        disabled={interaction.disabled}
+        className="mr-2 w-4 h-4"
       />
-      <Label className="text-white">A Checkbox</Label>
+      <Label
+        className="text-white"
+        style={{
+          fontSize: `${appearance.fontSize}px`,
+          color: `${appearance.textColor}`,
+        }}
+      >
+        {content.label}
+      </Label>
     </div>
   );
 };

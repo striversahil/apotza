@@ -1,11 +1,27 @@
 {
-  "configuration": {
-    "padding": 2,
-    "scale": 1,
-    "borderRadius": 25,
-    "backgroundColor": "green"
+  "content": {
+    "label": "Hello Guys",
+    "defaultChecked": true
   },
-  "payload": {
-    "checked": true
+  "appearance": {
+    "text": "label",
+    "fontSize": "16",
+    "textColor": "orange",
+    "horizontalAlign": "center",
+    "verticalAlign": "center",
+    "loadingAnimation": "none"
+  },
+  "layout": {
+    "width": "200",
+    "height": "10",
+    "visible": true
+  },
+  "interaction": {
+    "required": true,
+    "disabled": false,
+    "errorDisplay": "none"
+  },
+  "eventHandler": {
+    "onChangeCheck": "none"
   }
 }

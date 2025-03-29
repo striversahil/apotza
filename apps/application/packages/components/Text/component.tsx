@@ -5,33 +5,51 @@ import Default from "./default.json";
 import { Label } from "../../../components/ui/label";
 
 type Props = {
-  configuration?: any;
-  payload?: any;
+  content: typeof Default.content;
+  appearance: typeof Default.appearance;
+  layout: typeof Default.layout;
 };
 
 export const Component = ({
-  configuration = Default.configuration,
-  payload = Default.payload,
+  content = Default.content,
+  appearance = Default.appearance,
+  layout = Default.layout,
 }: Props) => {
   return (
     <div
-      className="flex select-none justify-center items-center"
+      className="flex select-none"
       style={{
-        paddingTop: `${configuration.paddingY}px`,
-        paddingBottom: `${configuration.paddingY}px`,
-        paddingLeft: `${configuration.paddingX}px`,
-        paddingRight: `${configuration.paddingX}px`,
-        backgroundColor: `${configuration.backgroundColor}`,
-        borderRadius: `${configuration.borderRadius}px`,
+        width: `${layout.width}px`,
+        height: `${layout.height}px`,
+        padding: `${layout.padding}px`,
+        overflow: `${layout.scrollOverflow}`,
+        visibility: layout.visible ? "visible" : "hidden",
+        alignItems: `${appearance.verticalAlign}`,
+        justifyContent: `${appearance.horizontalAlign}`,
+        backgroundColor: `${appearance.backgroundColor}`,
+        borderColor: `${appearance.borderColor}`,
+        borderWidth: `${appearance.borderWidth}px`,
+        borderRadius: `${appearance.borderRadius}px`,
       }}
     >
+      {appearance.icon && (
+        <div
+          className="mr-2"
+          style={{
+            fontSize: `${appearance.fontSize}px`,
+          }}
+        >
+          {appearance.icon}
+        </div>
+      )}
       <Label
         style={{
-          fontSize: `${configuration.fontSize}px`,
-          color: `${configuration.color}`,
+          fontSize: `${appearance.fontSize}px`,
+          fontWeight: `${appearance.fontWeight}`,
+          color: `${appearance.textColor}`,
         }}
       >
-        {payload.text}
+        {content.text}
       </Label>
     </div>
   );
