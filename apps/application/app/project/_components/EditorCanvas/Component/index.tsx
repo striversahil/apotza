@@ -2,9 +2,13 @@ import React, { use, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useDraggable } from "@dnd-kit/core";
 import { MatchComponent } from "@/packages/components/match_component";
-import ResizableBox from "../ResizableBox/ResizableBox";
+import ResizableBox from "../ResizableBox/ResizableSection";
 import { useUtility } from "../../../../../contexts/utils";
-import { useComponent } from "../../../../../contexts/component";
+import {
+  useComponent,
+  useUpdatedComponent,
+} from "../../../../../contexts/component";
+import ResizableComp from "../ResizableBox/ResizableComp";
 
 interface ComponentInterface {
   value: any;
@@ -18,16 +22,19 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
 
   const [currentValue, setCurrentValue] = React.useState(value);
 
-  const { UpdatedComponent: component } = useComponent() || {};
+  const { setComponent = () => {} } = useComponent() || {};
+
+  const { UpdatedComponent: component, setUpdatedComponent = () => {} } =
+    useUpdatedComponent() || {};
   // Setting the Component State from the Context
 
   useEffect(() => {
     if (component?.id === value.id) {
       setCurrentValue(component);
-    } else {
+    } else if (component?.id !== value.id) {
       setCurrentValue(value);
     }
-  }, [component, value]);
+  }, [component]);
 
   const style = {
     transform: transform
@@ -39,13 +46,20 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
   };
 
   // const { currentTab, currentStep }: any = useUtility();
-  // console.log(currentTab);
   const { Component } = MatchComponent?.[value.name]!;
 
   return (
-    <ResizableBox
+    <ResizableComp
       value={value}
       ref={setNodeRef}
+      onClick={(e) => {
+        e.stopPropagation();
+        if (JSON.stringify(component) !== JSON.stringify(value)) {
+          console.log("Component Clicked");
+          setComponent(value);
+          setUpdatedComponent(value);
+        }
+      }}
       style={style}
       {...attributes}
       {...listeners}
@@ -59,7 +73,7 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
     >
       {/* Your content here */}
       <Component {...currentValue} />
-    </ResizableBox>
+    </ResizableComp>
   );
 };
 

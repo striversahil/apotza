@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { useDroppable } from "@dnd-kit/core";
 import React, { useEffect } from "react";
-import ResizableBox from "../ResizableBox/ResizableBox";
+import ResizableBox from "../ResizableBox/ResizableSection";
 import { Label } from "../../../../../components/ui/label";
 import Image from "next/image";
 import DeleteSection from "./DeleteSection";
@@ -10,6 +10,7 @@ import DraggableComponent from "../Component";
 import ProjectAction from "../../../../../actions/project";
 import { TabsTrigger } from "@radix-ui/react-tabs";
 import { useComponent } from "../../../../../contexts/component";
+import ResizableSection from "../ResizableBox/ResizableSection";
 
 type Props = {
   value?: any;
@@ -17,21 +18,21 @@ type Props = {
 
 const Section = ({ value, ...props }: Props) => {
   const [Components, setComponents] = React.useState<any>([]);
-  const [currentValue, setCurrentValue] = React.useState(value);
+  // const [currentValue, setCurrentValue] = React.useState(value);
 
   const { isOver, setNodeRef } = useDroppable({
-    id: currentValue.id,
+    id: value.id,
   });
 
   const { data } = ProjectAction.getSection(value.id as string);
 
-  const { UpdatedComponent: component } = useComponent() || {};
+  // const { UpdatedComponent: component } = useComponent() || {};
 
-  useEffect(() => {
-    if (component?.id === currentValue.id) {
-      setCurrentValue(component);
-    }
-  }, [component]);
+  // useEffect(() => {
+  //   if (component?.id === currentValue.id) {
+  //     setCurrentValue(component);
+  //   }
+  // }, [component]);
 
   useEffect(() => {
     if (data) {
@@ -42,7 +43,7 @@ const Section = ({ value, ...props }: Props) => {
 
   return (
     <div className="w-full h-full">
-      <ResizableBox value={currentValue}>
+      <ResizableSection value={value}>
         <div
           ref={setNodeRef}
           className={cn(
@@ -90,7 +91,7 @@ radial-gradient(at 11% 90%, hsla(265,75%,65%,1) 0px, transparent 50%)`,
             Components.map((item: any) => <DraggableComponent value={item} />)}
           <DeleteSection id={data?.payload.id} />
         </div>
-      </ResizableBox>
+      </ResizableSection>
       <AddSection />
     </div>
   );

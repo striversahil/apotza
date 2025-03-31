@@ -26,7 +26,7 @@ type Props = {
 const TextColorSize: React.FC<Props> = ({ location, initialvalue }: Props) => {
   const [value, setValue] = React.useState<TextColorSizeProps>(initialvalue);
 
-  useDebouncedUpdate(location, value);
+  useDebouncedUpdate(location, value, initialvalue);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue((prev) => ({

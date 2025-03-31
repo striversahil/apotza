@@ -18,8 +18,6 @@ const EditorCanvas = () => {
 
   if (!Sections) return null;
 
-  // console.log(components);
-
   // This whole Component is a drag and drop zone
   return (
     <div className="relative w-full p-[1px] pb-[200px] flex flex-col gap-2 overflow-hidden">

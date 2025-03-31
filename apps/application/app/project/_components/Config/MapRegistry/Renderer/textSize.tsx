@@ -19,7 +19,7 @@ type Props = {
 const TextSize: React.FC<Props> = ({ location, initialvalue }: Props) => {
   const [value, setValue] = React.useState<string>(initialvalue);
 
-  useDebouncedUpdate(location, value);
+  useDebouncedUpdate(location, value, initialvalue);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   ChevronDown,
   ChevronRight,
@@ -27,7 +27,7 @@ type Props = {
   selectedItem?: any;
 };
 
-const CollapsiblePanels = {
+const CollapsiblePanels: any = {
   appearance: appearance,
   content: content,
   layout: layout,
@@ -47,6 +47,7 @@ const ConfigFolder = ({ handleOpen }: Props) => {
   const [State, setState] = useState<any>(null);
 
   useEffect(() => {
+    console.log("Config Component", Component, State);
     const state = _.clone(Component);
     const value = _.mapValues(state, (value) => true);
     setState(value);
@@ -59,6 +60,31 @@ const ConfigFolder = ({ handleOpen }: Props) => {
         [item]: !prev[item],
       };
     });
+  };
+
+  const PanelItem: React.FC<{
+    item: string;
+    subitem: string;
+    index: number;
+  }> = ({ item, subitem, index }) => {
+    const value = CollapsiblePanels[item]?.[subitem];
+
+    const initialvalue = useMemo(
+      () => Component[item][subitem],
+      [Component, item, subitem]
+    );
+
+    const ComponentToRender: any = MapComp({
+      location: [item, subitem],
+      initialvalue,
+    });
+
+    return (
+      <div key={index}>
+        {_.startCase(subitem)} : {value}
+        {ComponentToRender[subitem]}
+      </div>
+    );
   };
 
   return (
@@ -100,19 +126,12 @@ const ConfigFolder = ({ handleOpen }: Props) => {
                       <div className="px-2">
                         {Object.keys(Component[item]).map(
                           (subitem: any, index: number) => (
-                            <div key={index}>
-                              {_.startCase(subitem)} :
-                              {CollapsiblePanels[item]?.[subitem]}
-                              {MapComp[
-                                CollapsiblePanels[item]?.[
-                                  subitem
-                                ] as keyof typeof MapComp
-                              ]?.({
-                                location: [item, subitem],
-                                initialvalue: Component[item][subitem],
-                              })}
-                              {/* {MapComp[subitem](Component[item][subitem])} */}
-                            </div>
+                            <PanelItem
+                              key={index}
+                              item={item}
+                              subitem={subitem}
+                              index={index}
+                            />
                           )
                         )}
                       </div>

@@ -1,13 +1,18 @@
 import _ from "lodash";
 import React, { useCallback, useEffect, useRef } from "react";
-import { useComponent } from "../../../../../../contexts/component";
+import {
+  useComponent,
+  useUpdatedComponent,
+} from "../../../../../../contexts/component";
 
 const useDebouncedUpdate = (
   route: Array<string>,
   value: any,
-  debounce: number = 1000
+  initialValue: any,
+  debounce: number = 100
 ) => {
-  const { UpdatedComponent = {}, setUpdatedComponent } = useComponent() || {};
+  const { UpdatedComponent, setUpdatedComponent = () => {} } =
+    useUpdatedComponent() || {};
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -16,10 +21,9 @@ const useDebouncedUpdate = (
         route.join("."),
         value
       );
-      if (typeof setUpdatedComponent === "function") {
+      if (initialValue !== value) {
         setUpdatedComponent(newValue);
-        console.log(route.join("."), value, newValue);
-        // console.log(UpdatedComponent);
+        // console.log(route.join("."), value, newValue);
       }
     }, debounce);
     return () => clearTimeout(timer);

@@ -7,25 +7,21 @@ interface MapComp {
   initialvalue: any;
 }
 
-export const MapComp = {
-  text: ({ location, initialvalue }: MapComp) => (
-    <TextInput location={location} initialvalue={initialvalue} />
-  ),
-  textColorSize: ({ location, initialvalue }: MapComp) => (
-    <TextColorSize location={location} initialvalue={initialvalue} />
-  ),
-  textSize: ({ location, initialvalue }: MapComp) => (
-    <TextSize location={location} initialvalue={initialvalue} />
-  ),
-  // list: () => "list",
-  // boolean: "boolean",
-  // icon: "icon",
-  // color: "color",
-  // width: "width",
-  // height: "height",
-  // horizontalAlign: "horizontalAlign",
-  // verticalAlign: "verticalAlign",
-  // px: "px",
+export const MapComp = ({ ...values }: MapComp) => {
+  return {
+    text: <TextInput {...values} />,
+    textColorSize: <TextColorSize {...values} />,
+    textSize: <TextSize {...values} />,
+    // list: () => "list",
+    // boolean: "boolean",
+    // icon: "icon",
+    // color: "color",
+    // width: "width",
+    // height: "height",
+    // horizontalAlign: "horizontalAlign",
+    // verticalAlign: "verticalAlign",
+    // px: "px",
+  };
 };
 
 // export const Mapper = (value: any) => {
