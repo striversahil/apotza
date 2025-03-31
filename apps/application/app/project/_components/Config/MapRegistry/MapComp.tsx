@@ -1,7 +1,13 @@
-import Boolean from "./Renderer/boolean";
-import TextColorSize from "./Renderer/textColorSize";
-import TextInput from "./Renderer/textInput";
-import TextSize from "./Renderer/textSize";
+import {
+  Boolean,
+  TextColorSize,
+  TextSize,
+  TextInput,
+  Layout,
+  Pixel,
+  Color,
+  Icon,
+} from "../Renderer/index";
 
 interface MapComp {
   location: Array<string>;
@@ -14,14 +20,15 @@ export const MapComp = ({ ...values }: MapComp) => {
     textColorSize: <TextColorSize {...values} />,
     textSize: <TextSize {...values} />,
     boolean: <Boolean {...values} />,
+    layout: <Layout {...values} />,
     // list: () => "list",
-    // icon: "icon",
-    // color: "color",
+    icon: <Icon {...values} />,
+    color: <Color {...values} />,
     // width: "width",
     // height: "height",
     // horizontalAlign: "horizontalAlign",
     // verticalAlign: "verticalAlign",
-    // px: "px",
+    px: <Pixel {...values} />,
   };
 };
 

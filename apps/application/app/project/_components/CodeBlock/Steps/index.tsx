@@ -9,6 +9,7 @@ import ProjectAction from "../../../../../actions/project";
 import HeaderChange from "../Tab/HeaderChange";
 import InStepPopOver from "./InStepPopOver";
 import { LoaderPinwheel } from "lucide-react";
+import Loader from "../loader";
 
 type Props = {
   value?: any;
@@ -33,22 +34,7 @@ const StepEditorRoot = (props: Props) => {
 
   return (
     <div className="w-full h-full">
-      {!stepBlock && (
-        <div className="flex-1 flex items-center justify-center h-full ">
-          <h1 className="text-white font-bold capitalize text-center space-y-2">
-            <span className="text-2xl font-bold">
-              <div className="ml-5 mr-10 animate-pulse">Loading.... </div>
-              <div className="flex items-center gap-2">
-                <div className="animate-pulse text-blue-500 ">
-                  Juicy Data for Yaa....
-                </div>{" "}
-                <div className="animate">📊</div>
-              </div>
-            </span>{" "}
-            <br />
-          </h1>
-        </div>
-      )}
+      {!stepBlock && <Loader />}
       {stepBlock && (
         <TabRoot className="w-full h-full" defaultValue={stepBlock[0].id}>
           <PanelGroup direction="horizontal" className="">

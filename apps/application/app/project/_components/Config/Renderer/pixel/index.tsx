@@ -1,40 +1,31 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { Input } from "../../../../../../components/ui/input";
-import _ from "lodash";
 import useDebouncedUpdate from "../utils/debouce";
 import {
   Select,
   SelectContent,
-  SelectItem,
   SelectTrigger,
 } from "../../../../../../components/ui/select";
+import { SelectItem } from "@radix-ui/react-select";
 
 type Props = {
   location: Array<string>;
-  initialvalue: string;
+  initialvalue: number;
 };
 
-// I will get Full Config of the Component Here
-
-const TextSize: React.FC<Props> = ({ location, initialvalue }: Props) => {
-  const [value, setValue] = React.useState<string>(initialvalue);
+export const Pixel = ({ location, initialvalue }: Props) => {
+  const [value, setValue] = React.useState<number>(initialvalue);
 
   useDebouncedUpdate(location, value);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-  };
-
   return (
-    <div className="flex justify-between items-center gap-2">
+    <div className="flex float-end gap-2">
       <Input
-        defaultValue={initialvalue}
-        value={value}
-        onChange={handleChange}
         type="number"
-        className=""
+        value={value}
+        onChange={(e) => setValue(Number(e.target.value))}
       />
-      <Select defaultValue={initialvalue} onValueChange={setValue}>
+      <Select defaultValue={"pixel"}>
         <SelectTrigger className="w-fit gap-1 border-none p-0 focus:bg-accent focus:text-accent-foreground">
           <div>{value}</div>
         </SelectTrigger>
@@ -54,4 +45,4 @@ const TextSize: React.FC<Props> = ({ location, initialvalue }: Props) => {
   );
 };
 
-export default TextSize;
+export default Pixel;

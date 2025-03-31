@@ -11,7 +11,10 @@ type Props = {
 
 // I will get Full Config of the Component Here
 
-const TextInput: React.FC<Props> = ({ location, initialvalue }: Props) => {
+export const TextInput: React.FC<Props> = ({
+  location,
+  initialvalue,
+}: Props) => {
   const [value, setValue] = React.useState<string>(initialvalue);
 
   useDebouncedUpdate(location, value);
@@ -23,11 +26,10 @@ const TextInput: React.FC<Props> = ({ location, initialvalue }: Props) => {
 
   return (
     <Textarea
-      defaultValue={initialvalue}
       value={value}
       onChange={handleChange}
       className=""
-      ref={ref}
+      typeof="text"
     />
   );
 };

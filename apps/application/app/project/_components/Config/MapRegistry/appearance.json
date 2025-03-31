@@ -6,5 +6,8 @@
   "backgroundColor": "color",
   "verticalAlign": "verticalAlign",
   "horizontalAlign": "horizontalAlign",
-  "borderColor": "color"
+  "borderColor": "color",
+  "textColor": "color",
+  "borderRadius": "px",
+  "borderWidth": "px"
 }

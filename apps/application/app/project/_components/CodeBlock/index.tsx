@@ -14,13 +14,19 @@ import ProjectAction from "../../../../actions/project";
 import StepEditorRoot from "./Steps";
 import { Skeleton } from "../../../../components/ui/skeleton";
 import { useCurrentTab } from "../../_hooks/useCurrentTab";
+import Loader from "./loader";
 
-type Props = {};
-
-const CodeBlock = ({}: Props) => {
+const CodeBlock = () => {
   const { openCode, handleOpenCode } = useOpen();
+  const [CodeBlockData, setCodeBlockData] = useState<any>(null);
 
   const { isLoading, data } = ProjectAction.getProject();
+
+  useEffect(() => {
+    if (data) {
+      setCodeBlockData(data.payload.codeblocks);
+    }
+  }, [data]);
 
   return (
     <>
@@ -40,18 +46,18 @@ const CodeBlock = ({}: Props) => {
           onCollapse={handleOpenCode}
         >
           <div className="ml-1 h-full bg-slate-800">
-            {data &&
-              data.payload.codeblocks.map((item: any, index: number) => {
-                return (
-                  <TabsContent
-                    key={index}
-                    className="w-full h-full"
-                    value={index.toString()}
-                  >
-                    <StepEditorRoot value={item} />
-                  </TabsContent>
-                );
-              })}
+            {!CodeBlockData && <Loader />}
+            {CodeBlockData?.map((item: any, index: number) => {
+              return (
+                <TabsContent
+                  key={index}
+                  className="w-full h-full"
+                  value={index.toString()}
+                >
+                  <StepEditorRoot value={item} />
+                </TabsContent>
+              );
+            })}
           </div>
         </Panel>
       )}

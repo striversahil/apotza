@@ -91,7 +91,10 @@ const ConfigFolder = ({ handleOpen }: Props) => {
           </TooltipTrigger>
           <div className="flex-1">{ComponentToRender[value]}</div>
         </div>
-        <TooltipContent side="left" className="bg-slate-950 border rounded-xl">
+        <TooltipContent
+          side="left"
+          className="bg-slate-900 border rounded-xl shadow-lg"
+        >
           Adjust {"   "}
           <span className="font-bold text-base mx-2 text-blue-500">
             {_.startCase(subitem)}
@@ -126,7 +129,7 @@ const ConfigFolder = ({ handleOpen }: Props) => {
         <h1 className="text-white text-2xl font-bold capitalize text-center ">
           {Component?.name}
         </h1>
-        <div className="flex flex-col gap-3 mt-5">
+        <div className="flex flex-col gap-3 mt-5 pb-14">
           {Component &&
             State &&
             Object.keys(Component).map(

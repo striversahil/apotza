@@ -8,7 +8,7 @@ type Props = {
   initialvalue: boolean;
 };
 
-const Boolean = ({ location, initialvalue }: Props) => {
+export const Boolean = ({ location, initialvalue }: Props) => {
   const [value, setValue] = React.useState<boolean>(initialvalue);
 
   useDebouncedUpdate(location, value);
