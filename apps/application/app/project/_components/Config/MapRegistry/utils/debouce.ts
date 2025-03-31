@@ -8,7 +8,6 @@ import {
 const useDebouncedUpdate = (
   route: Array<string>,
   value: any,
-  initialValue: any,
   debounce: number = 100
 ) => {
   const { UpdatedComponent, setUpdatedComponent = () => {} } =
@@ -21,10 +20,10 @@ const useDebouncedUpdate = (
         route.join("."),
         value
       );
-      if (initialValue !== value) {
-        setUpdatedComponent(newValue);
-        // console.log(route.join("."), value, newValue);
-      }
+      setUpdatedComponent(newValue);
+      // if (initialValue !== value) {
+      //   // console.log(route.join("."), value, newValue);
+      // }
     }, debounce);
     return () => clearTimeout(timer);
   }, [value]);

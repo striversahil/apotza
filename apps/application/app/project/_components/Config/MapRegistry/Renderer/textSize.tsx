@@ -19,7 +19,7 @@ type Props = {
 const TextSize: React.FC<Props> = ({ location, initialvalue }: Props) => {
   const [value, setValue] = React.useState<string>(initialvalue);
 
-  useDebouncedUpdate(location, value, initialvalue);
+  useDebouncedUpdate(location, value);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -27,7 +27,6 @@ const TextSize: React.FC<Props> = ({ location, initialvalue }: Props) => {
 
   return (
     <div className="flex justify-between items-center gap-2">
-      <div className="font-bold text-sm">{location[location.length - 1]}:</div>
       <Input
         defaultValue={initialvalue}
         value={value}

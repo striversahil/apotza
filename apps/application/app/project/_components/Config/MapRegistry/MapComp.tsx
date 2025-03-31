@@ -1,3 +1,4 @@
+import Boolean from "./Renderer/boolean";
 import TextColorSize from "./Renderer/textColorSize";
 import TextInput from "./Renderer/textInput";
 import TextSize from "./Renderer/textSize";
@@ -12,8 +13,8 @@ export const MapComp = ({ ...values }: MapComp) => {
     text: <TextInput {...values} />,
     textColorSize: <TextColorSize {...values} />,
     textSize: <TextSize {...values} />,
+    boolean: <Boolean {...values} />,
     // list: () => "list",
-    // boolean: "boolean",
     // icon: "icon",
     // color: "color",
     // width: "width",

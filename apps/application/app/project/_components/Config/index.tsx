@@ -7,7 +7,6 @@ import {
   PanelRightClose,
   PanelRightOpen,
 } from "lucide-react";
-import ConfigRoute from "./ConfigRoute";
 import ProjectAction from "@/actions/project";
 import { useComponent } from "../../../../contexts/component";
 import _, { set } from "lodash";
@@ -21,6 +20,11 @@ import appearance from "./MapRegistry/appearance.json";
 import content from "./MapRegistry/content.json";
 import layout from "./MapRegistry/layout.json";
 import { MapComp } from "./MapRegistry/MapComp";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "../../../../components/ui/Tooltip/tooltip";
 
 type Props = {
   handleOpen: () => void;
@@ -80,10 +84,20 @@ const ConfigFolder = ({ handleOpen }: Props) => {
     });
 
     return (
-      <div key={index}>
-        {_.startCase(subitem)} : {value}
-        {ComponentToRender[subitem]}
-      </div>
+      <Tooltip key={index}>
+        <div className="flex items-center gap-2 select-none text-white/70 hover:text-white  duration-100 ">
+          <TooltipTrigger className="text-sm font-bold ">
+            {_.startCase(subitem)} :
+          </TooltipTrigger>
+          <div className="flex-1">{ComponentToRender[value]}</div>
+        </div>
+        <TooltipContent side="left" className="bg-slate-950 border rounded-xl">
+          Adjust {"   "}
+          <span className="font-bold text-base mx-2 text-blue-500">
+            {_.startCase(subitem)}
+          </span>
+        </TooltipContent>
+      </Tooltip>
     );
   };
 
@@ -95,11 +109,23 @@ const ConfigFolder = ({ handleOpen }: Props) => {
       >
         <PanelRightClose />
       </div>
+      {!Component && (
+        <div className="flex-1 flex items-center justify-center h-full ">
+          <h1 className="text-white text-lg font-bold capitalize text-center space-y-2">
+            Select
+            <br />{" "}
+            <span className="text-2xl text-blue-500 font-bold">
+              Component 😉
+            </span>{" "}
+            <br />
+            <span className="pt-5">to Start configuration</span>
+          </h1>
+        </div>
+      )}
       <div className="flex flex-col gap-2">
         <h1 className="text-white text-2xl font-bold capitalize text-center ">
           {Component?.name}
         </h1>
-
         <div className="flex flex-col gap-3 mt-5">
           {Component &&
             State &&
@@ -123,7 +149,7 @@ const ConfigFolder = ({ handleOpen }: Props) => {
                       />
                     </div>
                     {State[item] && (
-                      <div className="px-2">
+                      <div className="p-2 flex flex-col gap-4 ">
                         {Object.keys(Component[item]).map(
                           (subitem: any, index: number) => (
                             <PanelItem

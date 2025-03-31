@@ -69,11 +69,14 @@ const page = (props: Props) => {
                   collapsible
                   onCollapse={handleOpenConfig}
                   maxSize={40}
+                  className="relative"
                 >
-                  <ConfigFolder
-                    handleOpen={handleOpenConfig}
-                    // selectedItem={activeId}
-                  />
+                  <div className="absolute inset-0 overflow-y-scroll bg-inherit bg-slate-900">
+                    <ConfigFolder
+                      handleOpen={handleOpenConfig}
+                      // selectedItem={activeId}
+                    />
+                  </div>
                 </Panel>
               )}
             </PanelGroup>
