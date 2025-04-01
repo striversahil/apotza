@@ -1,36 +1,16 @@
 import CompSidebar from "./Component";
 import Image from "next/image";
-import {
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-} from "../../../../components/ui/Tooltip/tooltip";
 
 type Props = {};
 
 const Sidebar = (props: Props) => {
   return (
-    <div className="flex z-10 duration-1000 ">
-      <div className="w-fit h-full bg-inherit flex-col bg-slate-900 space-y-10 border-r border-slate-700">
-        <Tooltip>
-          <TooltipTrigger>
-            <Image
-              src={"/apotzalogo.jpg"}
-              width={50}
-              height={50}
-              alt="brand_pic"
-              className="m-2 bg-white/20 rounded-xl cursor-pointer hover:animate-pulse"
-              onClick={() => window.location.reload()}
-            />
-          </TooltipTrigger>
-          <TooltipContent side="right">Apotza 🥰</TooltipContent>
-        </Tooltip>
+    <div className="fixed left-0 top-[5vh] w-[55px]  h-full bg-slate-900 flex z-10 ">
+      <div className="flex flex-col w-full mt-10 items-center gap-5">
         {/* Todo : Add Navigations as per need */}
-        <div className="w-full flex flex-col justify-center items-center gap-5">
-          <CompSidebar />
-          <CompSidebar />
-          <CompSidebar />
-        </div>
+        <CompSidebar />
+        <CompSidebar />
+        <CompSidebar />
       </div>
     </div>
   );

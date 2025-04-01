@@ -25,12 +25,14 @@ export const TextInput: React.FC<Props> = ({
   };
 
   return (
-    <Textarea
-      value={value}
-      onChange={handleChange}
-      className=""
-      typeof="text"
-    />
+    <div className="float-end flex ">
+      <Textarea
+        value={value}
+        onChange={handleChange}
+        className=""
+        typeof="text"
+      />
+    </div>
   );
 };
 

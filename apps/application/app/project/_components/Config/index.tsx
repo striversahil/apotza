@@ -25,11 +25,12 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "../../../../components/ui/Tooltip/tooltip";
+import { CardTitle } from "../../../../components/ui/card";
 
-type Props = {
-  handleOpen: () => void;
-  selectedItem?: any;
-};
+// type Props = {
+//   handleOpen: () => void;
+//   selectedItem?: any;
+// };
 
 const CollapsiblePanels: any = {
   appearance: appearance,
@@ -45,7 +46,7 @@ interface ComponentType {
   };
 }
 
-const ConfigFolder = ({ handleOpen }: Props) => {
+const ConfigFolder = () => {
   const [Config, setConfig] = useState<any>(null);
   const { Component } = useComponent() || {};
   const [State, setState] = useState<any>(null);
@@ -105,13 +106,7 @@ const ConfigFolder = ({ handleOpen }: Props) => {
   };
 
   return (
-    <div className="relative w-full h-full p-2 bg-slate-900 border-l border-slate-500 ">
-      <div
-        className="absolute z-50 top-2 right-0 p-2 bg-black/50 rounded-md cursor-pointer hover:bg-white/10"
-        onClick={handleOpen}
-      >
-        <PanelRightClose />
-      </div>
+    <div className="relative w-full h-full px-2 border-l  border-slate-500 ">
       {!Component && (
         <div className="flex-1 flex items-center justify-center h-full ">
           <h1 className="text-white text-lg font-bold capitalize text-center space-y-2">
@@ -126,9 +121,12 @@ const ConfigFolder = ({ handleOpen }: Props) => {
         </div>
       )}
       <div className="flex flex-col gap-2">
-        <h1 className="text-white text-2xl font-bold capitalize text-center ">
+        <CardTitle
+          className="sticky top-0 z-50 border-[2px] border-white/50 select-none shadow-xl
+        bg-gradient-to-tr from-slate-900 to-slate-700 text-2xl font-bold capitalize text-center pl-6  rounded-lg"
+        >
           {Component?.name}
-        </h1>
+        </CardTitle>
         <div className="flex flex-col gap-3 mt-5 pb-14">
           {Component &&
             State &&

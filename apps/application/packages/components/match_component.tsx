@@ -2,10 +2,10 @@ import * as Checkbox from "./Checkbox";
 import * as Text from "./Text";
 
 type Props = {
-  content: any;
-  appearance: any;
-  layout: any;
-  interaction: any;
+  content?: any;
+  appearance?: any;
+  layout?: any;
+  interaction?: any;
 };
 
 interface MatchComponent {

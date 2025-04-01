@@ -4,5 +4,6 @@
   "min_height": "px",
   "max_height": "px",
   "padding": "px",
-  "visible": "boolean"
+  "visible": "boolean",
+  "layout": "layout"
 }

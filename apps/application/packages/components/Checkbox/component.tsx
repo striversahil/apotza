@@ -5,9 +5,9 @@ import Default from "./default.json";
 import { Label } from "../../../components/ui/label";
 
 type Props = {
-  content: typeof Default.content;
-  appearance: typeof Default.appearance;
-  layout: typeof Default.layout;
+  content?: typeof Default.content;
+  appearance?: typeof Default.appearance;
+  layout?: typeof Default.layout;
   interaction?: typeof Default.interaction;
   eventHandler?: typeof Default.eventHandler;
 };

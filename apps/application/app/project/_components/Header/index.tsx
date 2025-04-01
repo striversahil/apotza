@@ -4,6 +4,12 @@ import { Skeleton } from "../../../../components/ui/skeleton";
 import React from "react";
 import { useClickOutsideEnter } from "../../_hooks/useClickOutsideEnter";
 import ProjectAction from "../../../../actions/project";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "../../../../components/ui/Tooltip/tooltip";
+import Image from "next/image";
 
 type Props = {};
 
@@ -17,15 +23,27 @@ const Header = (props: Props) => {
   ref.current?.focus();
 
   return (
-    <div className="sticky top-0 w-full h-[5vh] bg-slate-900 text-center flex justify-center">
-      <h1
-        className="flex items-center text-3xl text-white font-bold text-center"
-        onClick={() => setMount(true)}
-      >
+    <div className="fixed top-0 w-full h-[5vh] bg-slate-900 text-center flex">
+      <div className="flex absolute top-0 left-0 items-center ml-2 mt-1 ">
+        <Image
+          src={"/apotzalogo.jpg"}
+          width={50}
+          height={50}
+          alt="brand_pic"
+          className=" cursor-pointer hover:animate-pulse"
+          onClick={() => window.location.reload()}
+        />
+      </div>
+      <div className="flex-1 w-full flex justify-center items-center ">
         {isLoading && <Skeleton className="w-[500px] h-[40px] rounded-md" />}
 
         {!isLoading && !mount && (
-          <span className="font-bold text-2xl">{data?.payload.name}</span>
+          <h1
+            className="text-2xl text-white font-bold text-center"
+            onClick={() => setMount(true)}
+          >
+            {data?.payload.name}
+          </h1>
         )}
         {!isLoading && mount && (
           <Input
@@ -37,7 +55,7 @@ const Header = (props: Props) => {
             onKeyDown={EnterClick}
           />
         )}
-      </h1>
+      </div>
     </div>
   );
 };

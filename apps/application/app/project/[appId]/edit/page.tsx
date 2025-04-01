@@ -40,56 +40,56 @@ const page = (props: Props) => {
       sensors={sensors}
     >
       <TooltipProvider>
-        <div className="relative flex min-h-screen bg-slate-950">
+        <main className="relative h-screen bg-slate-950 min-w-screen">
           <Sidebar />
-          <main className="relative flex-1 min-h-screen min-w-screen">
-            {/* Main Resizable Pannel Start's Here */}
-            <PanelGroup direction="horizontal">
-              <Panel defaultSize={80}>
-                <TabsRoot defaultValue={"0"} className="h-full">
-                  <PanelGroup direction="vertical">
-                    <Panel defaultSize={60} className="relative">
-                      <Header />
-                      <div className="absolute inset-0 top-14 overflow-y-scroll">
-                        <EditorCanvas />
-                      </div>
-                    </Panel>
-
-                    <CodeBlock />
-                  </PanelGroup>
-                </TabsRoot>
-              </Panel>
-              {openConfig && (
-                <PanelResizeHandle className="p-[2px] cursor-row-resize hover:bg-blue-500" />
-              )}
-              {openConfig && (
-                <Panel
-                  defaultSize={20}
-                  minSize={10}
-                  collapsible
-                  onCollapse={handleOpenConfig}
-                  maxSize={40}
-                  className="relative"
+          {/* Main Resizable Pannel Start's Here */}
+          <Header />
+          <PanelGroup direction="horizontal">
+            <Panel defaultSize={80}>
+              <TabsRoot defaultValue={"0"} className="h-full">
+                <PanelGroup
+                  direction="vertical"
+                  className="relative top-[5vh] left-[55px]"
                 >
-                  <div className="absolute inset-0 overflow-y-scroll bg-inherit bg-slate-900">
-                    <ConfigFolder
-                      handleOpen={handleOpenConfig}
-                      // selectedItem={activeId}
-                    />
-                  </div>
-                </Panel>
-              )}
-            </PanelGroup>
-            {!openConfig && (
-              <div
-                className="fixed top-2 right-0 p-2 bg-black/50 rounded-md cursor-pointer hover:bg-white/10"
-                onClick={() => handleOpenConfig()}
-              >
-                <PanelRightOpen />
-              </div>
+                  <Panel defaultSize={60} className="relative">
+                    <div className="absolute inset-0  overflow-y-scroll">
+                      <EditorCanvas />
+                    </div>
+                  </Panel>
+
+                  <CodeBlock />
+                </PanelGroup>
+              </TabsRoot>
+            </Panel>
+            {openConfig && (
+              <PanelResizeHandle className="p-[2px] cursor-row-resize hover:bg-blue-500" />
             )}
-          </main>
-        </div>
+            {openConfig && (
+              <Panel
+                defaultSize={20}
+                minSize={10}
+                collapsible
+                onCollapse={handleOpenConfig}
+                maxSize={40}
+                className="relative"
+              >
+                <div className="absolute top-[5vh] inset-0 overflow-y-scroll bg-slate-900">
+                  <ConfigFolder
+                  // selectedItem={activeId}
+                  />
+                </div>
+              </Panel>
+            )}
+          </PanelGroup>
+          {!openConfig && (
+            <div
+              className="fixed top-[5vh] right-0 p-2 bg-black/50 rounded-md cursor-pointer hover:bg-white/10"
+              onClick={() => handleOpenConfig()}
+            >
+              <PanelRightOpen />
+            </div>
+          )}
+        </main>
       </TooltipProvider>
     </DndContext>
   );
