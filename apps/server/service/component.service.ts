@@ -26,6 +26,7 @@ class ComponentService {
     clause = {}
   ): Promise<ComponentInterface | null> {
     try {
+      console.log(clause);
       const [component] = await db
         .update(Component)
         .set(clause)

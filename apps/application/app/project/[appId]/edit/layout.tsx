@@ -3,6 +3,7 @@ import React from "react";
 import { UtilityProvider } from "../../../../contexts/utils";
 import {
   ComponentProvider,
+  PrevComponentProvider,
   UpdatedComponentProvider,
 } from "../../../../contexts/component";
 
@@ -12,10 +13,12 @@ type Props = {
 const RootLayout = (props: Props) => {
   return (
     <div suppressHydrationWarning suppressContentEditableWarning>
-      <ComponentProvider>
-        <UpdatedComponentProvider>{props.children}</UpdatedComponentProvider>
-        {/* <UtilityProvider></UtilityProvider> */}
-      </ComponentProvider>
+      <PrevComponentProvider>
+        <ComponentProvider>
+          <UpdatedComponentProvider>{props.children}</UpdatedComponentProvider>
+          {/* <UtilityProvider></UtilityProvider> */}
+        </ComponentProvider>
+      </PrevComponentProvider>
     </div>
   );
 };

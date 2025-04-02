@@ -26,6 +26,7 @@ import {
   TooltipTrigger,
 } from "../../../../components/ui/Tooltip/tooltip";
 import { CardTitle } from "../../../../components/ui/card";
+import ConfigHeader from "./header";
 
 // type Props = {
 //   handleOpen: () => void;
@@ -52,7 +53,6 @@ const ConfigFolder = () => {
   const [State, setState] = useState<any>(null);
 
   useEffect(() => {
-    console.log("Config Component", Component, State);
     const state = _.clone(Component);
     const value = _.mapValues(state, (value) => true);
     setState(value);
@@ -121,12 +121,7 @@ const ConfigFolder = () => {
         </div>
       )}
       <div className="flex flex-col gap-2">
-        <CardTitle
-          className="sticky top-0 z-50 border-[2px] border-white/50 select-none shadow-xl
-        bg-gradient-to-tr from-slate-900 to-slate-700 text-2xl font-bold capitalize text-center pl-6  rounded-lg"
-        >
-          {Component?.name}
-        </CardTitle>
+        <ConfigHeader name={Component?.name} />
         <div className="flex flex-col gap-3 mt-5 pb-14">
           {Component &&
             State &&

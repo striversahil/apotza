@@ -44,13 +44,19 @@ const page = (props: Props) => {
           <Sidebar />
           {/* Main Resizable Pannel Start's Here */}
           <Header />
-          <PanelGroup direction="horizontal">
+          <PanelGroup
+            direction="horizontal"
+            style={{
+              position: "relative",
+              height: "calc(100% - 5vh)",
+              width: "calc(100% - 55px)",
+              left: "55px",
+              top: "5vh",
+            }}
+          >
             <Panel defaultSize={80}>
               <TabsRoot defaultValue={"0"} className="h-full">
-                <PanelGroup
-                  direction="vertical"
-                  className="relative top-[5vh] left-[55px]"
-                >
+                <PanelGroup direction="vertical" className="">
                   <Panel defaultSize={60} className="relative">
                     <div className="absolute inset-0  overflow-y-scroll">
                       <EditorCanvas />
@@ -73,7 +79,7 @@ const page = (props: Props) => {
                 maxSize={40}
                 className="relative"
               >
-                <div className="absolute top-[5vh] inset-0 overflow-y-scroll bg-slate-900">
+                <div className="absolute inset-0 overflow-y-auto bg-slate-900">
                   <ConfigFolder
                   // selectedItem={activeId}
                   />

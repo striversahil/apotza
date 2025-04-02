@@ -15,11 +15,18 @@ interface SectionContext {
   setSection: React.Dispatch<React.SetStateAction<any>>;
 }
 
+interface PrevComponentContext {
+  prevComponent: any;
+  setPrevComponent: React.Dispatch<React.SetStateAction<any>>;
+}
+
 const ComponentContext = createContext<ComponentContext | null>(null);
 const UpdatedComponentContext = createContext<UpdatedComponentContext | null>(
   null
 );
 const SectionContext = createContext<SectionContext | null>(null);
+
+const PrevComponentContext = createContext<PrevComponentContext | null>(null);
 
 export const ComponentProvider = ({
   children,
@@ -65,6 +72,21 @@ export const SectionProvider = ({
   );
 };
 
+export const PrevComponentProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const [prevComponent, setPrevComponent] = useState<any>(null);
+
+  return (
+    <PrevComponentContext.Provider value={{ prevComponent, setPrevComponent }}>
+      {children}
+    </PrevComponentContext.Provider>
+  );
+};
+
 export const useComponent = () => useContext(ComponentContext);
 export const useUpdatedComponent = () => useContext(UpdatedComponentContext);
 export const useSection = () => useContext(SectionContext);
+export const usePrevComponent = () => useContext(PrevComponentContext);

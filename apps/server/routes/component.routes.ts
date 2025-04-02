@@ -13,7 +13,7 @@ router.route("/:id").get(ComponentController.getComponent);
 
 router.route("/delete").post(ComponentController.deleteComponent);
 
-// router.route("/update/").post(ComponentController.coordinateUpdate);
+router.route("/update").post(ComponentController.updateComponent);
 
 router.route("/coordinates").post(ComponentController.coordinateUpdate);
 

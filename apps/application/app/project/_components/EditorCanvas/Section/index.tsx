@@ -24,6 +24,8 @@ const Section = ({ value, ...props }: Props) => {
     id: value.id,
   });
 
+  console.log(isOver);
+
   const { data } = ProjectAction.getSection(value.id as string);
 
   // const { UpdatedComponent: component } = useComponent() || {};
@@ -36,7 +38,6 @@ const Section = ({ value, ...props }: Props) => {
 
   useEffect(() => {
     if (data) {
-      console.log(data);
       setComponents(data.payload.components);
     }
   }, [data]);

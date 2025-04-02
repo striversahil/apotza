@@ -28,9 +28,11 @@ export const Color: React.FC<Props> = ({ location, initialvalue }: Props) => {
   useDebouncedUpdate(location, value);
 
   return (
-    <div className="relative float-end gap-2">
+    <div className="relative float-end gap-2 ">
       <Popover>
-        <PopoverTrigger className="p-2 overflow-hidden rounded-lg text-sm font-bold font-sans bg-white/10 hover:bg-white/20">
+        <PopoverTrigger
+          className={`p-2 overflow-hidden rounded-lg text-sm font-bold font-sans cursor-pointer shadow-lg shadow-[${value}] bg-white/10 hover:bg-white/20`}
+        >
           <div
             style={{
               backgroundColor: value,
@@ -38,6 +40,7 @@ export const Color: React.FC<Props> = ({ location, initialvalue }: Props) => {
               width: "25px",
               height: "25px",
             }}
+            className=""
           ></div>
         </PopoverTrigger>
         <PopoverContent side="right">

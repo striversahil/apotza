@@ -44,13 +44,16 @@ const Tabs = (props: Props) => {
     <div className="relative flex h-[36px] mx-1 ">
       {CodeBlockData && (
         <div>
-          <TabsList className="relative flex flex-1 items-center justify-start gap-2  overflow-y-scroll max-w-full bg-transparent">
+          <TabsList className="relative flex flex-nowrap flex-1 items-center justify-start gap-2  overflow-x-scroll overflow-y-hidden bg-transparent">
             <div className="sticky left-0">
               <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
-                  <div className="bg-white/10 w-32 p-1  rounded-md border border-white/20 cursor-pointer inline-flex items-center gap-2">
+                  <div className="bg-white/10 p-1  rounded-md border border-white/20 cursor-pointer inline-flex items-center gap-2">
                     <CirclePlus size={20} />
-                    <span className="text-sm font-bold"> Add New API</span>
+                    <span className="font-bold text-sm whitespace-nowrap text-ellipsis">
+                      {" "}
+                      Add New API
+                    </span>
                   </div>
                 </PopoverTrigger>
                 <ComboPopAPI setOpen={setOpen} />
@@ -59,7 +62,7 @@ const Tabs = (props: Props) => {
             {CodeBlockData.map((item: any, index: number) => (
               <div
                 className={cn(
-                  `flex bg-white/10 p-1 rounded-md border  border-white/20 hover:bg-white/30  select-none cursor-pointer items-center gap-2`,
+                  `flex w-fit bg-white/10 p-1 rounded-md border border-white/20 hover:bg-white/30  select-none cursor-pointer items-center gap-2`,
                   currentTab === index.toString() &&
                     "bg-white/20 font-bold text-blue-400 border-b-[3px] border-l-[3px] border-blue-700"
                 )}
@@ -73,7 +76,9 @@ const Tabs = (props: Props) => {
                   }}
                 >
                   <UnplugIcon className="size-4 ml-1" />
-                  <span className=" text-[13px] ">{item.name}</span>
+                  <span className=" text-sm whitespace-nowrap text-ellipsis">
+                    {item.name}
+                  </span>
                 </TabsTrigger>
                 <div className="ml-auto">
                   <DeleteTab item={item} />

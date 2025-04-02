@@ -60,7 +60,7 @@ const CompSidebar = ({ children }: SidebarProps) => {
   };
 
   return (
-    <div>
+    <div className="">
       <Tooltip>
         <TooltipTrigger>
           <div

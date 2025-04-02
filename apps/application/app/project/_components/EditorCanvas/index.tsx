@@ -5,6 +5,12 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import Section from "./Section";
 import { TabsList } from "@radix-ui/react-tabs";
+import {
+  useComponent,
+  useUpdatedComponent,
+} from "../../../../contexts/component";
+// const { Component } = useComponent() || {};
+// const { UpdatedComponent } = useUpdatedComponent() || {};
 
 const EditorCanvas = () => {
   const [Sections, setSections] = useState<any>([]);

@@ -13,13 +13,13 @@ const PopOver = ({ setOpened, ...props }: Props) => {
 
   return (
     <div
-      className="fixed w-[300px]  h-[300px] z-50"
+      className="fixed w-[300px]  h-[300px] z-50 "
       ref={ref}
       // onMouseLeave={() => {
       //   if (!props.isDragging) setOpened(false);
       // }}
     >
-      <div className="bg-gray-800 w-full h-full rounded-md">
+      <div className="bg-gray-800 w-full h-full rounded-md shadow-lg shadow-black/50">
         <div className="flex flex-col items-center justify-center p-2">
           <h1 className="text-white text-2xl font-bold">Components</h1>
           <span className="text-gray-400 text-xs text-center py-2">
