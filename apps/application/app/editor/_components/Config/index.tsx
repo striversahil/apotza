@@ -121,7 +121,7 @@ const ConfigFolder = () => {
         </div>
       )}
       <div className="flex flex-col gap-2">
-        <ConfigHeader name={Component?.name} />
+        <ConfigHeader value={Component ?? { name: "No Component Selected" }} />
         <div className="flex flex-col gap-3 mt-5 pb-14">
           {Component &&
             State &&

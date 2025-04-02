@@ -1,4 +1,4 @@
-// This Would be Preview for Project
+// This Would be the Deployed Project
 import React from "react";
 
 type Props = {};
@@ -6,7 +6,7 @@ type Props = {};
 const page = (props: Props) => {
   return (
     <div>
-      This will be the Preview <br /> for the Project
+      This will be Deployed <br /> platform
     </div>
   );
 };

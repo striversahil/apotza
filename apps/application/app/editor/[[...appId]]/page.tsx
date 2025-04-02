@@ -1,19 +1,19 @@
 "use client";
-import EditorCanvas from "../../_components/EditorCanvas";
+import EditorCanvas from "../_components/EditorCanvas";
 
 import { PanelGroup, Panel, PanelResizeHandle } from "react-resizable-panels";
 import { PanelRightOpen } from "lucide-react";
 
-import Sidebar from "../../_components/Sidebar";
-import CodeBlock from "../../_components/CodeBlock";
-import ConfigFolder from "../../_components/Config";
+import Sidebar from "../_components/Sidebar";
+import CodeBlock from "../_components/CodeBlock";
+import ConfigFolder from "../_components/Config";
 import { DndContext } from "@dnd-kit/core";
-import Header from "../../_components/Header";
-import { useOpen } from "../../_hooks/useOpenCode";
-import { Tabs as TabsRoot } from "../../../../components/ui/tabs";
-import { TooltipProvider } from "../../../../components/ui/Tooltip/tooltip";
-import { useCurrentTab } from "../../_hooks/useCurrentTab";
-import { useDragEnd } from "../../_hooks/usedragEnd";
+import Header from "../_components/Header";
+import { useOpen } from "../_hooks/useOpenCode";
+import { Tabs as TabsRoot } from "../../../components/ui/tabs";
+import { TooltipProvider } from "../../../components/ui/Tooltip/tooltip";
+import { useCurrentTab } from "../_hooks/useCurrentTab";
+import { useDragEnd } from "../_hooks/usedragEnd";
 
 type Props = {};
 

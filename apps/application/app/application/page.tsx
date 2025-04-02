@@ -22,7 +22,7 @@ const page = (props: Props) => {
   }
 
   if (data && data.success === true) {
-    redirect(`/project/${data.payload.id}/edit`);
+    redirect(`/application/${data.payload.id}/edit`);
   }
 
   return (
