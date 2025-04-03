@@ -17,13 +17,14 @@ export class PageService {
     }
   }
 
-  static async create(project_id: string) {
+  static async create(project_id: string, ...payload: any) {
     try {
       const [page] = await db
         .insert(Page)
         .values({
           name: "Untitled Page",
           project: project_id,
+          ...payload[0],
         })
         .returning();
       return page ? page : null;
