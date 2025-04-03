@@ -11,10 +11,7 @@ import { InferSelectModel, relations } from "drizzle-orm";
 
 export const Project = pgTable("project", {
   id: uuid("id").defaultRandom().primaryKey(),
-  workspace: uuid("workspace_id").references(() => Workspace.id, {
-    onDelete: "cascade",
-    onUpdate: "cascade",
-  }),
+  workspace: uuid("workspace_id"),
   name: text("name").notNull(),
   details: text("details").notNull().default("Some details about this project"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
@@ -23,13 +20,22 @@ export const Project = pgTable("project", {
 export type ProjectInterface = InferSelectModel<typeof Project>;
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++ Components Tables +++++++++++++++++++++++++++++++++++++++++++++++++
+export type PageInterface = InferSelectModel<typeof Page>;
+export type SectionInterface = InferSelectModel<typeof Section>;
+export type ComponentInterface = InferSelectModel<typeof Component>;
+
+export const Page = pgTable("page", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  project: uuid("project_id"),
+  component: uuid("component_id"),
+  name: text("name").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+});
 
 export const Section = pgTable("section", {
   id: uuid("id").defaultRandom().primaryKey(),
-  project: uuid("project_id").references(() => Project.id, {
-    onDelete: "cascade",
-    onUpdate: "cascade",
-  }),
+  page: uuid("project_id"),
+  component: uuid("component_id"),
   name: text("name").notNull(),
   content: jsonb("content").notNull().default({}), // Contains the component data
   layout: jsonb("layout").default({ width: 200, height: 200 }),
@@ -37,14 +43,9 @@ export const Section = pgTable("section", {
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
 
-export type SectionInterface = InferSelectModel<typeof Section>;
-
 export const Component = pgTable("component", {
   id: uuid("id").defaultRandom().primaryKey(),
-  section: uuid("section_id").references(() => Section.id, {
-    onDelete: "cascade",
-    onUpdate: "cascade",
-  }),
+  section: uuid("section_id"),
   name: text("name").notNull(),
   coordinates: jsonb("coordinates").notNull().default({}),
   content: jsonb("content").notNull().default({}), // Contains the component data
@@ -54,30 +55,39 @@ export const Component = pgTable("component", {
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
 
-export type ComponentInterface = InferSelectModel<typeof Component>;
+export const pageRelations = relations(Page, ({ one, many }) => ({
+  project: one(Project, {
+    fields: [Page.project],
+    references: [Project.id],
+  }),
+  sections: many(Section),
+  components: many(Component),
+}));
+
+export const sectionRelations = relations(Section, ({ one, many }) => ({
+  page: one(Page, {
+    fields: [Section.page],
+    references: [Page.id],
+  }),
+  self_component: one(Component, {
+    fields: [Section.component],
+    references: [Component.id],
+  }),
+  components: many(Component),
+}));
 
 export const componentRelations = relations(Component, ({ one, many }) => ({
   section: one(Section, {
     fields: [Component.section],
     references: [Section.id],
   }),
-}));
-
-export const sectionRelations = relations(Section, ({ one, many }) => ({
-  project: one(Project, {
-    fields: [Section.project],
-    references: [Project.id],
-  }),
-  components: many(Component),
+  sections: many(Section),
 }));
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++ CodeBlock Tables +++++++++++++++++++++++++++++++++++++++++++++++++
 export const CodeBlock = pgTable("codeblock", {
   id: uuid("id").defaultRandom().primaryKey(),
-  project: uuid("project_id").references(() => Project.id, {
-    onDelete: "cascade",
-    onUpdate: "cascade",
-  }),
+  project: uuid("project_id"),
   name: text("name").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
@@ -86,10 +96,7 @@ export type CodeBlockInterface = InferSelectModel<typeof CodeBlock>;
 
 export const StepBlock = pgTable("stepblock", {
   id: uuid("id").defaultRandom().primaryKey(),
-  codeblock: uuid("codeblock_id").references(() => CodeBlock.id, {
-    onDelete: "cascade",
-    onUpdate: "cascade",
-  }),
+  codeblock: uuid("codeblock_id"),
   name: text("name").notNull(),
   code: text("code").notNull(),
   language: text("language").notNull(),

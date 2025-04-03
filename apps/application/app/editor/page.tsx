@@ -22,7 +22,7 @@ const page = (props: Props) => {
   }
 
   if (data && data.success === true) {
-    redirect(`/editor/${data.payload.id}/edit`);
+    redirect(`/editor/${data.payload.id}/${data.payload.name}`);
   }
 
   return (

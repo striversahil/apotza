@@ -1,11 +1,11 @@
 "use client";
 import React from "react";
-import { UtilityProvider } from "../../../../contexts/utils";
+import { UtilityProvider } from "../../../contexts/utils";
 import {
   ComponentProvider,
   PrevComponentProvider,
   UpdatedComponentProvider,
-} from "../../../../contexts/component";
+} from "../../../contexts/component";
 
 type Props = {
   children: React.ReactNode;
