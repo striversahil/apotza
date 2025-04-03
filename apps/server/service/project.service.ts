@@ -8,7 +8,7 @@ class ProjectService {
       const project = await db.query.Project.findFirst({
         with: {
           codeblocks: true,
-          sections: true,
+          pages: true,
         },
         where: eq(Project.id, id),
       });

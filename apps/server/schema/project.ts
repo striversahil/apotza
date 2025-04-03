@@ -9,6 +9,7 @@ import {
 import { Workspace } from "./user";
 import { InferSelectModel, relations } from "drizzle-orm";
 
+export type ProjectInterface = InferSelectModel<typeof Project>;
 export const Project = pgTable("project", {
   id: uuid("id").defaultRandom().primaryKey(),
   workspace: uuid("workspace_id"),
@@ -17,8 +18,6 @@ export const Project = pgTable("project", {
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
 
-export type ProjectInterface = InferSelectModel<typeof Project>;
-
 // +++++++++++++++++++++++++++++++++++++++++++++++++ Components Tables +++++++++++++++++++++++++++++++++++++++++++++++++
 export type PageInterface = InferSelectModel<typeof Page>;
 export type SectionInterface = InferSelectModel<typeof Section>;
@@ -26,6 +25,7 @@ export type ComponentInterface = InferSelectModel<typeof Component>;
 
 export const Page = pgTable("page", {
   id: uuid("id").defaultRandom().primaryKey(),
+  type: text("type").default("page"),
   project: uuid("project_id"),
   component: uuid("component_id"),
   name: text("name").notNull(),
@@ -34,6 +34,7 @@ export const Page = pgTable("page", {
 
 export const Section = pgTable("section", {
   id: uuid("id").defaultRandom().primaryKey(),
+  type: text("type").default("section"),
   page: uuid("project_id"),
   component: uuid("component_id"),
   name: text("name").notNull(),
@@ -45,6 +46,7 @@ export const Section = pgTable("section", {
 
 export const Component = pgTable("component", {
   id: uuid("id").defaultRandom().primaryKey(),
+  type: text("type").default("component"),
   section: uuid("section_id"),
   name: text("name").notNull(),
   coordinates: jsonb("coordinates").notNull().default({}),
@@ -128,5 +130,5 @@ export const projectRelations = relations(Project, ({ one, many }) => ({
     references: [Workspace.id],
   }),
   codeblocks: many(CodeBlock),
-  sections: many(Section),
+  pages: many(Page),
 }));
