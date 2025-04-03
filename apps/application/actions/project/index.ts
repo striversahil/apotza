@@ -4,10 +4,11 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true; // Global axios config to enable cookies
 const codeBlock = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/codeblock";
-const project = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/project";
-const component = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/component";
 const stepsBlock = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/stepblock";
+const project = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/project";
+const page = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/page";
 const section = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/section";
+const component = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/component";
 
 // Here the Index i.e. Most Used Common Get Actions will be Handled for Project
 
@@ -40,6 +41,14 @@ const ProjectAction = {
   },
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++ Component Actions +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+  getPage: () => {
+    return useQueryData(["ProjectAction.getPage"], async () => {
+      const response = await axios.get(`${page}`);
+      return response.data;
+    });
+  },
+
   getSection: (id: string) => {
     return useQueryData(
       [`ProjectAction.getOneSection-${id}` as string],
