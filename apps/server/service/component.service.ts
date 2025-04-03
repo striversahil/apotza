@@ -26,7 +26,6 @@ class ComponentService {
     clause = {}
   ): Promise<ComponentInterface | null> {
     try {
-      console.log(clause);
       const [component] = await db
         .update(Component)
         .set(clause)
@@ -39,15 +38,13 @@ class ComponentService {
     }
   }
 
-  static async getAllComponentsId(
-    project_id: string
-  ): Promise<string[] | null> {
+  static async getAllComponentsId(page_id: string): Promise<string[] | null> {
     try {
       const sections = await db.query.Section.findMany({
         with: {
           components: true,
         },
-        where: eq(Section.project, project_id),
+        where: eq(Section.page, page_id),
       });
       const componentId: string[] = [];
       sections.forEach((section) => {

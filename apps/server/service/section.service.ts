@@ -18,13 +18,13 @@ class SectionService {
     }
   }
 
-  static async create(project_id: string): Promise<SectionInterface | null> {
+  static async create(page_id: string): Promise<SectionInterface | null> {
     try {
       const [section] = await db
         .insert(Section)
         .values({
           name: "Untitled Section",
-          project: project_id,
+          page: page_id,
           layout: sectionDefault.layout,
           appearance: sectionDefault.appearance,
         })

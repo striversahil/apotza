@@ -1,9 +1,9 @@
 import { db } from "../database";
 import { eq } from "drizzle-orm";
-import { Page } from "../schema";
+import { Page, PageInterface } from "../schema";
 
 export class PageService {
-  static async getOne(id: string) {
+  static async getOne(id: string): Promise<PageInterface | null> {
     try {
       const page = await db.query.Page.findFirst({
         with: {
@@ -17,7 +17,10 @@ export class PageService {
     }
   }
 
-  static async create(project_id: string, ...payload: any) {
+  static async create(
+    project_id: string,
+    ...payload: any
+  ): Promise<PageInterface | null> {
     try {
       const [page] = await db
         .insert(Page)
@@ -33,7 +36,7 @@ export class PageService {
     }
   }
 
-  static async update(id: string, clause: {}) {
+  static async update(id: string, clause: {}): Promise<PageInterface | null> {
     try {
       const [page] = await db
         .update(Page)
@@ -46,7 +49,7 @@ export class PageService {
     }
   }
 
-  static async delete(id: string) {
+  static async delete(id: string): Promise<PageInterface | null> {
     try {
       const [page] = await db.delete(Page).where(eq(Page.id, id)).returning();
       return page ? page : null;
