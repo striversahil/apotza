@@ -7,7 +7,7 @@ import { db } from "../database";
 import { CodeBlock, CodeBlockInterface } from "../schema";
 
 class CodeBlockService {
-  static async getById(id: number): Promise<CodeBlockInterface | null> {
+  static async getById(id: string): Promise<CodeBlockInterface | null> {
     try {
       const codeBlock = await db.query.CodeBlock.findFirst({
         with: {
@@ -23,7 +23,7 @@ class CodeBlockService {
   }
 
   static async create(
-    project_id: number,
+    project_id: string,
     name: string
   ): Promise<CodeBlockInterface | null> {
     try {
@@ -47,7 +47,7 @@ class CodeBlockService {
   //   }
 
   static async update(
-    id: number,
+    id: string,
     clause = {}
   ): Promise<CodeBlockInterface | null> {
     try {
@@ -62,7 +62,7 @@ class CodeBlockService {
     }
   }
 
-  static async delete(id: number): Promise<CodeBlockInterface | null> {
+  static async delete(id: string): Promise<CodeBlockInterface | null> {
     try {
       const [codeBlock] = await db
         .delete(CodeBlock)

@@ -59,16 +59,17 @@ const config: Config = {
         jakarta: ["JakartaSans", "sans-serif"],
       },
       fontSize: {
-        xs: "0.75rem",
-        sm: "0.850rem",
-        md: "1rem",
-        lg: "1.125rem",
-        xl: "1.25rem",
-        "2xl": "1.5rem",
-        "3xl": "1.875rem",
-        "4xl": "2.25rem",
-        "5xl": "3rem",
-        "6xl": "4rem",
+        xs: "0.75rem", // 12px - Small captions, helper text
+        sm: "0.825rem", // 14px - Secondary text, metadatac
+        base: "0.9rem", // 16px - Default body text
+        lg: "1rem", // 18px - Subheadings, important labels
+        xl: "1.225rem", // 20px - Section titles, buttons
+        "2xl": "1.5rem", // 24px - Page headers, large buttons
+        "3xl": "1.875rem", // 30px - Key callouts, hero sections
+        "4xl": "2.25rem", // 36px - Major headings, banners
+        "5xl": "3rem", // 48px - Display text, landing headlines
+        "6xl": "3.75rem", // 60px - Hero headlines
+        "7xl": "4.5rem", // 72px - Extra large promos
       },
     },
   },

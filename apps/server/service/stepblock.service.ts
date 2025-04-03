@@ -1,11 +1,11 @@
 import { eq } from "drizzle-orm";
 import { db } from "../database";
-import languageDefault from "../package/common/codeBlock/defaultLanguageOutput.json";
+import languageDefault from "../common/defaultLanguageOutput.json";
 import { StepBlock, StepBlockInterface } from "../schema";
 
 class StepBlockService {
   static async getById(
-    stepBlock_id: number
+    stepBlock_id: string
   ): Promise<StepBlockInterface | null> {
     try {
       const [stepBlock] = await db
@@ -19,7 +19,7 @@ class StepBlockService {
   }
 
   static async create(
-    codeBlock_id: number,
+    codeBlock_id: string,
     language: string
   ): Promise<StepBlockInterface | null> {
     try {
@@ -47,8 +47,43 @@ class StepBlockService {
     }
   }
 
+  static async createMultiple(
+    codeBlock_id: string,
+    language: string[]
+  ): Promise<StepBlockInterface[] | null> {
+    try {
+      const payload = language.map((lang: string) => {
+        const item = languageDefault.find((item: any) => {
+          if (item.value === lang) {
+            return item;
+          }
+        });
+        return item;
+      });
+      console.log(payload);
+      if (!payload[0]) return null;
+      const Insert = payload.map((item: any) => ({
+        name: item.label,
+        codeblock: codeBlock_id,
+        code: item.code,
+        language: item.value,
+        output: item.stdout,
+        stdout: item.stdout,
+      }));
+      if (!Insert) return null;
+      const newStepBlock = await db
+        .insert(StepBlock)
+        .values(Insert)
+        .returning();
+
+      return newStepBlock ? newStepBlock : null;
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
   static async update(
-    stepBlock_id: number,
+    stepBlock_id: string,
     clause = {}
   ): Promise<StepBlockInterface | null> {
     try {
@@ -64,7 +99,7 @@ class StepBlockService {
   }
 
   static async delete(
-    stepBlock_id: number
+    stepBlock_id: string
   ): Promise<StepBlockInterface | null> {
     try {
       const [stepBlock] = await db

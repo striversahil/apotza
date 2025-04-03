@@ -1,0 +1,27 @@
+{
+  "content": {
+    "label": "Hello Guys",
+    "defaultChecked": true
+  },
+  "appearance": {
+    "text": "label",
+    "fontSize": "16",
+    "textColor": "orange",
+    "horizontalAlign": "center",
+    "verticalAlign": "center",
+    "loadingAnimation": "none"
+  },
+  "layout": {
+    "width": "200",
+    "height": "20",
+    "visible": true
+  },
+  "interaction": {
+    "required": true,
+    "disabled": false,
+    "errorDisplay": "none"
+  },
+  "eventHandler": {
+    "onChangeCheck": "none"
+  }
+}

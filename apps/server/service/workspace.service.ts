@@ -7,7 +7,7 @@ import { db } from "../database";
 import { User, UserType, Workspace, WorkspaceType } from "../schema/user";
 
 class WorkspaceService {
-  static async getById(workspaceId: number): Promise<WorkspaceType | null> {
+  static async getById(workspaceId: string): Promise<WorkspaceType | null> {
     /**
      * (Get Workspace By Id) Return : Workspace Object Containing Workspace with Populated Details
      */
@@ -24,7 +24,7 @@ class WorkspaceService {
     }
   }
 
-  static async new(userId: number): Promise<WorkspaceType | null> {
+  static async new(userId: string): Promise<WorkspaceType | null> {
     /**
      * (Create Workspace) Return : Workspace Object Containing Workspace Details
      */
@@ -39,7 +39,7 @@ class WorkspaceService {
     }
   }
 
-  static async delete(workspaceId: number): Promise<WorkspaceType | null> {
+  static async delete(workspaceId: string): Promise<WorkspaceType | null> {
     /**
      * (Delete Workspace) Return : null
      */

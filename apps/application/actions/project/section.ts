@@ -13,7 +13,7 @@ const SectionAction = {
         const response = await axios.post(`${source}`, payload);
         return response.data;
       },
-      [["ProjectAction.getSections"]]
+      [["ProjectAction.getProject"]]
     );
     return { mutate };
   },
@@ -21,10 +21,10 @@ const SectionAction = {
     const { mutate } = useMutationData(
       ["SectionAction.delete"],
       async (payload: any) => {
-        const response = await axios.post(`${source}/delete`, payload);
+        const response = await axios.delete(`${source}/${payload.id}`);
         return response.data;
       },
-      [["ProjectAction.getSections"]]
+      [["ProjectAction.getProject"]]
     );
     return { mutate };
   },

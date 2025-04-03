@@ -1,69 +1,95 @@
-import { jsonb, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  jsonb,
+  pgTable,
+  serial,
+  text,
+  timestamp,
+  uuid,
+} from "drizzle-orm/pg-core";
 import { Workspace } from "./user";
 import { InferSelectModel, relations } from "drizzle-orm";
 
+export type ProjectInterface = InferSelectModel<typeof Project>;
 export const Project = pgTable("project", {
-  id: serial("id").primaryKey(),
-  workspace: serial("workspace_id")
-    .notNull()
-    .references(() => Workspace.id, { onDelete: "cascade" }),
+  id: uuid("id").defaultRandom().primaryKey(),
+  workspace: uuid("workspace_id"),
   name: text("name").notNull(),
   details: text("details").notNull().default("Some details about this project"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
 
-export type ProjectInterface = InferSelectModel<typeof Project>;
-
 // +++++++++++++++++++++++++++++++++++++++++++++++++ Components Tables +++++++++++++++++++++++++++++++++++++++++++++++++
+export type PageInterface = InferSelectModel<typeof Page>;
+export type SectionInterface = InferSelectModel<typeof Section>;
+export type ComponentInterface = InferSelectModel<typeof Component>;
+
+export const Page = pgTable("page", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  type: text("type").default("page"),
+  project: uuid("project_id"),
+  component: uuid("component_id"),
+  name: text("name").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+});
 
 export const Section = pgTable("section", {
-  id: serial("id").primaryKey(),
-  project: serial("project_id")
-    .notNull()
-    .references(() => Project.id, { onDelete: "cascade" }),
+  id: uuid("id").defaultRandom().primaryKey(),
+  type: text("type").default("section"),
+  page: uuid("project_id"),
+  component: uuid("component_id"),
   name: text("name").notNull(),
-  layout: jsonb("layout").notNull().default({}),
-  appearence: jsonb("appearence").notNull().default({}),
+  content: jsonb("content").notNull().default({}), // Contains the component data
+  layout: jsonb("layout").default({ width: 200, height: 200 }),
+  appearance: jsonb("appearance").notNull().default({}),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
-
-export type SectionInterface = InferSelectModel<typeof Section>;
 
 export const Component = pgTable("component", {
-  id: serial("id").primaryKey(),
-  section: serial("section_id")
-    .notNull()
-    .references(() => Section.id, { onDelete: "cascade" }),
+  id: uuid("id").defaultRandom().primaryKey(),
+  type: text("type").default("component"),
+  section: uuid("section_id"),
   name: text("name").notNull(),
   coordinates: jsonb("coordinates").notNull().default({}),
-  payload: jsonb("payload").notNull().default({}), // Contains the component data
-  configuration: jsonb("configuration").notNull().default({}), // Contains the component configuration
+  content: jsonb("content").notNull().default({}), // Contains the component data
+  layout: jsonb("layout").default({ width: 200, height: 200 }),
+  appearance: jsonb("appearance").notNull().default({}),
+  interaction: jsonb("interaction").notNull().default({}),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
 
-export type ComponentInterface = InferSelectModel<typeof Component>;
+export const pageRelations = relations(Page, ({ one, many }) => ({
+  project: one(Project, {
+    fields: [Page.project],
+    references: [Project.id],
+  }),
+  sections: many(Section),
+  components: many(Component),
+}));
+
+export const sectionRelations = relations(Section, ({ one, many }) => ({
+  page: one(Page, {
+    fields: [Section.page],
+    references: [Page.id],
+  }),
+  self_component: one(Component, {
+    fields: [Section.component],
+    references: [Component.id],
+  }),
+  components: many(Component),
+}));
 
 export const componentRelations = relations(Component, ({ one, many }) => ({
   section: one(Section, {
     fields: [Component.section],
     references: [Section.id],
   }),
-}));
-
-export const sectionRelations = relations(Section, ({ one, many }) => ({
-  project: one(Project, {
-    fields: [Section.project],
-    references: [Project.id],
-  }),
-  components: many(Component),
+  sections: many(Section),
 }));
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++ CodeBlock Tables +++++++++++++++++++++++++++++++++++++++++++++++++
 export const CodeBlock = pgTable("codeblock", {
-  id: serial("id").primaryKey().unique(),
-  project: serial("project_id")
-    .notNull()
-    .references(() => Project.id, { onDelete: "cascade" }),
+  id: uuid("id").defaultRandom().primaryKey(),
+  project: uuid("project_id"),
   name: text("name").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
@@ -71,10 +97,8 @@ export const CodeBlock = pgTable("codeblock", {
 export type CodeBlockInterface = InferSelectModel<typeof CodeBlock>;
 
 export const StepBlock = pgTable("stepblock", {
-  id: serial("id").primaryKey().unique(),
-  codeblock: serial("codeblock_id")
-    .notNull()
-    .references(() => CodeBlock.id, { onDelete: "cascade" }),
+  id: uuid("id").defaultRandom().primaryKey(),
+  codeblock: uuid("codeblock_id"),
   name: text("name").notNull(),
   code: text("code").notNull(),
   language: text("language").notNull(),
@@ -106,5 +130,5 @@ export const projectRelations = relations(Project, ({ one, many }) => ({
     references: [Workspace.id],
   }),
   codeblocks: many(CodeBlock),
-  sections: many(Section),
+  pages: many(Page),
 }));

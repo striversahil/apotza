@@ -1,0 +1,65 @@
+{
+  "name": "Untitled Project",
+  "codeBlocks": [
+    {
+      "name": "Python CodeBlock",
+      "stepBlocks": ["python", "python", "javascript", "python"]
+    },
+    {
+      "name": "SQL CodeBlock",
+      "stepBlocks": ["mysql", "mysql", "mysql", "mysql"]
+    },
+    {
+      "name": "GraphQL CodeBlock",
+      "stepBlocks": ["graphql", "graphql", "graphql", "graphql"]
+    },
+    {
+      "name": "JSON CodeBlock",
+      "stepBlocks": ["restapi", "graphql", "restapi", "mysql"]
+    }
+  ],
+  "sections": [
+    {
+      "components": [
+        {
+          "metadata": {
+            "name": "Python Query",
+            "configuation": {},
+            "coordinates": {
+              "x": 0,
+              "y": 0,
+              "width": 1,
+              "height": 1
+            }
+          },
+          "payload": {
+            "type": "codeblock",
+            "codeblockId": 0,
+            "stepblockId": 0
+          }
+        }
+      ]
+    },
+    {
+      "components": [
+        {
+          "metadata": {
+            "name": "SQL Query",
+            "configuation": {},
+            "coordinates": {
+              "x": 0,
+              "y": 0,
+              "width": 1,
+              "height": 1
+            }
+          },
+          "payload": {
+            "type": "codeblock",
+            "codeblockId": 0,
+            "stepblockId": 0
+          }
+        }
+      ]
+    }
+  ]
+}

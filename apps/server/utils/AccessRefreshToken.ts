@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 class TokensService {
-  static generateAccessToken(id: number, email: string, username: string) {
+  static generateAccessToken(id: string, email: string, username: string) {
     const accessToken = jwt.sign(
       {
         id: id,
@@ -14,7 +14,7 @@ class TokensService {
     return accessToken;
   }
 
-  static generateRefreshToken(id: number) {
+  static generateRefreshToken(id: string) {
     const refreshToken = jwt.sign(
       {
         id: id,

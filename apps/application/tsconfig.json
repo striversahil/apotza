@@ -32,6 +32,7 @@
       "@/actions/*": ["./actions/*"],
       "@/utils/*": ["./utils/*"],
       "@/hooks/*": ["./hooks/*"],
+      "@/common/*": ["./common/*"],
       "@/lib/*": ["./lib/*"],
       "@/types/*": ["./types/*"]
     }

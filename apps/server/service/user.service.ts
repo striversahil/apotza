@@ -9,7 +9,7 @@ import PasswordService from "../utils/passwordService";
 import TokensService from "../utils/AccessRefreshToken";
 
 class Userervice {
-  static async getUserById(userId: number): Promise<UserType | null> {
+  static async getUserById(userId: string): Promise<UserType | null> {
     /**
      * (Get User By Id) Return : User Object Containing User Details
      */
@@ -61,7 +61,7 @@ class Userervice {
     }
   }
 
-  static async updateUser(userId: number, clause = {}): Promise<any> {
+  static async updateUser(userId: string, clause = {}): Promise<any> {
     /**
      * (Update User) Return : User Object Containing User Details
      */
@@ -76,7 +76,7 @@ class Userervice {
     }
   }
 
-  static async deleteUser(userId: number): Promise<any> {
+  static async deleteUser(userId: string): Promise<any> {
     /**
      * (Delete User) Return : User Object Containing User Details
      */

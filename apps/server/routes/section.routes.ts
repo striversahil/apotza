@@ -9,7 +9,7 @@ router.route("/").post(SectionController.createSection);
 
 router.route("/:id").get(SectionController.getSection);
 
-router.route("/delete").post(SectionController.deleteSection);
+router.route("/:id").delete(SectionController.deleteSection);
 
 // router.route("/update/").post(updateComponent);
 

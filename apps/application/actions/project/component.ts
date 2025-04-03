@@ -1,6 +1,7 @@
 import { useMutationData } from "@/hooks/useMutation";
 import { useQueryData } from "@/hooks/useQueryData";
 import axios from "axios";
+import { toast } from "sonner";
 
 axios.defaults.withCredentials = true; // Global axios config to enable cookies
 const source = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/component";
@@ -13,7 +14,10 @@ const ComponentAction = {
         const response = await axios.post(`${source}`, payload);
         return response.data;
       },
-      [[`ProjectAction.getComponents-${section_id}`]]
+      [
+        [`ProjectAction.getOneSection-${section_id}`],
+        ["ProjectAction.getComponents"],
+      ]
     );
     return { mutate };
   },
@@ -24,18 +28,21 @@ const ComponentAction = {
         const response = await axios.post(`${source}/coordinates`, payload);
         return response.data;
       },
-      [[`ProjectAction.getComponents-${section_id}`]]
+      [
+        [`ProjectAction.getOneSection-${section_id}`],
+        ["ProjectAction.getComponents"],
+      ]
     );
     return { mutate };
   },
-  delete: () => {
+  delete: (section_id: string) => {
     const { mutate } = useMutationData(
       ["ComponentAction.delete"],
       async (payload: any) => {
         const response = await axios.post(`${source}/delete`, payload);
         return response.data;
       },
-      [["ProjectAction.getComponents"]]
+      [[`ProjectAction.getOneSection-${section_id}`],]
     );
     return { mutate };
   },
@@ -46,7 +53,9 @@ const ComponentAction = {
         const response = await axios.post(`${source}/update`, payload);
         return response.data;
       },
-      [[`ProjectAction.getComponents-${section_id}`]]
+      [[`ProjectAction.getOneSection-${section_id}`]],
+      undefined,
+      undefined
     );
     return { mutate };
   },

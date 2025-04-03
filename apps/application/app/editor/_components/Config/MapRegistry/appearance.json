@@ -1,0 +1,13 @@
+{
+  "lableStyle": "textColorSize",
+  "loadingAnimation": "boolean",
+  "style": "textSize",
+  "icon": "icon",
+  "backgroundColor": "color",
+  "verticalAlign": "verticalAlign",
+  "horizontalAlign": "horizontalAlign",
+  "borderColor": "color",
+  "textColor": "color",
+  "borderRadius": "px",
+  "borderWidth": "px"
+}
