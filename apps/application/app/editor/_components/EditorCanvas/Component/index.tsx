@@ -1,7 +1,7 @@
-import React, { use, useEffect } from "react";
+import React, { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useDraggable } from "@dnd-kit/core";
-import { MatchComponent } from "@/packages/components/match_component";
+import { MatchComponent } from "@repo/components";
 import ResizableBox from "../ResizableBox/ResizableSection";
 import { useUtility } from "../../../../../contexts/utils";
 import {

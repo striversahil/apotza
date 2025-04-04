@@ -3,7 +3,7 @@ import React from "react";
 import {
   DropdownMenuContent,
   DropdownMenuItem,
-} from "../../../../../../../packages/ui/src/dropdown-menu";
+} from "../../../../../components/ui/dropdown-menu";
 
 type Props = {};
 

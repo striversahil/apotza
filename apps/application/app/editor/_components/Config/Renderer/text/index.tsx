@@ -1,8 +1,8 @@
 import React, { useCallback, useRef } from "react";
-import { Input } from "../../../../../../../../packages/ui/src/input";
+import { Input } from "@repo/ui/input";
 import _ from "lodash";
 import useDebouncedUpdate from "../utils/debouce";
-import { Textarea } from "../../../../../../../../packages/ui/src/textarea";
+import { Textarea } from "@repo/ui/textarea";
 
 type Props = {
   location: Array<string>;

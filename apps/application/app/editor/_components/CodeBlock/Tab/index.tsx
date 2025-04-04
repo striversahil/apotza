@@ -1,5 +1,5 @@
 "use client";
-import { Skeleton } from "../../../../../../../packages/ui/src/skeleton";
+import { Skeleton } from "../../../../../components/ui/skeleton";
 import { TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import {
   Cable,
@@ -15,7 +15,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "../../../../../../../packages/ui/src/popover";
+} from "../../../../../components/ui/popover";
 import ProjectAction from "../../../../../actions/project";
 import DeleteTab from "./DeleteTab";
 

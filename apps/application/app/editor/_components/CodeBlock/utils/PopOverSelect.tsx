@@ -8,12 +8,12 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "../../../../../../../packages/ui/src/command";
+} from "../../../../../components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "../../../../../../../packages/ui/src/popover";
+} from "../../../../../components/ui/popover";
 import Image from "next/image";
 import StepsBlockAction from "../../../../../actions/project/stepsBlock";
 import TabBlockAction from "../../../../../actions/project/tabBlock";

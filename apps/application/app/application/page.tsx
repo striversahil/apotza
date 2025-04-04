@@ -1,6 +1,6 @@
 "use client";
 import ProjectAction from "@/actions/project";
-import { Skeleton } from "../../../../packages/ui/src/skeleton";
+import { Skeleton } from "../../components/ui/skeleton";
 import { redirect } from "next/navigation";
 import React from "react";
 

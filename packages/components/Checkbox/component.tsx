@@ -1,8 +1,8 @@
-import { Input } from "../../ui/src/input";
+import { Input } from "../../../apps/application/components/ui/input";
 import { cn } from "@/lib/utils";
 import React from "react";
 import Default from "./default.json";
-import { Label } from "../../ui/src/label";
+import { Label } from "../../../apps/application/components/ui/label";
 
 type Props = {
   content?: typeof Default.content;

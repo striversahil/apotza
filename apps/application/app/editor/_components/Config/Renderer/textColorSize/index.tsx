@@ -1,12 +1,12 @@
 import React, { useCallback } from "react";
-import { Input } from "../../../../../../../../packages/ui/src/input";
+import { Input } from "../../../../../../components/ui/input";
 import _ from "lodash";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-} from "../../../../../../../../packages/ui/src/select";
+} from "../../../../../../components/ui/select";
 import { HexColorPicker } from "react-colorful";
 import useDebouncedUpdate from "../utils/debouce";
 

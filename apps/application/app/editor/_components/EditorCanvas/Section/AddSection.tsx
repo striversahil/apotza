@@ -2,8 +2,8 @@ import SectionAction from "../../../../../actions/project/section";
 import {
   TooltipContent,
   TooltipTrigger,
-} from "../../../../../../../packages/ui/src/Tooltip/tooltip";
-import { Tooltip } from "@radix-ui/react-tooltip";
+  Tooltip,
+} from "@repo/ui/Tooltip/tooltip";
 import { PlusCircleIcon } from "lucide-react";
 import React from "react";
 
@@ -14,11 +14,13 @@ const AddSection = (props: Props) => {
   return (
     <div className="flex justify-center items-center py-2">
       <Tooltip>
-        <TooltipTrigger>
-          <PlusCircleIcon
+        <TooltipTrigger className="flex">
+          <button
             onClick={() => mutate({})}
             className="cursor-pointer hover:text-blue-500 duration-300"
-          />
+          >
+            <PlusCircleIcon />
+          </button>
         </TooltipTrigger>
         <TooltipContent>Add Section</TooltipContent>
       </Tooltip>

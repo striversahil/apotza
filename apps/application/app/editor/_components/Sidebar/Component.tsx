@@ -3,8 +3,8 @@ import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
-} from "../../../../../../packages/ui/src/Tooltip/tooltip";
-import { Input } from "../../../../../../packages/ui/src/input";
+} from "@repo/ui/Tooltip/tooltip";
+import { Input } from "@repo/ui/input";
 import { useDraggable } from "@dnd-kit/core";
 import React, { useState } from "react";
 import { ReferenceSidebarComponents } from "../../../../common/referenceSidebarComponents";

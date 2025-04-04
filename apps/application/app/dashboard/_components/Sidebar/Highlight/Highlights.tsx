@@ -3,7 +3,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-} from "../../../../../../../packages/ui/src/dropdown-menu";
+} from "../../../../../components/ui/dropdown-menu";
 import {
   ChartBarIncreasing,
   Expand,
