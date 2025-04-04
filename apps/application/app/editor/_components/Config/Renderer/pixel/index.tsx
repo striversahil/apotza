@@ -1,11 +1,11 @@
 import React from "react";
-import { Input } from "../../../../../../components/ui/input";
+import { Input } from "../../../../../../../../packages/ui/src/input";
 import useDebouncedUpdate from "../utils/debouce";
 import {
   Select,
   SelectContent,
   SelectTrigger,
-} from "../../../../../../components/ui/select";
+} from "../../../../../../../../packages/ui/src/select";
 import { SelectItem } from "@radix-ui/react-select";
 
 type Props = {

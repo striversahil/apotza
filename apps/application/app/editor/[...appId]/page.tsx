@@ -10,8 +10,8 @@ import ConfigFolder from "../_components/Config";
 import { DndContext } from "@dnd-kit/core";
 import Header from "../_components/Header";
 import { useOpen } from "../_hooks/useOpenCode";
-import { Tabs as TabsRoot } from "../../../components/ui/tabs";
-import { TooltipProvider } from "../../../components/ui/Tooltip/tooltip";
+import { Tabs as TabsRoot } from "../../../../../packages/ui/src/tabs";
+import { TooltipProvider } from "../../../../../packages/ui/src/Tooltip/tooltip";
 import { useCurrentTab } from "../_hooks/useCurrentTab";
 import { useDragEnd } from "../_hooks/usedragEnd";
 

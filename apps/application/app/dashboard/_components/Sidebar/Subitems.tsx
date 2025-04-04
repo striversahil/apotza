@@ -6,7 +6,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarMenuSkeleton,
-} from "../../../../components/ui/Sidebar/sidebar";
+} from "../../../../../../packages/ui/src/Sidebar/sidebar";
 import React from "react";
 
 type Props = {};

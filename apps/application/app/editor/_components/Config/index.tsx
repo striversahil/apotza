@@ -24,8 +24,8 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "../../../../components/ui/Tooltip/tooltip";
-import { CardTitle } from "../../../../components/ui/card";
+} from "../../../../../../packages/ui/src/Tooltip/tooltip";
+import { CardTitle } from "../../../../../../packages/ui/src/card";
 import ConfigHeader from "./header";
 
 // type Props = {

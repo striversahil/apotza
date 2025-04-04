@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { CardTitle } from "../../../../components/ui/card";
+import { CardTitle } from "../../../../../../packages/ui/src/card";
 import {
   usePrevComponent,
   useUpdatedComponent,
@@ -11,7 +11,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "../../../../components/ui/Tooltip/tooltip";
+} from "../../../../../../packages/ui/src/Tooltip/tooltip";
 
 type Props = {
   value: any;

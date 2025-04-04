@@ -1,6 +1,6 @@
 "use client";
-import { Input } from "../../../../components/ui/input";
-import { Skeleton } from "../../../../components/ui/skeleton";
+import { Input } from "../../../../../../packages/ui/src/input";
+import { Skeleton } from "../../../../../../packages/ui/src/skeleton";
 import React from "react";
 import { useClickOutsideEnter } from "../../_hooks/useClickOutsideEnter";
 import ProjectAction from "../../../../actions/project";
@@ -8,7 +8,7 @@ import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
-} from "../../../../components/ui/Tooltip/tooltip";
+} from "../../../../../../packages/ui/src/Tooltip/tooltip";
 import Image from "next/image";
 
 type Props = {};

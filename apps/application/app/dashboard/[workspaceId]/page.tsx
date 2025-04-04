@@ -8,7 +8,7 @@ import {
   SidebarProvider,
   SidebarRail,
   SidebarTrigger,
-} from "../../../components/ui/Sidebar/sidebar";
+} from "../../../../../packages/ui/src/Sidebar/sidebar";
 import { useQueryData } from "@/hooks/useQueryData";
 
 type Props = {

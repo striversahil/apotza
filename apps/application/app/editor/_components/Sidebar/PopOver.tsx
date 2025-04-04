@@ -1,6 +1,6 @@
 import { useClickOutside } from "@mantine/hooks";
 import React from "react";
-import { Input } from "../../../../components/ui/input";
+import { Input } from "../../../../../../packages/ui/src/input";
 
 type Props = {
   children: React.ReactNode;

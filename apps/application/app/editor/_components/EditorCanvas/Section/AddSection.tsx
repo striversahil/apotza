@@ -2,7 +2,7 @@ import SectionAction from "../../../../../actions/project/section";
 import {
   TooltipContent,
   TooltipTrigger,
-} from "../../../../../components/ui/Tooltip/tooltip";
+} from "../../../../../../../packages/ui/src/Tooltip/tooltip";
 import { Tooltip } from "@radix-ui/react-tooltip";
 import { PlusCircleIcon } from "lucide-react";
 import React from "react";

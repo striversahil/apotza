@@ -6,7 +6,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "../../../../../../components/ui/Tooltip/tooltip";
+} from "../../../../../../../../packages/ui/src/Tooltip/tooltip";
 
 type Props = {
   location: Array<string>;
