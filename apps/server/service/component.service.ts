@@ -5,6 +5,7 @@
 import { eq } from "drizzle-orm";
 import { Component, ComponentInterface, Section } from "../schema";
 import { db } from "../database";
+import { MatchComponent } from "@repo/components";
 
 class ComponentService {
   static async getById(id: string): Promise<ComponentInterface | null> {
@@ -60,10 +61,12 @@ class ComponentService {
 
   static async create(...payload: any): Promise<ComponentInterface | null> {
     try {
+      const compDefault = MatchComponent[payload[0].name];
       const [component] = await db
         .insert(Component)
         .values({
           ...payload[0],
+          ...compDefault?.Default,
         })
         .returning();
       return component ? component : null;

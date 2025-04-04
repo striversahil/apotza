@@ -10,7 +10,8 @@ import React, { useState } from "react";
 import { ReferenceSidebarComponents } from "../../../../common/referenceSidebarComponents";
 import { cn } from "@/lib/utils";
 import { Component as ComponentIcon } from "lucide-react";
-import { MatchComponent } from "@/packages/components/match_component";
+import { MatchComponent } from "@repo/components";
+
 import PopOver from "./PopOver";
 
 type SidebarProps = {
