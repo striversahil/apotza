@@ -1,10 +1,6 @@
 import TabBlockAction from "../../../../../actions/project/tabBlock";
-import { Button } from "../../../../../components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../../../../../components/ui/popover";
+import { Button } from "@repo/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/popover";
 import { Trash } from "lucide-react";
 import React from "react";
 

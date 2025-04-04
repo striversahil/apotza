@@ -1,8 +1,5 @@
-import { Popover } from "../../../../../components/ui/popover";
-import {
-  PopoverContent,
-  PopoverTrigger,
-} from "../../../../../components/ui/popover";
+import { Popover } from "@repo/ui/popover";
+import { PopoverContent, PopoverTrigger } from "@repo/ui/popover";
 import { AlignJustify, Copy, PlusCircle, Trash2 } from "lucide-react";
 import React, { useEffect } from "react";
 import { ComboPopAPI } from "../utils/PopOverSelect";
@@ -11,7 +8,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "../../../../../components/ui/Tooltip/tooltip";
+} from "@repo/ui/Tooltip/tooltip";
 
 type Props = {
   value: any;

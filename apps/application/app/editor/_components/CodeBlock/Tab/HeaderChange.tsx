@@ -1,11 +1,11 @@
 import TabBlockAction from "../../../../../actions/project/tabBlock";
 import { useClickOutsideEnter } from "../../../_hooks/useClickOutsideEnter";
-import { Input } from "../../../../../components/ui/input";
+import { Input } from "@repo/ui/input";
 import {
   TooltipContent,
   TooltipTrigger,
   Tooltip,
-} from "../../../../../components/ui/Tooltip/tooltip";
+} from "@repo/ui/Tooltip/tooltip";
 import { useMutationData } from "@/hooks/useMutation";
 import { Pencil } from "lucide-react";
 import React from "react";

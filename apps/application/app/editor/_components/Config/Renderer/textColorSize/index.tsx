@@ -1,12 +1,12 @@
 import React, { useCallback } from "react";
-import { Input } from "../../../../../../components/ui/input";
+import { Input } from "@repo/ui/input";
 import _ from "lodash";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-} from "../../../../../../components/ui/select";
+} from "@repo/ui/select";
 import { HexColorPicker } from "react-colorful";
 import useDebouncedUpdate from "../utils/debouce";
 
@@ -55,7 +55,7 @@ export const TextColorSize: React.FC<Props> = ({
       />
       <Select
         defaultValue={initialvalue.size.toString()}
-        onValueChange={(value) =>
+        onValueChange={(value: any) =>
           setValue((prev) => ({ ...prev, size: Number(value) }))
         }
       >

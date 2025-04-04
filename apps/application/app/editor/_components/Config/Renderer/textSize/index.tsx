@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Input } from "../../../../../../components/ui/input";
+import { Input } from "@repo/ui/input";
 import _ from "lodash";
 import useDebouncedUpdate from "../utils/debouce";
 import {
@@ -7,7 +7,7 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-} from "../../../../../../components/ui/select";
+} from "@repo/ui/select";
 
 type Props = {
   location: Array<string>;

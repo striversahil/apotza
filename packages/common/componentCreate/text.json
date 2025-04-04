@@ -1,1 +1,29 @@
-{}
+{
+  "content": {
+    "text": "Hello World",
+    "dataType": "plainText"
+  },
+  "appearance": {
+    "style": "label",
+    "textColor": "white",
+    "icon": "👋",
+    "horizontalAlign": "center",
+    "verticalAlign": "center",
+    "loadingAnimation": "none",
+    "fontSize": "16",
+    "fontWeight": "bold",
+    "textAlign": "left",
+    "backgroundColor": "green",
+    "borderColor": "red",
+    "borderWidth": "3",
+    "borderRadius": "25"
+  },
+  "layout": {
+    "width": "200",
+    "layout": "grid",
+    "padding": 0,
+    "height": "50",
+    "scrollOverflow": "auto",
+    "visible": true
+  }
+}

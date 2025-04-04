@@ -1,5 +1,5 @@
 "use client";
-import { Skeleton } from "../../../../../components/ui/skeleton";
+import { Skeleton } from "@repo/ui/skeleton";
 import { TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import {
   Cable,
@@ -11,11 +11,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { ComboPopAPI } from "../utils/PopOverSelect";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../../../../../components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/popover";
 import ProjectAction from "../../../../../actions/project";
 import DeleteTab from "./DeleteTab";
 

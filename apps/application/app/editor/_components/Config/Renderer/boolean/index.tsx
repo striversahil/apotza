@@ -1,7 +1,7 @@
 import React from "react";
-import { Input } from "../../../../../../components/ui/input";
+import { Input } from "@repo/ui/input";
 import useDebouncedUpdate from "../utils/debouce";
-import { Switch } from "../../../../../../components/ui/switch";
+import { Switch } from "@repo/ui/switch";
 
 type Props = {
   location: Array<string>;

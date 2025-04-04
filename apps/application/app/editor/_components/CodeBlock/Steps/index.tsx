@@ -19,10 +19,6 @@ const StepEditorRoot = (props: Props) => {
   // const [currentStep, setCurrentStep] = useState("");
   const [stepBlock, setStepBlock] = useState<any>(null);
 
-  if (!props.value) {
-    return;
-  }
-
   const { data } = ProjectAction.getCodeBlock(props.value.id);
 
   useEffect(() => {

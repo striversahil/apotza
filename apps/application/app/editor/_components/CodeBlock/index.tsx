@@ -12,7 +12,6 @@ import CodeBlockAction from "../../../../api/project/codeBlock";
 import { TabsContent } from "@radix-ui/react-tabs";
 import ProjectAction from "../../../../actions/project";
 import StepEditorRoot from "./Steps";
-import { Skeleton } from "../../../../components/ui/skeleton";
 import { useCurrentTab } from "../../_hooks/useCurrentTab";
 import Loader from "./loader";
 

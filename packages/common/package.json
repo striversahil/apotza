@@ -1,5 +1,5 @@
 {
-  "name": "common",
+  "name": "@repo/common",
   "version": "1.0.0",
   "description": "This has common files",
   "main": "./index.ts",
