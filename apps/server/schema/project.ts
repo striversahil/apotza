@@ -35,7 +35,7 @@ export const Page = pgTable("page", {
 export const Section = pgTable("section", {
   id: uuid("id").defaultRandom().primaryKey(),
   type: text("type").default("section"),
-  page: uuid("project_id"),
+  page: uuid("page_id"),
   component: uuid("component_id"),
   name: text("name").notNull(),
   content: jsonb("content").notNull().default({}), // Contains the component data

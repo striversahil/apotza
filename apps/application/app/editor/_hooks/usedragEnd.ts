@@ -4,7 +4,7 @@ import ComponentAction from "../../../actions/project/component";
 import { PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { ReferenceSidebarComponents } from "../../../common/referenceSidebarComponents";
 import React, { useEffect } from "react";
-import { MatchComponent } from "@/packages/components/match_component";
+import { MatchComponent } from "";
 
 export const useDragEnd = () => {
   const [Data, setData] = React.useState<Record<string, any>[]>([]);

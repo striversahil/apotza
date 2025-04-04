@@ -42,9 +42,10 @@ const ProjectAction = {
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++ Component Actions +++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-  getPage: () => {
+  getPage: (route: string) => {
+    const page_id = route.split("/").pop();
     return useQueryData(["ProjectAction.getPage"], async () => {
-      const response = await axios.get(`${page}`);
+      const response = await axios.get(`${page}/${page_id}`);
       return response.data;
     });
   },

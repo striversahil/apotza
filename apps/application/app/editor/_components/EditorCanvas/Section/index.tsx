@@ -9,7 +9,10 @@ import AddSection from "./AddSection";
 import DraggableComponent from "../Component";
 import ProjectAction from "../../../../../actions/project";
 import { TabsTrigger } from "@radix-ui/react-tabs";
-import { useComponent } from "../../../../../contexts/component";
+import {
+  useComponent,
+  useUpdatedComponent,
+} from "../../../../../contexts/component";
 import ResizableSection from "../ResizableBox/ResizableSection";
 
 type Props = {
@@ -18,23 +21,21 @@ type Props = {
 
 const Section = ({ value, ...props }: Props) => {
   const [Components, setComponents] = React.useState<any>([]);
-  // const [currentValue, setCurrentValue] = React.useState(value);
+  const [currentValue, setCurrentValue] = React.useState(value);
 
   const { isOver, setNodeRef } = useDroppable({
     id: value.id,
   });
 
-  console.log(isOver);
-
   const { data } = ProjectAction.getSection(value.id as string);
 
-  // const { UpdatedComponent: component } = useComponent() || {};
+  const { UpdatedComponent: component } = useUpdatedComponent() || {};
 
-  // useEffect(() => {
-  //   if (component?.id === currentValue.id) {
-  //     setCurrentValue(component);
-  //   }
-  // }, [component]);
+  useEffect(() => {
+    if (component?.id === currentValue.id) {
+      setCurrentValue(component);
+    }
+  }, [component]);
 
   useEffect(() => {
     if (data) {

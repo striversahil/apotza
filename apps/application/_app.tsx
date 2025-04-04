@@ -9,7 +9,7 @@ import {
 import { SortableContext, useSortable, arrayMove } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useState, useEffect, useRef } from "react";
-
+import { MatchComponent } from "@repo/components";
 // Seperate components Configuration based on it's type
 interface ComponentData {
   id: string;

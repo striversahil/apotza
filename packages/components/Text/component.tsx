@@ -1,52 +1,55 @@
-import { Input } from "../../../components/ui/input";
-import { cn } from "@/lib/utils";
 import React from "react";
+import { Input } from "../../../apps/application/components/ui/input";
+import { cn } from "@/lib/utils";
 import Default from "./default.json";
-import { Label } from "../../../components/ui/label";
+import { Label } from "../../../apps/application/components/ui/label";
 
 type Props = {
   content?: typeof Default.content;
   appearance?: typeof Default.appearance;
   layout?: typeof Default.layout;
-  interaction?: typeof Default.interaction;
-  eventHandler?: typeof Default.eventHandler;
 };
 
 export const Component = ({
   content = Default.content,
   appearance = Default.appearance,
   layout = Default.layout,
-  interaction = Default.interaction,
 }: Props) => {
   return (
     <div
-      className="flex"
+      className="flex select-none"
       style={{
         width: `${layout.width}px`,
         height: `${layout.height}px`,
+        padding: `${layout.padding}px`,
+        overflow: `${layout.scrollOverflow}`,
         visibility: layout.visible ? "visible" : "hidden",
         alignItems: `${appearance.verticalAlign}`,
         justifyContent: `${appearance.horizontalAlign}`,
+        backgroundColor: `${appearance.backgroundColor}`,
+        borderColor: `${appearance.borderColor}`,
+        borderWidth: `${appearance.borderWidth}px`,
+        borderRadius: `${appearance.borderRadius}px`,
       }}
     >
-      <Input
-        type="checkbox"
-        checked={content.defaultChecked}
-        required={interaction.required}
-        disabled={interaction.disabled}
-        className="mr-2 w-4 h-4"
-        onChange={(e) => {
-          console.info(e.target.checked);
-        }}
-      />
+      {appearance.icon && (
+        <div
+          className="mr-2"
+          style={{
+            fontSize: `${appearance.fontSize}px`,
+          }}
+        >
+          {appearance.icon}
+        </div>
+      )}
       <Label
-        className="text-white"
         style={{
           fontSize: `${appearance.fontSize}px`,
+          fontWeight: `${appearance.fontWeight}`,
           color: `${appearance.textColor}`,
         }}
       >
-        {content.label}
+        {content.text}
       </Label>
     </div>
   );

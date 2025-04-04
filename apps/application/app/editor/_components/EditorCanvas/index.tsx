@@ -9,12 +9,15 @@ import {
   useComponent,
   useUpdatedComponent,
 } from "../../../../contexts/component";
-// const { Component } = useComponent() || {};
-// const { UpdatedComponent } = useUpdatedComponent() || {};
+import { usePathname } from "next/navigation";
+import { Loader } from "lucide-react";
 
 const EditorCanvas = () => {
-  const [Sections, setSections] = useState<any>([]);
-  const { isLoading, data } = ProjectAction.getProject();
+  const router = usePathname();
+  const [Sections, setSections] = useState<any>(null);
+  const { isLoading, data } = ProjectAction.getPage(router || "");
+
+  // const currentRoute =
 
   useEffect(() => {
     if (data) {
@@ -22,15 +25,10 @@ const EditorCanvas = () => {
     }
   }, [data]);
 
-  if (!Sections) return null;
-
   // This whole Component is a drag and drop zone
   return (
     <div className="relative w-full p-[1px] pb-[200px] flex flex-col gap-2 overflow-hidden">
-      {Sections.map((item: any, index: number) => (
-        <Section key={index} value={item} />
-      ))}
-
+      Current Path: {router} {router.split("/").pop()}
       {/* <div
         className={`w-full min-h-screen h-full` + (isOver ? " bg-white/5" : "")}
         ref={setNodeRef}

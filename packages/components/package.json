@@ -1,10 +1,9 @@
 {
-  "name": "@repo/ui",
+  "name": "@repo/components",
   "version": "1.0.0",
   "private": true,
-  "exports": {
-    "./*": "./src/*.tsx"
-  },
+  "description": "This Contains Core Building Blocks of UI Interface that will give a Boost to Your Application.",
+  "main": "./index.ts",
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "generate:component": "turbo gen react-component",
