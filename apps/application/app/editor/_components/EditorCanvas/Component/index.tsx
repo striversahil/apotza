@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useDraggable } from "@dnd-kit/core";
 import { MatchComponent } from "@repo/components";
-import ResizableBox from "../ResizableBox/ResizableSection";
-import { useUtility } from "../../../../../contexts/utils";
 import {
   useComponent,
   usePrevComponent,
@@ -50,7 +48,7 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
   };
 
   // const { currentTab, currentStep }: any = useUtility();
-  const { Component } = MatchComponent?.[value.name]!;
+  const { Component = () => <></> } = MatchComponent[value.name]! || {};
 
   return (
     <ResizableComp
@@ -76,7 +74,6 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
           ? "cursor-grabbing outline-green-500"
           : "cursor-grab  outline-blue-400"
       )}
-      key={value.id}
     >
       {/* Your content here */}
       <Component {...currentValue} />

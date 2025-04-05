@@ -6,7 +6,7 @@ import { ReferenceSidebarComponents } from "../../../common/referenceSidebarComp
 import React, { useEffect } from "react";
 
 export const useDragEnd = () => {
-  const [Data, setData] = React.useState<Record<string, any>[]>([]);
+  const [Data, setData] = React.useState<any>(null);
 
   const [activeId, setActiveId] = React.useState<string>("");
   const [IsDropped, setIsDropped] = React.useState(false);
@@ -47,6 +47,8 @@ export const useDragEnd = () => {
       // Check if the active item is already in the array
       // if (!Data || event.active.id) return null;
       const PresentElement = Data.find((item: any) => item === event.active.id);
+
+      console.log(Data);
 
       console.log(PresentElement);
 

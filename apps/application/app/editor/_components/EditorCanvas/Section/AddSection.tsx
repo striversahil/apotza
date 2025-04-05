@@ -15,12 +15,12 @@ const AddSection = (props: Props) => {
     <div className="flex justify-center items-center py-2">
       <Tooltip>
         <TooltipTrigger className="flex">
-          <button
+          <div
             onClick={() => mutate({})}
             className="cursor-pointer hover:text-blue-500 duration-300"
           >
             <PlusCircleIcon />
-          </button>
+          </div>
         </TooltipTrigger>
         <TooltipContent>Add Section</TooltipContent>
       </Tooltip>

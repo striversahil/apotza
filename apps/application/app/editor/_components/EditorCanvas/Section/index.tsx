@@ -13,20 +13,21 @@ import {
   useUpdatedComponent,
 } from "../../../../../contexts/component";
 import ResizableSection from "../ResizableBox/ResizableSection";
+import { Loader } from "lucide-react";
 
 type Props = {
   value?: any;
 };
 
 const Section = ({ value, ...props }: Props) => {
-  const [Components, setComponents] = React.useState<any>([]);
+  const [Components, setComponents] = React.useState<any>(null);
   const [currentValue, setCurrentValue] = React.useState(value);
 
   const { isOver, setNodeRef } = useDroppable({
     id: value.id,
   });
 
-  const { data } = ProjectAction.getSection(value.id as string);
+  const { data, isLoading } = ProjectAction.getSection(value.id as string);
 
   const { UpdatedComponent: component } = useUpdatedComponent() || {};
 
@@ -38,12 +39,14 @@ const Section = ({ value, ...props }: Props) => {
 
   useEffect(() => {
     if (data) {
-      setComponents(data.payload.components);
+      if (data.payload.components.length > 0) {
+        setComponents(data.payload.components);
+      }
     }
   }, [data]);
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full" key={value.id}>
       <ResizableSection value={value}>
         <div
           ref={setNodeRef}
@@ -89,8 +92,10 @@ radial-gradient(at 11% 90%, hsla(265,75%,65%,1) 0px, transparent 50%)`,
             {props.value.id + props.value.name}
           </Label> */}
           {Components &&
-            Components.map((item: any) => <DraggableComponent value={item} />)}
-          <DeleteSection id={data?.payload.id} />
+            Components.map((item: any) => (
+              <DraggableComponent value={item} key={item.id} />
+            ))}
+          <DeleteSection id={data?.payload?.id} />
         </div>
       </ResizableSection>
       <AddSection />

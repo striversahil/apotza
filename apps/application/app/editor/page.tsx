@@ -27,11 +27,6 @@ const page = (props: Props) => {
   if (data && data.success === true) {
     navigate.push(`/editor/${data.payload.id}`);
   }
-  return (
-    <div>
-      <div>Project</div>
-    </div>
-  );
 
   // if (data && data.success === true) {
   //   redirect(`/editor/${data.payload.id}/${data.payload.name}`);

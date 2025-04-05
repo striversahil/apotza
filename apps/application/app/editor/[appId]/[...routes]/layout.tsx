@@ -7,7 +7,7 @@ type Props = {
 };
 
 const layout = (props: Props) => {
-  return <div>{props.children}</div>;
+  return <div className="h-full">{props.children}</div>;
 };
 
 export default layout;
