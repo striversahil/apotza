@@ -1,6 +1,4 @@
-"use client";
 import ProjectAction from "@/actions/project";
-import { Skeleton } from "@repo/ui/skeleton";
 import { Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -21,21 +19,13 @@ const page = (props: Props) => {
   }
 
   if (data && data.success === false) {
-    navigate.push("/editor");
+    navigate.push("/login");
   }
 
   if (data && data.success === true) {
-    navigate.push(`/editor/${data.payload.id}`);
+    navigate.push(`/editor/${data.payload.id}/${data.payload.pages[0]}`);
   }
-  return (
-    <div>
-      <div>Project</div>
-    </div>
-  );
-
-  // if (data && data.success === true) {
-  //   redirect(`/editor/${data.payload.id}/${data.payload.name}`);
-  // }
+  return <div>page</div>;
 };
 
 export default page;

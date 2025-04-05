@@ -1,16 +1,15 @@
 "use client";
 import React from "react";
-import { UtilityProvider } from "../../../contexts/utils";
 import {
   ComponentProvider,
   PrevComponentProvider,
   UpdatedComponentProvider,
-} from "../../../contexts/component";
+} from "../../contexts/component";
 
 type Props = {
   children: React.ReactNode;
 };
-const RootLayout = (props: Props) => {
+const Provider = (props: Props) => {
   return (
     <div suppressHydrationWarning suppressContentEditableWarning>
       <PrevComponentProvider>
@@ -23,4 +22,4 @@ const RootLayout = (props: Props) => {
   );
 };
 
-export default RootLayout;
+export default Provider;
