@@ -1,5 +1,5 @@
-import * as Checkbox from "./Checkbox";
-import * as Text from "./Text";
+import * as Checkbox from "./src/Checkbox";
+import * as Text from "./src/Text";
 
 type Props = {
   content?: any;

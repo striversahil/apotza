@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { useDroppable } from "@dnd-kit/core";
 import React, { useEffect } from "react";
 import ResizableBox from "../ResizableBox/ResizableSection";
-import { Label } from "../../../../../components/ui/label";
+import { Label } from "../../../@repo/ui/label";
 import Image from "next/image";
 import DeleteSection from "./DeleteSection";
 import AddSection from "./AddSection";

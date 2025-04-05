@@ -1,4 +1,4 @@
 // Barrel file
 
-export * from "./Text";
+export * from "./src/Text";
 export * from "./match_component";
