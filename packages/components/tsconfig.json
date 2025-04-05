@@ -4,7 +4,9 @@
     "outDir": "dist",
     "paths": {
       "@/lib/*": ["./lib/*"]
-    }
+    },
+    "module": "ESNext",
+    "moduleResolution": "Bundler"
   },
   "include": ["./*.tsx", "./*.ts"],
   "exclude": ["node_modules", "dist"]

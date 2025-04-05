@@ -1,7 +1,7 @@
 import React from "react";
 import { Input } from "@repo/ui/input";
 import { cn } from "@/lib/utils";
-import Default from "./default.json";
+import { textCommon as Default } from "@repo/common";
 import { Label } from "@repo/ui/label";
 
 type Props = {

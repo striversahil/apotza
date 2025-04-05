@@ -1,3 +1,2 @@
 export * from "./component";
-import Default from "./default.json";
-export { Default };
+export { textCommon as Default } from "@repo/common";

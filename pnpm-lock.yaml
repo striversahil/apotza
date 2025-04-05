@@ -335,6 +335,9 @@ importers:
 
   packages/components:
     dependencies:
+      '@repo/common':
+        specifier: workspace:*
+        version: link:../common
       '@repo/ui':
         specifier: workspace:*
         version: link:../ui
