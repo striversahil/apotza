@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 
 import ProjectAction from "@/actions/project";
@@ -9,17 +10,19 @@ type Props = {};
 const page = (props: Props) => {
   const navigate = useRouter();
   const path = usePathname();
-  const { isLoading, data } = ProjectAction.getPage(path.split("/")[2] || "");
+  const { isLoading, data, isError } = ProjectAction.getPage(
+    path.split("/")[3] || ""
+  );
 
   if (isLoading) {
     return (
-      <div className="size-full flex justify-center items-center">
+      <div className="h-full w-full flex justify-center items-center">
         <Loader className="animate-spin" />
       </div>
     );
   }
 
-  if (data && data.success === false) {
+  if (isError) {
     navigate.push("/editor");
   }
   return <div>Page : {JSON.stringify(data)}</div>;

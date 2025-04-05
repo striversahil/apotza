@@ -9,7 +9,7 @@ export class PageService {
         with: {
           sections: true,
         },
-        where: eq(Page.id, id),
+        where: eq(Page.name, id),
       });
       return page ? page : null;
     } catch (error) {

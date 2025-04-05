@@ -8,7 +8,7 @@ import React from "react";
 type Props = {};
 
 const page = (props: Props) => {
-  const { isLoading, data } = ProjectAction.getProject();
+  const { isLoading, data, isError } = ProjectAction.getProject();
 
   const navigate = useRouter();
 
@@ -20,7 +20,7 @@ const page = (props: Props) => {
     );
   }
 
-  if (data && data.success === false) {
+  if (isError) {
     navigate.push("/editor");
   }
 
