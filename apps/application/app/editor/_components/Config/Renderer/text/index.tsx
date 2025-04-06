@@ -3,6 +3,7 @@ import { Input } from "@repo/ui/input";
 import _ from "lodash";
 import useDebouncedUpdate from "../utils/debouce";
 import { Textarea } from "@repo/ui/textarea";
+import Text from "../../base/text";
 
 type Props = {
   location: Array<string>;
@@ -25,13 +26,8 @@ export const TextInput: React.FC<Props> = ({
   };
 
   return (
-    <div className="float-end flex ">
-      <Textarea
-        value={value}
-        onChange={handleChange}
-        className=""
-        typeof="text"
-      />
+    <div className="float-end flex">
+      <Text value={value} onChange={handleChange} />
     </div>
   );
 };

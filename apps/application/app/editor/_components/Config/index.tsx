@@ -54,7 +54,7 @@ const ConfigFolder = () => {
 
   useEffect(() => {
     const state = _.clone(Component);
-    const value = _.mapValues(state, (value) => true);
+    const value = _.mapValues(state, () => true);
     setState(value);
   }, [Component]);
 
