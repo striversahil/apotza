@@ -49,9 +49,9 @@ export const useContextSave = (initialValue: any) => {
 
   // useEffect hook to update the currentValue state whenever the component or initialValue changes
   useEffect(() => {
-    if (component?.id === initialValue.id) {
+    if (component?.id === initialValue?.id) {
       setCurrentValue(component);
-    } else if (component?.id !== initialValue.id) {
+    } else if (component?.id !== initialValue?.id) {
       setCurrentValue(initialValue);
     }
   }, [component, initialValue]);

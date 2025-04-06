@@ -21,7 +21,7 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
       id: value.id,
     });
 
-  const { currentValue , setState} = useContextSave(value);
+  const { currentValue, setState } = useContextSave(value);
 
   const style = {
     transform: transform
@@ -39,9 +39,7 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
     <ResizableComp
       value={value}
       ref={setNodeRef}
-      onMouseUp={(e) => {
-        setState(e)
-      }}
+      onMouseUp={(e) => setState(e)}
       style={style}
       {...attributes}
       {...listeners}

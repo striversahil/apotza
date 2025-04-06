@@ -15,6 +15,7 @@ import {
 import ResizableSection from "../ResizableBox/ResizableSection";
 import { Loader } from "lucide-react";
 import _ from "lodash";
+import { useContextSave } from "../../../_hooks/useContextSave";
 
 type Props = {
   value?: any;
@@ -22,24 +23,14 @@ type Props = {
 
 const Section = ({ value, ...props }: Props) => {
   const [Components, setComponents] = React.useState<any>(null);
-  const [currentValue, setCurrentValue] = React.useState(value);
 
   const { isOver, setNodeRef } = useDroppable({
     id: value.id,
   });
 
   const { data, isLoading } = ProjectAction.getSection(value.id as string);
-  const { setComponent = () => {}, Component: realComponent } =
-    useComponent() || {};
 
-  const { UpdatedComponent: component, setUpdatedComponent = () => {} } =
-    useUpdatedComponent() || {};
-
-  useEffect(() => {
-    if (component?.id === currentValue.id) {
-      setCurrentValue(component);
-    }
-  }, [component]);
+  const { currentValue, setState } = useContextSave(value);
 
   useEffect(() => {
     if (data) {
@@ -56,24 +47,14 @@ const Section = ({ value, ...props }: Props) => {
       style={{
         height: "500px",
       }}
-      onMouseUp={(e) => {
-        e.stopPropagation();
-        if (JSON.stringify(component) !== JSON.stringify(value)) {
-          console.log("Component Clicked");
-          if (!_.isEqual(component, realComponent)) {
-            // setPrevComponent(component);
-          }
-          setComponent(value);
-          setUpdatedComponent(value);
-        }
-      }}
+      onMouseUp={(e) => setState(e)}
     >
       <div
         ref={setNodeRef}
         className={cn(
           "relative w-full h-full border  rounded-xl flex items-center justify-center pointer-events-auto",
           isOver && "hover:border-white/0",
-          component?.id === currentValue.id
+          value?.id === currentValue.id
             ? "border-white "
             : "border-white/30 hover:border-white/50"
         )}
