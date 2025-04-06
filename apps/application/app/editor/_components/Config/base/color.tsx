@@ -5,11 +5,12 @@ import { HexColorPicker } from "react-colorful";
 type Props = {
   value: string;
   onChange: (value: string) => void;
+  className?: string;
 };
 
-const Color_Base = ({ value, onChange }: Props) => {
+const Color_Base = ({ value, onChange, ...props }: Props) => {
   return (
-    <div>
+    <div {...props}>
       <div className="relative float-end gap-2 ">
         <Popover>
           <PopoverTrigger

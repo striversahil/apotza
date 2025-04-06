@@ -14,7 +14,7 @@ type Props = {
 
 const Toolip_Base = ({ list, onSelect, value }: Props) => {
   return (
-    <div>
+    <div className="flex">
       {Object.keys(list).map((item) => (
         <Tooltip key={item}>
           <TooltipTrigger

@@ -6,7 +6,7 @@ type Props = {
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 };
 
-const Text = ({ value, onChange }: Props) => {
+const Text_Base = ({ value, onChange }: Props) => {
   return (
     <div>
       <Textarea
@@ -19,4 +19,4 @@ const Text = ({ value, onChange }: Props) => {
   );
 };
 
-export default Text;
+export default Text_Base;

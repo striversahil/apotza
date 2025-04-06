@@ -20,7 +20,7 @@ export const Layout = ({ location, initialvalue }: Props) => {
 
   useDebouncedUpdate(location, value);
   return (
-    <div className="flex gap-2 float-end bg-white/10 px-2 py-1 rounded-lg ">
+    <div className="gap-2 float-end bg-white/10 px-2 py-1 rounded-lg ">
       <Toolip_Base value={value} onSelect={setValue} list={layoutTypes} />
     </div>
   );
