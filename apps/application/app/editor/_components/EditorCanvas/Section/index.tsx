@@ -1,18 +1,16 @@
 import { cn } from "@/lib/utils";
 import { useDroppable } from "@dnd-kit/core";
 import React, { useEffect } from "react";
-import ResizableBox from "../ResizableBox/ResizableSection";
 import Image from "next/image";
 import DeleteSection from "./DeleteSection";
 import AddSection from "./AddSection";
-import DraggableComponent from "../Component";
+import DraggableComponent from "../_Component";
 import ProjectAction from "../../../../../actions/project";
 import { TabsTrigger } from "@radix-ui/react-tabs";
 import {
   useComponent,
   useUpdatedComponent,
 } from "../../../../../contexts/component";
-import ResizableSection from "../ResizableBox/ResizableSection";
 import { Loader } from "lucide-react";
 import _ from "lodash";
 import { useContextSave } from "../../../_hooks/useContextSave";
@@ -30,7 +28,7 @@ const Section = ({ value, ...props }: Props) => {
 
   const { data, isLoading } = ProjectAction.getSection(value.id as string);
 
-  const { currentValue, setState } = useContextSave(value);
+  const { setState, component } = useContextSave(value);
 
   useEffect(() => {
     if (data) {
@@ -52,11 +50,10 @@ const Section = ({ value, ...props }: Props) => {
       <div
         ref={setNodeRef}
         className={cn(
-          "relative w-full h-full border  rounded-xl flex items-center justify-center pointer-events-auto",
-          isOver && "hover:border-white/0",
-          value?.id === currentValue.id
-            ? "border-white "
-            : "border-white/30 hover:border-white/50"
+          "relative w-full h-full border-[2px] border-transparent rounded-xl flex items-center justify-center pointer-events-auto",
+          value?.id === component?.id
+            ? "border-blue-400 "
+            : "border-white/20 hover:border-white/30"
         )}
       >
         {isOver && (

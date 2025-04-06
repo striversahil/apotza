@@ -19,7 +19,7 @@ const page = (props: Props) => {
   const { isLoading, data, isError } = ProjectAction.getPage(
     path.split("/")[3] || ""
   );
-  const { currentValue, setState } = useContextSave(Page);
+  const { setState } = useContextSave(Page);
 
   useEffect(() => {
     if (data) {
@@ -41,7 +41,7 @@ const page = (props: Props) => {
 
   return (
     <div className="pb-[500px] h-full w-full" onMouseUp={(e) => setState(e)}>
-      {currentValue?.sections.map((item: any) => (
+      {Page?.sections.map((item: any) => (
         <div key={item.id} className="relative w-full h-full">
           <Section value={item} />
           <DeleteSection id={item.id} />

@@ -10,9 +10,9 @@ import React, { useState } from "react";
 import { ReferenceSidebarComponents } from "../../../../common/referenceSidebarComponents";
 import { cn } from "@/lib/utils";
 import { Component as ComponentIcon } from "lucide-react";
-import { MatchComponent } from "@repo/components";
 
 import PopOver from "./PopOver";
+import { MatchComponent } from "../EditorCanvas";
 
 type SidebarProps = {
   children?: React.ReactNode;

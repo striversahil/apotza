@@ -20,10 +20,8 @@ export const Component = ({
 }: Props) => {
   return (
     <div
-      className="flex"
+      className="flex size-full"
       style={{
-        width: `${layout.width}px`,
-        height: `${layout.height}px`,
         visibility: layout.visible ? "visible" : "hidden",
         alignItems: `${appearance.verticalAlign}`,
         justifyContent: `${appearance.horizontalAlign}`,

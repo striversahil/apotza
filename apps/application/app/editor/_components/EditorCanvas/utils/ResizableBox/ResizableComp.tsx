@@ -6,7 +6,6 @@ import React, {
   useState,
 } from "react";
 import { toast } from "sonner";
-import { useComponent } from "../../../../../contexts/component";
 
 interface Props {
   value: any;
@@ -92,7 +91,6 @@ const ResizableComp = forwardRef<
       style={style}
       onClick={(e) => {
         e.stopPropagation();
-        toast(`${((width * height) / 100).toFixed()}`);
         // if (Component !== value) {
         // }
       }}

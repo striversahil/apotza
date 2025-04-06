@@ -1,15 +1,9 @@
 import React, { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useDraggable } from "@dnd-kit/core";
-import { MatchComponent } from "@repo/components";
-import {
-  useComponent,
-  usePrevComponent,
-  useUpdatedComponent,
-} from "../../../../../contexts/component";
-import ResizableComp from "../ResizableBox/ResizableComp";
-import _ from "lodash";
+import ResizableComp from "../utils/ResizableBox/ResizableComp";
 import { useContextSave } from "../../../_hooks/useContextSave";
+import { MatchComponent } from "..";
 
 interface ComponentInterface {
   value: any;
@@ -21,7 +15,7 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
       id: value.id,
     });
 
-  const { currentValue, setState } = useContextSave(value);
+  const { currentValue, setState, component } = useContextSave(value);
 
   const style = {
     transform: transform
@@ -44,10 +38,9 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
       {...attributes}
       {...listeners}
       className={cn(
-        "relative rounded-lg touch-none focus:outline outline-[2px] hover:outline  text-black ",
-        isDragging
-          ? "cursor-grabbing outline-green-500"
-          : "cursor-grab  outline-blue-400"
+        "relative rounded-lg touch-none outline outline-[2px] outline-transparent cursor-move hover:outline-blue-400 text-black ",
+        isDragging && "cursor-grabbing outline-green-500",
+        component?.id === value?.id && "outline-blue-400"
       )}
     >
       {/* Your content here */}

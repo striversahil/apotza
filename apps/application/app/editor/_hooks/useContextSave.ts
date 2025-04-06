@@ -70,6 +70,7 @@ export const useContextSave = (initialValue: any) => {
 
   return {
     currentValue,
+    component,
     setState,
   };
 };
