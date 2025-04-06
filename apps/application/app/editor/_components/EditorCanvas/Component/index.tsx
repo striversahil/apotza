@@ -9,6 +9,7 @@ import {
 } from "../../../../../contexts/component";
 import ResizableComp from "../ResizableBox/ResizableComp";
 import _ from "lodash";
+import { useContextSave } from "../../../_hooks/useContextSave";
 
 interface ComponentInterface {
   value: any;
@@ -20,23 +21,7 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
       id: value.id,
     });
 
-  const [currentValue, setCurrentValue] = React.useState(value);
-
-  const { setComponent = () => {}, Component: realComponent } =
-    useComponent() || {};
-
-  const { UpdatedComponent: component, setUpdatedComponent = () => {} } =
-    useUpdatedComponent() || {};
-  // Setting the Component State from the Context
-  const { setPrevComponent = () => {} } = usePrevComponent() || {};
-
-  useEffect(() => {
-    if (component?.id === value.id) {
-      setCurrentValue(component);
-    } else if (component?.id !== value.id) {
-      setCurrentValue(value);
-    }
-  }, [component, value]);
+  const { currentValue , setState} = useContextSave(value);
 
   const style = {
     transform: transform
@@ -55,15 +40,7 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
       value={value}
       ref={setNodeRef}
       onMouseUp={(e) => {
-        e.stopPropagation();
-        if (JSON.stringify(component) !== JSON.stringify(value)) {
-          console.log("Component Clicked");
-          if (!_.isEqual(component, realComponent)) {
-            setPrevComponent(component);
-          }
-          setComponent(value);
-          setUpdatedComponent(value);
-        }
+        setState(e)
       }}
       style={style}
       {...attributes}

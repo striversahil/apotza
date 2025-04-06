@@ -5,7 +5,7 @@ import {
   useUpdatedComponent,
 } from "../../../../../contexts/component";
 import ComponentAction from "@/actions/project/component";
-import { use, useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import _ from "lodash";
 
 type Props = {};

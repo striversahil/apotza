@@ -1,1 +1,13 @@
-{}
+{
+  "content": {
+    "sections": []
+  },
+  "layout": {
+    "padding": 0,
+    "minWidth": 0,
+    "maxWidth": 0
+  },
+  "eventHandler": {
+    "onPageLoad": "none"
+  }
+}
