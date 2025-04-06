@@ -2,11 +2,7 @@ import React from "react";
 import useDebouncedUpdate from "../utils/debouce";
 import { cn } from "@/lib/utils";
 import { LayoutGrid, MoveHorizontal, MoveVertical } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@repo/ui/Tooltip/tooltip";
+import Toolip_Base from "../../base/tooltip";
 
 type Props = {
   location: Array<string>;
@@ -25,25 +21,7 @@ export const Layout = ({ location, initialvalue }: Props) => {
   useDebouncedUpdate(location, value);
   return (
     <div className="flex gap-2 float-end bg-white/10 px-2 py-1 rounded-lg ">
-      {Object.keys(layoutTypes).map((item) => (
-        <Tooltip key={item}>
-          <TooltipTrigger
-            className={cn(
-              `px-2 py-1 rounded-md flex
-            cursor-pointer capitalize text-sm font-bold text-white`,
-              {
-                "bg-slate-900/80": item === value,
-              }
-            )}
-            onClick={() => setValue(item)}
-          >
-            <>{layoutTypes[item]}</>
-            <TooltipContent className="bg-slate-950 rounded-lg">
-              {item}
-            </TooltipContent>
-          </TooltipTrigger>
-        </Tooltip>
-      ))}
+      <Toolip_Base value={value} onSelect={setValue} list={layoutTypes} />
     </div>
   );
 };
