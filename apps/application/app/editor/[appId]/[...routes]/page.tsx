@@ -4,9 +4,9 @@ import React, { useEffect } from "react";
 import ProjectAction from "@/actions/project";
 import { usePathname, useRouter } from "next/navigation";
 import { Loader } from "lucide-react";
-import Section from "../../_components/EditorCanvas/Section";
-import AddSection from "../../_components/EditorCanvas/Section/AddSection";
-import DeleteSection from "../../_components/EditorCanvas/Section/DeleteSection";
+import Section from "../../../../components/EditorCanvas/Section";
+import AddSection from "../../../../components/EditorCanvas/Section/AddSection";
+import DeleteSection from "../../../../components/EditorCanvas/Section/DeleteSection";
 import _ from "lodash";
 import { useContextSave } from "../../_hooks/useContextSave";
 

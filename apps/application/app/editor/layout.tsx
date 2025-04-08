@@ -1,14 +1,13 @@
 "use client";
-import EditorCanvas from "./_components/EditorCanvas";
 
 import { PanelGroup, Panel, PanelResizeHandle } from "react-resizable-panels";
 import { PanelRightOpen } from "lucide-react";
 
-import Sidebar from "./_components/Sidebar";
-import CodeBlock from "./_components/CodeBlock";
-import ConfigFolder from "./_components/Config";
+import Sidebar from "../../components/Sidebar";
+import CodeBlock from "../../components/CodeBlock";
+import ConfigFolder from "../../components/Config";
 import { DndContext } from "@dnd-kit/core";
-import Header from "./_components/Header";
+import Header from "../../components/Header";
 import { useOpen } from "./_hooks/useOpenCode";
 import { Tabs as TabsRoot } from "@repo/ui/tabs";
 import { TooltipProvider } from "@repo/ui/Tooltip/tooltip";
