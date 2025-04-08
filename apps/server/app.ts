@@ -10,6 +10,7 @@ import workspaceRoute from "./routes/workspace.routes";
 import projectRoute from "./routes/project.routes";
 // import bucketRoute from "./routes/bucket.routes";
 import codeBlockRoute from "./routes/codeBlock.routes";
+import pageRoute from "./routes/page.routes";
 import stepBlockRoute from "./routes/stepBlock.routes";
 import componentRoute from "./routes/component.routes";
 import sectionRoute from "./routes/section.routes";
@@ -34,6 +35,7 @@ app.use("/project", authenticate, projectRoute);
 // app.use("/bucket", authenticate, bucketRoute);
 
 app.use("/codeblock", authenticate, codeBlockRoute);
+app.use("/page", authenticate, pageRoute);
 app.use("/stepblock", authenticate, stepBlockRoute);
 app.use("/component", authenticate, componentRoute);
 app.use("/section", authenticate, sectionRoute);

@@ -27,7 +27,6 @@ export const Page = pgTable("page", {
   id: uuid("id").defaultRandom().primaryKey(),
   type: text("type").default("page"),
   project: uuid("project_id"),
-  component: uuid("component_id"),
   name: text("name").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
@@ -35,8 +34,7 @@ export const Page = pgTable("page", {
 export const Section = pgTable("section", {
   id: uuid("id").defaultRandom().primaryKey(),
   type: text("type").default("section"),
-  page: uuid("project_id"),
-  component: uuid("component_id"),
+  page: uuid("page_id"),
   name: text("name").notNull(),
   content: jsonb("content").notNull().default({}), // Contains the component data
   layout: jsonb("layout").default({ width: 200, height: 200 }),
@@ -63,17 +61,12 @@ export const pageRelations = relations(Page, ({ one, many }) => ({
     references: [Project.id],
   }),
   sections: many(Section),
-  components: many(Component),
 }));
 
 export const sectionRelations = relations(Section, ({ one, many }) => ({
   page: one(Page, {
     fields: [Section.page],
     references: [Page.id],
-  }),
-  self_component: one(Component, {
-    fields: [Section.component],
-    references: [Component.id],
   }),
   components: many(Component),
 }));
@@ -83,7 +76,6 @@ export const componentRelations = relations(Component, ({ one, many }) => ({
     fields: [Component.section],
     references: [Section.id],
   }),
-  sections: many(Section),
 }));
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++ CodeBlock Tables +++++++++++++++++++++++++++++++++++++++++++++++++

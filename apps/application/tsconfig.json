@@ -26,7 +26,7 @@
     "allowJs": true,
     "noEmit": true,
     "paths": {
-      "@/components/*": ["../components/*"],
+      "@/components/*": ["./components/*"],
       "@/packages/*": ["./packages/*"],
       "@/api/*": ["./api/*"],
       "@/actions/*": ["./actions/*"],

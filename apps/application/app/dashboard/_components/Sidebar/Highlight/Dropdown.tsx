@@ -1,9 +1,6 @@
 import React from "react";
 
-import {
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "../../../../../components/ui/dropdown-menu";
+import { DropdownMenuContent, DropdownMenuItem } from "@repo/ui/dropdown-menu";
 
 type Props = {};
 

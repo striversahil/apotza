@@ -1,0 +1,16 @@
+{
+  "layout": {
+    "layout": "grid",
+    "padding": 0,
+    "width": "100%",
+    "height": "fitContent",
+    "visible": true,
+    "sticky": false
+  },
+  "appearance": {
+    "backgroundColor": "black",
+    "borderColor": "black",
+    "borderWidth": "0",
+    "borderRadius": "0"
+  }
+}

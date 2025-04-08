@@ -3,8 +3,9 @@
  */
 
 import { eq } from "drizzle-orm";
-import { Component, ComponentInterface, Section } from "../schema";
+import { Component, ComponentInterface, Page, Section } from "../schema";
 import { db } from "../database";
+import { MatchComponent } from "@repo/common";
 
 class ComponentService {
   static async getById(id: string): Promise<ComponentInterface | null> {
@@ -26,7 +27,6 @@ class ComponentService {
     clause = {}
   ): Promise<ComponentInterface | null> {
     try {
-      console.log(clause);
       const [component] = await db
         .update(Component)
         .set(clause)
@@ -43,16 +43,22 @@ class ComponentService {
     project_id: string
   ): Promise<string[] | null> {
     try {
-      const sections = await db.query.Section.findMany({
+      const page = await db.query.Page.findMany({
         with: {
-          components: true,
+          sections: {
+            with: {
+              components: true,
+            },
+          },
         },
-        where: eq(Section.project, project_id),
+        where: eq(Page.project, project_id),
       });
       const componentId: string[] = [];
-      sections.forEach((section) => {
-        section.components.forEach((component) => {
-          componentId.push(component.id);
+      page.forEach((page) => {
+        page.sections.forEach((section) => {
+          section.components.forEach((component) => {
+            componentId.push(component.id);
+          });
         });
       });
       return componentId ? componentId : null;
@@ -63,10 +69,12 @@ class ComponentService {
 
   static async create(...payload: any): Promise<ComponentInterface | null> {
     try {
+      const compDefault = MatchComponent[payload[0].name];
       const [component] = await db
         .insert(Component)
         .values({
           ...payload[0],
+          ...compDefault,
         })
         .returning();
       return component ? component : null;

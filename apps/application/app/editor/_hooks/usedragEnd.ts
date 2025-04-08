@@ -4,10 +4,9 @@ import ComponentAction from "../../../actions/project/component";
 import { PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { ReferenceSidebarComponents } from "../../../common/referenceSidebarComponents";
 import React, { useEffect } from "react";
-import { MatchComponent } from "@/packages/components/match_component";
 
 export const useDragEnd = () => {
-  const [Data, setData] = React.useState<Record<string, any>[]>([]);
+  const [Data, setData] = React.useState<any>(null);
 
   const [activeId, setActiveId] = React.useState<string>("");
   const [IsDropped, setIsDropped] = React.useState(false);
@@ -53,7 +52,6 @@ export const useDragEnd = () => {
 
       // If the active item is not in the array, add it
       if (!PresentElement) {
-        const { Default } = MatchComponent[event.active.id]!;
         mutateAdd({
           name: event.active.id,
           section: event.over.id,
@@ -61,7 +59,6 @@ export const useDragEnd = () => {
             x: 245, // mouseX,
             y: 145, // mouseY,
           },
-          ...Default,
         });
         // Else We are modifying it from the Array
       } else {
