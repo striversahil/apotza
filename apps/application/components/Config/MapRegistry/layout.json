@@ -5,5 +5,5 @@
   "max_height": "px",
   "padding": "px",
   "visible": "boolean",
-  "layout": "layout"
+  "layout": "tabLayout"
 }

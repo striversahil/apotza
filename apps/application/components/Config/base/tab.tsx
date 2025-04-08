@@ -12,7 +12,7 @@ type Props = {
   onSelect: (value: string) => void;
 };
 
-const Toolip_Base = ({ list, onSelect, value }: Props) => {
+const Tab_Base = ({ list, onSelect, value }: Props) => {
   return (
     <div className="flex">
       {Object.keys(list).map((item) => (
@@ -38,4 +38,4 @@ const Toolip_Base = ({ list, onSelect, value }: Props) => {
   );
 };
 
-export default Toolip_Base;
+export default Tab_Base;

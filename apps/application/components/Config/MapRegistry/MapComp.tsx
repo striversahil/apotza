@@ -1,4 +1,4 @@
-import { Boolean, TextInput, Layout, Color, Icon } from "../Renderer/index";
+import { Boolean, TextInput, Tab, Color, Icon } from "../Renderer/index";
 
 interface MapComp {
   location: Array<string>;
@@ -12,8 +12,7 @@ export const MapComp = ({ ...values }: MapComp) => {
     textColor: <TextInput color {...values} />,
     textSize: <TextInput size {...values} />,
     boolean: <Boolean {...values} />,
-    layout: <Layout {...values} />,
-    // list: () => "list",
+    tabLayout: <Tab layout {...values} />,
     icon: <Icon {...values} />,
     color: <Color {...values} />,
   };
