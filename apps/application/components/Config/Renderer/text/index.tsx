@@ -21,7 +21,7 @@ export const TextInput: React.FC<Props> = ({
 }: Props) => {
   const [value, setValue] = React.useState<string>(initialvalue);
 
-  console.log(addOn);
+
   useDebouncedUpdate(location, value);
   const ref = useRef(null);
 

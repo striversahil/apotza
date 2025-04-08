@@ -14,7 +14,7 @@ type Props = {
 
 const Tab_Base = ({ list, onSelect, value }: Props) => {
   return (
-    <div className="flex">
+    <div className="flex bg-white/10 px-2 py-1 rounded-lg gap-2">
       {Object.keys(list).map((item) => (
         <Tooltip key={item}>
           <TooltipTrigger

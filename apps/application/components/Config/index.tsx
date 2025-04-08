@@ -8,7 +8,6 @@ import {
   PanelRightOpen,
 } from "lucide-react";
 import ProjectAction from "@/actions/project";
-import { useComponent } from "../../contexts/component";
 import _, { set } from "lodash";
 import {
   Collapsible,
@@ -27,6 +26,7 @@ import {
 } from "@repo/ui/Tooltip/tooltip";
 import { CardTitle } from "@repo/ui/card";
 import ConfigHeader from "./header";
+import { useComponent } from "../../contexts/component";
 
 // type Props = {
 //   handleOpen: () => void;
@@ -120,49 +120,51 @@ const ConfigFolder = () => {
           </h1>
         </div>
       )}
-      <div className="flex flex-col gap-2">
-        <ConfigHeader value={Component ?? { name: "No Component Selected" }} />
-        <div className="flex flex-col gap-3 mt-5 pb-14">
-          {Component &&
-            State &&
-            Object.keys(Component).map(
-              (item: any, index: number) =>
-                Object.keys(CollapsiblePanels).includes(item) &&
-                Object.keys(Component[item]).length > 0 && (
-                  <div key={index}>
-                    <div
-                      className="flex items-center gap-2 p-2 rounded-md bg-white/5 border border-white/20 cursor-pointer select-none"
-                      onClick={() => handleTrigger(item)}
-                    >
-                      <span className="font-bold capitalize text-left flex-1">
-                        {item}
-                      </span>
-                      <ChevronDown
-                        className={cn(
-                          "rotate-90 transition ease-in-out",
-                          State[item] && "rotate-0"
-                        )}
-                      />
-                    </div>
-                    {State[item] && (
-                      <div className="p-2 flex flex-col gap-4 ">
-                        {Object.keys(Component[item]).map(
-                          (subitem: any, index: number) => (
-                            <PanelItem
-                              key={index}
-                              item={item}
-                              subitem={subitem}
-                              index={index}
-                            />
-                          )
-                        )}
+      {Component && (
+        <div className="flex flex-col gap-2">
+          <ConfigHeader value={Component} />
+          <div className="flex flex-col gap-3 mt-5 pb-14">
+            {State &&
+              Object.keys(Component).map(
+                (item: any, index: number) =>
+                  Object.keys(CollapsiblePanels).includes(item) &&
+                  Object.keys(Component[item]).length > 0 && (
+                    <div key={index}>
+                      <div
+                        className="flex items-center gap-2 p-2 rounded-md bg-white/5 border border-white/20 cursor-pointer select-none"
+                        onClick={() => handleTrigger(item)}
+                      >
+                        <span className="font-bold capitalize text-left flex-1">
+                          {item}
+                        </span>
+                        <ChevronDown
+                          className={cn(
+                            "rotate-90 transition ease-in-out",
+                            State[item] && "rotate-0"
+                          )}
+                        />
                       </div>
-                    )}
-                  </div>
-                )
-            )}
+                      {State[item] && (
+                        <div className="p-2 flex flex-col gap-4 ">
+                          {Object.keys(Component[item]).map(
+                            (subitem: any, index: number) => (
+                              <PanelItem
+                                key={index}
+                                item={item}
+                                subitem={subitem}
+                                index={index}
+                              />
+                            )
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )
+              )}
+          </div>
         </div>
-      </div>
+      )}
+
       {/* I will Set the Config route with that Object Access which to Rendered */}
     </div>
   );

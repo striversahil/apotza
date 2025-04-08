@@ -13,6 +13,8 @@ export const MapComp = ({ ...values }: MapComp) => {
     textSize: <TextInput size {...values} />,
     boolean: <Boolean {...values} />,
     tabLayout: <Tab layout {...values} />,
+    tabHorizontalAlign: <Tab horizontal {...values} />,
+    tabVerticalAlign: <Tab vertical {...values} />,
     icon: <Icon {...values} />,
     color: <Color {...values} />,
   };
