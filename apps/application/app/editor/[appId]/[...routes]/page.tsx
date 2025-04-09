@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 import ProjectAction from "@/actions/project";
 import { usePathname, useRouter } from "next/navigation";
@@ -9,6 +9,7 @@ import AddSection from "../../../../components/EditorCanvas/Section/AddSection";
 import DeleteSection from "../../../../components/EditorCanvas/Section/DeleteSection";
 import _ from "lodash";
 import { useContextSave } from "../../_hooks/useContextSave";
+import { useWidthDrag } from "../../_hooks/useWidthDrag";
 
 type Props = {};
 
@@ -19,7 +20,9 @@ const page = (props: Props) => {
   const { isLoading, data, isError } = ProjectAction.getPage(
     path.split("/")[3] || ""
   );
+  const ref = useRef(null);
   const { setState } = useContextSave(Page);
+  useWidthDrag(ref);
 
   useEffect(() => {
     if (data) {
@@ -40,7 +43,11 @@ const page = (props: Props) => {
   }
 
   return (
-    <div className="pb-[500px] h-full w-full" onMouseUp={(e) => setState(e)}>
+    <div
+      className="pb-[500px] h-full w-full"
+      ref={ref}
+      onMouseUp={(e) => setState(e)}
+    >
       {Page?.sections.map((item: any) => (
         <div key={item.id} className="relative w-full h-full">
           <Section value={item} />

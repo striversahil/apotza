@@ -8,6 +8,7 @@ interface MapComp {
 export const MapComp = ({ ...values }: MapComp) => {
   return {
     text: <TextInput {...values} />,
+    px: <TextInput pixel {...values} />,
     textColorSize: <TextInput color size {...values} />,
     textColor: <TextInput color {...values} />,
     textSize: <TextInput size {...values} />,

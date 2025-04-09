@@ -34,7 +34,7 @@ export const Tab = ({
   useDebouncedUpdate(location, value);
 
   return (
-    <div className="float-end ">
+    <div className="float-end">
       {layout && (
         <Tab_Base value={value} onSelect={setValue} list={layoutTypes} />
       )}

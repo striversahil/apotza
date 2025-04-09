@@ -4,6 +4,7 @@
   "style": "textSize",
   "icon": "icon",
   "backgroundColor": "color",
+  "fontSize": "textSize",
   "verticalAlign": "tabVerticalAlign",
   "horizontalAlign": "tabHorizontalAlign",
   "borderColor": "color",

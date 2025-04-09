@@ -4,12 +4,15 @@ import _ from "lodash";
 import useDebouncedUpdate from "../utils/debouce";
 import { Textarea } from "@repo/ui/textarea";
 import Text_Base from "../../base/text";
+import Color_Base from "../../base/color";
+import Select_Base from "../../base/select";
 
 type Props = {
   location: Array<string>;
-  initialvalue: string;
+  initialvalue: any;
   color?: boolean;
   size?: boolean;
+  pixel?: boolean;
 };
 
 // I will get Full Config of the Component Here
@@ -19,22 +22,43 @@ export const TextInput: React.FC<Props> = ({
   initialvalue,
   ...addOn
 }: Props) => {
-  const [value, setValue] = React.useState<string>(initialvalue);
-
+  const [value, setValue] = React.useState<any>(initialvalue);
 
   useDebouncedUpdate(location, value);
-  const ref = useRef(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setValue(e.target.value);
-  };
+  const isEmpty = _.isEmpty(addOn);
 
   return (
-    <div className="float-end flex">
-      <Text_Base value={value} onChange={handleChange} />
+    <div className="float-end flex gap-2">
+      {isEmpty && (
+        <Text_Base value={value} onChange={(val) => setValue(val)} area />
+      )}
+      {!isEmpty && (
+        <Text_Base
+          value={value.value}
+          onChange={(val) => setValue((prev: any) => ({ ...prev, value: val }))}
+        />
+      )}
+      {addOn.color && (
+        <Color_Base
+          value={value.color}
+          onChange={(val) => setValue((prev: any) => ({ ...prev, color: val }))}
+        />
+      )}
+      {addOn.pixel && (
+        <Select_Base
+          list={pixChoice}
+          onChange={(val) =>
+            setValue((prev: any) => ({ ...prev, pixChoice: val }))
+          }
+          value={value.pixChoice}
+        />
+      )}
     </div>
   );
 };
+
+export const pixChoice = ["px", "Fit Content", "Fill Parent"];
 
 export default TextInput;
 
