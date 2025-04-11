@@ -32,6 +32,7 @@ class workspaceController {
         });
         return;
       }
+      res.cookie("workspace_id", workspace.id, workspaceCookie);
       res.status(200).json({
         success: true,
         message: "Workspace fetched successfully 🚀",

@@ -29,7 +29,6 @@ const Tabs = (props: Props) => {
 
   useEffect(() => {
     if (data) {
-      console.log(data.payload.codeblocks);
       setCodeBlockData(data.payload.codeblocks);
     }
   }, [data]);

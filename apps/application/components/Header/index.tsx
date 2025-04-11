@@ -10,11 +10,14 @@ import {
   TooltipContent,
 } from "@repo/ui/Tooltip/tooltip";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 type Props = {};
 
 const Header = (props: Props) => {
   const { isLoading, data } = ProjectAction.getProject();
+
+  const navigation = useRouter();
 
   const { mutate } = ProjectAction.useNameChange();
 
@@ -31,7 +34,7 @@ const Header = (props: Props) => {
           height={50}
           alt="brand_pic"
           className=" cursor-pointer hover:animate-pulse"
-          onClick={() => window.location.reload()}
+          onClick={() => navigation.push("/dashboard")}
         />
       </div>
       <div className="flex-1 w-full flex justify-center items-center ">

@@ -10,9 +10,9 @@ interface UpdatedComponentContext {
   setUpdatedComponent: React.Dispatch<React.SetStateAction<any>>;
 }
 
-interface SectionContext {
-  Section: any;
-  setSection: React.Dispatch<React.SetStateAction<any>>;
+interface layoutContext {
+  Layout: any;
+  setLayout: React.Dispatch<React.SetStateAction<any>>;
 }
 
 interface PrevComponentContext {
@@ -24,7 +24,7 @@ const ComponentContext = createContext<ComponentContext | null>(null);
 const UpdatedComponentContext = createContext<UpdatedComponentContext | null>(
   null
 );
-const SectionContext = createContext<SectionContext | null>(null);
+const LayoutContext = createContext<layoutContext | null>(null);
 
 const PrevComponentContext = createContext<PrevComponentContext | null>(null);
 
@@ -58,17 +58,13 @@ export const UpdatedComponentProvider = ({
   );
 };
 
-export const SectionProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  const [Section, setSection] = useState<any>(null);
+export const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
+  const [Layout, setLayout] = useState<any>(null);
 
   return (
-    <SectionContext.Provider value={{ Section, setSection }}>
+    <LayoutContext.Provider value={{ Layout, setLayout }}>
       {children}
-    </SectionContext.Provider>
+    </LayoutContext.Provider>
   );
 };
 
@@ -88,5 +84,5 @@ export const PrevComponentProvider = ({
 
 export const useComponent = () => useContext(ComponentContext);
 export const useUpdatedComponent = () => useContext(UpdatedComponentContext);
-export const useSection = () => useContext(SectionContext);
+export const useLayout = () => useContext(LayoutContext);
 export const usePrevComponent = () => useContext(PrevComponentContext);

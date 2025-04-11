@@ -16,6 +16,7 @@ class ProjectController {
       const project = await ProjectService.getById(projectId);
 
       if (!project) return ErrorResponse(res, "Project could not be fetched");
+      res.cookie("project_id", project.id, projectCookie);
       SuccessResponse(res, "Project fetched successfully", project);
     } catch (error) {
       console.log(error);

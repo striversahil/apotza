@@ -9,7 +9,7 @@ import AddSection from "../../../../components/EditorCanvas/Section/AddSection";
 import DeleteSection from "../../../../components/EditorCanvas/Section/DeleteSection";
 import _ from "lodash";
 import { useContextSave } from "../../_hooks/useContextSave";
-import { useWidthDrag } from "../../_hooks/useWidthDrag";
+// import { useWidthDrag } from "../../_hooks/useWidthDrag";
 
 type Props = {};
 
@@ -20,9 +20,9 @@ const page = (props: Props) => {
   const { isLoading, data, isError } = ProjectAction.getPage(
     path.split("/")[3] || ""
   );
-  const ref = useRef(null);
+  // const ref = useRef(null);
   const { setState } = useContextSave(Page);
-  useWidthDrag(ref);
+  // useWidthDrag(ref);
 
   useEffect(() => {
     if (data) {
@@ -45,7 +45,7 @@ const page = (props: Props) => {
   return (
     <div
       className="pb-[500px] h-full w-full"
-      ref={ref}
+      // ref={ref}
       onMouseUp={(e) => setState(e)}
     >
       {Page?.sections.map((item: any) => (

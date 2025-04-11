@@ -20,17 +20,13 @@ const page = (props: Props) => {
     );
   }
 
-  if (isError) {
-    navigate.push("/editor");
-  }
-
   if (data && data.success === true) {
     navigate.push(`/editor/${data.payload.id}`);
   }
 
-  // if (data && data.success === true) {
-  //   redirect(`/editor/${data.payload.id}/${data.payload.name}`);
-  // }
+  if (isError) {
+    navigate.push("/login");
+  }
 };
 
 export default page;
