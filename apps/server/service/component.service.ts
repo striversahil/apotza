@@ -11,12 +11,24 @@ class ComponentService {
   static async getById(id: string): Promise<ComponentInterface | null> {
     try {
       const component = await db.query.Component.findFirst({
-        with: {
-          page: true,
-        },
-        where: eq(Section.id, id),
+        where: eq(Component.id, id),
       });
-      return component ? component : null;
+
+      // Fetch all sections for the component
+      const [sections] = await db.query.Section.findMany({
+        with: {
+          components: true,
+        },
+        where: eq(Section.component_id ?? "", id),
+      });
+
+      if (!component) return null;
+      const compnoentWithSections = {
+        ...component,
+        sections,
+      };
+
+      return compnoentWithSections;
     } catch (error) {
       throw new Error(error as string);
     }
