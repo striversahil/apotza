@@ -11,7 +11,7 @@ export class PageController {
       if (!page) return ErrorResponse(res, "Page could not be fetched");
       SuccessResponse(res, "Page fetched successfully", page);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -24,7 +24,7 @@ export class PageController {
       if (!page) return ErrorResponse(res, "Page could not be created");
       SuccessResponse(res, "Page created successfully", page);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -36,7 +36,7 @@ export class PageController {
       if (!page) return ErrorResponse(res, "Page could not be updated");
       SuccessResponse(res, "Page updated successfully", page);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -48,7 +48,7 @@ export class PageController {
       if (!page) return ErrorResponse(res, "Page could not be deleted");
       SuccessResponse(res, "Page deleted successfully", page);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 }

@@ -10,12 +10,12 @@ import { MatchComponent } from "@repo/common";
 class ComponentService {
   static async getById(id: string): Promise<ComponentInterface | null> {
     try {
-      const [component] = await db
-        .select()
-        .from(Component)
-        .where(eq(Component.id, id))
-        .limit(1);
-
+      const component = await db.query.Component.findFirst({
+        with: {
+          page: true,
+        },
+        where: eq(Section.id, id),
+      });
       return component ? component : null;
     } catch (error) {
       throw new Error(error as string);

@@ -11,7 +11,7 @@ class SectionController {
       if (!section) return ErrorResponse(res, "Section could not be created");
       SuccessResponse(res, "Section created successfully", section);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -23,7 +23,7 @@ class SectionController {
       if (!section) return ErrorResponse(res, "Section could not be fetched");
       SuccessResponse(res, "Section fetched successfully", section);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -36,14 +36,14 @@ class SectionController {
       if (!section) return ErrorResponse(res, "Section could not be deleted");
       SuccessResponse(res, "Section deleted successfully", section);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
   static async temp(req: Request, res: Response) {
     try {
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 }

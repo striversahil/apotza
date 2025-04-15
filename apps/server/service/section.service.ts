@@ -8,6 +8,7 @@ class SectionService {
     try {
       const section = await db.query.Section.findFirst({
         with: {
+          component: true,
           components: true,
         },
         where: eq(Section.id, id),

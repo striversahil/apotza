@@ -66,8 +66,8 @@ export const pageRelations = relations(Page, ({ one, many }) => ({
 }));
 
 export const sectionRelations = relations(Section, ({ one, many }) => ({
+  // Section can be Called from Page and Component as Well
   page: one(Page, {
-    // Section can be Called from Page and Component as Well
     fields: [Section.page],
     references: [Page.id],
   }),
@@ -79,8 +79,8 @@ export const sectionRelations = relations(Section, ({ one, many }) => ({
 }));
 
 export const componentRelations = relations(Component, ({ one, many }) => ({
+  // Component can be Called from Page and Section as Well
   section: one(Section, {
-    // Component can be Called from Page and Section as Well
     fields: [Component.section],
     references: [Section.id],
   }),

@@ -19,7 +19,7 @@ class ProjectController {
       res.cookie("project_id", project.id, projectCookie);
       SuccessResponse(res, "Project fetched successfully", project);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
       return;
     }
   }
@@ -62,7 +62,7 @@ class ProjectController {
       SuccessResponse(res, "Project created successfully", project_);
       return;
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -75,7 +75,7 @@ class ProjectController {
       res.clearCookie("project_id");
       SuccessResponse(res, "Project deleted successfully", project);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -88,14 +88,14 @@ class ProjectController {
       if (!project) return ErrorResponse(res, "Project could not be updated");
       SuccessResponse(res, "Project updated successfully", project);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
   static async temp(req: Request, res: Response) {
     try {
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 }
