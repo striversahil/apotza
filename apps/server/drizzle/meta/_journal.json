@@ -50,6 +50,13 @@
       "when": 1743686896184,
       "tag": "0006_sudden_red_wolf",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1744725835280,
+      "tag": "0007_past_the_stranger",
+      "breakpoints": true
     }
   ]
 }

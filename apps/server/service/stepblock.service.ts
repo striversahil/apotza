@@ -60,7 +60,6 @@ class StepBlockService {
         });
         return item;
       });
-      console.log(payload);
       if (!payload[0]) return null;
       const Insert = payload.map((item: any) => ({
         name: item.label,

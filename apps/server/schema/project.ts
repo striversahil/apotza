@@ -34,6 +34,7 @@ export const Page = pgTable("page", {
 export const Section = pgTable("section", {
   id: uuid("id").defaultRandom().primaryKey(),
   type: text("type").default("section"),
+  component_id: uuid("component_id"),
   page: uuid("page_id"),
   name: text("name").notNull(),
   content: jsonb("content").notNull().default({}), // Contains the component data
@@ -45,6 +46,7 @@ export const Section = pgTable("section", {
 export const Component = pgTable("component", {
   id: uuid("id").defaultRandom().primaryKey(),
   type: text("type").default("component"),
+  page: uuid("page_id"),
   section: uuid("section_id"),
   name: text("name").notNull(),
   coordinates: jsonb("coordinates").notNull().default({}),
@@ -65,16 +67,26 @@ export const pageRelations = relations(Page, ({ one, many }) => ({
 
 export const sectionRelations = relations(Section, ({ one, many }) => ({
   page: one(Page, {
+    // Section can be Called from Page and Component as Well
     fields: [Section.page],
     references: [Page.id],
+  }),
+  component: one(Component, {
+    fields: [Section.component_id],
+    references: [Component.id],
   }),
   components: many(Component),
 }));
 
 export const componentRelations = relations(Component, ({ one, many }) => ({
   section: one(Section, {
+    // Component can be Called from Page and Section as Well
     fields: [Component.section],
     references: [Section.id],
+  }),
+  page: one(Page, {
+    fields: [Component.page],
+    references: [Page.id],
   }),
 }));
 
