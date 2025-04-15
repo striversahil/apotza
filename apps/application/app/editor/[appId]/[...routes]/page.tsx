@@ -38,9 +38,9 @@ const page = (props: Props) => {
     );
   }
 
-  if (isError) {
-    navigate.push("/editor");
-  }
+  // if (isError) {
+  //   navigate.push("/editor");
+  // }
 
   return (
     <div

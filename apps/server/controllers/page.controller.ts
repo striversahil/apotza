@@ -6,8 +6,9 @@ export class PageController {
   static async getPage(req: Request, res: Response) {
     try {
       const { id } = req.params;
+      const project_id = req.cookies.project_id;
       if (!id) return ErrorResponse(res, "Page does not exist , provide id");
-      const page = await PageService.getOne(id);
+      const page = await PageService.getOne(id, project_id);
       if (!page) return ErrorResponse(res, "Page could not be fetched");
       SuccessResponse(res, "Page fetched successfully", page);
     } catch (error) {

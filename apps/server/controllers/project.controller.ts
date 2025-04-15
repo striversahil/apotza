@@ -47,7 +47,7 @@ class ProjectController {
           return ErrorResponse(res, "StepBlock could not be created");
       }
       for (const section of TemplateInit.sections) {
-        const section_ = await SectionService.create(project.id);
+        const section_ = await SectionService.create(project.id, null);
         if (!section_)
           return ErrorResponse(res, "Section could not be created");
         // for (const component of section.components) {

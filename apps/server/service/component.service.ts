@@ -15,11 +15,11 @@ class ComponentService {
       });
 
       // Fetch all sections for the component
-      const [sections] = await db.query.Section.findMany({
+      const sections = await db.query.Section.findMany({
         with: {
           components: true,
         },
-        where: eq(Section.component_id ?? "", id),
+        where: eq(Section.component_id ?? "1", id),
       });
 
       if (!component) return null;
