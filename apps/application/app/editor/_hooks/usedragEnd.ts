@@ -54,6 +54,7 @@ export const useDragEnd = () => {
       if (!PresentElement) {
         mutateAdd({
           name: event.active.id,
+          // Add page : id of the page if you wan't to add Dialog like Component's as it's will be part of Page
           section: event.over.id,
           coordinates: {
             x: 245, // mouseX,

@@ -1,6 +1,6 @@
 import { db } from "../database";
 import { eq } from "drizzle-orm";
-import { Page, PageInterface } from "../schema";
+import { Component, Page, PageInterface } from "../schema";
 
 export class PageService {
   static async getOne(id: string): Promise<PageInterface | null> {
@@ -11,7 +11,19 @@ export class PageService {
         },
         where: eq(Page.name, id),
       });
-      return page ? page : null;
+
+      // Fetch all Additional Component's for the component
+      const [components] = await db.query.Component.findMany({
+        where: eq(Component.page ?? "", id),
+      });
+
+      if (!page) return null;
+      const pageWithComponent = {
+        ...page,
+        components,
+      };
+
+      return pageWithComponent;
     } catch (error) {
       throw new Error(error as string);
     }
