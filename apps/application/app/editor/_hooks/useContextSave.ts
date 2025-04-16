@@ -55,7 +55,8 @@ export const useContextSave = (initialValue: ComponentInterface) => {
     e.stopPropagation();
     if (JSON.stringify(activeComponent) !== JSON.stringify(initialValue)) {
       console.log("Component Clicked");
-      if (!_.isEqual(activeComponent, realComponent)) {
+      if (JSON.stringify(activeComponent) !== JSON.stringify(realComponent)) {
+        
         setPrevComponent(activeComponent ?? null);
       }
       setComponent(initialValue);

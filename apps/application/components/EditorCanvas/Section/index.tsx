@@ -51,7 +51,6 @@ const Section = ({ value }: Props) => {
       key={value.id}
       style={{
         height: currentValue.component_id ? "auto" : "500px", // Later gonna be dynamic
-        padding: currentValue.layout.padding,
         borderColor: currentValue.appearance.borderColor,
         visibility: currentValue.layout.visible ? "visible" : "hidden",
       }}

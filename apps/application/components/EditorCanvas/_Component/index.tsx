@@ -17,7 +17,7 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
 
   const { currentValue, setState, activeComponent } = useContextSave(value);
 
-  const style = {
+  const style = { 
     transform: transform
       ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
       : undefined,

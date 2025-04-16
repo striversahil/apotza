@@ -17,7 +17,9 @@ const ComponentAction = {
       [
         [`ProjectAction.getOneSection-${section_id}`],
         ["ProjectAction.getComponents"],
-      ]
+      ],
+      () => {},
+      () => {}
     );
     return { mutate };
   },
@@ -42,11 +44,12 @@ const ComponentAction = {
         const response = await axios.post(`${source}/delete`, payload);
         return response.data;
       },
-      [[`ProjectAction.getOneSection-${section_id}`],]
+      [[`ProjectAction.getOneSection-${section_id}`]]
     );
     return { mutate };
   },
   update: (section_id: string) => {
+    console.log(section_id);
     const { mutate } = useMutationData(
       ["ComponentAction.update"],
       async (payload: any) => {
@@ -54,8 +57,8 @@ const ComponentAction = {
         return response.data;
       },
       [[`ProjectAction.getOneSection-${section_id}`]],
-      undefined,
-      undefined
+      () => {},
+      () => {}
     );
     return { mutate };
   },
