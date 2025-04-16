@@ -5,9 +5,8 @@ import { ErrorResponse, SuccessResponse } from "../utils/ApiResponse";
 class SectionController {
   static async createSection(req: Request, res: Response) {
     try {
-      const project_id = req.cookies.project_id;
-      const { id: component_id } = req.body;
-      const section = await SectionService.create(project_id, component_id);
+      const { page_id, component_id } = req.body;
+      const section = await SectionService.create(page_id, component_id);
       if (!section) return ErrorResponse(res, "Section could not be created");
       SuccessResponse(res, "Section created successfully", section);
     } catch (error) {

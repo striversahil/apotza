@@ -3,6 +3,10 @@ import { createContext, useContext, useState, useMemo, useEffect } from "react";
 export interface ComponentInterface {
   id: string;
   type: string;
+  section?: string;
+  component_id?: string;
+  component?: string;
+  page?: string;
   layout?: any;
   appearance?: any;
   components?: any;
@@ -86,7 +90,9 @@ export const PrevComponentProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [prevComponent, setPrevComponent] = useState<any>(null);
+  const [prevComponent, setPrevComponent] = useState<ComponentInterface | null>(
+    null
+  );
 
   return (
     <PrevComponentContext.Provider value={{ prevComponent, setPrevComponent }}>

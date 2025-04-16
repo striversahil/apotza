@@ -16,6 +16,7 @@ import _ from "lodash";
  * @returns An object containing:
  * - `currentValue`: The current state value of the component.
  * - `setState`: A function to update the context and component state when triggered.
+ * - `activeComponent`: The active component state from the context.
  *
  * @remarks
  * - The hook uses multiple context hooks (`useComponent`, `useUpdatedComponent`, `usePrevComponent`)

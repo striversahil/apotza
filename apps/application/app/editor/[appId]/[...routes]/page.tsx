@@ -44,15 +44,15 @@ const page = (props: Props) => {
 
   return (
     <div
-      className="pb-[500px] h-full w-full"
+      className="relative pb-[500px] h-full w-full"
       // ref={ref}
       onMouseUp={(e) => setState(e)}
     >
       {Page?.sections.map((item: any) => (
-        <div key={item.id} className="relative w-full h-full">
+        <div key={item.id} className="relative">
           <Section value={item} />
           <DeleteSection id={item.id} />
-          <AddSection />
+          <AddSection id={Page.id} />
         </div>
       ))}
     </div>

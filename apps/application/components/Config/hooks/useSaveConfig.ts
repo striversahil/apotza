@@ -28,7 +28,7 @@ export const useSaveConfig = () => {
   ];
 
   const { mutate } =
-    ComponentAction.update(prevComponent?.section || Component?.section) || {};
+    ComponentAction.update(prevComponent?.section ?? Component?.section) || {};
 
   // Used Callback to have Control over function execution
   const saveConfig = useCallback(() => {
@@ -39,6 +39,7 @@ export const useSaveConfig = () => {
     }
     if (!_.isEqual(UpdatedComponent, Component)) {
       mutate(_.pick(UpdatedComponent, configTypes));
+      return;
     }
     //     console.log("save config");
   }, [UpdatedComponent, prevComponent]);

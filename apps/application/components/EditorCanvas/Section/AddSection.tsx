@@ -8,9 +8,11 @@ import { PlusCircleIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-type Props = {};
+type Props = {
+  id: string;
+};
 
-const AddSection = (props: Props) => {
+const AddSection = ({ id }: Props) => {
   const router = usePathname();
   const { mutate } = SectionAction.create();
   return (
@@ -18,7 +20,11 @@ const AddSection = (props: Props) => {
       <Tooltip>
         <TooltipTrigger className="flex">
           <div
-            onClick={() => mutate({})}
+            onClick={() =>
+              mutate({
+                page_id: id,
+              })
+            }
             className="cursor-pointer hover:text-blue-500 duration-300"
           >
             <PlusCircleIcon />

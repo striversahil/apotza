@@ -15,6 +15,8 @@ import { useContextSave } from "../../../app/editor/_hooks/useContextSave";
 interface SectionInterface {
   id: string;
   type: string;
+  component: string;
+  page: string;
   layout: typeof Default.layout;
   appearance: typeof Default.appearance;
   components: any;
@@ -48,8 +50,9 @@ const Section = ({ value }: Props) => {
       className="w-full p-2 "
       key={value.id}
       style={{
-        height: "500px",
-        padding: value.layout.padding,
+        height: currentValue.component_id ? "auto" : "500px", // Later gonna be dynamic
+        padding: currentValue.layout.padding,
+        borderColor: currentValue.appearance.borderColor,
         visibility: currentValue.layout.visible ? "visible" : "hidden",
       }}
       onMouseUp={(e) => setState(e)}
