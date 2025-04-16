@@ -8,22 +8,30 @@ import DraggableComponent from "../_Component";
 import ProjectAction from "../../../actions/project";
 import { TabsTrigger } from "@radix-ui/react-tabs";
 import { useComponent, useUpdatedComponent } from "../../../contexts/component";
-import { Loader } from "lucide-react";
+import { sectionCommon as Default } from "@repo/common";
 import _ from "lodash";
 import { useContextSave } from "../../../app/editor/_hooks/useContextSave";
 
+interface SectionInterface {
+  id: string;
+  type: string;
+  layout: typeof Default.layout;
+  appearance: typeof Default.appearance;
+  components: any;
+}
+
 type Props = {
-  value?: any;
+  value?: SectionInterface;
 };
 
-const Section = ({ value, ...props }: Props) => {
+const Section = ({ value }: Props) => {
   const [Components, setComponents] = React.useState<any>(null);
 
   const { isOver, setNodeRef } = useDroppable({
-    id: value.id,
+    id: value?.id as string,
   });
 
-  const { data, isLoading } = ProjectAction.getSection(value.id as string);
+  const { data, isLoading } = ProjectAction.getSection(value?.id as string);
 
   const { setState, component } = useContextSave(value);
 
@@ -38,7 +46,7 @@ const Section = ({ value, ...props }: Props) => {
   return (
     <div
       className="w-full p-2 "
-      key={value.id}
+      key={value?.id}
       style={{
         height: "500px",
       }}

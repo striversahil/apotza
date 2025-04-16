@@ -26,6 +26,8 @@ const page = (props: Props) => {
   if (data && data.success === true) {
     navigate.push(`/editor/${data.payload.id}/${data.payload.pages[0].name}`);
   }
+
+  return <div className="w-full h-full bg-inherit"></div>;
 };
 
 export default page;
