@@ -21,19 +21,19 @@ interface SectionInterface {
 }
 
 type Props = {
-  value?: SectionInterface;
+  value: SectionInterface;
 };
 
 const Section = ({ value }: Props) => {
   const [Components, setComponents] = React.useState<any>(null);
 
   const { isOver, setNodeRef } = useDroppable({
-    id: value?.id as string,
+    id: value.id as string,
   });
 
-  const { data, isLoading } = ProjectAction.getSection(value?.id as string);
+  const { data, isLoading } = ProjectAction.getSection(value.id as string);
 
-  const { setState, component } = useContextSave(value);
+  const { setState, currentValue, activeComponent } = useContextSave(value);
 
   useEffect(() => {
     if (data) {
@@ -46,9 +46,11 @@ const Section = ({ value }: Props) => {
   return (
     <div
       className="w-full p-2 "
-      key={value?.id}
+      key={value.id}
       style={{
         height: "500px",
+        padding: value.layout.padding,
+        visibility: currentValue.layout.visible ? "visible" : "hidden",
       }}
       onMouseUp={(e) => setState(e)}
     >
@@ -56,7 +58,7 @@ const Section = ({ value }: Props) => {
         ref={setNodeRef}
         className={cn(
           "relative w-full h-full border-[2px] border-transparent rounded-xl flex items-center justify-center overflow-clip pointer-events-auto",
-          value?.id === component?.id
+          value.id === activeComponent?.id
             ? "border-blue-400 "
             : "border-white/20 hover:border-white/30"
         )}

@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import {
+  ComponentInterface,
   useComponent,
   usePrevComponent,
   useUpdatedComponent,
@@ -9,7 +10,7 @@ import _ from "lodash";
 /**
  * A custom hook that manages the state of a component in a context-aware manner.
  * It provides functionality to synchronize the state with context values and update the context
- * when necessary. This hook is particularly useful for managing component states in a shared context.
+ * when necessary.
  *
  * @param initialValue - The initial value of the component state.
  * @returns An object containing:
@@ -23,25 +24,18 @@ import _ from "lodash";
  *   `initialValue` changes.
  * - The `setState` function handles state updates and ensures that the previous component state
  *   is stored if the current state differs from the real component state.
+ * - If the `activeComponent` is not equal to the `initialValue` and the `activeComponent` is not
+ *   equal to the `realComponent`, the `realComponent` is updated with the `initialValue`.
  *
  * @example
- * ```tsx
- * const { currentValue, setState } = useContextSave(initialComponent);
- *
- * return (
- *   <button onClick={setState}>
- *     Save Component
- *   </button>
- * );
- * ```
- */
-export const useContextSave = (initialValue: any) => {
+ * **/
+export const useContextSave = (initialValue: ComponentInterface) => {
   const [currentValue, setCurrentValue] = React.useState(initialValue);
 
   const { setComponent = () => {}, Component: realComponent } =
     useComponent() || {};
 
-  const { UpdatedComponent: component, setUpdatedComponent = () => {} } =
+  const { UpdatedComponent: activeComponent, setUpdatedComponent = () => {} } =
     useUpdatedComponent() || {};
   // Setting the Component State from the Context
 
@@ -49,19 +43,19 @@ export const useContextSave = (initialValue: any) => {
 
   // useEffect hook to update the currentValue state whenever the component or initialValue changes
   useEffect(() => {
-    if (component?.id === initialValue?.id) {
-      setCurrentValue(component);
-    } else if (component?.id !== initialValue?.id) {
+    if (activeComponent?.id === initialValue?.id) {
+      setCurrentValue(activeComponent);
+    } else if (activeComponent?.id !== initialValue?.id) {
       setCurrentValue(initialValue);
     }
-  }, [component, initialValue]);
+  }, [activeComponent, initialValue]);
 
   const setState = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    if (JSON.stringify(component) !== JSON.stringify(initialValue)) {
+    if (JSON.stringify(activeComponent) !== JSON.stringify(initialValue)) {
       console.log("Component Clicked");
-      if (!_.isEqual(component, realComponent)) {
-        setPrevComponent(component);
+      if (!_.isEqual(activeComponent, realComponent)) {
+        setPrevComponent(activeComponent ?? null);
       }
       setComponent(initialValue);
       setUpdatedComponent(initialValue);
@@ -70,7 +64,7 @@ export const useContextSave = (initialValue: any) => {
 
   return {
     currentValue,
-    component,
+    activeComponent,
     setState,
   };
 };

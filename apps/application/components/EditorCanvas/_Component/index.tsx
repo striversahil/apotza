@@ -15,7 +15,7 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
       id: value.id,
     });
 
-  const { currentValue, setState, component } = useContextSave(value);
+  const { currentValue, setState, activeComponent } = useContextSave(value);
 
   const style = {
     transform: transform
@@ -40,7 +40,7 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
       className={cn(
         "relative rounded-lg touch-none outline outline-[2px] outline-transparent cursor-move hover:outline-blue-400 text-black ",
         isDragging && "cursor-grabbing outline-green-500",
-        component?.id === value?.id && "outline-blue-400"
+        activeComponent?.id === value?.id && "outline-blue-400"
       )}
     >
       {/* Your content here */}

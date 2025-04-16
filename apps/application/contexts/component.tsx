@@ -1,13 +1,23 @@
 import { createContext, useContext, useState, useMemo, useEffect } from "react";
 
+export interface ComponentInterface {
+  id: string;
+  type: string;
+  layout?: any;
+  appearance?: any;
+  components?: any;
+}
+
 interface ComponentContext {
-  Component: any;
-  setComponent: React.Dispatch<React.SetStateAction<any>>;
+  Component: ComponentInterface | null;
+  setComponent: React.Dispatch<React.SetStateAction<ComponentInterface | null>>;
 }
 
 interface UpdatedComponentContext {
-  UpdatedComponent: any;
-  setUpdatedComponent: React.Dispatch<React.SetStateAction<any>>;
+  UpdatedComponent: ComponentInterface | null;
+  setUpdatedComponent: React.Dispatch<
+    React.SetStateAction<ComponentInterface | null>
+  >;
 }
 
 interface layoutContext {
@@ -16,8 +26,10 @@ interface layoutContext {
 }
 
 interface PrevComponentContext {
-  prevComponent: any;
-  setPrevComponent: React.Dispatch<React.SetStateAction<any>>;
+  prevComponent: ComponentInterface | null;
+  setPrevComponent: React.Dispatch<
+    React.SetStateAction<ComponentInterface | null>
+  >;
 }
 
 const ComponentContext = createContext<ComponentContext | null>(null);
@@ -33,7 +45,7 @@ export const ComponentProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [Component, setComponent] = useState<any>(null);
+  const [Component, setComponent] = useState<ComponentInterface | null>(null);
 
   return (
     <ComponentContext.Provider value={{ Component, setComponent }}>
@@ -47,7 +59,8 @@ export const UpdatedComponentProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [UpdatedComponent, setUpdatedComponent] = useState<any>(null);
+  const [UpdatedComponent, setUpdatedComponent] =
+    useState<ComponentInterface | null>(null);
 
   return (
     <UpdatedComponentContext.Provider
