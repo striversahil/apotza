@@ -22,6 +22,7 @@ const page = (props: Props) => {
   );
   const ref = useRef(null);
   const { setState } = useContextSave(Page);
+  // Calling the custom hook to save Width
   useResizePage(ref, isLoading);
   // useWidthDrag(ref);
 
@@ -45,9 +46,9 @@ const page = (props: Props) => {
 
   return (
     <div
-      className="relative pb-[500px] h-full w-full"
+      className="relative pb-[1500px] h-full w-full"
       ref={ref}
-      onMouseUp={(e) => setState(e)}
+      onClick={(e) => setState(e)}
     >
       {Page?.sections.map((item: any) => (
         <div key={item.id} className="relative">

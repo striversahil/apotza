@@ -60,7 +60,7 @@ const Section = ({ value }: Props) => {
         borderColor: currentValue.appearance.borderColor,
         visibility: currentValue.layout.visible ? "visible" : "hidden",
       }}
-      onMouseUp={(e) => setState(e)}
+      onClick={(e) => setState(e)}
     >
       <div>{Layout}</div>
       <div

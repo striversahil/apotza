@@ -8,11 +8,11 @@ export const useResizePage = (
 ) => {
   const { setLayout = () => {} } = useLayout() || {};
 
-  // Resize DOM Transformer
+  // Resize DOM Transformer and Setting Layout
   const handleResizeEnd = debounce((entry) => {
     const { width, height } = entry.contentRect;
 
-    const transformedWidth = Math.round(width / 20);
+    const transformedWidth = Math.round(width / 50);
     setLayout(transformedWidth);
   }, 300);
 

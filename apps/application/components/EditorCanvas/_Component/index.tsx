@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useDraggable } from "@dnd-kit/core";
+import { Resizable } from "re-resizable";
+
 import ResizableComp from "../utils/ResizableBox/ResizableComp";
 import { useContextSave } from "../../../app/editor/_hooks/useContextSave";
 import { MatchComponent } from "..";
@@ -17,7 +19,7 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
 
   const { currentValue, setState, activeComponent } = useContextSave(value);
 
-  const style = { 
+  const style = {
     transform: transform
       ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
       : undefined,
@@ -26,26 +28,32 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
     top: value.coordinates.y,
   };
 
-  // const { currentTab, currentStep }: any = useUtility();
   const { Component = () => <></> } = MatchComponent[value.name]! || {};
 
   return (
-    <ResizableComp
-      value={value}
-      ref={setNodeRef}
-      onMouseUp={(e) => setState(e)}
-      style={style}
-      {...attributes}
-      {...listeners}
-      className={cn(
-        "relative rounded-lg touch-none outline outline-[2px] outline-transparent cursor-move hover:outline-blue-400 text-black ",
-        isDragging && "cursor-grabbing outline-green-500",
-        activeComponent?.id === value?.id && "outline-blue-400"
-      )}
-    >
-      {/* Your content here */}
-      <Component {...currentValue} />
-    </ResizableComp>
+    <div>
+      <Resizable
+        className={cn(
+          "rounded-lg p-2  outline outline-[2px] outline-transparent  hover:outline-blue-400 ",
+          isDragging && "cursor-grabbing outline-green-500",
+          activeComponent?.id === value?.id && "outline-blue-400"
+        )}
+        // enable={isDragging ? false : false}
+        // snap={{ x: [100], y: [100] }}
+        style={style}
+      >
+        <div
+          {...attributes}
+          {...listeners}
+          ref={setNodeRef}
+          className="size-full touch-none relative cursor-move"
+          onClick={(e) => setState(e)}
+        >
+          <Component {...currentValue} />
+        </div>
+        {/* Your content here */}
+      </Resizable>
+    </div>
   );
 };
 
