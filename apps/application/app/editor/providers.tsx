@@ -2,6 +2,7 @@
 import React from "react";
 import {
   ComponentProvider,
+  LayoutProvider,
   PrevComponentProvider,
   UpdatedComponentProvider,
 } from "../../contexts/component";
@@ -14,7 +15,11 @@ const Provider = (props: Props) => {
     <div suppressHydrationWarning suppressContentEditableWarning>
       <PrevComponentProvider>
         <ComponentProvider>
-          <UpdatedComponentProvider>{props.children}</UpdatedComponentProvider>
+          <LayoutProvider>
+            <UpdatedComponentProvider>
+              {props.children}
+            </UpdatedComponentProvider>
+          </LayoutProvider>
           {/* <UtilityProvider></UtilityProvider> */}
         </ComponentProvider>
       </PrevComponentProvider>

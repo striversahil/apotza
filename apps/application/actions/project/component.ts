@@ -49,7 +49,6 @@ const ComponentAction = {
     return { mutate };
   },
   update: (section_id: string) => {
-    console.log(section_id);
     const { mutate } = useMutationData(
       ["ComponentAction.update"],
       async (payload: any) => {

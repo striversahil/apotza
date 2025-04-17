@@ -19,8 +19,6 @@ import { TooltipProvider } from "@repo/ui/Tooltip/tooltip";
 import { useCurrentTab } from "./_hooks/useCurrentTab";
 import { useDragEnd } from "./_hooks/usedragEnd";
 import Provider from "./providers";
-import { useRef } from "react";
-import { useWidthDrag } from "./_hooks/useWidthDrag";
 
 type Props = {
   children: React.ReactNode;
@@ -35,11 +33,8 @@ const layout = (props: Props) => {
     //   setIsDragging,
     sensors,
   } = useDragEnd();
-  const ref = useRef<ImperativePanelGroupHandle>(null);
 
   const { openConfig, handleOpenConfig } = useOpen();
-
-  useWidthDrag(ref);
 
   return (
     <Provider>
@@ -66,7 +61,6 @@ const layout = (props: Props) => {
                 left: "55px",
                 top: "5vh",
               }}
-              ref={ref}
             >
               <Panel defaultSize={80}>
                 <TabsRoot defaultValue={"0"} className="h-full">

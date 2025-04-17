@@ -20,8 +20,8 @@ const StepsBlockAction = {
         [`ProjectAction.getAllSteps-${currentTab}` as string],
         [`ProjectAction.getOneCodeBlock-${currentTab}` as string],
       ],
-      undefined,
-      undefined
+      () => {},
+      () => {}
       // (previousData: any, variables: any) => {
       //   return {
       //     ...previousData,

@@ -32,19 +32,21 @@ export const useSaveConfig = () => {
   const { mutate } = ComponentAction.update(Component?.section) || {};
 
   // Used Callback to have Control over function execution
-  const saveConfig = useCallback(() => {
+  const savePrevConfig = useCallback(() => {
     if (prevComponent) {
-      console.log("save prev config", prevComponent);
       prevMutate(_.pick(prevComponent, configTypes));
-      return;
     }
+  }, [prevComponent]);
+
+  // Used Callback to have Control over function execution
+  const saveConfig = useCallback(() => {
     if (!_.isEqual(UpdatedComponent, Component)) {
       mutate(_.pick(UpdatedComponent, configTypes));
+      setPrevComponent(null);
       return;
     }
-
     //     console.log("save config");
-  }, [UpdatedComponent, prevComponent]);
+  }, [UpdatedComponent]);
 
   // Only Rerenders when Updated Component is Changed
   useEffect(() => {
@@ -56,6 +58,6 @@ export const useSaveConfig = () => {
 
   // Only Rerenders when User toggled to another Component then immediate save Previous Config State
   useEffect(() => {
-    saveConfig();
+    savePrevConfig();
   }, [prevComponent]);
 };

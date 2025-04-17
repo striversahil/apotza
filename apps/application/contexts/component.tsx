@@ -25,8 +25,8 @@ interface UpdatedComponentContext {
 }
 
 interface layoutContext {
-  Layout: any;
-  setLayout: React.Dispatch<React.SetStateAction<any>>;
+  Layout: number | null;
+  setLayout: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 interface PrevComponentContext {
@@ -75,16 +75,6 @@ export const UpdatedComponentProvider = ({
   );
 };
 
-export const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
-  const [Layout, setLayout] = useState<any>(null);
-
-  return (
-    <LayoutContext.Provider value={{ Layout, setLayout }}>
-      {children}
-    </LayoutContext.Provider>
-  );
-};
-
 export const PrevComponentProvider = ({
   children,
 }: {
@@ -101,7 +91,16 @@ export const PrevComponentProvider = ({
   );
 };
 
+export const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
+  const [Layout, setLayout] = useState<number | null>(null);
+  return (
+    <LayoutContext.Provider value={{ Layout, setLayout }}>
+      {children}
+    </LayoutContext.Provider>
+  );
+};
+
 export const useComponent = () => useContext(ComponentContext);
 export const useUpdatedComponent = () => useContext(UpdatedComponentContext);
-export const useLayout = () => useContext(LayoutContext);
 export const usePrevComponent = () => useContext(PrevComponentContext);
+export const useLayout = () => useContext(LayoutContext);

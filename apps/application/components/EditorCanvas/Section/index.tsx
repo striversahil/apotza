@@ -7,7 +7,11 @@ import AddSection from "./AddSection";
 import DraggableComponent from "../_Component";
 import ProjectAction from "../../../actions/project";
 import { TabsTrigger } from "@radix-ui/react-tabs";
-import { useComponent, useUpdatedComponent } from "../../../contexts/component";
+import {
+  useComponent,
+  useLayout,
+  useUpdatedComponent,
+} from "../../../contexts/component";
 import { sectionCommon as Default } from "@repo/common";
 import _ from "lodash";
 import { useContextSave } from "../../../app/editor/_hooks/useContextSave";
@@ -37,6 +41,8 @@ const Section = ({ value }: Props) => {
 
   const { setState, currentValue, activeComponent } = useContextSave(value);
 
+  const { Layout } = useLayout() || {};
+
   useEffect(() => {
     if (data) {
       if (data.payload.components.length > 0) {
@@ -56,6 +62,7 @@ const Section = ({ value }: Props) => {
       }}
       onMouseUp={(e) => setState(e)}
     >
+      <div>{Layout}</div>
       <div
         ref={setNodeRef}
         className={cn(
