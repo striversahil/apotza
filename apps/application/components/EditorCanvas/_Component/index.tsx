@@ -6,6 +6,7 @@ import { Resizable } from "re-resizable";
 import ResizableComp from "../utils/ResizableBox/ResizableComp";
 import { useContextSave } from "../../../app/editor/_hooks/useContextSave";
 import { MatchComponent } from "..";
+import { useLayout } from "../../../contexts/component";
 
 interface ComponentInterface {
   value: any;
@@ -18,6 +19,12 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
     });
 
   const { currentValue, setState, activeComponent } = useContextSave(value);
+
+  const { Layout } = useLayout() || {};
+
+  const snap = Array.from({ length: 50 }).map((_, index) =>
+    Layout ? index * Layout : 0
+  );
 
   const style = {
     transform: transform
@@ -34,12 +41,13 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
     <div>
       <Resizable
         className={cn(
-          "rounded-lg p-2  outline outline-[2px] outline-transparent  hover:outline-blue-400 ",
+          "rounded-lg p-1 outline outline-[2px] outline-transparent  hover:outline-blue-400 ",
           isDragging && "cursor-grabbing outline-green-500",
           activeComponent?.id === value?.id && "outline-blue-400"
         )}
         // enable={isDragging ? false : false}
-        // snap={{ x: [100], y: [100] }}
+        snap={{ x: snap, y: snap }}
+        snapGap={Layout ?? 0}
         style={style}
       >
         <div

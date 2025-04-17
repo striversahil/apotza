@@ -51,10 +51,7 @@ export const useContextSave = (initialValue: ComponentInterface) => {
     }
   }, [activeComponent, initialValue]);
 
-  const setState = (
-    e: React.MouseEvent<HTMLDivElement>,
-    isStopPropagation: boolean = true
-  ) => {
+  const setState = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     if (JSON.stringify(activeComponent) !== JSON.stringify(initialValue)) {
       console.log("Component Clicked");
