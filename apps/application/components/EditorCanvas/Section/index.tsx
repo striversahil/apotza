@@ -41,8 +41,6 @@ const Section = ({ value }: Props) => {
 
   const { setState, currentValue, activeComponent } = useContextSave(value);
 
-  const { Layout } = useLayout() || {};
-
   useEffect(() => {
     if (data) {
       if (data.payload.components.length > 0) {
@@ -62,7 +60,6 @@ const Section = ({ value }: Props) => {
       }}
       onClick={(e) => setState(e)}
     >
-      <div>{Layout}</div>
       <div
         ref={setNodeRef}
         className={cn(

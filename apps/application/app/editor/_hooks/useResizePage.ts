@@ -12,7 +12,7 @@ export const useResizePage = (
   const handleResizeEnd = debounce((entry) => {
     const { width, height } = entry.contentRect;
 
-    const transformedWidth = Math.round(width / 50);
+    const transformedWidth = Math.round(width / 100);
     setLayout(transformedWidth);
   }, 300);
 

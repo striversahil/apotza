@@ -22,7 +22,8 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
 
   const { Layout } = useLayout() || {};
 
-  const snap = Array.from({ length: 50 }).map((_, index) =>
+  // Snap to grid
+  const snap = Array.from({ length: 100 }).map((_, index) =>
     Layout ? index * Layout : 0
   );
 
@@ -34,28 +35,40 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
     left: value.coordinates.x,
     top: value.coordinates.y,
   };
+  if (activeComponent?.id === value?.id) {
+    console.log(value);
+  }
 
   const { Component = () => <></> } = MatchComponent[value.name]! || {};
 
   return (
-    <div>
+    <div onClick={(e) => setState(e)}>
       <Resizable
-        className={cn(
-          "rounded-lg p-1 outline outline-[2px] outline-transparent  hover:outline-blue-400 ",
-          isDragging && "cursor-grabbing outline-green-500",
-          activeComponent?.id === value?.id && "outline-blue-400"
-        )}
+        // className={cn(
+        //   "relative rounded-lg outline outline-[2px] outline-transparent   ",
+        //   isDragging && "cursor-grabbing outline-green-500",
+        //   activeComponent?.id === value?.id && "outline-blue-400"
+        // )}
         // enable={isDragging ? false : false}
+        defaultSize={{
+          width: Layout ? value.layout.width * Layout : 0,
+          height: 50,
+        }}
         snap={{ x: snap, y: snap }}
         snapGap={Layout ?? 0}
         style={style}
+        minWidth={Layout ? Layout * 10 : 0}
+        minHeight={50}
       >
         <div
+          ref={setNodeRef}
           {...attributes}
           {...listeners}
-          ref={setNodeRef}
-          className="size-full touch-none relative cursor-move"
-          onClick={(e) => setState(e)}
+          className={cn(
+            " size-full cursor-move outline outline-[2px] outline-transparent  rounded-lg ",
+            isDragging && "cursor-grabbing outline-green-500",
+            activeComponent?.id === value?.id && "outline-blue-400"
+          )}
         >
           <Component {...currentValue} />
         </div>

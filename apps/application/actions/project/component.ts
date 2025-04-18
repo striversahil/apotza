@@ -56,7 +56,28 @@ const ComponentAction = {
         return response.data;
       },
       [[`ProjectAction.getOneSection-${section_id}`]],
-      () => {},
+      (previousData: any, variables: any) => {
+        return {
+          ...previousData,
+          payload: {
+            ...previousData.payload,
+            components: [...previousData.payload.components].map(
+              (item: any) => {
+                if (item.id === variables.id) {
+                  return {
+                    ...item,
+                    content: variables.content,
+                    appearance: variables.appearance,
+                    layout: variables.layout,
+                    interaction: variables.interaction,
+                  };
+                }
+                return item;
+              }
+            ),
+          },
+        };
+      },
       () => {}
     );
     return { mutate };
