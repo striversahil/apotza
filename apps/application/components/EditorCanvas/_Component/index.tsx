@@ -31,49 +31,53 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
     transform: transform
       ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
       : undefined,
-    position: "absolute" as const,
-    left: value.coordinates.x,
-    top: value.coordinates.y,
   };
-  if (activeComponent?.id === value?.id) {
-    console.log(value);
-  }
 
   const { Component = () => <></> } = MatchComponent[value.name]! || {};
 
   return (
-    <div onClick={(e) => setState(e)}>
-      <Resizable
-        // className={cn(
-        //   "relative rounded-lg outline outline-[2px] outline-transparent   ",
-        //   isDragging && "cursor-grabbing outline-green-500",
-        //   activeComponent?.id === value?.id && "outline-blue-400"
-        // )}
-        // enable={isDragging ? false : false}
-        defaultSize={{
-          width: Layout ? value.layout.width * Layout : 0,
-          height: 50,
-        }}
-        snap={{ x: snap, y: snap }}
-        snapGap={Layout ?? 0}
-        style={style}
-        minWidth={Layout ? Layout * 10 : 0}
-        minHeight={50}
-      >
-        <div
-          ref={setNodeRef}
-          {...attributes}
-          {...listeners}
-          className={cn(
-            " size-full cursor-move outline outline-[2px] outline-transparent  rounded-lg ",
-            isDragging && "cursor-grabbing outline-green-500",
-            activeComponent?.id === value?.id && "outline-blue-400"
-          )}
+    <div
+      onClick={(e) => setState(e)}
+      style={{
+        position: "absolute" as const,
+        left: value.coordinates.x,
+        top: value.coordinates.y,
+        transform: "translate(-50%, -50%)",
+      }}
+    >
+      {Layout && (
+        <Resizable
+          // className={cn(
+          //   "relative rounded-lg outline outline-[2px] outline-transparent   ",
+          //   isDragging && "cursor-grabbing outline-green-500",
+          //   activeComponent?.id === value?.id && "outline-blue-400"
+          // )}
+          // enable={isDragging ? false : false}
+          defaultSize={{
+            width: value.layout.width * Layout,
+            height: 50,
+          }}
+          snap={{ x: snap, y: snap }}
+          snapGap={Layout}
+          style={style}
+          minWidth={Layout * 10}
+          minHeight={50}
         >
-          <Component {...currentValue} />
-        </div>
-        {/* Your content here */}
-      </Resizable>
+          <div
+            ref={setNodeRef}
+            {...attributes}
+            {...listeners}
+            className={cn(
+              " size-full cursor-move outline outline-[2px] outline-transparent  rounded-lg ",
+              isDragging && "cursor-grabbing outline-green-500",
+              activeComponent?.id === value?.id && "outline-blue-400"
+            )}
+          >
+            <Component {...currentValue} />
+          </div>
+          {/* Your content here */}
+        </Resizable>
+      )}
     </div>
   );
 };

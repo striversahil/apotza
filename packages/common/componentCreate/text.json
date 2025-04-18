@@ -19,7 +19,7 @@
     "borderRadius": "25"
   },
   "layout": {
-    "width": 10,
+    "width": 25,
     "layout": "grid",
     "padding": 0,
     "height": 50,
