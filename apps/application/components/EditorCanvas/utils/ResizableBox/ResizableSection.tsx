@@ -7,7 +7,6 @@ import React, {
   useState,
 } from "react";
 import { toast } from "sonner";
-import { useComponent } from "../../../../../contexts/component";
 
 interface Props {
   value: any;

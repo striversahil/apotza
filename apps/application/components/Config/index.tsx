@@ -33,7 +33,7 @@ import { useComponent } from "../../contexts/component";
 //   selectedItem?: any;
 // };
 
-const CollapsiblePanels: any = {
+export const CollapsiblePanels: any = {
   appearance: appearance,
   content: content,
   layout: layout,
@@ -49,7 +49,7 @@ interface ComponentType {
 
 const ConfigFolder = () => {
   const [Config, setConfig] = useState<any>(null);
-  const { Component } = useComponent() || {};
+  const { Component = {} } = useComponent() || ({} as any);
   const [State, setState] = useState<any>(null);
 
   useEffect(() => {

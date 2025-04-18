@@ -7,6 +7,7 @@ import ResizableComp from "../utils/ResizableBox/ResizableComp";
 import { useContextSave } from "../../../app/editor/_hooks/useContextSave";
 import { MatchComponent } from "..";
 import { useLayout } from "../../../contexts/component";
+import ComponentAction from "@/actions/project/component";
 
 interface ComponentInterface {
   value: any;
@@ -17,10 +18,13 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
     useDraggable({
       id: value.id,
     });
+  const { mutate } = ComponentAction.update(value.section);
 
   const { currentValue, setState, activeComponent } = useContextSave(value);
 
   const { Layout } = useLayout() || {};
+
+  console.log(Layout);
 
   // Snap to grid
   const snap = Array.from({ length: 100 }).map((_, index) =>
@@ -53,9 +57,23 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
           //   activeComponent?.id === value?.id && "outline-blue-400"
           // )}
           // enable={isDragging ? false : false}
+          onResize={(_, direction, ref, d) => {
+            // console.log(d);
+            // Todo : Make Translate multiDirectional
+          }}
+          onResizeStop={(_, direction, ref, d) => {
+            mutate({
+              id: value.id,
+              layout: {
+                ...value.layout,
+                width: value.layout.width + Math.round(d.width / Layout),
+                height: value.layout.height + d.height,
+              },
+            });
+          }}
           defaultSize={{
-            width: value.layout.width * Layout,
-            height: 50,
+            width: `${value.layout.width * Layout}`,
+            height: value.layout.height,
           }}
           snap={{ x: snap, y: snap }}
           snapGap={Layout}
