@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { useDraggable } from "@dnd-kit/core";
 import { Resizable } from "re-resizable";
 
-import ResizableComp from "../utils/ResizableBox/ResizableComp";
+import ResizableComp from "../../../../../archive/ResizableBox/ResizableComp";
 import { useContextSave } from "../../../app/editor/_hooks/useContextSave";
 import { MatchComponent } from "..";
 import { useLayout } from "../../../contexts/component";

@@ -6,6 +6,7 @@ import {
   useUpdatedComponent,
 } from "../../../contexts/component";
 import _ from "lodash";
+import ComponentAction from "@/actions/project/component";
 
 /**
  * A custom hook that manages the state of a component in a context-aware manner.
@@ -42,6 +43,8 @@ export const useContextSave = (initialValue: ComponentInterface) => {
 
   const { setPrevComponent = () => {} } = usePrevComponent() || {};
 
+  const { mutate } = ComponentAction.delete(initialValue?.section ?? "");
+
   // useEffect hook to update the currentValue state whenever the component or initialValue changes
   useEffect(() => {
     if (activeComponent?.id === initialValue?.id) {
@@ -50,6 +53,27 @@ export const useContextSave = (initialValue: ComponentInterface) => {
       setCurrentValue(initialValue);
     }
   }, [activeComponent, initialValue]);
+
+  useEffect(() => {
+    // Adding Delete Functionality for the Active Component
+    const _delete = (e: KeyboardEvent) => {
+      if (e.key !== "Delete") return;
+      if (
+        currentValue?.type === "component" &&
+        currentValue?.id === activeComponent?.id
+      ) {
+        mutate({
+          id: currentValue.id,
+        });
+        setComponent(null);
+        setUpdatedComponent(null);
+      }
+    };
+    window.addEventListener("keydown", _delete);
+    return () => {
+      window.removeEventListener("keydown", _delete);
+    };
+  }, [currentValue, activeComponent]);
 
   const setState = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
