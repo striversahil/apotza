@@ -68,7 +68,18 @@ const ComponentAction = {
         const response = await axios.post(`${source}/delete`, payload);
         return response.data;
       },
-      [[`ProjectAction.getOneSection-${section_id}`]]
+      [[`ProjectAction.getOneSection-${section_id}`]],
+      (previousData: any, variables: any) => {
+        return {
+          ...previousData,
+          payload: {
+            ...previousData.payload,
+            components: [...previousData.payload.components].filter(
+              (item: any) => item.id !== variables.id
+            ),
+          },
+        };
+      }
     );
     return { mutate };
   },

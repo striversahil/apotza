@@ -12,8 +12,8 @@
     "loadingAnimation": "none"
   },
   "layout": {
-    "width": "200",
-    "height": "20",
+    "width": 30,
+    "height": 65,
     "visible": true
   },
   "interaction": {

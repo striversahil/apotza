@@ -43,9 +43,7 @@ const Section = ({ value }: Props) => {
 
   useEffect(() => {
     if (data) {
-      if (data.payload.components.length > 0) {
-        setComponents(data.payload.components);
-      }
+      setComponents(data.payload.components);
     }
   }, [data]);
 

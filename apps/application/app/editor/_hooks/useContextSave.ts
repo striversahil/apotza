@@ -11,13 +11,14 @@ import ComponentAction from "@/actions/project/component";
 /**
  * A custom hook that manages the state of a component in a context-aware manner.
  * It provides functionality to synchronize the state with context values and update the context
- * when necessary.
+ * when necessary. The hook now returns an additional `prevComponent` state.
  *
  * @param initialValue - The initial value of the component state.
  * @returns An object containing:
  * - `currentValue`: The current state value of the component.
  * - `setState`: A function to update the context and component state when triggered.
  * - `activeComponent`: The active component state from the context.
+ * - `prevComponent`: The previous component state from the context.
  *
  * @remarks
  * - The hook uses multiple context hooks (`useComponent`, `useUpdatedComponent`, `usePrevComponent`)
@@ -54,8 +55,8 @@ export const useContextSave = (initialValue: ComponentInterface) => {
     }
   }, [activeComponent, initialValue]);
 
+  // Adding Delete Functionality for the Active Component
   useEffect(() => {
-    // Adding Delete Functionality for the Active Component
     const _delete = (e: KeyboardEvent) => {
       if (e.key !== "Delete") return;
       if (
