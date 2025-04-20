@@ -12,7 +12,7 @@ class StepBlockController {
         return ErrorResponse(res, "StepBlock could not be created");
       SuccessResponse(res, "StepBlock created successfully", stepBlock);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -25,7 +25,7 @@ class StepBlockController {
         return ErrorResponse(res, "StepBlock could not be fetched");
       SuccessResponse(res, "StepBlock fetched successfully", stepBlock);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -38,7 +38,7 @@ class StepBlockController {
         return ErrorResponse(res, "StepBlock could not be deleted");
       SuccessResponse(res, "StepBlock deleted successfully", stepBlock);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -51,13 +51,13 @@ class StepBlockController {
         return ErrorResponse(res, "StepBlock could not be updated");
       SuccessResponse(res, "StepBlock updated successfully", stepBlock);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
   static async temp(req: Request, res: Response) {
     try {
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 }

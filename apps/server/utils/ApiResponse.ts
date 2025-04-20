@@ -12,10 +12,14 @@ export const SuccessResponse = (
   });
 };
 
-export const ErrorResponse = (res: Response, message: string) => {
+export const ErrorResponse = (
+  res: Response,
+  message?: string,
+  internal?: boolean
+) => {
   res.status(500).json({
     success: false,
-    message: message + ". ⚠️",
+    message: internal ? "Something went wrong on our end 😓" : message + ". ⚠️",
     payload: null,
   });
 };

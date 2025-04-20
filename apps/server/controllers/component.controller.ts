@@ -11,7 +11,7 @@ class ComponentController {
       if (!component) return ErrorResponse(res, "Section could not be created");
       SuccessResponse(res, "Component created successfully", component);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -24,7 +24,7 @@ class ComponentController {
         return ErrorResponse(res, "Component could not be fetched");
       SuccessResponse(res, "Component fetched successfully", component);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -38,7 +38,7 @@ class ComponentController {
         return ErrorResponse(res, "Components could not be fetched");
       SuccessResponse(res, "Components fetched successfully", components);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -60,7 +60,7 @@ class ComponentController {
         return ErrorResponse(res, "Component could not be updated");
       SuccessResponse(res, "Component updated successfully", component);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -73,7 +73,7 @@ class ComponentController {
         return ErrorResponse(res, "Component could not be updated");
       SuccessResponse(res, "Component updated successfully", component);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -86,14 +86,14 @@ class ComponentController {
         return ErrorResponse(res, "Component could not be deleted");
       SuccessResponse(res, "Component deleted successfully", component);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
   static async temp(req: Request, res: Response) {
     try {
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 }

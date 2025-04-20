@@ -1,15 +1,9 @@
+import { ComponentInterface } from "../../contexts/component";
 import * as Checkbox from "./Checkbox";
 import * as Text from "./Text";
 
-type Props = {
-  content?: any;
-  appearance?: any;
-  layout?: any;
-  interaction?: any;
-};
-
 interface MatchComponent {
-  Component: React.FC<Props>;
+  Component: React.FC<ComponentInterface>;
   Default: any;
 }
 

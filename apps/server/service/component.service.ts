@@ -10,13 +10,25 @@ import { MatchComponent } from "@repo/common";
 class ComponentService {
   static async getById(id: string): Promise<ComponentInterface | null> {
     try {
-      const [component] = await db
-        .select()
-        .from(Component)
-        .where(eq(Component.id, id))
-        .limit(1);
+      const component = await db.query.Component.findFirst({
+        where: eq(Component.id, id),
+      });
 
-      return component ? component : null;
+      // Fetch all sections for the component
+      const sections = await db.query.Section.findMany({
+        with: {
+          components: true,
+        },
+        where: eq(Section.component_id ?? "1", id),
+      });
+
+      if (!component) return null;
+      const compnoentWithSections = {
+        ...component,
+        sections,
+      };
+
+      return compnoentWithSections;
     } catch (error) {
       throw new Error(error as string);
     }

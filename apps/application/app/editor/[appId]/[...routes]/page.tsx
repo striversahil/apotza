@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 import ProjectAction from "@/actions/project";
 import { usePathname, useRouter } from "next/navigation";
@@ -7,8 +7,9 @@ import { Loader } from "lucide-react";
 import Section from "../../../../components/EditorCanvas/Section";
 import AddSection from "../../../../components/EditorCanvas/Section/AddSection";
 import DeleteSection from "../../../../components/EditorCanvas/Section/DeleteSection";
-import _ from "lodash";
+import _, { debounce } from "lodash";
 import { useContextSave } from "../../_hooks/useContextSave";
+import { useResizePage } from "../../_hooks/useResizePage";
 
 type Props = {};
 
@@ -19,7 +20,11 @@ const page = (props: Props) => {
   const { isLoading, data, isError } = ProjectAction.getPage(
     path.split("/")[3] || ""
   );
+  const ref = useRef(null);
   const { setState } = useContextSave(Page);
+  // Calling the custom hook to save Width
+  useResizePage(ref, isLoading);
+  // useWidthDrag(ref);
 
   useEffect(() => {
     if (data) {
@@ -35,17 +40,21 @@ const page = (props: Props) => {
     );
   }
 
-  if (isError) {
-    navigate.push("/editor");
-  }
+  // if (isError) {
+  //   navigate.push("/editor");
+  // }
 
   return (
-    <div className="pb-[500px] h-full w-full" onMouseUp={(e) => setState(e)}>
+    <div
+      className="relative pb-[1500px] h-full w-full"
+      ref={ref}
+      onClick={(e) => setState(e)}
+    >
       {Page?.sections.map((item: any) => (
-        <div key={item.id} className="relative w-full h-full">
+        <div key={item.id} className="relative">
           <Section value={item} />
           <DeleteSection id={item.id} />
-          <AddSection />
+          <AddSection id={Page.id} />
         </div>
       ))}
     </div>

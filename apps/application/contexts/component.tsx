@@ -1,30 +1,46 @@
 import { createContext, useContext, useState, useMemo, useEffect } from "react";
 
+export interface ComponentInterface {
+  id: string;
+  type: string;
+  section?: string;
+  component_id?: string;
+  component?: string;
+  page?: string;
+  layout?: any;
+  appearance?: any;
+  components?: any;
+}
+
 interface ComponentContext {
-  Component: any;
-  setComponent: React.Dispatch<React.SetStateAction<any>>;
+  Component: ComponentInterface | null;
+  setComponent: React.Dispatch<React.SetStateAction<ComponentInterface | null>>;
 }
 
 interface UpdatedComponentContext {
-  UpdatedComponent: any;
-  setUpdatedComponent: React.Dispatch<React.SetStateAction<any>>;
+  UpdatedComponent: ComponentInterface | null;
+  setUpdatedComponent: React.Dispatch<
+    React.SetStateAction<ComponentInterface | null>
+  >;
 }
 
-interface SectionContext {
-  Section: any;
-  setSection: React.Dispatch<React.SetStateAction<any>>;
+interface layoutContext {
+  Layout: number | null;
+  setLayout: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 interface PrevComponentContext {
-  prevComponent: any;
-  setPrevComponent: React.Dispatch<React.SetStateAction<any>>;
+  prevComponent: ComponentInterface | null;
+  setPrevComponent: React.Dispatch<
+    React.SetStateAction<ComponentInterface | null>
+  >;
 }
 
 const ComponentContext = createContext<ComponentContext | null>(null);
 const UpdatedComponentContext = createContext<UpdatedComponentContext | null>(
   null
 );
-const SectionContext = createContext<SectionContext | null>(null);
+const LayoutContext = createContext<layoutContext | null>(null);
 
 const PrevComponentContext = createContext<PrevComponentContext | null>(null);
 
@@ -33,7 +49,7 @@ export const ComponentProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [Component, setComponent] = useState<any>(null);
+  const [Component, setComponent] = useState<ComponentInterface | null>(null);
 
   return (
     <ComponentContext.Provider value={{ Component, setComponent }}>
@@ -47,7 +63,8 @@ export const UpdatedComponentProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [UpdatedComponent, setUpdatedComponent] = useState<any>(null);
+  const [UpdatedComponent, setUpdatedComponent] =
+    useState<ComponentInterface | null>(null);
 
   return (
     <UpdatedComponentContext.Provider
@@ -58,26 +75,14 @@ export const UpdatedComponentProvider = ({
   );
 };
 
-export const SectionProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  const [Section, setSection] = useState<any>(null);
-
-  return (
-    <SectionContext.Provider value={{ Section, setSection }}>
-      {children}
-    </SectionContext.Provider>
-  );
-};
-
 export const PrevComponentProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const [prevComponent, setPrevComponent] = useState<any>(null);
+  const [prevComponent, setPrevComponent] = useState<ComponentInterface | null>(
+    null
+  );
 
   return (
     <PrevComponentContext.Provider value={{ prevComponent, setPrevComponent }}>
@@ -86,7 +91,16 @@ export const PrevComponentProvider = ({
   );
 };
 
+export const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
+  const [Layout, setLayout] = useState<number | null>(null);
+  return (
+    <LayoutContext.Provider value={{ Layout, setLayout }}>
+      {children}
+    </LayoutContext.Provider>
+  );
+};
+
 export const useComponent = () => useContext(ComponentContext);
 export const useUpdatedComponent = () => useContext(UpdatedComponentContext);
-export const useSection = () => useContext(SectionContext);
 export const usePrevComponent = () => useContext(PrevComponentContext);
+export const useLayout = () => useContext(LayoutContext);

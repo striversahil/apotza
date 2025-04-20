@@ -13,7 +13,7 @@ const SectionAction = {
         const response = await axios.post(`${source}`, payload);
         return response.data;
       },
-      [["ProjectAction.getProject"]]
+      [["ProjectAction.getPage"]]
     );
     return { mutate };
   },
@@ -24,7 +24,7 @@ const SectionAction = {
         const response = await axios.delete(`${source}/${payload.id}`);
         return response.data;
       },
-      [["ProjectAction.getProject"]]
+      [["ProjectAction.getPage"]]
     );
     return { mutate };
   },

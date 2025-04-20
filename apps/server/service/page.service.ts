@@ -1,18 +1,34 @@
 import { db } from "../database";
-import { eq } from "drizzle-orm";
-import { Page, PageInterface } from "../schema";
+import { and, eq } from "drizzle-orm";
+import { Component, Page, PageInterface } from "../schema";
 
 export class PageService {
-  static async getOne(id: string): Promise<PageInterface | null> {
+  static async getOne(
+    id: string,
+    project_id: string
+  ): Promise<PageInterface | null> {
     try {
       const page = await db.query.Page.findFirst({
         with: {
           sections: true,
         },
-        where: eq(Page.name, id),
+        where: and(eq(Page.name, id), eq(Page.project, project_id)),
       });
-      return page ? page : null;
+      if (!page) return null;
+
+      // Fetch all Additional Component's for the component
+      const components = await db.query.Component.findMany({
+        where: eq(Component.page ?? "1", page.id),
+      });
+
+      const pageWithComponent = {
+        ...page,
+        components,
+      };
+
+      return pageWithComponent;
     } catch (error) {
+      console.log(error);
       throw new Error(error as string);
     }
   }

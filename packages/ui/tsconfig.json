@@ -4,7 +4,8 @@
     "outDir": "dist",
     "paths": {
       "@/lib/*": ["./lib/*"],
-      "@components/ui*": ["./src/*"]
+      "@components/ui*": ["./src/*"],
+      "@/hooks/*": ["./hooks/*"]
     }
   },
   "include": ["src"],

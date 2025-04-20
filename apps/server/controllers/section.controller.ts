@@ -5,13 +5,12 @@ import { ErrorResponse, SuccessResponse } from "../utils/ApiResponse";
 class SectionController {
   static async createSection(req: Request, res: Response) {
     try {
-      const project_id = req.cookies.project_id;
-      if (!project_id) return ErrorResponse(res, "Project does not exist");
-      const section = await SectionService.create(project_id);
+      const { page_id, component_id } = req.body;
+      const section = await SectionService.create(page_id, component_id);
       if (!section) return ErrorResponse(res, "Section could not be created");
       SuccessResponse(res, "Section created successfully", section);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -23,7 +22,7 @@ class SectionController {
       if (!section) return ErrorResponse(res, "Section could not be fetched");
       SuccessResponse(res, "Section fetched successfully", section);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -36,14 +35,14 @@ class SectionController {
       if (!section) return ErrorResponse(res, "Section could not be deleted");
       SuccessResponse(res, "Section deleted successfully", section);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
   static async temp(req: Request, res: Response) {
     try {
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 }

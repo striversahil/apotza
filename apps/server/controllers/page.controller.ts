@@ -6,12 +6,13 @@ export class PageController {
   static async getPage(req: Request, res: Response) {
     try {
       const { id } = req.params;
+      const project_id = req.cookies.project_id;
       if (!id) return ErrorResponse(res, "Page does not exist , provide id");
-      const page = await PageService.getOne(id);
+      const page = await PageService.getOne(id, project_id);
       if (!page) return ErrorResponse(res, "Page could not be fetched");
       SuccessResponse(res, "Page fetched successfully", page);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -24,7 +25,7 @@ export class PageController {
       if (!page) return ErrorResponse(res, "Page could not be created");
       SuccessResponse(res, "Page created successfully", page);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -36,7 +37,7 @@ export class PageController {
       if (!page) return ErrorResponse(res, "Page could not be updated");
       SuccessResponse(res, "Page updated successfully", page);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -48,7 +49,7 @@ export class PageController {
       if (!page) return ErrorResponse(res, "Page could not be deleted");
       SuccessResponse(res, "Page deleted successfully", page);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 }

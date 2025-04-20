@@ -13,7 +13,7 @@ class CodeBlockController {
         return ErrorResponse(res, "CodeBlock could not be created");
       SuccessResponse(res, "CodeBlock created successfully", codeBlock);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -26,7 +26,7 @@ class CodeBlockController {
         return ErrorResponse(res, "CodeBlock could not be fetched");
       SuccessResponse(res, "CodeBlock fetched successfully", codeBlock);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -39,13 +39,13 @@ class CodeBlockController {
         return ErrorResponse(res, "CodeBlock could not be deleted");
       SuccessResponse(res, "CodeBlock deleted successfully", codeBlock);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
   static async temp(req: Request, res: Response) {
     try {
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 }

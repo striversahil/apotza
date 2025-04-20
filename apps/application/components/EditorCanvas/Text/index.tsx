@@ -17,7 +17,7 @@ export const Component = ({
 }: Props) => {
   return (
     <div
-      className="flex select-none w-full h-full"
+      className="flex select-none size-full"
       style={{
         padding: `${layout.padding}px`,
         overflow: `${layout.scrollOverflow}`,

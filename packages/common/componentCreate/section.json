@@ -2,7 +2,7 @@
   "layout": {
     "layout": "grid",
     "padding": 0,
-    "width": "100%",
+    "width": "fitParent",
     "height": "fitContent",
     "visible": true,
     "sticky": false

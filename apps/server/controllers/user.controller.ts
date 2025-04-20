@@ -31,7 +31,7 @@ class UserController {
       SuccessResponse(res, "User Signed In Successfully", user);
       return;
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -60,7 +60,7 @@ class UserController {
       res.cookie("access_token", accessToken, Usercookie);
       SuccessResponse(res, "User Signed Up Successfully", userCreated);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -69,7 +69,7 @@ class UserController {
       res.clearCookie("access_token", Usercookie);
       SuccessResponse(res, "User Signed Out Successfully");
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -81,7 +81,7 @@ class UserController {
       res.clearCookie("access_token");
       SuccessResponse(res, "User Deleted Successfully", deleted_user);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 
@@ -91,7 +91,7 @@ class UserController {
       if (!user) return ErrorResponse(res, "User not found");
       SuccessResponse(res, "User fetched successfully", user);
     } catch (error) {
-      console.log(error);
+      ErrorResponse(res, "", true);
     }
   }
 }
