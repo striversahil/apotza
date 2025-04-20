@@ -33,10 +33,34 @@ const ComponentAction = {
       [
         [`ProjectAction.getOneSection-${section_id}`],
         ["ProjectAction.getComponents"],
-      ]
+      ],
+      (previousData: any, variables: any) => {
+        return {
+          ...previousData,
+          payload: {
+            ...previousData.payload,
+            components: [...previousData.payload.components].map(
+              (item: any) => {
+                if (item.id === variables.id) {
+                  return {
+                    ...item,
+                    coordinates: {
+                      x: item.coordinates.x + variables.x,
+                      y: item.coordinates.y + variables.y,
+                    },
+                  };
+                }
+                return item;
+              }
+            ),
+          },
+        };
+      },
+      () => {}
     );
     return { mutate };
   },
+
   delete: (section_id: string) => {
     const { mutate } = useMutationData(
       ["ComponentAction.delete"],
@@ -48,6 +72,7 @@ const ComponentAction = {
     );
     return { mutate };
   },
+
   update: (section_id: string) => {
     const { mutate } = useMutationData(
       ["ComponentAction.update"],
@@ -66,10 +91,10 @@ const ComponentAction = {
                 if (item.id === variables.id) {
                   return {
                     ...item,
-                    content: variables.content,
-                    appearance: variables.appearance,
-                    layout: variables.layout,
-                    interaction: variables.interaction,
+                    content: variables.content ?? item.content,
+                    appearance: variables.appearance ?? item.appearance,
+                    layout: variables.layout ?? item.layout,
+                    interaction: variables.interaction ?? item.interaction,
                   };
                 }
                 return item;

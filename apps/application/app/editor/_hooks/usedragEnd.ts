@@ -4,6 +4,7 @@ import ComponentAction from "../../../actions/project/component";
 import { PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { ReferenceSidebarComponents } from "../../../common/referenceSidebarComponents";
 import React, { useEffect } from "react";
+import { useLayout } from "../../../contexts/component";
 
 export const useDragEnd = () => {
   const [Data, setData] = React.useState<any>(null);
@@ -11,6 +12,7 @@ export const useDragEnd = () => {
   const [activeId, setActiveId] = React.useState<string>("");
   const [IsDropped, setIsDropped] = React.useState(false);
   const [isDragging, setIsDragging] = React.useState(false);
+  const [Width, setWidth] = React.useState(0);
 
   const { data } = ProjectAction.getComponents();
   const { mutate: mutateAdd } = ComponentAction.add(activeId);
@@ -21,6 +23,16 @@ export const useDragEnd = () => {
   //     refetch();
   //   }
   // }, [activeId, refetch]);
+
+  const { Layout } = useLayout() || {};
+
+  useEffect(() => {
+    if (!window) return;
+    const width = localStorage.getItem("width");
+    if (width) {
+      setWidth(Number(width));
+    }
+  }, [Layout]);
 
   useEffect(() => {
     if (data) {
@@ -57,16 +69,16 @@ export const useDragEnd = () => {
           // Add page : id of the page if you wan't to add Dialog like Component's as it's will be part of Page
           section: event.over.id,
           coordinates: {
-            x: 245, // mouseX,
-            y: 145, // mouseY,
+            x: 40, // mouseX,
+            y: 40, // mouseY,
           },
         });
         // Else We are modifying it from the Array
       } else {
         mutateUpdate({
           id: PresentElement,
-          x: event.delta.x,
-          y: event.delta.y,
+          x: event.delta.x / Width,
+          y: event.delta.y / 10,
         });
       }
       setIsDropped(true);

@@ -44,12 +44,12 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
       onClick={(e) => setState(e)}
       style={{
         position: "absolute" as const,
-        left: value.coordinates.x,
-        top: value.coordinates.y,
+        left: Layout ? value.coordinates.x * Layout : 0,
+        top: value.coordinates.y * 10,
         transform: "translate(-50%, -50%)",
       }}
     >
-      {Layout && (
+      {Layout && value && (
         <Resizable
           // className={cn(
           //   "relative rounded-lg outline outline-[2px] outline-transparent   ",
@@ -60,6 +60,10 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
           onResize={(_, direction, ref, d) => {
             // console.log(d);
             // Todo : Make Translate multiDirectional
+          }}
+          size={{
+            width: value.layout.width * Layout,
+            height: value.layout.height,
           }}
           onResizeStop={(_, direction, ref, d) => {
             mutate({
@@ -72,7 +76,7 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
             });
           }}
           defaultSize={{
-            width: `${value.layout.width * Layout}`,
+            width: value.layout.width * Layout,
             height: value.layout.height,
           }}
           snap={{ x: snap, y: snap }}

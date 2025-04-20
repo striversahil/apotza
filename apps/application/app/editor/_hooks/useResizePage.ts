@@ -13,6 +13,9 @@ export const useResizePage = (
     const { width, height } = entry.contentRect;
 
     const transformedWidth = Math.round(width / 100);
+
+    localStorage.setItem("width", transformedWidth.toString());
+
     setLayout(transformedWidth);
   }, 300);
 
