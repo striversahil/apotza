@@ -31,7 +31,7 @@ export const useResizePage = (
 
     // Cleaning up
     return () => resizeObserver.disconnect();
-  }, [loading]);
+  }, [ref, loading]);
 
   return {};
 };

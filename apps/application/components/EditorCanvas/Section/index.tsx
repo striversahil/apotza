@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { useDroppable } from "@dnd-kit/core";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import DeleteSection from "./DeleteSection";
 import AddSection from "./AddSection";
@@ -15,6 +15,7 @@ import {
 import { sectionCommon as Default } from "@repo/common";
 import _ from "lodash";
 import { useContextSave } from "../../../app/editor/_hooks/useContextSave";
+import { useSectionDroppable } from "../hooks/sectionDroppable";
 
 interface SectionInterface {
   id: string;
@@ -32,10 +33,9 @@ type Props = {
 
 const Section = ({ value }: Props) => {
   const [Components, setComponents] = React.useState<any>(null);
+  const ref = useRef(null);
 
-  const { isOver, setNodeRef } = useDroppable({
-    id: value.id as string,
-  });
+  const { isOver, setNodeRef } = useSectionDroppable(value.id, ref);
 
   const { data, isLoading } = ProjectAction.getSection(value.id as string);
 
@@ -51,6 +51,8 @@ const Section = ({ value }: Props) => {
     <div
       className="w-full p-2 "
       key={value.id}
+      ref={ref}
+      // onMouseMove={onMouseHover}
       style={{
         height: currentValue.component_id ? "auto" : "500px", // Later gonna be dynamic
         borderColor: currentValue.appearance.borderColor,
@@ -94,7 +96,8 @@ radial-gradient(at 77% 18%, hsla(265,75%,65%,1) 0px, transparent 50%),
 radial-gradient(at 31% 49%, hsla(235,75%,65%,1) 0px, transparent 50%),
 radial-gradient(at 34% 70%, hsla(265,75%,65%,1) 0px, transparent 50%),
 radial-gradient(at 85% 85%, hsla(235,75%,65%,1) 0px, transparent 50%),
-radial-gradient(at 11% 90%, hsla(265,75%,65%,1) 0px, transparent 50%)`,
+radial-gradient(at 11% 90%, hsla(265,75%,65%,1) 0px, transparent 50%)
+`,
                 }}
               ></div>
             </div>

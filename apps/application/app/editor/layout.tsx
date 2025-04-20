@@ -19,6 +19,7 @@ import { TooltipProvider } from "@repo/ui/Tooltip/tooltip";
 import { useCurrentTab } from "./_hooks/useCurrentTab";
 import { useDragEnd } from "./_hooks/usedragEnd";
 import Provider from "./providers";
+import { restrictToWindowEdges } from "@dnd-kit/modifiers";
 
 type Props = {
   children: React.ReactNode;
@@ -27,6 +28,7 @@ type Props = {
 const layout = (props: Props) => {
   const {
     handleDragEnd,
+    // onMouseHover,
     //   setActiveId,
     //   activeId,
     //   setIsDropped,
@@ -40,6 +42,7 @@ const layout = (props: Props) => {
     <Provider>
       <DndContext
         onDragEnd={handleDragEnd}
+        modifiers={[restrictToWindowEdges]}
         // onDragStart={(event) => {
         //   setActiveId(event.active.id as string);
         //   setIsDropped(false);
@@ -48,7 +51,10 @@ const layout = (props: Props) => {
         sensors={sensors}
       >
         <TooltipProvider>
-          <main className="relative h-screen bg-slate-950 min-w-screen">
+          <main
+            className="relative h-screen bg-slate-950 min-w-screen"
+            // onMouseMove={onMouseHover}
+          >
             <Sidebar />
             {/* Main Resizable Pannel Start's Here */}
             <Header />
