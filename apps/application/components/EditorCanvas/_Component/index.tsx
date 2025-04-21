@@ -24,8 +24,6 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
 
   const { Layout } = useLayout() || {};
 
-  console.log(Layout);
-
   // Snap to grid
   const snap = Array.from({ length: 100 }).map((_, index) =>
     Layout ? index * Layout : 0

@@ -6,6 +6,7 @@ import {
   PrevComponentProvider,
   UpdatedComponentProvider,
 } from "../../contexts/component";
+import { GlobalContextProvider } from "../../contexts/utils";
 
 type Props = {
   children: React.ReactNode;
@@ -17,7 +18,7 @@ const Provider = (props: Props) => {
         <ComponentProvider>
           <LayoutProvider>
             <UpdatedComponentProvider>
-              {props.children}
+              <GlobalContextProvider>{props.children}</GlobalContextProvider>
             </UpdatedComponentProvider>
           </LayoutProvider>
           {/* <UtilityProvider></UtilityProvider> */}

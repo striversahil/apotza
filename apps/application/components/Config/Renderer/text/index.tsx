@@ -13,7 +13,6 @@ type Props = {
   color?: boolean;
   size?: boolean;
   pixel?: boolean;
-  
 };
 
 // I will get Full Config of the Component Here
