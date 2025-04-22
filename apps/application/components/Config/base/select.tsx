@@ -23,6 +23,7 @@ const Select_Base = ({ list, value, onChange }: Props) => {
       <SelectContent className="bg-slate-950 cursor-pointer px-1 py-2">
         {list.map((item: string) => (
           <SelectItem
+            key={item}
             value={item}
             className={cn(
               " focus:bg-white/10 text-center",

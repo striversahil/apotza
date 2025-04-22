@@ -19,7 +19,7 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
       id: value.id,
     });
 
-  const { mutate } = ComponentAction.update(value.section);
+  const { mutate } = ComponentAction.updateWidthHeight(value.section);
 
   const { ref, focused, currentValue, setState, activeComponent } =
     useContextSave(value);
@@ -36,6 +36,8 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
       ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
       : undefined,
   };
+
+  console.log(value.layout);
 
   const { Component = () => <></> } = MatchComponent[value.name]! || {};
 

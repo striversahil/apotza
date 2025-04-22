@@ -117,6 +117,41 @@ const ComponentAction = {
       },
       () => {}
     );
+
+    return { mutate };
+  },
+  updateWidthHeight: (section_id: string) => {
+    const { mutate } = useMutationData(
+      ["ComponentAction.updateWidthHeight"],
+      async (payload: any) => {
+        const response = await axios.post(`${source}/update`, payload);
+        return response.data;
+      },
+      [[`ProjectAction.getOneSection-${section_id}`]],
+      (previousData: any, variables: any) => {
+        return {
+          ...previousData,
+          payload: {
+            ...previousData.payload,
+            components: [...previousData.payload.components].map(
+              (item: any) => {
+                if (item.id === variables.id) {
+                  console.log(variables);
+                  return {
+                    ...item,
+                    layout: {
+                      ...variables.layout,
+                    },
+                  };
+                }
+                return item;
+              }
+            ),
+          },
+        };
+      },
+      () => {}
+    );
     return { mutate };
   },
 };
