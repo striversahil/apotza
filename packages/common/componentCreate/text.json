@@ -8,11 +8,8 @@
   },
   "appearance": {
     "style": {
-      "text": {
-        "value": "",
-        "config": ""
-      },
-      "size": "16"
+      "value": "",
+      "config": ""
     },
     "textColor": "white",
     "icon": "👋",
@@ -23,14 +20,8 @@
       "config": "false"
     },
     "fontSize": {
-      "text": {
-        "value": "",
-        "config": ""
-      },
-      "size": {
-        "value": "16",
-        "config": "16"
-      }
+      "value": "16",
+      "config": "16"
     },
     "fontWeight": "bold",
     "textAlign": "left",
@@ -38,10 +29,8 @@
     "borderColor": "red",
     "borderWidth": "3",
     "borderRadius": {
-      "text": {
-        "value": "25",
-        "config": "0"
-      }
+      "value": "25",
+      "config": "0"
     }
   },
   "layout": {

@@ -1,3 +1,5 @@
+**_We are Halting text Instance like textColorSize and textSize in the Mapper to only text for now . till we get the MVP up and Running_**
+
 - **text** : It's a Text component that will Also be having a API Output mapping in {{  }} . With Data Type of Input must be Mentioned
 - **textColorSize** : Component to Change the Text Color with Size Change
 - **textSize** : Component to Change the Text Size

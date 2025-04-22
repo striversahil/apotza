@@ -30,10 +30,9 @@ export const TextInput: React.FC<Props> = ({
 
   return (
     <div className="float-end flex gap-2">
-      {isEmpty && (
-        <Text_Base value={value} onChange={(val) => setValue(val)} area />
-      )}
-      {!isEmpty && value.text && (
+      <Text_Base value={value} onChange={(val) => setValue(val)} area />
+
+      {/* {!isEmpty && value.text && (
         <Text_Base
           value={value.text}
           onChange={(val) =>
@@ -58,7 +57,7 @@ export const TextInput: React.FC<Props> = ({
           }
           value={value.pixChoice}
         />
-      )}
+      )} */}
     </div>
   );
 };

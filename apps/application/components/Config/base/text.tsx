@@ -30,7 +30,7 @@ const Text_Base = ({ value, onChange, area }: Props) => {
       return `<span contenteditable="false" class="inline-block bg-blue-100 text-blue-700 px-2 py-0.5 rounded-lg text-sm mx-1">${propText}</span>`;
     });
 
-    onChange(html);
+    onChange({ config: html, value: value?.value });
 
     editor.innerHTML = html;
     placeCaretAtEnd(editor);

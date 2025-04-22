@@ -27,14 +27,14 @@ export const Component = ({
         backgroundColor: `${appearance.backgroundColor}`,
         borderColor: `${appearance.borderColor}`,
         borderWidth: `${appearance.borderWidth}px`,
-        borderRadius: `${appearance.borderRadius.text.value}px`,
+        borderRadius: `${appearance.borderRadius.value}px`,
       }}
     >
       {appearance.icon && (
         <div
           className="mr-2"
           style={{
-            fontSize: `${appearance.fontSize.text.value}px`,
+            fontSize: `${appearance.fontSize.value}px`,
           }}
         >
           {appearance.icon}
