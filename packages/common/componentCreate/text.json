@@ -39,10 +39,9 @@
     "borderWidth": "3",
     "borderRadius": {
       "text": {
-        "value": "0",
+        "value": "25",
         "config": "0"
-      },
-      "pixel": "pixel"
+      }
     }
   },
   "layout": {
@@ -52,10 +51,8 @@
     "height": 50,
     "scrollOverflow": "auto",
     "visible": {
-      "boolean": {
-        "value": true,
-        "config": "true"
-      }
+      "value": true,
+      "config": "true"
     }
   }
 }

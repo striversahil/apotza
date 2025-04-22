@@ -1,12 +1,14 @@
 import { Input } from "@repo/ui/input";
 import { Textarea } from "@repo/ui/textarea";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useGlobalContext } from "../../../contexts/utils";
-import { useAutoComplete } from "./autocomplete";
 
 type Props = {
-  value: string;
-  onChange: (value: string) => void;
+  value: {
+    config: string;
+    value: string;
+  };
+  onChange: (value: any) => void;
   area?: boolean;
 };
 
@@ -15,7 +17,38 @@ const Text_Base = ({ value, onChange, area }: Props) => {
 
   const { component, codeBlock } = useGlobalContext() || {};
 
-  const { handleInput } = useAutoComplete({ ref: editorRef, value, onChange });
+  const handleInput = () => {
+    const editor = editorRef.current;
+    if (!editor) return;
+
+    let html = editor.innerHTML.length
+      ? editor.innerHTML
+      : value?.config || ".....";
+
+    // Replace prop("Something") with a styled badge
+    html = html.replace(/\{\{\s*([^"]+)\s*\}\}/g, (match, propText) => {
+      return `<span contenteditable="false" class="inline-block bg-blue-100 text-blue-700 px-2 py-0.5 rounded-lg text-sm mx-1">${propText}</span>`;
+    });
+
+    onChange(html);
+
+    editor.innerHTML = html;
+    placeCaretAtEnd(editor);
+  };
+
+  const placeCaretAtEnd = (el: HTMLElement) => {
+    // el.focus();
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    range.collapse(false);
+    const sel = window.getSelection();
+    sel?.removeAllRanges();
+    sel?.addRange(range);
+  };
+
+  useEffect(() => {
+    handleInput(); // Initial formatting if needed
+  }, [editorRef]);
 
   return (
     <div className="text-white w-full p-4 bg-black">
