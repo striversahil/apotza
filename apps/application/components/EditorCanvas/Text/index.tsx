@@ -26,7 +26,7 @@ export const Component = ({
         justifyContent: `${appearance.horizontalAlign}`,
         backgroundColor: `${appearance.backgroundColor}`,
         borderColor: `${appearance.borderColor}`,
-        borderWidth: `${appearance.borderWidth}px`,
+        borderWidth: `${appearance.borderWidth.value}px`,
         borderRadius: `${appearance.borderRadius.value}px`,
       }}
     >

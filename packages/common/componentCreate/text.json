@@ -27,17 +27,21 @@
     "textAlign": "left",
     "backgroundColor": "green",
     "borderColor": "red",
-    "borderWidth": "3",
+    "borderWidth": {
+      "value": "3",
+      "config": "3"
+    },
     "borderRadius": {
       "value": "25",
       "config": "0"
     }
   },
   "layout": {
-    "width": 25,
     "layout": "grid",
-    "padding": 0,
-    "height": 50,
+    "padding": {
+      "value": "10",
+      "config": "10"
+    },
     "scrollOverflow": "auto",
     "visible": {
       "value": true,

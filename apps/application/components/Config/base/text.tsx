@@ -21,9 +21,7 @@ const Text_Base = ({ value, onChange, area }: Props) => {
     const editor = editorRef.current;
     if (!editor) return;
 
-    let html = editor.innerHTML.length
-      ? editor.innerHTML
-      : value?.config || ".....";
+    let html = editor.innerHTML.length ? editor.innerHTML : value?.config || "";
 
     // Replace prop("Something") with a styled badge
     html = html.replace(/\{\{\s*([^"]+)\s*\}\}/g, (match, propText) => {
@@ -51,14 +49,14 @@ const Text_Base = ({ value, onChange, area }: Props) => {
   }, [editorRef]);
 
   return (
-    <div className="text-white w-full p-4 bg-black">
+    <div className="text-white w-full bg-black">
       <div
         ref={editorRef}
         onInput={handleInput}
         contentEditable
         suppressContentEditableWarning
         spellCheck={false}
-        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50w-full outline-none text-sm "
+        className="flex h-10 w-full rounded-md border border-input bg-background px-5 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2  outline-none text-sm "
       ></div>
     </div>
   );
