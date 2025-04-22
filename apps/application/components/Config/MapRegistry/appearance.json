@@ -6,6 +6,7 @@
   "backgroundColor": "color",
   "fontSize": "textSize",
   "verticalAlign": "tabVerticalAlign",
+  "textAlign": "tabHorizontalAlign",
   "horizontalAlign": "tabHorizontalAlign",
   "borderColor": "color",
   "textColor": "color",
