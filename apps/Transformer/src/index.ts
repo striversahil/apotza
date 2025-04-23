@@ -1,11 +1,10 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
+import { RunnerController } from "../controller/runner.controller.ts";
 
 const app = new Hono();
 
-app.get("/example", (c) => {
-  return c.text("zig Mother!");
-});
+app.post("/:id", RunnerController.index);
 
 serve(
   {
@@ -16,3 +15,5 @@ serve(
     console.log(`Server is running on http://localhost:${info.port}`);
   }
 );
+
+export default app;
