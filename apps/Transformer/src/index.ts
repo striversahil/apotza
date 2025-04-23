@@ -3,7 +3,7 @@ import { Hono } from "hono";
 
 const app = new Hono();
 
-app.get("/user", (c) => {
+app.get("/example", (c) => {
   return c.text("zig Mother!");
 });
 

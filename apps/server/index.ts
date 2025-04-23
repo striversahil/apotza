@@ -1,4 +1,5 @@
 import httpServer from "./app";
+import "dotenv/config";
 import { configDotenv } from "dotenv";
 import { connectDB } from "./database";
 
