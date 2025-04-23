@@ -6,17 +6,8 @@ import {
   timestamp,
   uuid,
 } from "drizzle-orm/pg-core";
-import { Workspace } from "./user";
+import { Project, Workspace } from "./user";
 import { InferSelectModel, relations } from "drizzle-orm";
-
-export type ProjectInterface = InferSelectModel<typeof Project>;
-export const Project = pgTable("project", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  workspace: uuid("workspace_id"),
-  name: text("name").notNull(),
-  details: text("details").notNull().default("Some details about this project"),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
-});
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++ Components Tables +++++++++++++++++++++++++++++++++++++++++++++++++
 export type PageInterface = InferSelectModel<typeof Page>;
@@ -88,51 +79,4 @@ export const componentRelations = relations(Component, ({ one, many }) => ({
     fields: [Component.page],
     references: [Page.id],
   }),
-}));
-
-// ++++++++++++++++++++++++++++++++++++++++++++++++ CodeBlock Tables +++++++++++++++++++++++++++++++++++++++++++++++++
-export const CodeBlock = pgTable("codeblock", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  project: uuid("project_id"),
-  name: text("name").notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
-});
-
-export type CodeBlockInterface = InferSelectModel<typeof CodeBlock>;
-
-export const StepBlock = pgTable("stepblock", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  codeblock: uuid("codeblock_id"),
-  name: text("name").notNull(),
-  code: text("code").notNull(),
-  language: text("language").notNull(),
-  output: text("output").notNull(),
-  stdout: text("stdout").notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
-});
-
-export type StepBlockInterface = InferSelectModel<typeof StepBlock>;
-
-export const codeBlockRelations = relations(CodeBlock, ({ one, many }) => ({
-  project: one(Project, {
-    fields: [CodeBlock.project],
-    references: [Project.id],
-  }),
-  stepBlocks: many(StepBlock),
-}));
-
-export const stepBlockRelations = relations(StepBlock, ({ one, many }) => ({
-  codeBlock: one(CodeBlock, {
-    fields: [StepBlock.codeblock],
-    references: [CodeBlock.id],
-  }),
-}));
-
-export const projectRelations = relations(Project, ({ one, many }) => ({
-  workspace: one(Workspace, {
-    fields: [Project.workspace],
-    references: [Workspace.id],
-  }),
-  codeblocks: many(CodeBlock),
-  pages: many(Page),
 }));
