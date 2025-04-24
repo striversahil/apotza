@@ -35,10 +35,16 @@ importers:
       hono:
         specifier: ^4.7.7
         version: 4.7.7
+      pg:
+        specifier: ^8.14.0
+        version: 8.14.0
     devDependencies:
       '@types/node':
         specifier: ^20.11.17
         version: 20.17.24
+      '@types/pg':
+        specifier: ^8.11.11
+        version: 8.11.11
       nodemon:
         specifier: ^3.1.9
         version: 3.1.9
