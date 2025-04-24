@@ -63,7 +63,7 @@ class RunnerController {
         return ErrorResponse(c, "Code is required");
       }
 
-      const { error, data } = await JavaScriptEngine(code, null);
+      const { error, data } = await JavaScriptEngine(code);
       if (error) {
         return ErrorResponse(c, error);
       }
@@ -80,7 +80,7 @@ class RunnerController {
         return ErrorResponse(c, "Code is required");
       }
 
-      const { error, data } = await PythonEngine(code, null);
+      const { error, data } = await PythonEngine(code);
       if (error) {
         return ErrorResponse(c, error);
       }

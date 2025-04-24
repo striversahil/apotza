@@ -18,5 +18,5 @@
     "outDir": "dist",
     "jsxImportSource": "hono/jsx"
   },
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts", "Blocs/javascript/index.js"]
 }

@@ -1,4 +1,4 @@
-const PythonEngine = async (query: string, connection: any) => {
+const PythonEngine = async (query: string) => {
   //
   return {
     error: null,

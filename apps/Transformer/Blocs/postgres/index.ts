@@ -54,6 +54,7 @@ const PostgresEngine = async (query: string, connection: PGConnection) => {
       data: null,
     };
   } finally {
+    // Closing Connection to Database
     await client.end();
   }
 };
