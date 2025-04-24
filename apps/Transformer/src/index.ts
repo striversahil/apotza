@@ -1,6 +1,6 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
-import { RunnerController } from "../controller/runner.controller.ts";
+import RunnerController from "../controller/runner.controller.ts";
 import { logger } from "hono/logger";
 import { prettyJSON } from "hono/pretty-json";
 import { cors } from "hono/cors";
@@ -22,11 +22,15 @@ app.use(
 );
 
 app.post("/rest", RunnerController.Rest);
+app.post("/postgres", RunnerController.Postgres);
+app.post("/javascript", RunnerController.JavaScript);
+app.post("/python", RunnerController.Python);
 
 serve(
   {
     fetch: app.fetch,
     port: 8081,
+    hostname: "0.0.0.0",
   },
   (info) => {
     console.log(`Server is running on http://localhost:${info.port}`);
