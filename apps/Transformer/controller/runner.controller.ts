@@ -10,17 +10,19 @@ import PythonEngine from "../Blocs/python/index.ts";
 
 class RunnerController {
   static async Rest(c: Context) {
-    const { endpoint, headers, body } = await c.req.json();
+    let { endpoint, headers, body } = await c.req.json();
 
     if (!endpoint) {
       return ErrorResponse(c, "Endpoint is required");
     }
     if (!headers) {
-      return ErrorResponse(c, "Headers is required");
+      headers = {
+        "Content-Type": "application/json",
+      };
     }
-    if (!body) {
-      return ErrorResponse(c, "Body is required");
-    }
+    // if (!body) {
+    //   return ErrorResponse(c, "Body is required");
+    // }
 
     const { error, data } = await RestEngine(endpoint, headers, body);
     if (error) {
