@@ -22,9 +22,9 @@ export type CodeBlockInterface = InferSelectModel<typeof CodeBlock>;
 
 export const StepBlock = pgTable("stepblock", {
   id: uuid("id").defaultRandom().primaryKey(),
-  codeblock: uuid("codeblock_id"),
   name: text("name").notNull(),
   type: text("type").notNull(),
+  codeblock: uuid("codeblock_id"),
   config: jsonb("config").notNull().default({}),
   output: text("output").notNull(),
   stdout: text("stdout").notNull(),

@@ -60,11 +60,11 @@ class StepBlockService {
           headers: {
             "Content-Type": "application/json",
           },
-          body: { ...data },
+          body: JSON.stringify({ ...data }),
         }
       );
       if (!response) return null;
-      console.log(response);
+      console.log(response.json());
       const [stepBlock] = await db
         .update(StepBlock)
         .set({ ...data })
