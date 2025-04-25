@@ -30,6 +30,14 @@ class CodeBlockController {
     }
   }
 
+  static async runAllSteps(req: Request, res: Response) {
+    const { id } = req.body;
+    try {
+    } catch (error) {
+      ErrorResponse(res, "", true);
+    }
+  }
+
   static async deleteCodeblock(req: Request, res: Response) {
     try {
       const { id } = req.body;

@@ -7,6 +7,8 @@ router.route("/:id").get(CodeBlockController.getCodeBlock);
 
 router.route("/").post(CodeBlockController.create);
 
+router.route("/run").post(CodeBlockController.runAllSteps);
+
 // router.route("/name").post(CodeBlockController.updateCodeBlockName);
 
 router.route("/delete").post(CodeBlockController.deleteCodeblock);

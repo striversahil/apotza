@@ -30,7 +30,7 @@ serve(
   {
     fetch: app.fetch,
     port: 8081,
-    hostname: "0.0.0.0",
+    hostname: "localhost",
   },
   (info) => {
     console.log(`Server is running on http://localhost:${info.port}`);

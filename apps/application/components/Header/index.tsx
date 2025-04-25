@@ -13,6 +13,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import EditorPreview from "./EditorPreview";
 import Deploy from "./Deploy";
+import Avatar_Header from "./Avatar";
 
 type Props = {};
 
@@ -64,11 +65,12 @@ const Header = (props: Props) => {
           )}
         </div>
 
+        {/* All Essential's Call to action Navigation Button */}
         {!isLoading && (
-          <div className="absolute right-0 flex items-center gap-3 mx-5">
+          <div className="absolute right-0 top-3 flex justify-center items-center gap-5 mx-5">
             <EditorPreview />
-
             <Deploy />
+            <Avatar_Header />
           </div>
         )}
       </div>

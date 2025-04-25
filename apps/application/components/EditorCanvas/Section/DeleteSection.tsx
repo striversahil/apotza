@@ -11,7 +11,7 @@ const DeleteSection = (props: Props) => {
 
   return (
     <div
-      className="absolute top-2 right-2 p-1 bg-white/50 rounded-md cursor-pointer hover:bg-white/10 "
+      className="absolute top-2 right-2 p-1 bg-white/20 rounded-md cursor-pointer hover:bg-white/10 "
       onClick={() => mutate({ id: props.id })}
     >
       <Trash2 size={20} />

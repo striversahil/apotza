@@ -29,6 +29,14 @@ class StepBlockController {
     }
   }
 
+  static async runBlock(req: Request, res: Response) {
+    const { id } = req.body;
+    try {
+    } catch (error) {
+      ErrorResponse(res, "", true);
+    }
+  }
+
   static async deleteStep(req: Request, res: Response) {
     try {
       const { id } = req.body;
