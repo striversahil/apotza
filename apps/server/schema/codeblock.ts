@@ -24,10 +24,11 @@ export const StepBlock = pgTable("stepblock", {
   id: uuid("id").defaultRandom().primaryKey(),
   codeblock: uuid("codeblock_id"),
   name: text("name").notNull(),
-  code: text("code").notNull(),
-  language: text("language").notNull(),
+  type: text("type").notNull(),
+  config: jsonb("config").notNull().default({}),
   output: text("output").notNull(),
   stdout: text("stdout").notNull(),
+  request: text("request").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
 
