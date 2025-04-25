@@ -1,2 +1,0 @@
-ALTER TABLE "section" ALTER COLUMN "layout" SET DEFAULT '{"width":1000,"height":200}'::jsonb;--> statement-breakpoint
-ALTER TABLE "component" ADD COLUMN "layout" jsonb DEFAULT '{"width":200,"height":200}'::jsonb;

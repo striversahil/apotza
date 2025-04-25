@@ -3,7 +3,7 @@ import { PageController } from "../controllers/page.controller";
 
 const router: Router = Router();
 
-router.route("/").get();
+// router.route("/").get();
 
 router.route("/").post(PageController.createPage);
 

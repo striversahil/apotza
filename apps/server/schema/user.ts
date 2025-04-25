@@ -61,7 +61,10 @@ export type WorkspaceType = InferSelectModel<typeof Workspace>;
 
 export const Project = pgTable("project", {
   id: uuid("id").defaultRandom().primaryKey(),
-  workspace: uuid("workspace_id"),
+  workspace: uuid("workspace_id").references(() => Workspace.id, {
+    onDelete: "cascade",
+    onUpdate: "cascade",
+  }),
   name: text("name").notNull(),
   details: text("details").notNull().default("Some details about this project"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),

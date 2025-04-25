@@ -5,85 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1742698135240,
-      "tag": "0000_mean_ultron",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1742876352464,
-      "tag": "0001_next_elektra",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1743226614654,
-      "tag": "0002_even_microbe",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1743230707482,
-      "tag": "0003_fuzzy_trauma",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1743662357550,
-      "tag": "0004_lovely_slayback",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1743662733954,
-      "tag": "0005_modern_dragon_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1743686896184,
-      "tag": "0006_sudden_red_wolf",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "7",
-      "when": 1744725835280,
-      "tag": "0007_past_the_stranger",
-      "breakpoints": true
-    },
-    {
-      "idx": 8,
-      "version": "7",
-      "when": 1744734230213,
-      "tag": "0008_sleepy_big_bertha",
-      "breakpoints": true
-    },
-    {
-      "idx": 9,
-      "version": "7",
-      "when": 1744734334249,
-      "tag": "0009_confused_black_tom",
-      "breakpoints": true
-    },
-    {
-      "idx": 10,
-      "version": "7",
-      "when": 1744735053062,
-      "tag": "0010_violet_praxagora",
-      "breakpoints": true
-    },
-    {
-      "idx": 11,
-      "version": "7",
-      "when": 1745563005553,
-      "tag": "0011_shiny_siren",
+      "when": 1745569320948,
+      "tag": "0000_fuzzy_mach_iv",
       "breakpoints": true
     }
   ]

@@ -9,8 +9,8 @@ const stepBlockDefault = (type: string) => {
       return stepblock.graphql;
     case "postgres":
       return stepblock.postgres;
-    //   case "mysql":
-    //     return stepblock.mysql
+    case "rest":
+      return stepblock.rest;
     default:
       return null;
   }

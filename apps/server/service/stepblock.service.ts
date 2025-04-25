@@ -94,6 +94,7 @@ class StepBlockService {
         };
       });
       const filteredPayload = payload.filter((item) => item !== null);
+      console.log(filteredPayload);
       // if (!payload[0]) return null;
 
       const newStepBlock = await db
@@ -103,6 +104,7 @@ class StepBlockService {
 
       return newStepBlock ? newStepBlock : null;
     } catch (error) {
+      console.log(error);
       throw new Error(error as string);
     }
   }

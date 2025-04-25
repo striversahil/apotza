@@ -1,1 +1,0 @@
-ALTER TABLE "section" RENAME COLUMN "page_id" TO "page_name";

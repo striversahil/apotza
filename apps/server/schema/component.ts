@@ -17,7 +17,10 @@ export type ComponentInterface = InferSelectModel<typeof Component>;
 export const Page = pgTable("page", {
   id: uuid("id").defaultRandom().primaryKey(),
   type: text("type").default("page"),
-  project: uuid("project_id"),
+  project: uuid("project_id").references(() => Project.id, {
+    onDelete: "cascade",
+    onUpdate: "cascade",
+  }),
   name: text("name").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
@@ -26,7 +29,10 @@ export const Section = pgTable("section", {
   id: uuid("id").defaultRandom().primaryKey(),
   type: text("type").default("section"),
   component_id: uuid("component_id"),
-  page: uuid("page_id"),
+  page: uuid("page_id").references(() => Page.id, {
+    onDelete: "cascade",
+    onUpdate: "cascade",
+  }),
   name: text("name").notNull(),
   content: jsonb("content").notNull().default({}), // Contains the component data
   layout: jsonb("layout").default({ width: 200, height: 200 }),
@@ -38,7 +44,10 @@ export const Component = pgTable("component", {
   id: uuid("id").defaultRandom().primaryKey(),
   type: text("type").default("component"),
   page: uuid("page_id"),
-  section: uuid("section_id"),
+  section: uuid("section_id").references(() => Section.id, {
+    onDelete: "cascade",
+    onUpdate: "cascade",
+  }),
   name: text("name").notNull(),
   coordinates: jsonb("coordinates").notNull().default({}),
   content: jsonb("content").notNull().default({}), // Contains the component data

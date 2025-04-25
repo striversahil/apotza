@@ -13,7 +13,10 @@ import { Project, Workspace } from "./user";
 // ++++++++++++++++++++++++++++++++++++++++++++++++ CodeBlock Tables +++++++++++++++++++++++++++++++++++++++++++++++++
 export const CodeBlock = pgTable("codeblock", {
   id: uuid("id").defaultRandom().primaryKey(),
-  project: uuid("project_id"),
+  project: uuid("project_id").references(() => Project.id, {
+    onDelete: "cascade",
+    onUpdate: "cascade",
+  }),
   name: text("name").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
@@ -24,7 +27,10 @@ export const StepBlock = pgTable("stepblock", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: text("name").notNull(),
   type: text("type").notNull(),
-  codeblock: uuid("codeblock_id"),
+  codeblock: uuid("codeblock_id").references(() => CodeBlock.id, {
+    onDelete: "cascade",
+    onUpdate: "cascade",
+  }),
   config: jsonb("config").notNull().default({}),
   output: text("output").notNull(),
   stdout: text("stdout").notNull(),

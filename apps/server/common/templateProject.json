@@ -3,19 +3,19 @@
   "codeBlocks": [
     {
       "name": "Python CodeBlock",
-      "stepBlocks": ["python", "python", "javascript", "python"]
+      "stepBlocks": ["python", "python", "javascript", "rest"]
     },
     {
       "name": "SQL CodeBlock",
-      "stepBlocks": ["mysql", "mysql", "mysql", "mysql"]
+      "stepBlocks": ["python", "mysql", "mysql", "mysql"]
     },
     {
       "name": "GraphQL CodeBlock",
-      "stepBlocks": ["graphql", "graphql", "graphql", "graphql"]
+      "stepBlocks": ["rest", "graphql", "graphql", "graphql"]
     },
     {
       "name": "JSON CodeBlock",
-      "stepBlocks": ["restapi", "graphql", "restapi", "mysql"]
+      "stepBlocks": ["postgres", "rest", "rest", "mysql"]
     }
   ],
   "sections": [
