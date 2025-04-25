@@ -15,19 +15,19 @@ const EditorPreview = (props: Props) => {
 
   return (
     <Tooltip>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center justify-center gap-2">
         <TooltipTrigger>
           <div
-            className={`relative w-[70px] h-9 bg-white/10 rounded-full peer inline-flex shrink-0 cursor-pointer items-center transition-colors `}
+            className={`relative w-[75px] h-9 bg-white/10 rounded-full peer inline-flex shrink-0 cursor-pointer items-center transition-colors `}
             onClick={() => setIsEditor(!isEditor)}
           >
             <div
               className={cn(
-                "w-8 h-8 bg-white/30 rounded-full transition-transform",
+                "mx-1 w-8 h-8 bg-white/30 rounded-full transition-transform shadow-inner shadow-white/30",
                 !isEditor && "translate-x-9",
                 isEditor && "translate-x-0"
               )}
-            ></div>
+            />
 
             <Pencil fill="white" size={20} className="absolute left-2 top-2" />
 

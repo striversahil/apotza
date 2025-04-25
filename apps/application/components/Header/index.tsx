@@ -40,7 +40,7 @@ const Header = (props: Props) => {
         />
       </div>
       <div className=" w-full flex justify-center items-center ">
-        <div className="flex-1 w-full flex justify-center items-center">
+        <div className="relative flex-1 w-full flex justify-center items-center">
           {isLoading && <Skeleton className="w-[500px] h-[40px] rounded-md" />}
 
           {!isLoading && !mount && (
@@ -65,7 +65,7 @@ const Header = (props: Props) => {
         </div>
 
         {!isLoading && (
-          <div className="flex items-center gap-2 mx-2">
+          <div className="absolute right-0 flex items-center gap-3 mx-5">
             <EditorPreview />
 
             <Deploy />
