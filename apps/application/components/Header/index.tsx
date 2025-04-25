@@ -30,50 +30,50 @@ const Header = (props: Props) => {
 
   return (
     <div className="fixed top-0 w-full h-[5vh] bg-slate-900 text-center flex">
-      <div className="flex absolute top-0 left-0 items-center ml-2 mt-1">
-        <Image
-          src={"/apotzalogo.jpg"}
-          width={50}
-          height={50}
-          alt="brand_pic"
-          className=" cursor-pointer hover:animate-pulse"
-          onClick={() => navigation.push("/dashboard")}
-        />
-      </div>
-      <div className=" w-full flex justify-center items-center ">
-        <div className="relative flex-1 w-full flex justify-center items-center">
-          {isLoading && <Skeleton className="w-[500px] h-[40px] rounded-md" />}
+      <div className="relative flex-1 w-full flex justify-center items-center">
+        {isLoading && <Skeleton className="w-[500px] h-[40px] rounded-md" />}
 
-          {!isLoading && !mount && (
-            <h1
-              className="text-2xl text-white font-bold text-center"
-              onClick={() => setMount(true)}
-            >
-              {data?.payload.name}
-            </h1>
-          )}
+        {!isLoading && !mount && (
+          <h1
+            className="text-2xl text-white font-bold text-center"
+            onClick={() => setMount(true)}
+          >
+            {data?.payload.name}
+          </h1>
+        )}
 
-          {!isLoading && mount && (
-            <Input
-              className="w-[200px] h-[40px] bg-inherit rounded-md"
-              ref={ref}
-              value={value}
-              autoFocus
-              onChange={ValueChange}
-              onKeyDown={EnterClick}
-            />
-          )}
-        </div>
-
-        {/* All Essential's Call to action Navigation Button */}
-        {!isLoading && (
-          <div className="absolute right-0 top-3 flex justify-center items-center gap-5 mx-5">
-            <EditorPreview />
-            <Deploy />
-            <Avatar_Header />
-          </div>
+        {!isLoading && mount && (
+          <Input
+            className="w-[200px] h-[40px] bg-inherit rounded-md"
+            ref={ref}
+            value={value}
+            autoFocus
+            onChange={ValueChange}
+            onKeyDown={EnterClick}
+          />
         )}
       </div>
+      {!isLoading && (
+        <div className="absolute top-0 left-0 items-center ml-2 mt-1">
+          <Image
+            src={"/apotzalogo.jpg"}
+            width={50}
+            height={50}
+            alt="brand_pic"
+            className=" cursor-pointer hover:animate-pulse"
+            onClick={() => navigation.push("/dashboard")}
+          />
+        </div>
+      )}
+
+      {/* All Essential's Call to action Navigation Button */}
+      {!isLoading && (
+        <div className="absolute right-0 top-3 flex justify-center items-center gap-5 mx-5 ">
+          <EditorPreview />
+          <Deploy />
+          <Avatar_Header />
+        </div>
+      )}
     </div>
   );
 };

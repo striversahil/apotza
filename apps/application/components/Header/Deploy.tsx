@@ -8,7 +8,7 @@ const Deploy = (props: Props) => {
   const [isHovered, setIsHovered] = React.useState(false);
   return (
     <div
-      className="flex h-9 items-center gap-2 bg-white/20 hover:bg-green-500 transition-colors cursor-pointer px-2 py-1 shadow-inner shadow-white/30
+      className="flex h-8 items-center gap-2 bg-white/20 hover:bg-green-500 transition-colors cursor-pointer px-3 py-1 shadow-inner shadow-white/30
       hover:shadow-green-500/50 hover:shadow-md rounded-full border-none border-2 overflow-hidden"
       onMouseOver={() => setIsHovered(true)}
       onMouseOut={() => setIsHovered(false)}

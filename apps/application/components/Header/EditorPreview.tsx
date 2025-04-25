@@ -18,28 +18,32 @@ const EditorPreview = (props: Props) => {
       <div className="flex items-center justify-center gap-2">
         <TooltipTrigger>
           <div
-            className={`relative w-[75px] h-9 bg-white/10 rounded-full peer inline-flex shrink-0 cursor-pointer items-center transition-colors `}
+            className={`relative w-[78px] top-[2px] h-9 bg-white/20 rounded-full peer inline-flex shrink-0 cursor-pointer items-center transition-colors `}
             onClick={() => setIsEditor(!isEditor)}
           >
             <div
               className={cn(
-                "mx-1 w-8 h-8 bg-white/30 rounded-full transition-transform shadow-inner shadow-white/30",
+                "mx-[5px] w-8 h-8 bg-white/30 rounded-full transition-transform shadow-inner shadow-white/30",
                 !isEditor && "translate-x-9",
                 isEditor && "translate-x-0"
               )}
             />
 
-            <Pencil fill="white" size={20} className="absolute left-2 top-2" />
+            <Pencil
+              fill="white"
+              size={19}
+              className="absolute left-[10px] top-2"
+            />
 
             <PlayIcon
               fill="white"
               size={20}
-              className="absolute right-2 top-2"
+              className="absolute right-[10px] top-2"
             />
           </div>
         </TooltipTrigger>
         {isEditor && (
-          <TooltipContent side="left">Switch to Preview</TooltipContent>
+          <TooltipContent side="right">Switch to Preview</TooltipContent>
         )}
         {!isEditor && (
           <TooltipContent side="left">Switch to Editor</TooltipContent>

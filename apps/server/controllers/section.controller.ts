@@ -26,8 +26,6 @@ class SectionController {
     }
   }
 
-
-
   static async deleteSection(req: Request, res: Response) {
     try {
       console.log(req.params);
