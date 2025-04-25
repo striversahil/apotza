@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { ErrorResponse, SuccessResponse } from "../utils/ApiResponse";
 import StepBlockService from "../service/stepblock.service";
+import stepBlockParam from "../common/stepBlockParam.json";
 
 class StepBlockController {
   static async createStep(req: Request, res: Response) {
@@ -30,7 +31,13 @@ class StepBlockController {
   }
 
   static async runBlock(req: Request, res: Response) {
-    const { id } = req.body;
+    const { id, type, ...data } = req.body;
+    if (!id || !type) return ErrorResponse(res, "Provide all fields");
+    const validParams = getValidParam(type);
+    if (!validParams) return ErrorResponse(res, "Provide all fields");
+
+    StepBlockService.runBlock(id, type, data);
+
     try {
     } catch (error) {
       ErrorResponse(res, "", true);
@@ -68,6 +75,22 @@ class StepBlockController {
       ErrorResponse(res, "", true);
     }
   }
+}
+
+function getValidParam(param: string) {
+  const validType = ["rest", "postgres", "javascript", "python"];
+  if (!validType.includes(param)) return false;
+  return true;
+  // switch (param) {
+  //   case "rest":
+  //     return stepBlockParam.rest;
+  //   case "postgres":
+  //     return stepBlockParam.postgres;
+  //   case "javascript":
+  //     return stepBlockParam.javascript;
+  //   case "python":
+  //     return stepBlockParam.python;
+  // }
 }
 
 export default StepBlockController;

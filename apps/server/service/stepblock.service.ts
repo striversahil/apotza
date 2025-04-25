@@ -47,6 +47,35 @@ class StepBlockService {
     }
   }
 
+  static async runBlock(
+    stepBlock_id: string,
+    type: string,
+    data: any
+  ): Promise<StepBlockInterface | null> {
+    try {
+      const response = await fetch(
+        `${process.env.TRANSFORMER_SERVER}/${type}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: { ...data },
+        }
+      );
+      if (!response) return null;
+      console.log(response);
+      const [stepBlock] = await db
+        .update(StepBlock)
+        .set({ ...data })
+        .where(eq(StepBlock.id, stepBlock_id))
+        .returning();
+      return stepBlock ? stepBlock : null;
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
   static async createMultiple(
     codeBlock_id: string,
     language: string[]

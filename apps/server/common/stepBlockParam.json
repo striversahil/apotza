@@ -1,0 +1,6 @@
+{
+      "rest" : ["endpoint" , "headers"],
+      "postgres" : ["query" , "connection"],
+      "javascript" : ["code"],
+      "python" : ["code"]
+}

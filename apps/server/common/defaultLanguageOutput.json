@@ -12,12 +12,6 @@
     "stdout": "Hello World"
   },
   {
-    "value": "typescript",
-    "label": "TypeScript",
-    "code": "console.log('Hello World')",
-    "stdout": "Hello World"
-  },
-  {
     "value": "graphql",
     "label": "GraphQL",
     "code": "query {\n  user(id: \"1\") {\n    id\n    name\n    email\n  }\n}",
