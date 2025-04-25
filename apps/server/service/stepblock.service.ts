@@ -46,10 +46,12 @@ class StepBlockService {
 
   static async runBlock(
     stepBlock_id: string,
-    type: string,
-    data: any
+    type: string
   ): Promise<StepBlockInterface | null> {
     try {
+      const _stepBlock = await this.getById(stepBlock_id);
+      if (!_stepBlock) return null;
+
       const response = await fetch(
         `${process.env.TRANSFORMER_SERVER}/${type}`,
         {
@@ -57,16 +59,21 @@ class StepBlockService {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ ...data }),
+          body: JSON.stringify({ ...(_stepBlock.config as object) }),
         }
       );
       if (!response) return null;
-      console.log(response.json());
+      const result = await response.json();
+      console.log(result);
+
       const [stepBlock] = await db
         .update(StepBlock)
-        .set({ ...data })
+        .set({
+          output: result.payload,
+        })
         .where(eq(StepBlock.id, stepBlock_id))
         .returning();
+
       return stepBlock ? stepBlock : null;
     } catch (error) {
       throw new Error(error as string);
