@@ -26,7 +26,14 @@
   "postgres": {
     "name": "Postgres",
     "config": {
-      "code": "SELECT * FROM test_table WHERE id = 1 AND name = 'John'"
+      "query": "select * from workspace",
+      "connection": {
+        "user": "postgres.azvzblxmgjzqqpdozwmh",
+        "database": "postgres",
+        "port": "5432",
+        "host": "aws-0-ap-south-1.pooler.supabase.com",
+        "password": "oPbDLgHLZOHrozvk"
+      }
     },
     "stdout": "Hello World",
     "output": "Hello World"
@@ -34,7 +41,10 @@
   "rest": {
     "name": "REST API",
     "config": {
-      "code": "console.log('Hello World')"
+      "endpoint": "https://jsonplaceholder.typicode.com/posts/",
+      "headers": {
+        "Content-Type": "application/json"
+      }
     },
     "stdout": "Hello World",
     "output": "Hello World"

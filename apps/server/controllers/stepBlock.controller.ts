@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { ErrorResponse, SuccessResponse } from "../utils/ApiResponse";
 import StepBlockService from "../service/stepblock.service";
-import stepBlockParam from "../common/stepBlockParam.json";
 
 class StepBlockController {
   static async createStep(req: Request, res: Response) {

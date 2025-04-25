@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import { db } from "../database";
-import languageDefault from "../common/defaultLanguageOutput.json";
 import { StepBlock, StepBlockInterface } from "../schema";
+import stepBlockDefault from "../utils/stepBlockDefault";
 
 class StepBlockService {
   static async getById(
@@ -20,24 +20,21 @@ class StepBlockService {
 
   static async create(
     codeBlock_id: string,
-    language: string
+    type: string
   ): Promise<StepBlockInterface | null> {
     try {
-      const payload = languageDefault.find((item: any) => {
-        if (item.value === language) {
-          return item;
-        }
-      });
+      const payload = stepBlockDefault(type);
       if (!payload) return null;
       const [newStepBlock] = await db
         .insert(StepBlock)
         .values({
-          name: payload.label,
+          name: payload.name,
+          type: type,
           codeblock: codeBlock_id,
-          code: payload.code,
-          language: payload.value,
-          output: payload.stdout,
+          config: payload.config,
           stdout: payload.stdout,
+          output: payload.output,
+          request: "",
         })
         .returning();
 
@@ -82,26 +79,26 @@ class StepBlockService {
   ): Promise<StepBlockInterface[] | null> {
     try {
       const payload = language.map((lang: string) => {
-        const item = languageDefault.find((item: any) => {
-          if (item.value === lang) {
-            return item;
-          }
-        });
-        return item;
+        const Valid = stepBlockDefault(lang);
+
+        if (!Valid) return null;
+
+        return {
+          name: Valid.name,
+          type: lang,
+          codeblock: codeBlock_id,
+          config: Valid.config,
+          stdout: Valid.stdout,
+          output: Valid.output,
+          request: "",
+        };
       });
-      if (!payload[0]) return null;
-      const Insert = payload.map((item: any) => ({
-        name: item.label,
-        codeblock: codeBlock_id,
-        code: item.code,
-        language: item.value,
-        output: item.stdout,
-        stdout: item.stdout,
-      }));
-      if (!Insert) return null;
+      const filteredPayload = payload.filter((item) => item !== null);
+      // if (!payload[0]) return null;
+
       const newStepBlock = await db
         .insert(StepBlock)
-        .values(Insert)
+        .values(filteredPayload)
         .returning();
 
       return newStepBlock ? newStepBlock : null;
