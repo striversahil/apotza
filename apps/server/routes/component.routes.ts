@@ -11,10 +11,10 @@ router.route("/").get(ComponentController.getComponents);
 
 router.route("/:id").get(ComponentController.getComponent);
 
-router.route("/:id").delete(ComponentController.deleteComponent);
-
-router.route("/update").patch(ComponentController.updateComponent);
-
 router.route("/coordinates").patch(ComponentController.coordinateUpdate);
+
+router.route("/:id").patch(ComponentController.updateComponent);
+
+router.route("/:id").delete(ComponentController.deleteComponent);
 
 export default router;

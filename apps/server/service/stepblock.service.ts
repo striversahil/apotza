@@ -40,6 +40,7 @@ class StepBlockService {
 
       return newStepBlock ? newStepBlock : null;
     } catch (error) {
+      console.log(error);
       throw new Error(error as string);
     }
   }

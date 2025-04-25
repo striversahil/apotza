@@ -89,7 +89,7 @@ const ComponentAction = {
     const { mutate } = useMutationData(
       ["ComponentAction.update"],
       async (payload: any) => {
-        const response = await axios.patch(`${source}/update`, payload);
+        const response = await axios.patch(`${source}/${payload.id}`, payload);
         return response.data;
       },
       [[`ProjectAction.getOneSection-${section_id}`]],

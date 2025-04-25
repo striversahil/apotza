@@ -44,7 +44,8 @@ class CodeBlockController {
 
   static async updateCodeBlock(req: Request, res: Response) {
     try {
-      const { id, ...data } = req.body;
+      const { id } = req.params;
+      const { ...data } = req.body;
       if (!id || !data) return ErrorResponse(res, "Provide all fields");
       const codeBlock = await CodeBlockService.update(id, data);
       if (!codeBlock)

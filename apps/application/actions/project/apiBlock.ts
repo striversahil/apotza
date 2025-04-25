@@ -13,8 +13,9 @@ const TabBlockAction = {
         const response = await axios.post(`${source}/`, payload);
         return response;
       },
-      [["ProjectAction.getCodeBlocks"]],
-      undefined
+      [["ProjectAction.getProject"]],
+      () => {},
+      () => {}
       // (previousData: any, variables: any) => {
       //   return {
       //     ...previousData,
@@ -33,8 +34,9 @@ const TabBlockAction = {
         const response = await axios.delete(`${source}/${payload.metadata.id}`);
         return response;
       },
-      [["ProjectAction.getCodeBlocks"]],
-      undefined
+      [["ProjectAction.getProject"]],
+      () => {},
+      () => {}
       // (previousData: any, variables: any) => {
       //   return {
       //     ...previousData,
@@ -53,14 +55,15 @@ const TabBlockAction = {
     const { mutate } = useMutationData(
       ["CodeBlockAction.nameChange"],
       async (payload: any) => {
-        const response = await axios.patch(`${source}/update`, payload);
+        const response = await axios.patch(`${source}/${payload.id}`, payload);
         return response;
       },
       [
         [`ProjectAction.getOneCodeBlock-${currentTab}` as string],
-        ["ProjectAction.getCodeBlocks"],
+        ["ProjectAction.getProject"],
       ],
-      undefined
+      () => {},
+      () => {}
     );
     return { mutate };
   },

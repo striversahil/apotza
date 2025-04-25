@@ -11,7 +11,7 @@ import { Pencil } from "lucide-react";
 import React from "react";
 
 type Props = {
-  value?: any;
+  value: any;
 };
 
 const HeaderChange = (props: Props) => {
@@ -21,7 +21,7 @@ const HeaderChange = (props: Props) => {
     mutate({ id: props.value.id, name: value });
   };
   const { mount, setMount, ref, EnterClick, ValueChange, value } =
-    useClickOutsideEnter(Mutation, props.value);
+    useClickOutsideEnter(Mutation, props.value.name);
 
   return (
     <div>

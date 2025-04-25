@@ -66,7 +66,8 @@ class ComponentController {
 
   static async updateComponent(req: Request, res: Response) {
     try {
-      const { id, ...data } = req.body;
+      const { id } = req.params;
+      const { ...data } = req.body;
       if (!id || !data) return ErrorResponse(res, "Provide all fields");
       const component = await ComponentService.updateComponent(id, data);
       if (!component)

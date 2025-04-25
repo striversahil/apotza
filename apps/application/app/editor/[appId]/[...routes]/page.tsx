@@ -50,7 +50,7 @@ const page = (props: Props) => {
       ref={ref}
       onClick={(e) => setState(e)}
     >
-      {Page?.sections.map((item: any) => (
+      {Page?.sections?.map((item: any) => (
         <div key={item.id} className="relative">
           <Section value={item} />
           <DeleteSection id={item.id} />

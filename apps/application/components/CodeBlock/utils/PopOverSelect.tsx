@@ -18,16 +18,10 @@ import languages from "@/common/Json/languages.json";
 type PopOver = {
   setOpen: (open: boolean) => void;
   codeBlock_id: string;
-  stepBlock_id: string;
   type: "tab" | "step";
 };
 
-export function ComboPopAPI({
-  setOpen,
-  stepBlock_id,
-  codeBlock_id,
-  type,
-}: PopOver) {
+export function ComboPopAPI({ setOpen, codeBlock_id, type }: PopOver) {
   const [value, setValue] = React.useState("");
 
   const { mutate: mutateTabAdd } = TabBlockAction.useAdd();
@@ -56,7 +50,7 @@ export function ComboPopAPI({
                     }
                     if (type === "step") {
                       mutateStepAdd({
-                        id: stepBlock_id,
+                        id: codeBlock_id,
                         language: language.value,
                       });
                     }

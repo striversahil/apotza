@@ -5,9 +5,10 @@ import StepBlockService from "../service/stepblock.service";
 class StepBlockController {
   static async createStep(req: Request, res: Response) {
     try {
-      const { id, lang } = req.body;
-      if (!id || !lang) return ErrorResponse(res, "StepBlock does not exist");
-      const stepBlock = await StepBlockService.create(id, lang);
+      const { id, language } = req.body;
+      if (!id || !language)
+        return ErrorResponse(res, "StepBlock does not exist");
+      const stepBlock = await StepBlockService.create(id, language);
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be created");
       SuccessResponse(res, "StepBlock created successfully", stepBlock);
@@ -61,7 +62,8 @@ class StepBlockController {
 
   static async Update(req: Request, res: Response) {
     try {
-      const { id, ...slug } = req.body;
+      const { id } = req.params;
+      const { ...slug } = req.body;
       if (!id || !slug)
         return ErrorResponse(res, "Id and Updated object is required");
       const stepBlock = await StepBlockService.update(id, slug);

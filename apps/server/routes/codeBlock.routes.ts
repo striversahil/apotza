@@ -9,7 +9,7 @@ router.route("/").post(CodeBlockController.create);
 
 router.route("/run").post(CodeBlockController.runAllSteps);
 
-router.route("/update").patch(CodeBlockController.updateCodeBlock);
+router.route("/:id").patch(CodeBlockController.updateCodeBlock);
 
 router.route("/:id").delete(CodeBlockController.deleteCodeblock);
 

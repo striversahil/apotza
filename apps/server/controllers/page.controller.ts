@@ -31,7 +31,8 @@ export class PageController {
 
   static async updatePage(req: Request, res: Response) {
     try {
-      const { id, ...data } = req.body;
+      const { id } = req.params;
+      const { ...data } = req.body;
       if (!id || !data) return ErrorResponse(res, "Provide all fields");
       const page = await PageService.update(id, data);
       if (!page) return ErrorResponse(res, "Page could not be updated");

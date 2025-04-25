@@ -60,7 +60,7 @@ const StepsBlockAction = {
     const { mutate } = useMutationData(
       ["CodeBlockAction.updateStep"],
       async (payload: any) => {
-        const response = await axios.patch(`${source}/update`, payload);
+        const response = await axios.patch(`${source}/${payload.id}`, payload);
         return response.data;
       },
       [[`ProjectAction.getOneCodeBlock-${codeBlock_id}` as string]],
@@ -126,7 +126,7 @@ const StepsBlockAction = {
           ...previousData,
           payload: {
             ...previousData.payload,
-            steps: [...previousData.payload.steps].filter(
+            stepBlocks: [...previousData.payload.stepBlocks].filter(
               (item) => item.id != variables.id
             ),
           },

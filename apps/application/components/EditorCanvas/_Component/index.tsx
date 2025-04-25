@@ -37,8 +37,6 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
       : undefined,
   };
 
-  console.log(value.layout);
-
   const { Component = () => <></> } = MatchComponent[value.name]! || {};
 
   return (

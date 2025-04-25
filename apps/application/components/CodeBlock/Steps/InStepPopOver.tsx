@@ -22,9 +22,10 @@ const InStepPopOver = ({ value, codeBlock_id }: Props) => {
   const [open, setOpen] = React.useState(true);
   const [open2, setOpen2] = React.useState(true);
 
-  const { mutate } = StepsBlockAction.useduplicate(codeBlock_id);
+  const { mutate: mutateDuplicate } =
+    StepsBlockAction.useduplicate(codeBlock_id);
 
-  const { mutate: mutateDelete } = StepsBlockAction.usedelete(codeBlock_id);
+  const { mutate } = StepsBlockAction.usedelete(codeBlock_id);
 
   const languageHref =
     (value.language &&
@@ -56,7 +57,7 @@ const InStepPopOver = ({ value, codeBlock_id }: Props) => {
                 className="bg-white/40 flex items-center hover:bg-white/20 p-1 rounded-md cursor-pointer"
                 onClick={() => {
                   setOpen2(false);
-                  mutate({
+                  mutateDuplicate({
                     id: value.id,
                   });
                 }}
@@ -70,7 +71,7 @@ const InStepPopOver = ({ value, codeBlock_id }: Props) => {
                 className="bg-red-800 text-sm flex items-center hover:bg-red-900 p-1 rounded-md cursor-pointer"
                 onClick={() => {
                   setOpen2(false);
-                  mutateDelete({
+                  mutate({
                     id: value.id,
                   });
                 }}
@@ -99,7 +100,6 @@ const InStepPopOver = ({ value, codeBlock_id }: Props) => {
         <ComboPopAPI
           setOpen={setOpen}
           codeBlock_id={codeBlock_id}
-          stepBlock_id={value.id}
           type="step"
         />
       </Popover>
