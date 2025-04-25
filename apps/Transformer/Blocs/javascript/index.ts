@@ -11,6 +11,8 @@ const JavaScriptEngine = async (query: string) => {
     };
   }
 
+  // Steps of Sanitization done with the code to
+
   const removedComments = query.replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, "");
 
   const removedNewLines = removedComments.replace(/(\r\n|\n|\r)/gm, "");
@@ -25,18 +27,30 @@ const JavaScriptEngine = async (query: string) => {
     ""
   );
 
-  const removedFunctions = removedExports.replace(
-    /^\s*function\s.+?{[^}]+}?|\s*function\s.+?{[^}]+}?/gm,
-    ""
-  );
+  const runner = `return (async () => {
+      try {
+        await ${removedExports}
+        }
+      catch (error) {
+      return "⚠️ Error: " + error
+      }
+    
+    })() `;
 
-  const output = eval(removedFunctions);
+  try {
+    const output = await new Function(query)();
+    return {
+      error: null,
+      data: output, // It's Returning Data that need to be transformed
+    };
+  } catch (error) {
+    return {
+      error: `${error}`,
+      data: null,
+    };
+  }
 
   //
-  return {
-    error: null,
-    data: output, // It's Returning Data that need to be transformed
-  };
 };
 
 export default JavaScriptEngine;

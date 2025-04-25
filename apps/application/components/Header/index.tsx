@@ -11,6 +11,8 @@ import {
 } from "@repo/ui/Tooltip/tooltip";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import EditorPreview from "./EditorPreview";
+import Deploy from "./Deploy";
 
 type Props = {};
 
@@ -37,26 +39,37 @@ const Header = (props: Props) => {
           onClick={() => navigation.push("/dashboard")}
         />
       </div>
-      <div className="flex-1 w-full flex justify-center items-center ">
-        {isLoading && <Skeleton className="w-[500px] h-[40px] rounded-md" />}
+      <div className=" w-full flex justify-center items-center ">
+        <div className="flex-1 w-full flex justify-center items-center">
+          {isLoading && <Skeleton className="w-[500px] h-[40px] rounded-md" />}
 
-        {!isLoading && !mount && (
-          <h1
-            className="text-2xl text-white font-bold text-center"
-            onClick={() => setMount(true)}
-          >
-            {data?.payload.name}
-          </h1>
-        )}
-        {!isLoading && mount && (
-          <Input
-            className="w-[200px] h-[40px] bg-inherit rounded-md"
-            ref={ref}
-            value={value}
-            autoFocus
-            onChange={ValueChange}
-            onKeyDown={EnterClick}
-          />
+          {!isLoading && !mount && (
+            <h1
+              className="text-2xl text-white font-bold text-center"
+              onClick={() => setMount(true)}
+            >
+              {data?.payload.name}
+            </h1>
+          )}
+
+          {!isLoading && mount && (
+            <Input
+              className="w-[200px] h-[40px] bg-inherit rounded-md"
+              ref={ref}
+              value={value}
+              autoFocus
+              onChange={ValueChange}
+              onKeyDown={EnterClick}
+            />
+          )}
+        </div>
+
+        {!isLoading && (
+          <div className="flex items-center gap-2 mx-2">
+            <EditorPreview />
+
+            <Deploy />
+          </div>
         )}
       </div>
     </div>
