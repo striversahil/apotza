@@ -43,47 +43,15 @@ const StepsBlockAction = {
     return { mutate };
   },
 
-  useCode: (step_id: string) => {
+  useUpdate: (step_id: string) => {
     const { mutate } = useMutationData(
-      ["CodeBlockAction.changeCode"],
+      ["CodeBlockAction.updateStep"],
       async (payload: any) => {
-        const response = await axios.post(`${source}/code`, payload);
+        const response = await axios.patch(`${source}/update`, payload);
         return response.data;
       },
       [[`ProjectAction.getOneStep-${step_id}` as string]],
       undefined
-    );
-    return { mutate };
-  },
-
-  useNameChange: () => {
-    const { currentTab } = useCurrentTab();
-    const { mutate } = useMutationData(
-      ["CodeBlockAction.nameChangeStep"],
-      async (payload: any) => {
-        const response = await axios.post(`${source}/step/name`, payload);
-        return response.data;
-      },
-      [[`ProjectAction.getOneCodeBlock-${currentTab}` as string]],
-      undefined
-      // (previousData: any, variables: any) => {
-      //   return {
-      //     ...previousData,
-      //     payload: [...previousData.payload].map((item: any) => {
-      //       if (item._id === variables.id) {
-      //         return {
-      //           ...item,
-      //           steps: [...item.steps].map((step: any, index: number) => {
-      //             if (index === variables.step) {
-      //               return { ...step, name: variables.name };
-      //             }
-      //             return step;
-      //           }),
-      //         };
-      //       }
-      //     }),
-      //   };
-      // }
     );
     return { mutate };
   },
@@ -119,7 +87,7 @@ const StepsBlockAction = {
     const { mutate } = useMutationData(
       ["CodeBlockAction.deleteStep"],
       async (payload: any) => {
-        const response = await axios.post(`${source}/delete`, payload);
+        const response = await axios.delete(`${source}/${payload.id}`);
         return response.data;
       },
       [[`ProjectAction.getAllSteps-${currentTab}` as string]],

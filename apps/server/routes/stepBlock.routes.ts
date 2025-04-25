@@ -10,8 +10,8 @@ router.route("/").post(StepBlockController.createStep);
 router.route("/run").post(StepBlockController.runBlock);
 
 // router.route("/duplicate").post(duplicate);
-router.route("/code").post(StepBlockController.codeUpdate);
+router.route("/update").patch(StepBlockController.Update);
 
-router.route("/delete").post(StepBlockController.deleteStep);
+router.route("/:id").delete(StepBlockController.deleteStep);
 
 export default router;

@@ -79,7 +79,7 @@ class ComponentController {
 
   static async deleteComponent(req: Request, res: Response) {
     try {
-      const { id } = req.body;
+      const { id } = req.params;
       if (!id) return ErrorResponse(res, "Component does not exist");
       const component = await ComponentService.delete(id);
       if (!component)

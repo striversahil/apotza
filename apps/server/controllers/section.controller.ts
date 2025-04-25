@@ -28,7 +28,6 @@ class SectionController {
 
   static async deleteSection(req: Request, res: Response) {
     try {
-      console.log(req.params);
       const { id } = req.params;
       if (!id) return ErrorResponse(res, "Section does not exist");
       const section = await SectionService.delete(id);

@@ -12,7 +12,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/popover";
 import Image from "next/image";
 import StepsBlockAction from "../../../actions/project/stepsBlock";
-import TabBlockAction from "../../../actions/project/tabBlock";
+import TabBlockAction from "../../../actions/project/apiBlock";
 import languages from "@/common/Json/languages.json";
 
 type PopOver = {

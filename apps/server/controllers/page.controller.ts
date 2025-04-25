@@ -43,7 +43,7 @@ export class PageController {
 
   static async deletePage(req: Request, res: Response) {
     try {
-      const { id } = req.body;
+      const { id } = req.params;
       if (!id) return ErrorResponse(res, "Page does not exist , provide id");
       const page = await PageService.delete(id);
       if (!page) return ErrorResponse(res, "Page could not be deleted");

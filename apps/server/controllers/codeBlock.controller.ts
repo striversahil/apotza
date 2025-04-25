@@ -38,9 +38,22 @@ class CodeBlockController {
     }
   }
 
+  static async updateCodeBlock(req: Request, res: Response) {
+    try {
+      const { id, ...data } = req.body;
+      if (!id || !data) return ErrorResponse(res, "Provide all fields");
+      const codeBlock = await CodeBlockService.update(id, data);
+      if (!codeBlock)
+        return ErrorResponse(res, "CodeBlock could not be updated");
+      SuccessResponse(res, "CodeBlock updated successfully", codeBlock);
+    } catch (error) {
+      ErrorResponse(res, "", true);
+    }
+  }
+
   static async deleteCodeblock(req: Request, res: Response) {
     try {
-      const { id } = req.body;
+      const { id } = req.params;
       if (!id) return ErrorResponse(res, "CodeBlock does not exist");
       const codeBlock = await CodeBlockService.delete(id);
       if (!codeBlock)

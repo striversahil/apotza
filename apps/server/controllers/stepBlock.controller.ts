@@ -30,12 +30,15 @@ class StepBlockController {
   }
 
   static async runBlock(req: Request, res: Response) {
-    const { id, type, ...data } = req.body;
+    const { id, type } = req.body;
     if (!id || !type) return ErrorResponse(res, "Provide all fields");
     const validParams = getValidParam(type);
-    if (!validParams) return ErrorResponse(res, "Provide all fields");
+    if (!validParams)
+      return ErrorResponse(res, "Invalid type of Operation found");
 
-    StepBlockService.runBlock(id, type, data);
+    const stepBlock = await StepBlockService.runBlock(id, type);
+    if (!stepBlock) return ErrorResponse(res, "StepBlock could not be run");
+    SuccessResponse(res, "StepBlock Run successfully", stepBlock);
 
     try {
     } catch (error) {
@@ -45,7 +48,7 @@ class StepBlockController {
 
   static async deleteStep(req: Request, res: Response) {
     try {
-      const { id } = req.body;
+      const { id } = req.params;
       if (!id) return ErrorResponse(res, "StepBlock does not exist");
       const stepBlock = await StepBlockService.delete(id);
       if (!stepBlock)
@@ -56,11 +59,12 @@ class StepBlockController {
     }
   }
 
-  static async codeUpdate(req: Request, res: Response) {
+  static async Update(req: Request, res: Response) {
     try {
-      const { id, code } = req.body;
-      if (!id || !code) return ErrorResponse(res, "StepBlock does not exist");
-      const stepBlock = await StepBlockService.update(id, { code });
+      const { id, ...slug } = req.body;
+      if (!id || !slug)
+        return ErrorResponse(res, "Id and Updated object is required");
+      const stepBlock = await StepBlockService.update(id, slug);
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be updated");
       SuccessResponse(res, "StepBlock updated successfully", stepBlock);

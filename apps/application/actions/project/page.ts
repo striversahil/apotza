@@ -19,7 +19,7 @@ const PageAction = {
     const { mutate } = useMutationData(
       ["PageAction.delete"],
       async (payload: any) => {
-        const response = await axios.post(`${source}/delete`, payload);
+        const response = await axios.delete(`${source}/${payload.id}`);
         return response.data;
       },
       [["ProjectAction.getProject"]]
@@ -29,7 +29,7 @@ const PageAction = {
     const { mutate } = useMutationData(
       ["PageAction.update"],
       async (payload: any) => {
-        const response = await axios.post(`${source}/update`, payload);
+        const response = await axios.patch(`${source}/update`, payload);
         return response.data;
       },
       [["ProjectAction.getProject"]]

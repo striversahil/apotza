@@ -48,12 +48,12 @@ const TabBlockAction = {
     return { mutate, isPending };
   },
 
-  useNameChange: () => {
+  useUpdate: () => {
     const { currentTab } = useCurrentTab();
     const { mutate } = useMutationData(
       ["CodeBlockAction.nameChange"],
       async (payload: any) => {
-        const response = await axios.post(`${source}/name`, payload);
+        const response = await axios.patch(`${source}/update`, payload);
         return response;
       },
       [

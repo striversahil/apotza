@@ -1,4 +1,4 @@
-import TabBlockAction from "../../../actions/project/tabBlock";
+import TabBlockAction from "../../../actions/project/apiBlock";
 import { useClickOutsideEnter } from "../../../app/editor/_hooks/useClickOutsideEnter";
 import { Input } from "@repo/ui/input";
 import {
@@ -15,10 +15,10 @@ type Props = {
 };
 
 const HeaderChange = (props: Props) => {
-  const { mutate } = TabBlockAction.useNameChange();
+  const { mutate } = TabBlockAction.useUpdate();
 
   const Mutation = () => {
-    mutate({ metadata: { _id: props.value._id }, payload: { name: value } });
+    mutate({ id: props.value.id, name: value });
   };
   const { mount, setMount, ref, EnterClick, ValueChange, value } =
     useClickOutsideEnter(Mutation, props.value);

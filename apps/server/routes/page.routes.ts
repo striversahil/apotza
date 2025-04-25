@@ -9,8 +9,8 @@ router.route("/").post(PageController.createPage);
 
 router.route("/:id").get(PageController.getPage);
 
-router.route("/update").post(PageController.updatePage);
+router.route("/update").patch(PageController.updatePage);
 
-router.route("/delete").post(PageController.deletePage);
+router.route("/:id").delete(PageController.deletePage);
 
 export default router;

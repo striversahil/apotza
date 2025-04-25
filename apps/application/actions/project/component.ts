@@ -27,7 +27,7 @@ const ComponentAction = {
     const { mutate } = useMutationData(
       ["ComponentAction.coordinatesUpdate"],
       async (payload: any) => {
-        const response = await axios.post(`${source}/coordinates`, payload);
+        const response = await axios.patch(`${source}/coordinates`, payload);
         return response.data;
       },
       [
@@ -65,7 +65,7 @@ const ComponentAction = {
     const { mutate } = useMutationData(
       ["ComponentAction.delete"],
       async (payload: any) => {
-        const response = await axios.post(`${source}/delete`, payload);
+        const response = await axios.delete(`${source}/${payload.id}`);
         return response.data;
       },
       [[`ProjectAction.getOneSection-${section_id}`]],
@@ -89,7 +89,7 @@ const ComponentAction = {
     const { mutate } = useMutationData(
       ["ComponentAction.update"],
       async (payload: any) => {
-        const response = await axios.post(`${source}/update`, payload);
+        const response = await axios.patch(`${source}/update`, payload);
         return response.data;
       },
       [[`ProjectAction.getOneSection-${section_id}`]],
@@ -124,7 +124,7 @@ const ComponentAction = {
     const { mutate } = useMutationData(
       ["ComponentAction.updateWidthHeight"],
       async (payload: any) => {
-        const response = await axios.post(`${source}/update`, payload);
+        const response = await axios.patch(`${source}/update`, payload);
         return response.data;
       },
       [[`ProjectAction.getOneSection-${section_id}`]],
