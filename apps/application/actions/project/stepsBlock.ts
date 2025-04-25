@@ -43,15 +43,45 @@ const StepsBlockAction = {
     return { mutate };
   },
 
-  useUpdate: (step_id: string) => {
+  useCodeRunner: (step_id: string) => {
+    const { mutate } = useMutationData(
+      ["CodeBlockAction.codeRunner"],
+      async (payload: any) => {
+        const response = await axios.post(`${source}/run`, payload);
+        return response.data;
+      },
+      [[`ProjectAction.getOneStep-${step_id}` as string]],
+      undefined
+    );
+    return { mutate };
+  },
+
+  useUpdate: (codeBlock_id: string) => {
     const { mutate } = useMutationData(
       ["CodeBlockAction.updateStep"],
       async (payload: any) => {
         const response = await axios.patch(`${source}/update`, payload);
         return response.data;
       },
-      [[`ProjectAction.getOneStep-${step_id}` as string]],
-      undefined
+      [[`ProjectAction.getOneCodeBlock-${codeBlock_id}` as string]],
+      (previousData: any, variables: any) => {
+        return {
+          ...previousData,
+          payload: {
+            ...previousData.payload,
+            steps: [...previousData.payload.steps].map((item: any) => {
+              if (item.id === variables.id) {
+                return {
+                  ...item,
+                  ...variables,
+                };
+              }
+              return item;
+            }),
+          },
+        };
+      },
+      () => {}
     );
     return { mutate };
   },
@@ -91,18 +121,17 @@ const StepsBlockAction = {
         return response.data;
       },
       [[`ProjectAction.getAllSteps-${currentTab}` as string]],
-      undefined,
-      // (previousData: any, variables: any) => {
-      //   return {
-      //     ...previousData,
-      //     payload: {
-      //       ...previousData.payload,
-      //       steps: [...previousData.payload.steps].filter(
-      //         (item) => item._id != variables.id
-      //       ),
-      //     },
-      //   };
-      // },
+      (previousData: any, variables: any) => {
+        return {
+          ...previousData,
+          payload: {
+            ...previousData.payload,
+            steps: [...previousData.payload.steps].filter(
+              (item) => item.id != variables.id
+            ),
+          },
+        };
+      },
       () => toast("Success", { description: "Successfully deleted step" })
     );
     return { mutate };

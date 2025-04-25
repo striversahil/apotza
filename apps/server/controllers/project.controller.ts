@@ -35,7 +35,7 @@ class ProjectController {
       for (const codeblock of TemplateInit.codeBlocks) {
         const codeBlock = await CodeBlockService.create(
           project.id,
-          codeblock.name
+          codeblock.name,
         );
         if (!codeBlock)
           return ErrorResponse(res, "CodeBlock could not be created");

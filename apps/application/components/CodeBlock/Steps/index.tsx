@@ -32,7 +32,7 @@ const StepEditorRoot = (props: Props) => {
     <div className="w-full h-full">
       {!stepBlock && <Loader />}
       {stepBlock && (
-        <TabRoot className="w-full h-full" defaultValue={stepBlock[0].id}>
+        <TabRoot className="w-full h-full" defaultValue={stepBlock[0]?.id}>
           <PanelGroup direction="horizontal" className="">
             <Panel defaultSize={20} minSize={20} maxSize={50}>
               <HeaderChange value={data.payload.name} />
@@ -43,8 +43,8 @@ const StepEditorRoot = (props: Props) => {
                       <div key={index} className="w-full">
                         <InStepPopOver
                           value={item}
-                          id={stepBlock.id}
-                          index={index}
+                          key={index}
+                          codeBlock_id={props.value.id}
                         />
                       </div>
                     ))}

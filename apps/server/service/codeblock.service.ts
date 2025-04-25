@@ -5,6 +5,7 @@
 import { eq } from "drizzle-orm";
 import { db } from "../database";
 import { CodeBlock, CodeBlockInterface } from "../schema";
+import StepBlockService from "./stepblock.service";
 
 class CodeBlockService {
   static async getById(id: string): Promise<CodeBlockInterface | null> {
@@ -24,7 +25,8 @@ class CodeBlockService {
 
   static async create(
     project_id: string,
-    name: string
+    name: string,
+    language?: string
   ): Promise<CodeBlockInterface | null> {
     try {
       const [codeBlock] = await db
@@ -35,8 +37,16 @@ class CodeBlockService {
         })
         .returning();
 
+      if (!codeBlock) return null;
+      if (language) {
+        const stepBlock = await StepBlockService.create(codeBlock.id, language);
+        if (!stepBlock) return null;
+        return codeBlock;
+      }
+
       return codeBlock ? codeBlock : null;
     } catch (error) {
+      console.log(error);
       throw new Error(error as string);
     }
   }

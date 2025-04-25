@@ -5,10 +5,14 @@ import CodeBlockService from "../service/codeblock.service";
 class CodeBlockController {
   static async create(req: Request, res: Response) {
     try {
-      const { name } = req.body;
+      const { name, language } = req.body;
       const project_id = req.cookies.project_id;
       if (!project_id) return ErrorResponse(res, "Project does not exist");
-      const codeBlock = await CodeBlockService.create(project_id, name);
+      const codeBlock = await CodeBlockService.create(
+        project_id,
+        name,
+        language
+      );
       if (!codeBlock)
         return ErrorResponse(res, "CodeBlock could not be created");
       SuccessResponse(res, "CodeBlock created successfully", codeBlock);

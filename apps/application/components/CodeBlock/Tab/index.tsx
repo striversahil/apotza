@@ -51,7 +51,12 @@ const Tabs = (props: Props) => {
                     </span>
                   </div>
                 </PopoverTrigger>
-                <ComboPopAPI setOpen={setOpen} />
+                <ComboPopAPI
+                  setOpen={setOpen}
+                  type="tab"
+                  stepBlock_id=""
+                  codeBlock_id=""
+                />
               </Popover>
             </div>
             {CodeBlockData.map((item: any, index: number) => (

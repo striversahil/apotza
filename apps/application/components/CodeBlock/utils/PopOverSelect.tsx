@@ -17,15 +17,21 @@ import languages from "@/common/Json/languages.json";
 
 type PopOver = {
   setOpen: (open: boolean) => void;
-  id?: string;
-  step_id?: string;
+  codeBlock_id: string;
+  stepBlock_id: string;
+  type: "tab" | "step";
 };
 
-export function ComboPopAPI(props: PopOver) {
+export function ComboPopAPI({
+  setOpen,
+  stepBlock_id,
+  codeBlock_id,
+  type,
+}: PopOver) {
   const [value, setValue] = React.useState("");
 
   const { mutate: mutateTabAdd } = TabBlockAction.useAdd();
-  const { mutate: mutateStepAdd } = StepsBlockAction.useadd(props.id || "");
+  const { mutate: mutateStepAdd } = StepsBlockAction.useadd(codeBlock_id);
 
   return (
     <PopoverContent className="w-[200px] p-0 border-[2px] border-black shadow-lg rounded-md">
@@ -41,22 +47,17 @@ export function ComboPopAPI(props: PopOver) {
                   value={language.value}
                   onSelect={(currentValue: any) => {
                     setValue(currentValue === value ? "" : currentValue);
-                    props.setOpen(false);
-                    if (!props.id) {
+                    setOpen(false);
+                    if (type === "tab") {
                       mutateTabAdd({
-                        metadata: {
-                          name: language.label,
-                          language: language.value,
-                        },
+                        name: language.label,
+                        language: language.value,
                       });
                     }
-                    if (props.id) {
+                    if (type === "step") {
                       mutateStepAdd({
-                        metadata: {
-                          id: props.id,
-                          language: language.value,
-                          step_id: props.step_id,
-                        },
+                        id: stepBlock_id,
+                        language: language.value,
                       });
                     }
                   }}

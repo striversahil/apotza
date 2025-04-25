@@ -17,7 +17,6 @@ const IDEeditor = (props: Props) => {
     if (code !== props.value.code) {
       mutate({
         id: props.value.id,
-
         // code: code,
       });
     }
