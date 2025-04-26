@@ -24,8 +24,8 @@ type PopOver = {
 export function ComboPopAPI({ setOpen, codeBlock_id, type }: PopOver) {
   const [value, setValue] = React.useState("");
 
-  const { mutate: mutateTabAdd } = TabBlockAction.useAdd();
-  const { mutate: mutateStepAdd } = StepsBlockAction.useadd(codeBlock_id);
+  const { mutate: mutateTabAdd } = TabBlockAction.add();
+  const { mutate: mutateStepAdd } = StepsBlockAction.add(codeBlock_id);
 
   return (
     <PopoverContent className="w-[200px] p-0 border-[2px] border-black shadow-lg rounded-md">

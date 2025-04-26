@@ -22,10 +22,9 @@ const InStepPopOver = ({ value, codeBlock_id }: Props) => {
   const [open, setOpen] = React.useState(true);
   const [open2, setOpen2] = React.useState(true);
 
-  const { mutate: mutateDuplicate } =
-    StepsBlockAction.useduplicate(codeBlock_id);
+  const { mutate } = StepsBlockAction.delete(codeBlock_id);
 
-  const { mutate } = StepsBlockAction.usedelete(codeBlock_id);
+  const { mutate: mutateDuplicate } = StepsBlockAction.duplicate(codeBlock_id);
 
   const languageHref =
     (value.language &&

@@ -6,7 +6,7 @@ axios.defaults.withCredentials = true; // Global axios config to enable cookies
 const source = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/codeblock";
 
 const TabBlockAction = {
-  useAdd: () => {
+  add: () => {
     const { mutate, data, isPending } = useMutationData(
       ["CodeBlockAction.add"],
       async (payload: any) => {
@@ -27,12 +27,12 @@ const TabBlockAction = {
     return { mutate, data, isPending };
   },
 
-  useDelete: () => {
+  delete: () => {
     const { mutate, isPending } = useMutationData(
       ["CodeBlockAction.delete"],
       async (payload: any) => {
         const response = await axios.delete(`${source}/${payload.metadata.id}`);
-        return response;
+        return response.data;
       },
       [["ProjectAction.getProject"]],
       () => {},
@@ -50,7 +50,7 @@ const TabBlockAction = {
     return { mutate, isPending };
   },
 
-  useUpdate: () => {
+  update: () => {
     const { currentTab } = useCurrentTab();
     const { mutate } = useMutationData(
       ["CodeBlockAction.nameChange"],

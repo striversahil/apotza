@@ -15,7 +15,7 @@ type Props = {
 };
 
 const HeaderChange = (props: Props) => {
-  const { mutate } = TabBlockAction.useUpdate();
+  const { mutate } = TabBlockAction.delete();
 
   const Mutation = () => {
     mutate({ id: props.value.id, name: value });

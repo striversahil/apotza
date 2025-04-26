@@ -9,7 +9,7 @@ const source = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/stepblock";
 // const currentTab = localStorage.getItem("currentTab") as string;
 
 const StepsBlockAction = {
-  useadd: (currentTab: string) => {
+  add: (currentTab: string) => {
     const { mutate } = useMutationData(
       ["CodeBlockAction.addstep"],
       async (payload: any) => {
@@ -43,7 +43,7 @@ const StepsBlockAction = {
     return { mutate };
   },
 
-  useCodeRunner: (step_id: string) => {
+  codeRunner: (step_id: string) => {
     const { mutate } = useMutationData(
       ["CodeBlockAction.codeRunner"],
       async (payload: any) => {
@@ -56,7 +56,7 @@ const StepsBlockAction = {
     return { mutate };
   },
 
-  useUpdate: (codeBlock_id: string) => {
+  update: (codeBlock_id: string) => {
     const { mutate } = useMutationData(
       ["CodeBlockAction.updateStep"],
       async (payload: any) => {
@@ -86,7 +86,7 @@ const StepsBlockAction = {
     return { mutate };
   },
 
-  useduplicate: (currentTab: string) => {
+  duplicate: (currentTab: string) => {
     const { mutate } = useMutationData(
       ["CodeBlockAction.duplicateStep"],
       async (payload: any) => {
@@ -113,26 +113,16 @@ const StepsBlockAction = {
     return { mutate };
   },
 
-  usedelete: (currentTab: string) => {
+  delete: (currentTab: string) => {
     const { mutate } = useMutationData(
-      ["CodeBlockAction.deleteStep"],
+      ["StepsBlockAction.deleStep"],
       async (payload: any) => {
         const response = await axios.delete(`${source}/${payload.id}`);
         return response.data;
       },
-      [[`ProjectAction.getAllSteps-${currentTab}` as string]],
-      (previousData: any, variables: any) => {
-        return {
-          ...previousData,
-          payload: {
-            ...previousData.payload,
-            stepBlocks: [...previousData.payload.stepBlocks].filter(
-              (item) => item.id != variables.id
-            ),
-          },
-        };
-      },
-      () => toast("Success", { description: "Successfully deleted step" })
+      [[`ProjectAction.getOneCodeBlock-${currentTab}` as string]],
+      () => {},
+      () => {}
     );
     return { mutate };
   },

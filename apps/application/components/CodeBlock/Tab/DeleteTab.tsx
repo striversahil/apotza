@@ -10,7 +10,7 @@ type Props = {
 
 const DeleteTab = (props: Props) => {
   const [open, setOpen] = React.useState(false);
-  const { mutate: mutateDelete } = TabBlockAction.useDelete();
+  const { mutate: mutateDelete } = TabBlockAction.delete();
 
   const handleClose = (id: any) => {
     mutateDelete({
