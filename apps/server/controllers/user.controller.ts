@@ -28,6 +28,7 @@ class UserController {
         refreshToken: refreshToken,
       });
       res.cookie("access_token", accessToken, Usercookie);
+      res.cookie("refresh_token", refreshToken, Usercookie);
       SuccessResponse(res, "User Signed In Successfully", user);
       return;
     } catch (error) {
@@ -58,6 +59,7 @@ class UserController {
         name
       );
       res.cookie("access_token", accessToken, Usercookie);
+      res.cookie("refresh_token", refreshToken, Usercookie);
       SuccessResponse(res, "User Signed Up Successfully", userCreated);
     } catch (error) {
       ErrorResponse(res, "", true);
@@ -67,6 +69,7 @@ class UserController {
   static async logout(req: Request, res: Response) {
     try {
       res.clearCookie("access_token", Usercookie);
+      res.clearCookie("refresh_token", Usercookie);
       SuccessResponse(res, "User Signed Out Successfully");
     } catch (error) {
       ErrorResponse(res, "", true);
@@ -76,10 +79,56 @@ class UserController {
   static async deleteUser(req: Request, res: Response) {
     try {
       const userId = req.user.id;
-      console.log("userId", userId);
       const deleted_user = await UserService.deleteUser(userId);
       res.clearCookie("access_token");
       SuccessResponse(res, "User Deleted Successfully", deleted_user);
+    } catch (error) {
+      ErrorResponse(res, "", true);
+    }
+  }
+
+  static async updateAccessToken(req: Request, res: Response) {
+    // If the refresh token is valid, create a new access token
+    try {
+      const refreshToken = req.cookies.refresh_token;
+      if (!refreshToken) return ErrorResponse(res, "Refresh Token not found");
+
+      const decodedToken = TokensService.verifyRefreshToken(refreshToken);
+
+      if (!decodedToken) return ErrorResponse(res, "Invalid Refresh Token");
+
+      const user = await UserService.getUserById(decodedToken.id as string);
+
+      if (!user) return ErrorResponse(res, "User not found for this token");
+
+      const accessToken = TokensService.generateAccessToken(
+        user.id,
+        user.email,
+        user.name
+      );
+      res.cookie("access_token", accessToken, Usercookie);
+      SuccessResponse(res, "Access Token Updated Successfully");
+    } catch (error) {
+      ErrorResponse(res, "", true);
+    }
+  }
+
+  static async updateRefreshToken(req: Request, res: Response) {
+    // It's generated 10-15 days before it actually gonna expire so to avoid it's expiring we update it
+
+    try {
+      const refreshToken = req.cookies.refresh_token;
+      if (!refreshToken) return ErrorResponse(res, "Refresh Token not found");
+      const decodedToken = TokensService.verifyRefreshToken(refreshToken);
+      if (!decodedToken) return ErrorResponse(res, "Invalid Refresh Token");
+      const user = await UserService.getUserById(decodedToken.id as string);
+      if (!user) return ErrorResponse(res, "User not found for this token");
+      const newRefreshToken = TokensService.generateRefreshToken(user.id);
+      await UserService.updateUser(user.id, {
+        refreshToken: newRefreshToken,
+      });
+      res.cookie("refresh_token", newRefreshToken, Usercookie);
+      SuccessResponse(res, "Refresh Token Updated Successfully");
     } catch (error) {
       ErrorResponse(res, "", true);
     }

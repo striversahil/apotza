@@ -25,8 +25,30 @@ class TokensService {
     return refreshToken;
   }
 
-  static verifyAccessToken(token: string) {
-    return jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string);
+  static verifyAccessToken(token: string): any {
+    try {
+      const decodedToken = jwt.verify(
+        token,
+        process.env.ACCESS_TOKEN_SECRET as string
+      );
+      return decodedToken;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
+  static verifyRefreshToken(token: string): any {
+    try {
+      const decodedToken = jwt.verify(
+        token,
+        process.env.REFRESH_TOKEN_SECRET as string
+      );
+      return decodedToken;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
   }
 }
 
