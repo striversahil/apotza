@@ -21,42 +21,32 @@ export const authenticate = (
   res: Response,
   next: NextFunction
 ): any => {
-  const access_token = req.cookies.access_token;
-  const refresh_token = req.cookies.refresh_token;
-
-  let decoded;
+  const access_token = req.headers.authorization?.split(" ")[1];
 
   if (!access_token) {
-    if (refresh_token) {
-      decoded = TokensService.verifyRefreshToken(refresh_token);
-    }
-    if (!decoded) {
-      // Redirecting as Unauthorized User to return to Login Page
-      return ErrorResponse(res, "No Tokens Found", 401);
-    }
-  } else {
-    decoded = TokensService.verifyAccessToken(access_token);
-    if (!decoded) {
-      // Returning Error Response of 402 code if access token is not found
+    return ErrorResponse(res, "No Tokens Found", 401);
+  }
 
-      return ErrorResponse(res, "Invalid Access Token", 402);
-    }
+  const decoded = TokensService.verifyAccessToken(access_token);
+
+  if (!decoded) {
+    return ErrorResponse(res, "Invalid Access Token", 402);
   }
   // Todo : Verify Token Safely
 
-  const date = new Date();
+  // const date = new Date();
 
-  if (refresh_token) {
-    const Expiry_left_in_hours = Math.floor(
-      (decoded.exp * 1000 - date.getTime()) / (60 * 60 * 1000)
-    );
+  // if (refresh_token) {
+  //   const Expiry_left_in_hours = Math.floor(
+  //     (decoded.exp * 1000 - date.getTime()) / (60 * 60 * 1000)
+  //   );
 
-    if (Expiry_left_in_hours < 100) {
-      // Returning Error Response of 403 code if refresh token is expiring soon (less than 100 hours)
+  //   if (Expiry_left_in_hours < 100) {
+  //     // Returning Error Response of 403 code if refresh token is expiring soon (less than 100 hours)
 
-      return ErrorResponse(res, "Refresh Token is Expiring Soon", 403);
-    }
-  }
+  //     return ErrorResponse(res, "Refresh Token is Expiring Soon", 403);
+  //   }
+  // }
 
   req.user = decoded;
 

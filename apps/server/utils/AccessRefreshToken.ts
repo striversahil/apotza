@@ -1,12 +1,10 @@
 import jwt from "jsonwebtoken";
 
 class TokensService {
-  static generateAccessToken(id: string, email: string, username: string) {
+  static generateAccessToken(id: string) {
     const accessToken = jwt.sign(
       {
         id: id,
-        email: email,
-        username: username,
       },
       process.env.ACCESS_TOKEN_SECRET as string,
       { expiresIn: process.env.ACCESS_TOKEN_EXPIRY as any }
