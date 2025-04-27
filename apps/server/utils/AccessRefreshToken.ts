@@ -27,6 +27,7 @@ class TokensService {
 
   static verifyAccessToken(token: string): any {
     try {
+      if (!token) return null;
       const decodedToken = jwt.verify(
         token,
         process.env.ACCESS_TOKEN_SECRET as string
@@ -40,6 +41,7 @@ class TokensService {
 
   static verifyRefreshToken(token: string): any {
     try {
+      if (!token) return null;
       const decodedToken = jwt.verify(
         token,
         process.env.REFRESH_TOKEN_SECRET as string

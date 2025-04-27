@@ -24,43 +24,39 @@ export const authenticate = (
   const access_token = req.cookies.access_token;
   const refresh_token = req.cookies.refresh_token;
 
-  if (!access_token && !refresh_token)
-    ErrorResponse(res, "No Tokens Found", 401);
+  let decoded;
+
+  if (!access_token) {
+    if (refresh_token) {
+      decoded = TokensService.verifyRefreshToken(refresh_token);
+    }
+    if (!decoded) {
+      // Redirecting as Unauthorized User to return to Login Page
+      return ErrorResponse(res, "No Tokens Found", 401);
+    }
+  } else {
+    decoded = TokensService.verifyAccessToken(access_token);
+    if (!decoded) {
+      // Returning Error Response of 402 code if access token is not found
+
+      return ErrorResponse(res, "Invalid Access Token", 402);
+    }
+  }
   // Todo : Verify Token Safely
-  const decoded = TokensService.verifyAccessToken(token);
-  if (!decoded) ErrorResponse(res, "Invalid Token Found", 401);
-  // Passing the User to the next middleware
 
-  // const now = new Date();
-  // const Expiry_left_in_hours = Math.floor(
-  //   (decoded.exp * 1000 - now.getTime()) / (60 * 60 * 1000)
-  // );
-  // Todo : Check for Expiry Reality
-  // console.log(Expiry_left_in_hours);
+  const date = new Date();
 
-  // if (Expiry_left_in_hours < 20) {
-  //   const tokenResponse = await generateAccessRefreshToken(decoded.email);
-  //   const isProduction = process.env.NODE_ENV === "production";
+  if (refresh_token) {
+    const Expiry_left_in_hours = Math.floor(
+      (decoded.exp * 1000 - date.getTime()) / (60 * 60 * 1000)
+    );
 
-  //   res.cookie("access_token", tokenResponse.accessToken, {
-  //     httpOnly: true,
-  //     secure: isProduction,
-  //     sameSite: isProduction ? "none" : "lax",
-  //     maxAge: 1000 * 60 * 60 * 24 * 2, // 2 days
-  //   });
+    if (Expiry_left_in_hours < 100) {
+      // Returning Error Response of 403 code if refresh token is expiring soon (less than 100 hours)
 
-  //   if (!tokenResponse) {
-  //     return res
-  //       .status(500)
-  //       .json(
-  //         new ApiResponse(
-  //           500,
-  //           {},
-  //           "User could not be authenticated due to server error"
-  //         )
-  //       );
-  //   }
-  // }
+      return ErrorResponse(res, "Refresh Token is Expiring Soon", 403);
+    }
+  }
 
   req.user = decoded;
 
