@@ -12,6 +12,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@repo/ui/Tooltip/tooltip";
+import { useCurrentStep } from "../../../app/editor/_hooks/useCurrentTab";
 
 type Props = {
   value: any;
@@ -21,6 +22,8 @@ type Props = {
 const InStepPopOver = ({ value, codeBlock_id }: Props) => {
   const [open, setOpen] = React.useState(true);
   const [open2, setOpen2] = React.useState(true);
+  const { currentStep, setCurrentStep = (step: string) => {} } =
+    useCurrentStep() || {};
 
   const { mutate } = StepsBlockAction.delete(codeBlock_id);
 
@@ -34,7 +37,11 @@ const InStepPopOver = ({ value, codeBlock_id }: Props) => {
   return (
     <div>
       <div className="bg-white/20 w-full p-2 rounded-md flex items-center justify-center">
-        <TabsTrigger className="w-full" value={value.id}>
+        <TabsTrigger
+          className="w-full"
+          value={value.id}
+          onClick={() => setCurrentStep(value.id)}
+        >
           <div className="font-bold flex-1 flex w-full text-center cursor-pointer">
             <Image
               src={languageHref}

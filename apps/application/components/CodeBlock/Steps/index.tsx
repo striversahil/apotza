@@ -10,6 +10,7 @@ import HeaderChange from "../Tab/HeaderChange";
 import InStepPopOver from "./InStepPopOver";
 import { LoaderPinwheel } from "lucide-react";
 import Loader from "../loader";
+import { useCurrentStep } from "../../../app/editor/_hooks/useCurrentTab";
 
 type Props = {
   value?: any;
@@ -20,6 +21,8 @@ const StepEditorRoot = (props: Props) => {
   const [codeBlock, setCodeBlock] = useState<any>(null);
 
   const { data } = GetProject.getCodeBlock(props.value.id);
+
+  const { currentStep } = useCurrentStep() || {};
 
   useEffect(() => {
     if (data) {
@@ -32,10 +35,7 @@ const StepEditorRoot = (props: Props) => {
     <div className="w-full h-full">
       {!codeBlock && <Loader />}
       {codeBlock && (
-        <TabRoot
-          className="w-full h-full"
-          defaultValue={codeBlock.stepBlocks[0]?.id}
-        >
+        <TabRoot className="w-full h-full" defaultValue={currentStep}>
           <PanelGroup direction="horizontal" className="">
             <Panel defaultSize={20} minSize={20} maxSize={50}>
               <HeaderChange value={codeBlock} />

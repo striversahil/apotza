@@ -11,7 +11,10 @@ import { useQueryData } from "@/hooks/useQueryData";
 import { TabsContent } from "@radix-ui/react-tabs";
 import GetProject from "../../actions/project";
 import StepEditorRoot from "./Steps";
-import { useCurrentTab } from "../../app/editor/_hooks/useCurrentTab";
+import {
+  CurrentStepProvider,
+  useCurrentTab,
+} from "../../app/editor/_hooks/useCurrentTab";
 import Loader from "./loader";
 
 const CodeBlock = () => {
@@ -20,9 +23,7 @@ const CodeBlock = () => {
 
   const { currentTab } = useCurrentTab() || {};
 
-  const activeTab: any = CodeBlockData?.find(
-    (item: any) => item.id === currentTab
-  );
+  console.log(currentTab);
 
   const { isLoading, data } = GetProject.getProject();
 
@@ -50,12 +51,12 @@ const CodeBlock = () => {
           onCollapse={handleOpenCode}
         >
           <div className="ml-1 h-full bg-slate-800 overflow-y-auto">
-            {!activeTab && <Loader />}
-            {activeTab && (
-              <div key={activeTab.id} className="w-full h-full">
-                <StepEditorRoot value={activeTab} />
-              </div>
-            )}
+            {!CodeBlockData && <Loader />}
+            {CodeBlockData?.map((item: any) => (
+              <CurrentStepProvider currentTab={item.id} key={item.id}>
+                {item.id === currentTab && <StepEditorRoot value={item} />}
+              </CurrentStepProvider>
+            ))}
           </div>
         </Panel>
       )}
