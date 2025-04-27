@@ -1,8 +1,12 @@
+"use client";
 import GetProject from "../../../actions/project";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { BatteryCharging, CheckCircle, Dot } from "lucide-react";
 import React from "react";
+import dynamic from "next/dynamic";
+
+const ReactJson = dynamic(() => import("react-json-view"), { ssr: false });
 
 type Props = {
   value: any;
@@ -61,11 +65,27 @@ const Output = (props: Props) => {
             </div>
           </div>
         </div>
-        <div className="relative flex-1 h-fit overflow-auto ">
+        <div className="relative flex-1 h-full w-full">
           <div className="absolute inset-2 rounded-md  bg-white/10">
-            <div className="absolute inset-2 flex items-center rounded-md bg-[#1e293b]">
-              <TabsContent value="output">{props.value.output}</TabsContent>
-              <TabsContent value="code">{props.value.code}</TabsContent>
+            <div className="absolute inset-2 flex items-start p-3 rounded-md bg-[#0b1c2c]  overflow-y-auto ">
+              <TabsContent value="output">
+                <ReactJson
+                  src={props.value}
+                  shouldCollapse={false}
+                  name={false}
+                  theme={"harmonic"}
+                  indentWidth={5}
+                  displayObjectSize={true}
+                  enableClipboard={false}
+                  style={{
+                    fontSize: "12px",
+                    fontFamily: "monospace",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                />
+              </TabsContent>
+              <TabsContent value="code">{props.value.output}</TabsContent>
               <TabsContent value="stdout">{props.value.stdout}</TabsContent>
             </div>
           </div>

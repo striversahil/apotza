@@ -13,6 +13,7 @@ import {
   TooltipTrigger,
 } from "@repo/ui/Tooltip/tooltip";
 import { useCurrentStep } from "../../../contexts/CurrentTab";
+import { cn } from "@/lib/utils";
 
 type Props = {
   value: any;
@@ -30,13 +31,19 @@ const InStepPopOver = ({ value, codeBlock_id }: Props) => {
   const { mutate: mutateDuplicate } = StepsBlockAction.duplicate(codeBlock_id);
 
   const languageHref =
-    (value.language &&
-      languages.find((item) => item.value === value.language)?.icon_href) ||
-    "/assets/languages/mysql.svg";
+    (value.type &&
+      languages.find((item) => item.value === value.type)?.icon_href) ||
+    "/assets/languages/python.svg";
 
   return (
     <div>
-      <div className="bg-white/20 w-full p-2 rounded-md flex items-center justify-center">
+      <div
+        className={cn(
+          "bg-white/15 w-full p-2 rounded-md flex items-center justify-center hover:bg-white/20 cursor-pointer",
+          currentStep === value.id &&
+            "outline outline-2 outline-blue-500 bg-white/25"
+        )}
+      >
         <TabsTrigger
           className="w-full"
           value={value.id}
@@ -48,7 +55,7 @@ const InStepPopOver = ({ value, codeBlock_id }: Props) => {
               width={25}
               height={25}
               alt="Image"
-              className="p-[1px] shadow-2xl hover:bg-white/50 bg-white/30 rounded-md"
+              className="  rounded-md"
             />
             <div className="text-sm flex-1 text-center  ">{value.name}</div>
           </div>

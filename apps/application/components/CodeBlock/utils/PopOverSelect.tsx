@@ -29,7 +29,7 @@ export function ComboPopAPI({ setOpen, codeBlock_id, type }: PopOver) {
 
   return (
     <PopoverContent className="w-[200px] p-0 border-[2px] border-black shadow-lg rounded-md">
-      <Command className="bg-[#1e1e1e]">
+      <Command className="bg-slate-900">
         <CommandInput placeholder="Search Provider..." />
         <CommandList>
           <CommandEmpty>No API Provider found.</CommandEmpty>
