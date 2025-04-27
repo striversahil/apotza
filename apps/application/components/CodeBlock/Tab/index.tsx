@@ -14,6 +14,7 @@ import { ComboPopAPI } from "../utils/PopOverSelect";
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/popover";
 import GetProject from "../../../actions/project";
 import DeleteTab from "./DeleteTab";
+import { useCurrentTab } from "../../../app/editor/_hooks/useCurrentTab";
 
 type Props = {
   handleOpen: () => void;
@@ -22,10 +23,11 @@ type Props = {
 };
 
 const Tabs = (props: Props) => {
-  const [currentTab, setCurrentTab] = useState("0");
   const [CodeBlockData, setCodeBlockData] = useState<any>(null);
 
   const { isLoading, data } = GetProject.getProject();
+
+  const { currentTab, setCurrentTab = () => {} } = useCurrentTab() || {};
 
   useEffect(() => {
     if (data) {
@@ -39,7 +41,7 @@ const Tabs = (props: Props) => {
     <div className="relative flex h-[36px] mx-1 ">
       {CodeBlockData && (
         <div>
-          <TabsList className="relative flex flex-nowrap flex-1 items-center justify-start gap-2  overflow-x-scroll overflow-y-hidden bg-transparent">
+          <div className="relative flex flex-nowrap flex-1 items-center justify-start gap-2  overflow-x-scroll overflow-y-hidden bg-transparent">
             <div className="sticky left-0">
               <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
@@ -58,29 +60,26 @@ const Tabs = (props: Props) => {
               <div
                 className={cn(
                   `flex w-fit bg-white/10 p-1 rounded-md border border-white/20 hover:bg-white/30  select-none cursor-pointer items-center gap-2`,
-                  currentTab === index.toString() &&
+                  currentTab === item.id &&
                     "bg-white/20 font-bold text-blue-400 border-b-[3px] border-l-[3px] border-blue-700"
                 )}
                 key={index}
               >
-                <TabsTrigger
-                  value={index.toString()}
+                <div
                   className="inline-flex items-center gap-2"
-                  onClick={() => {
-                    setCurrentTab(index.toString());
-                  }}
+                  onClick={() => setCurrentTab(item.id)}
                 >
                   <UnplugIcon className="size-4 ml-1" />
                   <span className=" text-sm whitespace-nowrap text-ellipsis">
                     {item.name}
                   </span>
-                </TabsTrigger>
+                </div>
                 <div className="ml-auto">
                   <DeleteTab item={item} />
                 </div>
               </div>
             ))}
-          </TabsList>
+          </div>
           <div
             className={cn(
               "absolute top-0 right-2 cursor-pointer p-2 hover:bg-white/20 rounded-md duration-200",

@@ -16,7 +16,13 @@ import Loader from "./loader";
 
 const CodeBlock = () => {
   const { openCode, handleOpenCode } = useOpen();
-  const [CodeBlockData, setCodeBlockData] = useState<any>(null);
+  const [CodeBlockData, setCodeBlockData] = useState<[] | null>(null);
+
+  const { currentTab } = useCurrentTab() || {};
+
+  const activeTab: any = CodeBlockData?.find(
+    (item: any) => item.id === currentTab
+  );
 
   const { isLoading, data } = GetProject.getProject();
 
@@ -24,7 +30,7 @@ const CodeBlock = () => {
     if (data) {
       setCodeBlockData(data.payload.codeblocks);
     }
-  }, [data]);
+  }, [data, currentTab]);
 
   return (
     <>
@@ -43,19 +49,13 @@ const CodeBlock = () => {
           collapsible
           onCollapse={handleOpenCode}
         >
-          <div className="ml-1 h-full bg-slate-800">
-            {!CodeBlockData && <Loader />}
-            {CodeBlockData?.map((item: any, index: number) => {
-              return (
-                <TabsContent
-                  key={index}
-                  className="w-full h-full"
-                  value={index.toString()}
-                >
-                  <StepEditorRoot value={item} />
-                </TabsContent>
-              );
-            })}
+          <div className="ml-1 h-full bg-slate-800 overflow-y-auto">
+            {!activeTab && <Loader />}
+            {activeTab && (
+              <div key={activeTab.id} className="w-full h-full">
+                <StepEditorRoot value={activeTab} />
+              </div>
+            )}
           </div>
         </Panel>
       )}
