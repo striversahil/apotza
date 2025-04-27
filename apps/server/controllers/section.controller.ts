@@ -9,7 +9,7 @@ class SectionController {
       const section = await SectionService.create(page_id, component_id);
       if (!section)
         return ErrorResponse(res, "Section could not be created", 400);
-      SuccessResponse(res, "Section created successfully", section);
+      SuccessResponse(res, "Section created successfully", null, section);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
@@ -22,7 +22,7 @@ class SectionController {
       const section = await SectionService.getById(id);
       if (!section)
         return ErrorResponse(res, "Section could not be fetched", 404);
-      SuccessResponse(res, "Section fetched successfully", section);
+      SuccessResponse(res, "Section fetched successfully", null, section);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
@@ -35,7 +35,7 @@ class SectionController {
       const section = await SectionService.delete(id);
       if (!section)
         return ErrorResponse(res, "Section could not be deleted", 404);
-      SuccessResponse(res, "Section deleted successfully", section);
+      SuccessResponse(res, "Section deleted successfully", null, section);
     } catch (error) {
       ErrorResponse(res, "", null);
     }

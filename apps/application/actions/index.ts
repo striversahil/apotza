@@ -18,7 +18,25 @@ api.interceptors.request.use(
 );
 
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    if (response.status === 200) {
+      return response.data;
+    }
+
+    if (response.status === 201) {
+      localStorage.setItem("access_token", response.data.accessToken);
+      localStorage.setItem("refresh_token", response.data.refreshToken);
+      return response.data;
+    }
+
+    if (response.status === 210) {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      window.location.href = "/login";
+    }
+
+    return response;
+  },
   async (error) => {
     // If the response status is 401 (unauthorized), redirect to the login page
     if (error.response.status === 401) {
@@ -38,12 +56,7 @@ api.interceptors.response.use(
       }
     }
 
-    // If the response status is 410 (Logout), remove the access token and redirect to the login page
-    if (error.response.status === 410) {
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
-      window.location.href = "/login";
-    }
+    // If the response status is 210 (Logout), remove the access token and redirect to the login page
 
     // Handle 401 errors here
     // For example, you can redirect the user to the login page

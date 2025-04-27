@@ -11,7 +11,7 @@ export class PageController {
         return ErrorResponse(res, "Page does not exist , provide id", 404);
       const page = await PageService.getOne(id, project_id);
       if (!page) return ErrorResponse(res, "Page could not be fetched", 404);
-      SuccessResponse(res, "Page fetched successfully", page);
+      SuccessResponse(res, "Page fetched successfully", null, page);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
@@ -24,7 +24,7 @@ export class PageController {
       if (!req.body) return ErrorResponse(res, "Provide all fields", 400);
       const page = await PageService.create(project_id, { ...req.body });
       if (!page) return ErrorResponse(res, "Page could not be created", 400);
-      SuccessResponse(res, "Page created successfully", page);
+      SuccessResponse(res, "Page created successfully", null, page);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
@@ -37,7 +37,7 @@ export class PageController {
       if (!id || !data) return ErrorResponse(res, "Provide all fields", 400);
       const page = await PageService.update(id, data);
       if (!page) return ErrorResponse(res, "Page could not be updated", 400);
-      SuccessResponse(res, "Page updated successfully", page);
+      SuccessResponse(res, "Page updated successfully", null, page);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
@@ -50,7 +50,7 @@ export class PageController {
         return ErrorResponse(res, "Page does not exist , provide id", 404);
       const page = await PageService.delete(id);
       if (!page) return ErrorResponse(res, "Page could not be deleted", 404);
-      SuccessResponse(res, "Page deleted successfully", page);
+      SuccessResponse(res, "Page deleted successfully", null, page);
     } catch (error) {
       ErrorResponse(res, "", null);
     }

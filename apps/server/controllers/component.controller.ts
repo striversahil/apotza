@@ -10,7 +10,7 @@ class ComponentController {
       const component = await ComponentService.create({ ...req.body });
       if (!component)
         return ErrorResponse(res, "Section could not be created", 400);
-      SuccessResponse(res, "Component created successfully", component);
+      SuccessResponse(res, "Component created successfully", null, component);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
@@ -23,7 +23,7 @@ class ComponentController {
       const component = await ComponentService.getById(id);
       if (!component)
         return ErrorResponse(res, "Component could not be fetched", 404);
-      SuccessResponse(res, "Component fetched successfully", component);
+      SuccessResponse(res, "Component fetched successfully", null, component);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
@@ -37,7 +37,7 @@ class ComponentController {
       console.log(components);
       if (!components)
         return ErrorResponse(res, "Components could not be fetched", 404);
-      SuccessResponse(res, "Components fetched successfully", components);
+      SuccessResponse(res, "Components fetched successfully", null, components);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
@@ -59,7 +59,7 @@ class ComponentController {
       });
       if (!component)
         return ErrorResponse(res, "Component could not be updated", 400);
-      SuccessResponse(res, "Component updated successfully", component);
+      SuccessResponse(res, "Component updated successfully", null, component);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
@@ -73,7 +73,7 @@ class ComponentController {
       const component = await ComponentService.updateComponent(id, data);
       if (!component)
         return ErrorResponse(res, "Component could not be updated", 400);
-      SuccessResponse(res, "Component updated successfully", component);
+      SuccessResponse(res, "Component updated successfully", null, component);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
@@ -86,7 +86,7 @@ class ComponentController {
       const component = await ComponentService.delete(id);
       if (!component)
         return ErrorResponse(res, "Component could not be deleted", 404);
-      SuccessResponse(res, "Component deleted successfully", component);
+      SuccessResponse(res, "Component deleted successfully", null, component);
     } catch (error) {
       ErrorResponse(res, "", null);
     }

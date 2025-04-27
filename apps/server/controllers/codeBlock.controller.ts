@@ -15,7 +15,7 @@ class CodeBlockController {
       );
       if (!codeBlock)
         return ErrorResponse(res, "CodeBlock could not be created", 400);
-      SuccessResponse(res, "CodeBlock created successfully", codeBlock);
+      SuccessResponse(res, "CodeBlock created successfully", null, codeBlock);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
@@ -28,7 +28,7 @@ class CodeBlockController {
       const codeBlock = await CodeBlockService.getById(id);
       if (!codeBlock)
         return ErrorResponse(res, "CodeBlock could not be fetched", 404);
-      SuccessResponse(res, "CodeBlock fetched successfully", codeBlock);
+      SuccessResponse(res, "CodeBlock fetched successfully", null, codeBlock);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
@@ -50,7 +50,7 @@ class CodeBlockController {
       const codeBlock = await CodeBlockService.update(id, data);
       if (!codeBlock)
         return ErrorResponse(res, "CodeBlock could not be updated", 400);
-      SuccessResponse(res, "CodeBlock updated successfully", codeBlock);
+      SuccessResponse(res, "CodeBlock updated successfully", null, codeBlock);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
@@ -63,7 +63,7 @@ class CodeBlockController {
       const codeBlock = await CodeBlockService.delete(id);
       if (!codeBlock)
         return ErrorResponse(res, "CodeBlock could not be deleted", 404);
-      SuccessResponse(res, "CodeBlock deleted successfully", codeBlock);
+      SuccessResponse(res, "CodeBlock deleted successfully", null, codeBlock);
     } catch (error) {
       ErrorResponse(res, "", null);
     }

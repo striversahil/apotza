@@ -11,7 +11,7 @@ class StepBlockController {
       const stepBlock = await StepBlockService.create(id, language);
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be created", 400);
-      SuccessResponse(res, "StepBlock created successfully", stepBlock);
+      SuccessResponse(res, "StepBlock created successfully", null, stepBlock);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
@@ -24,7 +24,7 @@ class StepBlockController {
       const stepBlock = await StepBlockService.getById(id);
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be fetched", 404);
-      SuccessResponse(res, "StepBlock fetched successfully", stepBlock);
+      SuccessResponse(res, "StepBlock fetched successfully", null, stepBlock);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
@@ -40,7 +40,7 @@ class StepBlockController {
     const stepBlock = await StepBlockService.runBlock(id, type);
     if (!stepBlock)
       return ErrorResponse(res, "StepBlock could not be run", 400);
-    SuccessResponse(res, "StepBlock Run successfully", stepBlock);
+    SuccessResponse(res, "StepBlock Run successfully", null, stepBlock);
 
     try {
     } catch (error) {
@@ -55,7 +55,7 @@ class StepBlockController {
       const stepBlock = await StepBlockService.delete(id);
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be deleted", 404);
-      SuccessResponse(res, "StepBlock deleted successfully", stepBlock);
+      SuccessResponse(res, "StepBlock deleted successfully", null, stepBlock);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
@@ -70,7 +70,7 @@ class StepBlockController {
       const stepBlock = await StepBlockService.update(id, slug);
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be updated", 400);
-      SuccessResponse(res, "StepBlock updated successfully", stepBlock);
+      SuccessResponse(res, "StepBlock updated successfully", null, stepBlock);
     } catch (error) {
       ErrorResponse(res, "", null);
     }

@@ -23,7 +23,7 @@ class UserController {
       await UserService.updateUser(user.id, {
         refreshToken: refreshToken,
       });
-      SuccessResponse(res, "User Signed In Successfully", {
+      SuccessResponse(res, "User Signed In Successfully", 201, {
         accessToken: accessToken,
         refreshToken: refreshToken,
       });
@@ -51,7 +51,7 @@ class UserController {
         refreshToken: refreshToken,
       });
       const accessToken = TokensService.generateAccessToken(userCreated.id);
-      SuccessResponse(res, "User Signed Up Successfully", {
+      SuccessResponse(res, "User Signed Up Successfully", 201, {
         accessToken: accessToken,
         refreshToken: refreshToken,
       });
@@ -62,7 +62,7 @@ class UserController {
 
   static async logout(req: Request, res: Response) {
     try {
-      ErrorResponse(res, "User Signed Out Successfully", 410);
+      SuccessResponse(res, "User Signed Out Successfully", 210);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
@@ -72,7 +72,7 @@ class UserController {
     try {
       const userId = req.user.id;
       const deleted_user = await UserService.deleteUser(userId);
-      ErrorResponse(res, "User Deleted Successfully", 410);
+      SuccessResponse(res, "User Deleted Successfully", 210);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
@@ -113,7 +113,7 @@ class UserController {
         newRefreshToken = newRefreshToken_token;
       }
 
-      SuccessResponse(res, "Access Token Updated Successfully", {
+      SuccessResponse(res, "Access Token Updated Successfully", 201, {
         accessToken: newAccessToken,
         refreshToken: newRefreshToken,
       });
@@ -126,7 +126,7 @@ class UserController {
     try {
       const user = await UserService.getUserById(req.user.id);
       if (!user) return ErrorResponse(res, "User not found", 404);
-      SuccessResponse(res, "User fetched successfully", user);
+      SuccessResponse(res, "User fetched successfully", null, user);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
