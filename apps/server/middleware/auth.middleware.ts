@@ -21,12 +21,14 @@ export const authenticate = (
   res: Response,
   next: NextFunction
 ): any => {
-  const token = req.cookies.access_token;
+  const access_token = req.cookies.access_token;
+  const refresh_token = req.cookies.refresh_token;
 
-  if (!token) ErrorResponse(res, "No Token Found");
+  if (!access_token && !refresh_token)
+    ErrorResponse(res, "No Tokens Found", 401);
   // Todo : Verify Token Safely
   const decoded = TokensService.verifyAccessToken(token);
-  if (!decoded) ErrorResponse(res, "Invalid Token Found", false, 401);
+  if (!decoded) ErrorResponse(res, "Invalid Token Found", 401);
   // Passing the User to the next middleware
 
   // const now = new Date();

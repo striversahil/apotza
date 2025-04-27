@@ -13,6 +13,14 @@ router.route("/signin").post(UserController.login);
 
 router.route("/logout").post(UserController.logout);
 
+router
+  .route("/access_token")
+  .post(authenticate, UserController.updateAccessToken);
+
+router
+  .route("/refresh_token")
+  .post(authenticate, UserController.updateRefreshToken);
+
 router.route("/").delete(authenticate, UserController.deleteUser);
 
 // Middleware Testing
