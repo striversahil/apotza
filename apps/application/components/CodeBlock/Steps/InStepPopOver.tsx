@@ -12,7 +12,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@repo/ui/Tooltip/tooltip";
-import { useCurrentStep } from "../../../app/editor/_hooks/useCurrentTab";
+import { useCurrentStep } from "../../../contexts/CurrentTab";
 
 type Props = {
   value: any;

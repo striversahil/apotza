@@ -14,8 +14,8 @@ type CurrentTab = {
 };
 
 type CurrentStep = {
-  currentStep: string;
-  setCurrentStep: React.Dispatch<React.SetStateAction<string>>;
+  currentStep: string | null;
+  setCurrentStep: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 const CurrentTabContext = createContext<CurrentTab | null>(null);
@@ -46,12 +46,12 @@ export const CurrentStepProvider = ({
   currentTab: string;
   children: ReactNode;
 }) => {
-  const [currentStep, setCurrentStep] = useState<string>("");
+  const [currentStep, setCurrentStep] = useState<string | null>(null);
 
   const { data: stepBlocks } = GetProject.getStep(currentTab);
 
   useEffect(() => {
-    if (stepBlocks && currentStep.length === 0) {
+    if (stepBlocks && !currentStep) {
       setCurrentStep(stepBlocks.payload.stepBlocks[0].id);
     }
   }, [stepBlocks]);

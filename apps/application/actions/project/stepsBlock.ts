@@ -1,4 +1,4 @@
-import { useCurrentTab } from "../../app/editor/_hooks/useCurrentTab";
+import { useCurrentTab } from "../../contexts/CurrentTab";
 import { useMutationData } from "@/hooks/useMutation";
 import { toast } from "sonner";
 import api from "..";

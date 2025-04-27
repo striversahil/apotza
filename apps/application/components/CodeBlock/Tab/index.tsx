@@ -14,7 +14,7 @@ import { ComboPopAPI } from "../utils/PopOverSelect";
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/popover";
 import GetProject from "../../../actions/project";
 import DeleteTab from "./DeleteTab";
-import { useCurrentTab } from "../../../app/editor/_hooks/useCurrentTab";
+import { useCurrentTab } from "../../../contexts/CurrentTab";
 
 type Props = {
   handleOpen: () => void;

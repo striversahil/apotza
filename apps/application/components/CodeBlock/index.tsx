@@ -7,14 +7,9 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 import { useOpen } from "../../app/editor/_hooks/useOpenCode";
 import PanelResizeHandleComp from "../utils/PanelResizeHandle";
-import { useQueryData } from "@/hooks/useQueryData";
-import { TabsContent } from "@radix-ui/react-tabs";
 import GetProject from "../../actions/project";
 import StepEditorRoot from "./Steps";
-import {
-  CurrentStepProvider,
-  useCurrentTab,
-} from "../../app/editor/_hooks/useCurrentTab";
+import { CurrentStepProvider, useCurrentTab } from "../../contexts/CurrentTab";
 import Loader from "./loader";
 
 const CodeBlock = () => {
@@ -22,8 +17,6 @@ const CodeBlock = () => {
   const [CodeBlockData, setCodeBlockData] = useState<[] | null>(null);
 
   const { currentTab } = useCurrentTab() || {};
-
-  console.log(currentTab);
 
   const { isLoading, data } = GetProject.getProject();
 
