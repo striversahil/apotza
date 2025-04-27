@@ -7,41 +7,44 @@ class SectionController {
     try {
       const { page_id, component_id } = req.body;
       const section = await SectionService.create(page_id, component_id);
-      if (!section) return ErrorResponse(res, "Section could not be created");
+      if (!section)
+        return ErrorResponse(res, "Section could not be created", 400);
       SuccessResponse(res, "Section created successfully", section);
     } catch (error) {
-      ErrorResponse(res, "", true);
+      ErrorResponse(res, "", null);
     }
   }
 
   static async getSection(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      if (!id) return ErrorResponse(res, "Section does not exist");
+      if (!id) return ErrorResponse(res, "Section does not exist", 404);
       const section = await SectionService.getById(id);
-      if (!section) return ErrorResponse(res, "Section could not be fetched");
+      if (!section)
+        return ErrorResponse(res, "Section could not be fetched", 404);
       SuccessResponse(res, "Section fetched successfully", section);
     } catch (error) {
-      ErrorResponse(res, "", true);
+      ErrorResponse(res, "", null);
     }
   }
 
   static async deleteSection(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      if (!id) return ErrorResponse(res, "Section does not exist");
+      if (!id) return ErrorResponse(res, "Section does not exist", 404);
       const section = await SectionService.delete(id);
-      if (!section) return ErrorResponse(res, "Section could not be deleted");
+      if (!section)
+        return ErrorResponse(res, "Section could not be deleted", 404);
       SuccessResponse(res, "Section deleted successfully", section);
     } catch (error) {
-      ErrorResponse(res, "", true);
+      ErrorResponse(res, "", null);
     }
   }
 
   static async temp(req: Request, res: Response) {
     try {
     } catch (error) {
-      ErrorResponse(res, "", true);
+      ErrorResponse(res, "", null);
     }
   }
 }
