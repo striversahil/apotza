@@ -13,8 +13,8 @@ const ComponentAction = {
         return response.data;
       },
       [
-        [`ProjectAction.getOneSection-${section_id}`],
-        ["ProjectAction.getComponents"],
+        [`GetProject.getOneSection-${section_id}`],
+        ["GetProject.getComponents"],
       ],
       () => {},
       () => {}
@@ -29,8 +29,8 @@ const ComponentAction = {
         return response.data;
       },
       [
-        [`ProjectAction.getOneSection-${section_id}`],
-        ["ProjectAction.getComponents"],
+        [`GetProject.getOneSection-${section_id}`],
+        ["GetProject.getComponents"],
       ],
       (previousData: any, variables: any) => {
         return {
@@ -66,7 +66,7 @@ const ComponentAction = {
         const response = await api.delete(`${source}/${payload.id}`);
         return response.data;
       },
-      [[`ProjectAction.getOneSection-${section_id}`]],
+      [[`GetProject.getOneSection-${section_id}`]],
       (previousData: any, variables: any) => {
         return {
           ...previousData,
@@ -90,7 +90,7 @@ const ComponentAction = {
         const response = await api.patch(`${source}/${payload.id}`, payload);
         return response.data;
       },
-      [[`ProjectAction.getOneSection-${section_id}`]],
+      [[`GetProject.getOneSection-${section_id}`]],
       (previousData: any, variables: any) => {
         return {
           ...previousData,
@@ -125,7 +125,7 @@ const ComponentAction = {
         const response = await api.patch(`${source}/update`, payload);
         return response.data;
       },
-      [[`ProjectAction.getOneSection-${section_id}`]],
+      [[`GetProject.getOneSection-${section_id}`]],
       (previousData: any, variables: any) => {
         return {
           ...previousData,

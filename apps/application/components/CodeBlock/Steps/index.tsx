@@ -5,7 +5,7 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 import { Tabs, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import EditorCode from "../Editor";
-import ProjectAction from "../../../actions/project";
+import GetProject from "../../../actions/project";
 import HeaderChange from "../Tab/HeaderChange";
 import InStepPopOver from "./InStepPopOver";
 import { LoaderPinwheel } from "lucide-react";
@@ -19,7 +19,7 @@ const StepEditorRoot = (props: Props) => {
   // const [currentStep, setCurrentStep] = useState("");
   const [codeBlock, setCodeBlock] = useState<any>(null);
 
-  const { data } = ProjectAction.getCodeBlock(props.value.id);
+  const { data } = GetProject.getCodeBlock(props.value.id);
 
   useEffect(() => {
     if (data) {

@@ -11,7 +11,7 @@ const PageAction = {
         const response = await api.post(`${source}`, payload);
         return response.data;
       },
-      [["ProjectAction.getProject"]]
+      [["GetProject.getProject"]]
     );
   },
   delete: () => {
@@ -21,7 +21,7 @@ const PageAction = {
         const response = await api.delete(`${source}/${payload.id}`);
         return response.data;
       },
-      [["ProjectAction.getProject"]]
+      [["GetProject.getProject"]]
     );
   },
   update: () => {
@@ -31,7 +31,7 @@ const PageAction = {
         const response = await api.patch(`${source}/${payload.id}`, payload);
         return response.data;
       },
-      [["ProjectAction.getProject"]]
+      [["GetProject.getProject"]]
     );
   },
 };

@@ -7,7 +7,7 @@ import {
   PanelRightClose,
   PanelRightOpen,
 } from "lucide-react";
-import ProjectAction from "@/actions/project";
+import GetProject from "@/actions/project";
 import _, { set } from "lodash";
 import {
   Collapsible,

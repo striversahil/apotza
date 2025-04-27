@@ -11,7 +11,7 @@ const SectionAction = {
         const response = await api.post(`${source}`, payload);
         return response.data;
       },
-      [["ProjectAction.getPage"]]
+      [["GetProject.getPage"]]
     );
     return { mutate };
   },
@@ -22,7 +22,7 @@ const SectionAction = {
         const response = await api.delete(`${source}/${payload.id}`);
         return response.data;
       },
-      [["ProjectAction.getPage"]]
+      [["GetProject.getPage"]]
     );
     return { mutate };
   },

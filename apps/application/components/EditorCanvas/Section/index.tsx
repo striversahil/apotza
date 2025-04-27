@@ -5,7 +5,7 @@ import Image from "next/image";
 import DeleteSection from "./DeleteSection";
 import AddSection from "./AddSection";
 import DraggableComponent from "../_Component";
-import ProjectAction from "../../../actions/project";
+import GetProject from "../../../actions/project";
 import { TabsTrigger } from "@radix-ui/react-tabs";
 import {
   useComponent,
@@ -38,7 +38,7 @@ const Section = ({ value }: Props) => {
 
   const { isOver, setNodeRef } = useSectionDroppable(value.id, ref);
 
-  const { data, isLoading } = ProjectAction.getSection(value.id as string);
+  const { data, isLoading } = GetProject.getSection(value.id as string);
 
   const { setState, currentValue, activeComponent } = useContextSave(value);
 

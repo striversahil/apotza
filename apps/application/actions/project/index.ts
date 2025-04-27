@@ -11,9 +11,9 @@ const component = "/component";
 
 // Here the Index i.e. Most Used Common Get Actions will be Handled for Project
 
-const ProjectAction = {
+const GetProject = {
   getProject: () => {
-    return useQueryData(["ProjectAction.getProject"], async () => {
+    return useQueryData(["GetProject.getProject"], async () => {
       const response = await api.get(`${project}`);
       return response.data;
     });
@@ -21,7 +21,7 @@ const ProjectAction = {
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++ CodeBlock Actions ++++++++++++++++++++++++++++++++++++++++++++++++++++++
   getCodeBlock: (id: string) => {
     return useQueryData(
-      [`ProjectAction.getOneCodeBlock-${id}` as string],
+      [`GetProject.getOneCodeBlock-${id}` as string],
       async () => {
         const response = await api.get(`${codeBlock}/${id}`);
         return response.data;
@@ -30,20 +30,17 @@ const ProjectAction = {
   },
 
   getStep: (id: string) => {
-    return useQueryData(
-      [`ProjectAction.getOneStep-${id}` as string],
-      async () => {
-        const response = await api.get(`${stepsBlock}/${id}`);
-        return response.data;
-      }
-    );
+    return useQueryData([`GetProject.getOneStep-${id}` as string], async () => {
+      const response = await api.get(`${stepsBlock}/${id}`);
+      return response.data;
+    });
   },
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++ Component Actions +++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   getPage: (route: string) => {
     const page_id = route.split("/").pop();
-    return useQueryData(["ProjectAction.getPage"], async () => {
+    return useQueryData(["GetProject.getPage"], async () => {
       const response = await api.get(`${page}/${page_id}`);
       return response.data;
     });
@@ -51,7 +48,7 @@ const ProjectAction = {
 
   getSection: (id: string) => {
     return useQueryData(
-      [`ProjectAction.getOneSection-${id}` as string],
+      [`GetProject.getOneSection-${id}` as string],
       async () => {
         const response = await api.get(`${section}/${id}`);
         return response.data;
@@ -60,14 +57,14 @@ const ProjectAction = {
   },
 
   getComponent: (id: string) => {
-    return useQueryData([`ProjectAction.getComponent-${id}`], async () => {
+    return useQueryData([`GetProject.getComponent-${id}`], async () => {
       const response = await api.get(`${component}/${id}`);
       return response.data;
     });
   },
 
   getComponents: () => {
-    return useQueryData(["ProjectAction.getComponents"], async () => {
+    return useQueryData(["GetProject.getComponents"], async () => {
       const response = await api.get(`${component}`);
       return response.data;
     });
@@ -76,16 +73,16 @@ const ProjectAction = {
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++ Project Specific Actions +++++++++++++++++++++++++++++++++++++++++++++++++++++++
   useNameChange: () => {
     return useMutationData(
-      ["ProjectAction.nameChange"],
+      ["GetProject.nameChange"],
       async (payload: any) => {
         const response = await api.post(`${project}/name`, payload);
         return response;
       },
-      [["ProjectAction.getProject"]],
+      [["GetProject.getProject"]],
       (previousData: any, variables: any) => {
         return { ...previousData, variables };
       }
     );
   },
 };
-export default ProjectAction;
+export default GetProject;

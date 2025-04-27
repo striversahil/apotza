@@ -16,8 +16,8 @@ const StepsBlockAction = {
         return response.data;
       },
       [
-        [`ProjectAction.getAllSteps-${currentTab}` as string],
-        [`ProjectAction.getOneCodeBlock-${currentTab}` as string],
+        [`GetProject.getAllSteps-${currentTab}` as string],
+        [`GetProject.getOneCodeBlock-${currentTab}` as string],
       ],
       () => {},
       () => {}
@@ -49,7 +49,7 @@ const StepsBlockAction = {
         const response = await api.post(`${source}/run`, payload);
         return response.data;
       },
-      [[`ProjectAction.getOneStep-${step_id}` as string]],
+      [[`GetProject.getOneStep-${step_id}` as string]],
       undefined
     );
     return { mutate };
@@ -62,7 +62,7 @@ const StepsBlockAction = {
         const response = await api.patch(`${source}/${payload.id}`, payload);
         return response.data;
       },
-      [[`ProjectAction.getOneCodeBlock-${codeBlock_id}` as string]],
+      [[`GetProject.getOneCodeBlock-${codeBlock_id}` as string]],
       (previousData: any, variables: any) => {
         return {
           ...previousData,
@@ -92,7 +92,7 @@ const StepsBlockAction = {
         const response = await api.post(`${source}/duplicate`, payload);
         return response.data;
       },
-      [[`ProjectAction.getAllSteps-${currentTab}` as string]],
+      [[`GetProject.getAllSteps-${currentTab}` as string]],
       undefined,
       // (previousData: any, variables: any) => {
       //   return {
@@ -119,7 +119,7 @@ const StepsBlockAction = {
         const response = await api.delete(`${source}/${payload.id}`);
         return response.data;
       },
-      [[`ProjectAction.getOneCodeBlock-${currentTab}` as string]],
+      [[`GetProject.getOneCodeBlock-${currentTab}` as string]],
       () => {},
       () => {}
     );

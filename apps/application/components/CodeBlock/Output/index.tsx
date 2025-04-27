@@ -1,4 +1,4 @@
-import ProjectAction from "../../../actions/project";
+import GetProject from "../../../actions/project";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { BatteryCharging, CheckCircle, Dot } from "lucide-react";

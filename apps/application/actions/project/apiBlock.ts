@@ -12,7 +12,7 @@ const TabBlockAction = {
         const response = await api.post(`${source}/`, payload);
         return response;
       },
-      [["ProjectAction.getProject"]],
+      [["GetProject.getProject"]],
       () => {},
       () => {}
       // (previousData: any, variables: any) => {
@@ -33,7 +33,7 @@ const TabBlockAction = {
         const response = await api.delete(`${source}/${payload.metadata.id}`);
         return response.data;
       },
-      [["ProjectAction.getProject"]],
+      [["GetProject.getProject"]],
       () => {},
       () => {}
       // (previousData: any, variables: any) => {
@@ -58,8 +58,8 @@ const TabBlockAction = {
         return response;
       },
       [
-        [`ProjectAction.getOneCodeBlock-${currentTab}` as string],
-        ["ProjectAction.getProject"],
+        [`GetProject.getOneCodeBlock-${currentTab}` as string],
+        ["GetProject.getProject"],
       ],
       () => {},
       () => {}

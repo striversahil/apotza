@@ -3,7 +3,7 @@ import { Input } from "@repo/ui/input";
 import { Skeleton } from "@repo/ui/skeleton";
 import React from "react";
 import { useClickOutsideEnter } from "../../app/editor/_hooks/useClickOutsideEnter";
-import ProjectAction from "../../actions/project";
+import GetProject from "../../actions/project";
 import {
   Tooltip,
   TooltipTrigger,
@@ -18,11 +18,11 @@ import Avatar_Header from "./Avatar";
 type Props = {};
 
 const Header = (props: Props) => {
-  const { isLoading, data } = ProjectAction.getProject();
+  const { isLoading, data } = GetProject.getProject();
 
   const navigation = useRouter();
 
-  const { mutate } = ProjectAction.useNameChange();
+  const { mutate } = GetProject.useNameChange();
 
   const { ref, mount, setMount, EnterClick, ValueChange, value } =
     useClickOutsideEnter(() => mutate({ name: value }), data?.payload.name);

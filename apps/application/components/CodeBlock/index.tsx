@@ -10,7 +10,7 @@ import PanelResizeHandleComp from "../utils/PanelResizeHandle";
 import { useQueryData } from "@/hooks/useQueryData";
 import CodeBlockAction from "../../api/project/codeBlock";
 import { TabsContent } from "@radix-ui/react-tabs";
-import ProjectAction from "../../actions/project";
+import GetProject from "../../actions/project";
 import StepEditorRoot from "./Steps";
 import { useCurrentTab } from "../../app/editor/_hooks/useCurrentTab";
 import Loader from "./loader";
@@ -19,7 +19,7 @@ const CodeBlock = () => {
   const { openCode, handleOpenCode } = useOpen();
   const [CodeBlockData, setCodeBlockData] = useState<any>(null);
 
-  const { isLoading, data } = ProjectAction.getProject();
+  const { isLoading, data } = GetProject.getProject();
 
   useEffect(() => {
     if (data) {
