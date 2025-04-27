@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import ApiResponse from "../helper/ApiResponse";
+import TokensService from "../utils/AccessRefreshToken";
+import { ErrorResponse } from "../utils/ApiResponse";
 
 declare global {
   namespace Express {
@@ -19,70 +21,35 @@ export const authenticate = (
   res: Response,
   next: NextFunction
 ): any => {
-  const token = req.cookies.access_token;
+  const access_token = req.cookies.access_token;
 
-  if (!token) {
-    return res
-      .status(200)
-      .json(
-        new ApiResponse(401, {}, "No token found. \n Redirecting to login...")
-      );
+  if (!access_token) {
+    return ErrorResponse(res, "No Tokens Found", 401);
+  }
+
+  const decoded = TokensService.verifyAccessToken(access_token);
+
+  if (!decoded) {
+    return ErrorResponse(res, "Invalid Access Token", 402);
   }
   // Todo : Verify Token Safely
-  jwt.verify(token as string, "sahil", async (err: any, decoded: any) => {
-    if (err) {
-      console.log(err);
-      return res
-        .status(200)
-        .json(
-          new ApiResponse(
-            401,
-            { ...err },
-            "Error in token. \n Redirecting to login..."
-          )
-        );
-    }
-    // Passing the User to the next middleware
 
-    if (!decoded) {
-      return res
-        .status(401)
-        .json(new ApiResponse(401, {}, "User is not authenticated"));
-    }
+  // const date = new Date();
 
-    const now = new Date();
-    const Expiry_left_in_hours = Math.floor(
-      (decoded.exp * 1000 - now.getTime()) / (60 * 60 * 1000)
-    );
-    // Todo : Check for Expiry Reality
-    console.log(Expiry_left_in_hours);
+  // if (refresh_token) {
+  //   const Expiry_left_in_hours = Math.floor(
+  //     (decoded.exp * 1000 - date.getTime()) / (60 * 60 * 1000)
+  //   );
 
-    // if (Expiry_left_in_hours < 20) {
-    //   const tokenResponse = await generateAccessRefreshToken(decoded.email);
-    //   const isProduction = process.env.NODE_ENV === "production";
+  //   if (Expiry_left_in_hours < 100) {
+  //     // Returning Error Response of 403 code if refresh token is expiring soon (less than 100 hours)
 
-    //   res.cookie("access_token", tokenResponse.accessToken, {
-    //     httpOnly: true,
-    //     secure: isProduction,
-    //     sameSite: isProduction ? "none" : "lax",
-    //     maxAge: 1000 * 60 * 60 * 24 * 2, // 2 days
-    //   });
+  //     return ErrorResponse(res, "Refresh Token is Expiring Soon", 403);
+  //   }
+  // }
 
-    //   if (!tokenResponse) {
-    //     return res
-    //       .status(500)
-    //       .json(
-    //         new ApiResponse(
-    //           500,
-    //           {},
-    //           "User could not be authenticated due to server error"
-    //         )
-    //       );
-    //   }
-    // }
+  req.user = decoded;
 
-    req.user = decoded;
-  });
   next();
 };
 

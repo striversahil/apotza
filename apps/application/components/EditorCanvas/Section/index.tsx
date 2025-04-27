@@ -5,7 +5,7 @@ import Image from "next/image";
 import DeleteSection from "./DeleteSection";
 import AddSection from "./AddSection";
 import DraggableComponent from "../_Component";
-import ProjectAction from "../../../actions/project";
+import GetProject from "../../../actions/project";
 import { TabsTrigger } from "@radix-ui/react-tabs";
 import {
   useComponent,
@@ -16,6 +16,7 @@ import { sectionCommon as Default } from "@repo/common";
 import _ from "lodash";
 import { useContextSave } from "../../../app/editor/_hooks/useContextSave";
 import { useSectionDroppable } from "../hooks/sectionDroppable";
+import { Loader } from "lucide-react";
 
 interface SectionInterface {
   id: string;
@@ -37,7 +38,7 @@ const Section = ({ value }: Props) => {
 
   const { isOver, setNodeRef } = useSectionDroppable(value.id, ref);
 
-  const { data, isLoading } = ProjectAction.getSection(value.id as string);
+  const { data, isLoading } = GetProject.getSection(value.id as string);
 
   const { setState, currentValue, activeComponent } = useContextSave(value);
 
@@ -101,6 +102,11 @@ radial-gradient(at 11% 90%, hsla(265,75%,65%,1) 0px, transparent 50%)
                 }}
               ></div>
             </div>
+          </div>
+        )}
+        {!Components && (
+          <div className="relative h-full w-full flex justify-center items-center">
+            <Loader className="animate-spin" />
           </div>
         )}
         {/* <Label className="absolute top-[50px] left-[70px]">

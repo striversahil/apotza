@@ -13,7 +13,6 @@ type Props = {
   color?: boolean;
   size?: boolean;
   pixel?: boolean;
-  
 };
 
 // I will get Full Config of the Component Here
@@ -31,22 +30,26 @@ export const TextInput: React.FC<Props> = ({
 
   return (
     <div className="float-end flex gap-2">
-      {isEmpty && (
-        <Text_Base value={value} onChange={(val) => setValue(val)} area />
-      )}
-      {!isEmpty && (
+      <Text_Base value={value} onChange={(val) => setValue(val)} area />
+
+      {/* {!isEmpty && value.text && (
         <Text_Base
-          value={value.value}
-          onChange={(val) => setValue((prev: any) => ({ ...prev, value: val }))}
+          value={value.text}
+          onChange={(val) =>
+            setValue((prev: any) => ({
+              ...prev,
+              text: { ...prev.text, config: val },
+            }))
+          }
         />
       )}
-      {addOn.color && (
+      {addOn.color && value.color && (
         <Color_Base
           value={value.color}
           onChange={(val) => setValue((prev: any) => ({ ...prev, color: val }))}
         />
       )}
-      {addOn.pixel && (
+      {addOn.pixel && value.pixChoice && (
         <Select_Base
           list={pixChoice}
           onChange={(val) =>
@@ -54,7 +57,7 @@ export const TextInput: React.FC<Props> = ({
           }
           value={value.pixChoice}
         />
-      )}
+      )} */}
     </div>
   );
 };

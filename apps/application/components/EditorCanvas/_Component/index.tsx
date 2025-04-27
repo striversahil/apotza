@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { useDraggable } from "@dnd-kit/core";
 import { Resizable } from "re-resizable";
@@ -18,13 +18,13 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
     useDraggable({
       id: value.id,
     });
-  const { mutate } = ComponentAction.update(value.section);
 
-  const { currentValue, setState, activeComponent } = useContextSave(value);
+  const { mutate } = ComponentAction.updateWidthHeight(value.section);
+
+  const { ref, focused, currentValue, setState, activeComponent } =
+    useContextSave(value);
 
   const { Layout } = useLayout() || {};
-
-  console.log(Layout);
 
   // Snap to grid
   const snap = Array.from({ length: 100 }).map((_, index) =>
@@ -42,6 +42,7 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
   return (
     <div
       onClick={(e) => setState(e)}
+      ref={ref}
       style={{
         position: "absolute" as const,
         left: Layout ? value.coordinates.x * Layout : 0,

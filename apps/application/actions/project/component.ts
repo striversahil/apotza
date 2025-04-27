@@ -1,22 +1,20 @@
 import { useMutationData } from "@/hooks/useMutation";
 import { useQueryData } from "@/hooks/useQueryData";
-import axios from "axios";
 import { toast } from "sonner";
-
-axios.defaults.withCredentials = true; // Global axios config to enable cookies
-const source = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/component";
+import api from "..";
+const source = "/component";
 
 const ComponentAction = {
   add: (section_id: string) => {
     const { mutate } = useMutationData(
       ["ComponentAction.add"],
       async (payload: any) => {
-        const response = await axios.post(`${source}`, payload);
+        const response = await api.post(`${source}`, payload);
         return response.data;
       },
       [
-        [`ProjectAction.getOneSection-${section_id}`],
-        ["ProjectAction.getComponents"],
+        [`GetProject.getOneSection-${section_id}`],
+        ["GetProject.getComponents"],
       ],
       () => {},
       () => {}
@@ -27,12 +25,12 @@ const ComponentAction = {
     const { mutate } = useMutationData(
       ["ComponentAction.coordinatesUpdate"],
       async (payload: any) => {
-        const response = await axios.post(`${source}/coordinates`, payload);
+        const response = await api.patch(`${source}/coordinates`, payload);
         return response.data;
       },
       [
-        [`ProjectAction.getOneSection-${section_id}`],
-        ["ProjectAction.getComponents"],
+        [`GetProject.getOneSection-${section_id}`],
+        ["GetProject.getComponents"],
       ],
       (previousData: any, variables: any) => {
         return {
@@ -65,10 +63,10 @@ const ComponentAction = {
     const { mutate } = useMutationData(
       ["ComponentAction.delete"],
       async (payload: any) => {
-        const response = await axios.post(`${source}/delete`, payload);
+        const response = await api.delete(`${source}/${payload.id}`);
         return response.data;
       },
-      [[`ProjectAction.getOneSection-${section_id}`]],
+      [[`GetProject.getOneSection-${section_id}`]],
       (previousData: any, variables: any) => {
         return {
           ...previousData,
@@ -89,10 +87,10 @@ const ComponentAction = {
     const { mutate } = useMutationData(
       ["ComponentAction.update"],
       async (payload: any) => {
-        const response = await axios.post(`${source}/update`, payload);
+        const response = await api.patch(`${source}/${payload.id}`, payload);
         return response.data;
       },
-      [[`ProjectAction.getOneSection-${section_id}`]],
+      [[`GetProject.getOneSection-${section_id}`]],
       (previousData: any, variables: any) => {
         return {
           ...previousData,
@@ -107,6 +105,40 @@ const ComponentAction = {
                     appearance: variables.appearance ?? item.appearance,
                     layout: variables.layout ?? item.layout,
                     interaction: variables.interaction ?? item.interaction,
+                  };
+                }
+                return item;
+              }
+            ),
+          },
+        };
+      },
+      () => {}
+    );
+
+    return { mutate };
+  },
+  updateWidthHeight: (section_id: string) => {
+    const { mutate } = useMutationData(
+      ["ComponentAction.updateWidthHeight"],
+      async (payload: any) => {
+        const response = await api.patch(`${source}/${payload.id}`, payload);
+        return response.data;
+      },
+      [[`GetProject.getOneSection-${section_id}`]],
+      (previousData: any, variables: any) => {
+        return {
+          ...previousData,
+          payload: {
+            ...previousData.payload,
+            components: [...previousData.payload.components].map(
+              (item: any) => {
+                if (item.id === variables.id) {
+                  return {
+                    ...item,
+                    layout: {
+                      ...variables.layout,
+                    },
                   };
                 }
                 return item;

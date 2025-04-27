@@ -4,6 +4,9 @@ import { AlignJustify, Copy, PlusCircle, Trash2 } from "lucide-react";
 import React, { useEffect } from "react";
 import { ComboPopAPI } from "../utils/PopOverSelect";
 import StepsBlockAction from "../../../actions/project/stepsBlock";
+import languages from "@/common/Json/languages.json";
+import Image from "next/image";
+import { TabsTrigger } from "@radix-ui/react-tabs";
 import {
   Tooltip,
   TooltipContent,
@@ -12,31 +15,26 @@ import {
 
 type Props = {
   value: any;
-  index: number;
-  id: string;
+  codeBlock_id: string;
 };
-import languages from "@/common/Json/languages.json";
-import Image from "next/image";
-import { TabsTrigger } from "@radix-ui/react-tabs";
 
-const InStepPopOver = (props: Props) => {
+const InStepPopOver = ({ value, codeBlock_id }: Props) => {
   const [open, setOpen] = React.useState(true);
   const [open2, setOpen2] = React.useState(true);
 
-  const { mutate } = StepsBlockAction.useduplicate(props.id);
+  const { mutate } = StepsBlockAction.delete(codeBlock_id);
 
-  const { mutate: mutateDelete } = StepsBlockAction.usedelete(props.id);
+  const { mutate: mutateDuplicate } = StepsBlockAction.duplicate(codeBlock_id);
 
   const languageHref =
-    (props.value.language &&
-      languages.find((item) => item.value === props.value.language)
-        ?.icon_href) ||
+    (value.language &&
+      languages.find((item) => item.value === value.language)?.icon_href) ||
     "/assets/languages/mysql.svg";
 
   return (
     <div>
       <div className="bg-white/20 w-full p-2 rounded-md flex items-center justify-center">
-        <TabsTrigger className="w-full" value={props.value.id}>
+        <TabsTrigger className="w-full" value={value.id}>
           <div className="font-bold flex-1 flex w-full text-center cursor-pointer">
             <Image
               src={languageHref}
@@ -45,9 +43,7 @@ const InStepPopOver = (props: Props) => {
               alt="Image"
               className="p-[1px] shadow-2xl hover:bg-white/50 bg-white/30 rounded-md"
             />
-            <div className="text-sm flex-1 text-center  ">
-              {props.value.name}
-            </div>
+            <div className="text-sm flex-1 text-center  ">{value.name}</div>
           </div>
         </TabsTrigger>
         <Popover open={open2} onOpenChange={setOpen2}>
@@ -60,11 +56,8 @@ const InStepPopOver = (props: Props) => {
                 className="bg-white/40 flex items-center hover:bg-white/20 p-1 rounded-md cursor-pointer"
                 onClick={() => {
                   setOpen2(false);
-                  mutate({
-                    metadata: {
-                      codeBlock_id: props.id,
-                      stepBlock_id: props.value._id,
-                    },
+                  mutateDuplicate({
+                    id: value.id,
                   });
                 }}
               >
@@ -77,11 +70,8 @@ const InStepPopOver = (props: Props) => {
                 className="bg-red-800 text-sm flex items-center hover:bg-red-900 p-1 rounded-md cursor-pointer"
                 onClick={() => {
                   setOpen2(false);
-                  mutateDelete({
-                    metadata: {
-                      codeBlock_id: props.id,
-                      stepBlock_id: props.value._id,
-                    },
+                  mutate({
+                    id: value.id,
                   });
                 }}
               >
@@ -108,8 +98,8 @@ const InStepPopOver = (props: Props) => {
         </PopoverTrigger>
         <ComboPopAPI
           setOpen={setOpen}
-          id={props.id}
-          step_id={props.value._id}
+          codeBlock_id={codeBlock_id}
+          type="step"
         />
       </Popover>
     </div>

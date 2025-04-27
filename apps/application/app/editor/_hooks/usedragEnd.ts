@@ -1,5 +1,5 @@
 "use client";
-import ProjectAction from "../../../actions/project";
+import GetProject from "../../../actions/project";
 import ComponentAction from "../../../actions/project/component";
 import {
   DragEndEvent,
@@ -18,7 +18,7 @@ export const useDragEnd = () => {
   const [isDragging, setIsDragging] = React.useState(false);
   const [Width, setWidth] = React.useState(0);
 
-  const { data } = ProjectAction.getComponents();
+  const { data } = GetProject.getComponents();
   const { mutate: mutateAdd } = ComponentAction.add(activeId);
   const { mutate: mutateUpdate } = ComponentAction.coordinatesUpdate(activeId);
 

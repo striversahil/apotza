@@ -12,20 +12,20 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/popover";
 import Image from "next/image";
 import StepsBlockAction from "../../../actions/project/stepsBlock";
-import TabBlockAction from "../../../actions/project/tabBlock";
+import TabBlockAction from "../../../actions/project/apiBlock";
 import languages from "@/common/Json/languages.json";
 
 type PopOver = {
   setOpen: (open: boolean) => void;
-  id?: string;
-  step_id?: string;
+  codeBlock_id: string;
+  type: "tab" | "step";
 };
 
-export function ComboPopAPI(props: PopOver) {
+export function ComboPopAPI({ setOpen, codeBlock_id, type }: PopOver) {
   const [value, setValue] = React.useState("");
 
-  const { mutate: mutateTabAdd } = TabBlockAction.useAdd();
-  const { mutate: mutateStepAdd } = StepsBlockAction.useadd(props.id || "");
+  const { mutate: mutateTabAdd } = TabBlockAction.add();
+  const { mutate: mutateStepAdd } = StepsBlockAction.add(codeBlock_id);
 
   return (
     <PopoverContent className="w-[200px] p-0 border-[2px] border-black shadow-lg rounded-md">
@@ -41,22 +41,17 @@ export function ComboPopAPI(props: PopOver) {
                   value={language.value}
                   onSelect={(currentValue: any) => {
                     setValue(currentValue === value ? "" : currentValue);
-                    props.setOpen(false);
-                    if (!props.id) {
+                    setOpen(false);
+                    if (type === "tab") {
                       mutateTabAdd({
-                        metadata: {
-                          name: language.label,
-                          language: language.value,
-                        },
+                        name: language.label,
+                        language: language.value,
                       });
                     }
-                    if (props.id) {
+                    if (type === "step") {
                       mutateStepAdd({
-                        metadata: {
-                          id: props.id,
-                          language: language.value,
-                          step_id: props.step_id,
-                        },
+                        id: codeBlock_id,
+                        language: language.value,
                       });
                     }
                   }}

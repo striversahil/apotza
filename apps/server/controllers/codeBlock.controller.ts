@@ -5,47 +5,73 @@ import CodeBlockService from "../service/codeblock.service";
 class CodeBlockController {
   static async create(req: Request, res: Response) {
     try {
-      const { name } = req.body;
+      const { name, language } = req.body;
       const project_id = req.cookies.project_id;
-      if (!project_id) return ErrorResponse(res, "Project does not exist");
-      const codeBlock = await CodeBlockService.create(project_id, name);
+      if (!project_id) return ErrorResponse(res, "Project does not exist", 404);
+      const codeBlock = await CodeBlockService.create(
+        project_id,
+        name,
+        language
+      );
       if (!codeBlock)
-        return ErrorResponse(res, "CodeBlock could not be created");
-      SuccessResponse(res, "CodeBlock created successfully", codeBlock);
+        return ErrorResponse(res, "CodeBlock could not be created", 400);
+      SuccessResponse(res, "CodeBlock created successfully", null, codeBlock);
     } catch (error) {
-      ErrorResponse(res, "", true);
+      ErrorResponse(res, "", null);
     }
   }
 
   static async getCodeBlock(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      if (!id) return ErrorResponse(res, "CodeBlock does not exist");
+      if (!id) return ErrorResponse(res, "CodeBlock does not exist", 404);
       const codeBlock = await CodeBlockService.getById(id);
       if (!codeBlock)
-        return ErrorResponse(res, "CodeBlock could not be fetched");
-      SuccessResponse(res, "CodeBlock fetched successfully", codeBlock);
+        return ErrorResponse(res, "CodeBlock could not be fetched", 404);
+      SuccessResponse(res, "CodeBlock fetched successfully", null, codeBlock);
     } catch (error) {
-      ErrorResponse(res, "", true);
+      ErrorResponse(res, "", null);
+    }
+  }
+
+  static async runAllSteps(req: Request, res: Response) {
+    const { id } = req.body;
+    try {
+    } catch (error) {
+      ErrorResponse(res, "", null);
+    }
+  }
+
+  static async updateCodeBlock(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const { ...data } = req.body;
+      if (!id || !data) return ErrorResponse(res, "Provide all fields", 400);
+      const codeBlock = await CodeBlockService.update(id, data);
+      if (!codeBlock)
+        return ErrorResponse(res, "CodeBlock could not be updated", 400);
+      SuccessResponse(res, "CodeBlock updated successfully", null, codeBlock);
+    } catch (error) {
+      ErrorResponse(res, "", null);
     }
   }
 
   static async deleteCodeblock(req: Request, res: Response) {
     try {
-      const { id } = req.body;
-      if (!id) return ErrorResponse(res, "CodeBlock does not exist");
+      const { id } = req.params;
+      if (!id) return ErrorResponse(res, "CodeBlock does not exist", 404);
       const codeBlock = await CodeBlockService.delete(id);
       if (!codeBlock)
-        return ErrorResponse(res, "CodeBlock could not be deleted");
-      SuccessResponse(res, "CodeBlock deleted successfully", codeBlock);
+        return ErrorResponse(res, "CodeBlock could not be deleted", 404);
+      SuccessResponse(res, "CodeBlock deleted successfully", null, codeBlock);
     } catch (error) {
-      ErrorResponse(res, "", true);
+      ErrorResponse(res, "", null);
     }
   }
   static async temp(req: Request, res: Response) {
     try {
     } catch (error) {
-      ErrorResponse(res, "", true);
+      ErrorResponse(res, "", null);
     }
   }
 }

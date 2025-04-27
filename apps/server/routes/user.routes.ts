@@ -13,7 +13,9 @@ router.route("/signin").post(UserController.login);
 
 router.route("/logout").post(UserController.logout);
 
-router.route("/delete").get(authenticate, UserController.deleteUser);
+router.route("/access_token").post(UserController.updateAccessToken);
+
+router.route("/").delete(authenticate, UserController.deleteUser);
 
 // Middleware Testing
 router.route("/auth").get(authenticate, authController);

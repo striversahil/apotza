@@ -1,0 +1,52 @@
+{
+  "python": {
+    "name": "Python",
+    "config": {
+      "code": "print('Hello World')"
+    },
+    "output": "Hello World",
+    "stdout": "Hello World"
+  },
+  "javascript": {
+    "name": "JavaScript",
+    "config": {
+      "code": "console.log('Hello World')"
+    },
+    "stdout": "Hello World",
+    "output": "Hello World"
+  },
+  "graphql": {
+    "name": "GraphQL",
+    "config": {
+      "code": "query {\n  user(id: \"1\") {\n    id\n    name\n    email\n  }\n}"
+    },
+    "stdout": "Hello World",
+    "output": "Hello World"
+  },
+  "postgres": {
+    "name": "Postgres",
+    "config": {
+      "query": "select * from workspace",
+      "connection": {
+        "user": "postgres.azvzblxmgjzqqpdozwmh",
+        "database": "postgres",
+        "port": "5432",
+        "host": "aws-0-ap-south-1.pooler.supabase.com",
+        "password": "oPbDLgHLZOHrozvk"
+      }
+    },
+    "stdout": "Hello World",
+    "output": "Hello World"
+  },
+  "rest": {
+    "name": "REST API",
+    "config": {
+      "endpoint": "https://jsonplaceholder.typicode.com/posts/",
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    },
+    "stdout": "Hello World",
+    "output": "Hello World"
+  }
+}

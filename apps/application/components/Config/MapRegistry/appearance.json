@@ -1,14 +1,15 @@
 {
-  "lableStyle": "textColorSize",
+  "lableStyle": "text",
   "loadingAnimation": "boolean",
-  "style": "textSize",
+  "style": "text",
   "icon": "icon",
   "backgroundColor": "color",
-  "fontSize": "textSize",
+  "fontSize": "text",
   "verticalAlign": "tabVerticalAlign",
+  "textAlign": "tabHorizontalAlign",
   "horizontalAlign": "tabHorizontalAlign",
   "borderColor": "color",
   "textColor": "color",
-  "borderRadius": "px",
-  "borderWidth": "px"
+  "borderRadius": "text",
+  "borderWidth": "text"
 }

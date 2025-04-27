@@ -1,5 +1,5 @@
 "use client";
-import ProjectAction from "@/actions/project";
+import GetProject from "@/actions/project";
 import { Skeleton } from "@repo/ui/skeleton";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -7,7 +7,7 @@ import React from "react";
 type Props = {};
 
 const page = (props: Props) => {
-  const { isLoading, data } = ProjectAction.getProject();
+  const { isLoading, data } = GetProject.getProject();
 
   if (isLoading) {
     return (

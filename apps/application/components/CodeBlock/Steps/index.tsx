@@ -5,7 +5,7 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 import { Tabs, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import EditorCode from "../Editor";
-import ProjectAction from "../../../actions/project";
+import GetProject from "../../../actions/project";
 import HeaderChange from "../Tab/HeaderChange";
 import InStepPopOver from "./InStepPopOver";
 import { LoaderPinwheel } from "lucide-react";
@@ -17,34 +17,37 @@ type Props = {
 
 const StepEditorRoot = (props: Props) => {
   // const [currentStep, setCurrentStep] = useState("");
-  const [stepBlock, setStepBlock] = useState<any>(null);
+  const [codeBlock, setCodeBlock] = useState<any>(null);
 
-  const { data } = ProjectAction.getCodeBlock(props.value.id);
+  const { data } = GetProject.getCodeBlock(props.value.id);
 
   useEffect(() => {
     if (data) {
-      setStepBlock(data.payload.stepBlocks);
+      setCodeBlock(data.payload);
     }
   }, [data]);
   // const currentStep = codeBlock.steps[0]?._id;
 
   return (
     <div className="w-full h-full">
-      {!stepBlock && <Loader />}
-      {stepBlock && (
-        <TabRoot className="w-full h-full" defaultValue={stepBlock[0].id}>
+      {!codeBlock && <Loader />}
+      {codeBlock && (
+        <TabRoot
+          className="w-full h-full"
+          defaultValue={codeBlock.stepBlocks[0]?.id}
+        >
           <PanelGroup direction="horizontal" className="">
             <Panel defaultSize={20} minSize={20} maxSize={50}>
-              <HeaderChange value={data.payload.name} />
+              <HeaderChange value={codeBlock} />
               <div className=" border-r border-slate-500 w-full h-full">
                 <div className="w-full h-full">
                   <TabsList className="flex flex-col overflow-y-scroll items-center justify-start w-full h-full gap-2 p-2">
-                    {stepBlock.map((item: any, index: number) => (
+                    {codeBlock.stepBlocks.map((item: any, index: number) => (
                       <div key={index} className="w-full">
                         <InStepPopOver
                           value={item}
-                          id={stepBlock.id}
-                          index={index}
+                          key={index}
+                          codeBlock_id={props.value.id}
                         />
                       </div>
                     ))}
@@ -63,7 +66,7 @@ const StepEditorRoot = (props: Props) => {
             </Panel>
             <PanelResizeHandle className="p-[1px] cursor-row-resize hover:bg-blue-500" />
             <Panel defaultSize={80} minSize={20} maxSize={80}>
-              {stepBlock.map((item: any, index: number) => (
+              {codeBlock.stepBlocks.map((item: any, index: number) => (
                 <TabsContent
                   value={item.id}
                   className="w-full h-full"

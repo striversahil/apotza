@@ -10,9 +10,10 @@ import {
   timestamp,
   uuid,
 } from "drizzle-orm/pg-core";
-import { Project } from "./project";
+import { Page } from "./component";
+import { CodeBlock } from "./codeblock";
 
-// +++++++++++++++++++++++++++++++++++++++++++++++++ Tables +++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++ User Identity Table +++++++++++++++++++++++++++++++++++++++++++++++++
 
 export const User = pgTable("user", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -43,6 +44,8 @@ export const Profile = pgTable("user_profile", {
 
 export type ProfileType = InferSelectModel<typeof Profile>;
 
+// +++++++++++++++++++++++++++++++++++++++++++++++++ Workspace and Project Tables +++++++++++++++++++++++++++++++++++++++++++++++++
+
 export const Workspace = pgTable("workspace", {
   id: uuid("id").defaultRandom().primaryKey(),
   user: uuid("user_id").references(() => User.id, {
@@ -56,6 +59,18 @@ export const Workspace = pgTable("workspace", {
 
 export type WorkspaceType = InferSelectModel<typeof Workspace>;
 
+export const Project = pgTable("project", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  workspace: uuid("workspace_id").references(() => Workspace.id, {
+    onDelete: "cascade",
+    onUpdate: "cascade",
+  }),
+  name: text("name").notNull(),
+  details: text("details").notNull().default("Some details about this project"),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+});
+
+export type ProjectInterface = InferSelectModel<typeof Project>;
 // ++++++++++++++++++++++++++++++++++++++++++++++ Relations ++++++++++++++++++++++++++++++++++++++++++++++
 
 export const userProfileRelation = relations(Profile, ({ one }) => ({
@@ -63,6 +78,11 @@ export const userProfileRelation = relations(Profile, ({ one }) => ({
     fields: [Profile.user],
     references: [User.id],
   }),
+}));
+
+export const userRelation = relations(User, ({ many }) => ({
+  workspaces: many(Workspace),
+  profile: many(Profile),
 }));
 
 export const workspaceRelation = relations(Workspace, ({ one, many }) => ({
@@ -73,9 +93,13 @@ export const workspaceRelation = relations(Workspace, ({ one, many }) => ({
   projects: many(Project),
 }));
 
-export const userRelation = relations(User, ({ many }) => ({
-  workspaces: many(Workspace),
-  profile: many(Profile),
+export const projectRelations = relations(Project, ({ one, many }) => ({
+  workspace: one(Workspace, {
+    fields: [Project.workspace],
+    references: [Workspace.id],
+  }),
+  codeblocks: many(CodeBlock),
+  pages: many(Page),
 }));
 
 // const workspaceWithRelations = await db

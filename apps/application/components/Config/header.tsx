@@ -22,10 +22,10 @@ const ConfigHeader = ({ value }: Props) => {
   const { mutate } = ComponentAction.delete(value.section);
 
   return (
-    <CardTitle className="sticky flex top-0 z-50 items-center gap-2">
+    <CardTitle className="sticky h-12 flex top-0 pt-5 z-50 items-center gap-2 bg-slate-900">
       <div
-        className="flex-1 border-[2px] py-1 border-white/50 select-none shadow-md shadow-white/10
-    bg-gradient-to-tr from-slate-900 to-slate-700 text-2xl font-bold capitalize text-center pl-6  rounded-lg"
+        className="flex-1 border-[1px] py-1 border-white/30 select-none
+    bg-gradient-to-tr from-slate-900 to-slate-700 text-2xl font-bold capitalize text-center pl-6  rounded-full"
       >
         {value.name}
       </div>

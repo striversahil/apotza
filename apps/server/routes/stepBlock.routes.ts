@@ -7,11 +7,11 @@ router.route("/:id").get(StepBlockController.getStep);
 
 router.route("/").post(StepBlockController.createStep);
 
-// router.route("/name").post(updateCodeBlockName);
+router.route("/run").post(StepBlockController.runBlock);
 
 // router.route("/duplicate").post(duplicate);
-router.route("/code").post(StepBlockController.codeUpdate);
+router.route("/:id").patch(StepBlockController.Update);
 
-router.route("/delete").post(StepBlockController.deleteStep);
+router.route("/:id").delete(StepBlockController.deleteStep);
 
 export default router;

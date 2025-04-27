@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { ComboPopAPI } from "../utils/PopOverSelect";
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/popover";
-import ProjectAction from "../../../actions/project";
+import GetProject from "../../../actions/project";
 import DeleteTab from "./DeleteTab";
 
 type Props = {
@@ -25,7 +25,7 @@ const Tabs = (props: Props) => {
   const [currentTab, setCurrentTab] = useState("0");
   const [CodeBlockData, setCodeBlockData] = useState<any>(null);
 
-  const { isLoading, data } = ProjectAction.getProject();
+  const { isLoading, data } = GetProject.getProject();
 
   useEffect(() => {
     if (data) {
@@ -51,7 +51,7 @@ const Tabs = (props: Props) => {
                     </span>
                   </div>
                 </PopoverTrigger>
-                <ComboPopAPI setOpen={setOpen} />
+                <ComboPopAPI setOpen={setOpen} type="tab" codeBlock_id="" />
               </Popover>
             </div>
             {CodeBlockData.map((item: any, index: number) => (

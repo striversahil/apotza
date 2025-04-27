@@ -21,20 +21,20 @@ export const Component = ({
       style={{
         padding: `${layout.padding}px`,
         overflow: `${layout.scrollOverflow}`,
-        visibility: layout.visible ? "visible" : "hidden",
+        visibility: layout.visible.value ? "visible" : "hidden",
         alignItems: `${appearance.verticalAlign}`,
         justifyContent: `${appearance.horizontalAlign}`,
         backgroundColor: `${appearance.backgroundColor}`,
         borderColor: `${appearance.borderColor}`,
-        borderWidth: `${appearance.borderWidth}px`,
-        borderRadius: `${appearance.borderRadius}px`,
+        borderWidth: `${appearance.borderWidth.value}px`,
+        borderRadius: `${appearance.borderRadius.value}px`,
       }}
     >
       {appearance.icon && (
         <div
           className="mr-2"
           style={{
-            fontSize: `${appearance.fontSize}px`,
+            fontSize: `${appearance.fontSize.value}px`,
           }}
         >
           {appearance.icon}
@@ -47,7 +47,7 @@ export const Component = ({
           color: `${appearance.textColor}`,
         }}
       >
-        {content.text}
+        {content.text.value}
       </Label>
     </div>
   );

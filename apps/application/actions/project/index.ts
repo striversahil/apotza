@@ -1,75 +1,71 @@
 import { useMutationData } from "@/hooks/useMutation";
 import { useQueryData } from "@/hooks/useQueryData";
-import axios from "axios";
+import api from "..";
 
-axios.defaults.withCredentials = true; // Global axios config to enable cookies
-const codeBlock = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/codeblock";
-const stepsBlock = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/stepblock";
-const project = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/project";
-const page = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/page";
-const section = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/section";
-const component = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/component";
+const codeBlock = "/codeblock";
+const stepsBlock = "/stepblock";
+const project = "/project";
+const page = "/page";
+const section = "/section";
+const component = "/component";
 
 // Here the Index i.e. Most Used Common Get Actions will be Handled for Project
 
-const ProjectAction = {
+const GetProject = {
   getProject: () => {
-    return useQueryData(["ProjectAction.getProject"], async () => {
-      const response = await axios.get(`${project}`);
+    return useQueryData(["GetProject.getProject"], async () => {
+      const response = await api.get(`${project}`);
       return response.data;
     });
   },
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++ CodeBlock Actions ++++++++++++++++++++++++++++++++++++++++++++++++++++++
   getCodeBlock: (id: string) => {
     return useQueryData(
-      [`ProjectAction.getOneCodeBlock-${id}` as string],
+      [`GetProject.getOneCodeBlock-${id}` as string],
       async () => {
-        const response = await axios.get(`${codeBlock}/${id}`);
+        const response = await api.get(`${codeBlock}/${id}`);
         return response.data;
       }
     );
   },
 
   getStep: (id: string) => {
-    return useQueryData(
-      [`ProjectAction.getOneStep-${id}` as string],
-      async () => {
-        const response = await axios.get(`${stepsBlock}/${id}`);
-        return response.data;
-      }
-    );
+    return useQueryData([`GetProject.getOneStep-${id}` as string], async () => {
+      const response = await api.get(`${stepsBlock}/${id}`);
+      return response.data;
+    });
   },
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++ Component Actions +++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   getPage: (route: string) => {
     const page_id = route.split("/").pop();
-    return useQueryData(["ProjectAction.getPage"], async () => {
-      const response = await axios.get(`${page}/${page_id}`);
+    return useQueryData(["GetProject.getPage"], async () => {
+      const response = await api.get(`${page}/${page_id}`);
       return response.data;
     });
   },
 
   getSection: (id: string) => {
     return useQueryData(
-      [`ProjectAction.getOneSection-${id}` as string],
+      [`GetProject.getOneSection-${id}` as string],
       async () => {
-        const response = await axios.get(`${section}/${id}`);
+        const response = await api.get(`${section}/${id}`);
         return response.data;
       }
     );
   },
 
   getComponent: (id: string) => {
-    return useQueryData([`ProjectAction.getComponent-${id}`], async () => {
-      const response = await axios.get(`${component}/${id}`);
+    return useQueryData([`GetProject.getComponent-${id}`], async () => {
+      const response = await api.get(`${component}/${id}`);
       return response.data;
     });
   },
 
   getComponents: () => {
-    return useQueryData(["ProjectAction.getComponents"], async () => {
-      const response = await axios.get(`${component}`);
+    return useQueryData(["GetProject.getComponents"], async () => {
+      const response = await api.get(`${component}`);
       return response.data;
     });
   },
@@ -77,16 +73,16 @@ const ProjectAction = {
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++ Project Specific Actions +++++++++++++++++++++++++++++++++++++++++++++++++++++++
   useNameChange: () => {
     return useMutationData(
-      ["ProjectAction.nameChange"],
+      ["GetProject.nameChange"],
       async (payload: any) => {
-        const response = await axios.post(`${project}/name`, payload);
+        const response = await api.post(`${project}/name`, payload);
         return response;
       },
-      [["ProjectAction.getProject"]],
+      [["GetProject.getProject"]],
       (previousData: any, variables: any) => {
         return { ...previousData, variables };
       }
     );
   },
 };
-export default ProjectAction;
+export default GetProject;

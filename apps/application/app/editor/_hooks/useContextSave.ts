@@ -7,6 +7,7 @@ import {
 } from "../../../contexts/component";
 import _ from "lodash";
 import ComponentAction from "@/actions/project/component";
+import { useFocusWithin } from "@mantine/hooks";
 
 /**
  * A custom hook that manages the state of a component in a context-aware manner.
@@ -38,6 +39,8 @@ export const useContextSave = (initialValue: ComponentInterface) => {
   const { setComponent = () => {}, Component: realComponent } =
     useComponent() || {};
 
+  const { ref, focused } = useFocusWithin();
+
   const { UpdatedComponent: activeComponent, setUpdatedComponent = () => {} } =
     useUpdatedComponent() || {};
   // Setting the Component State from the Context
@@ -57,6 +60,8 @@ export const useContextSave = (initialValue: ComponentInterface) => {
 
   // Adding Delete Functionality for the Active Component
   useEffect(() => {
+    // console.log("focus", focused);
+    // if (!focused) return;
     const _delete = (e: KeyboardEvent) => {
       if (e.key !== "Delete") return;
       if (
@@ -92,5 +97,7 @@ export const useContextSave = (initialValue: ComponentInterface) => {
     currentValue,
     activeComponent,
     setState,
+    ref,
+    focused,
   };
 };

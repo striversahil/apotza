@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "./index.js",
   "scripts": {
-    "dev": "nodemon -r dotenv/config ./index.ts",
+    "dev": "tsx watch ./index.ts",
     "generate-migrations": "npx drizzle-kit generate",
     "migrate": "npx drizzle-kit migrate"
   },
@@ -36,6 +36,7 @@
     "@types/jsonwebtoken": "^9.0.7",
     "@types/pg": "^8.11.11",
     "drizzle-kit": "^0.30.5",
+    "tsx": "^4.7.1",
     "nodemon": "^3.1.9"
   }
 }

@@ -34,7 +34,8 @@ export const useSaveConfig = () => {
   // Used Callback to have Control over function execution
   const savePrevConfig = useCallback(() => {
     if (prevComponent) {
-      prevMutate(_.pick(prevComponent, configTypes));
+      // Todo : Send Updated Config on Component Change
+      // prevMutate(_.pick(prevComponent, configTypes));
     }
   }, [prevComponent]);
 
@@ -52,7 +53,7 @@ export const useSaveConfig = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       saveConfig();
-    }, 3000); // 5 seconds debounce in saving config by the user Updating Config
+    }, 2000); // 2 seconds debounce in saving config by the user Updating Config
     return () => clearTimeout(timer);
   }, [UpdatedComponent]);
 

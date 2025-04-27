@@ -5,7 +5,7 @@ export const Usercookie: object = {
   httpOnly: true,
   secure: isProduction,
   sameSite: isProduction ? "none" : "lax",
-  maxAge: 1000 * 60 * 60 * 24 * 5, // 5 days of cookie
+  maxAge: 1000 * 60 * 60 * 24 * 100, // 5 days of cookie
 };
 
 export const workspaceCookie: object = {
@@ -13,7 +13,7 @@ export const workspaceCookie: object = {
   httpOnly: true,
   secure: isProduction,
   sameSite: isProduction ? "none" : "lax",
-  maxAge: 1000 * 60 * 60 * 24 * 15, // 15 days of cookie
+  maxAge: 1000 * 60 * 60 * 24 * 100, // 15 days of cookie
 };
 
 export const projectCookie: object = {
@@ -21,5 +21,5 @@ export const projectCookie: object = {
   httpOnly: true,
   secure: isProduction,
   sameSite: isProduction ? "none" : "lax",
-  maxAge: 1000 * 60 * 60 * 24 * 15,
+  maxAge: 1000 * 60 * 60 * 24 * 100,
 };

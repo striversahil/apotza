@@ -8,6 +8,6 @@ router.route("/").get(workspaceController.getWorkspace);
 
 router.route("/new").get(workspaceController.createWorkspace);
 
-router.route("/delete").get(workspaceController.deleteWorkspace);
+router.route("/").delete(workspaceController.deleteWorkspace);
 
 export default router;

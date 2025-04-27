@@ -1,5 +1,5 @@
 "use client";
-import ProjectAction from "@/actions/project";
+import GetProject from "@/actions/project";
 import { Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -7,7 +7,7 @@ import React from "react";
 type Props = {};
 
 const page = (props: Props) => {
-  const { isLoading, data, isError } = ProjectAction.getProject();
+  const { isLoading, data, isError } = GetProject.getProject();
 
   const navigate = useRouter();
 

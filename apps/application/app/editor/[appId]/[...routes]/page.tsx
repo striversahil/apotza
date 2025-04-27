@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef } from "react";
 
-import ProjectAction from "@/actions/project";
+import GetProject from "@/actions/project";
 import { usePathname, useRouter } from "next/navigation";
 import { Loader } from "lucide-react";
 import Section from "../../../../components/EditorCanvas/Section";
@@ -17,7 +17,7 @@ const page = (props: Props) => {
   const [Page, setPage] = React.useState<any | null>(null);
   const navigate = useRouter();
   const path = usePathname();
-  const { isLoading, data, isError } = ProjectAction.getPage(
+  const { isLoading, data, isError } = GetProject.getPage(
     path.split("/")[3] || ""
   );
   const ref = useRef(null);
@@ -50,7 +50,7 @@ const page = (props: Props) => {
       ref={ref}
       onClick={(e) => setState(e)}
     >
-      {Page?.sections.map((item: any) => (
+      {Page?.sections?.map((item: any) => (
         <div key={item.id} className="relative">
           <Section value={item} />
           <DeleteSection id={item.id} />

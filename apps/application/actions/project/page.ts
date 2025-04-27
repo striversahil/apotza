@@ -1,7 +1,6 @@
 import { useMutationData } from "@/hooks/useMutation";
-import axios from "axios";
+import api from "..";
 
-axios.defaults.withCredentials = true; // Global axios config to enable cookies
 const source = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/page";
 
 const PageAction = {
@@ -9,30 +8,30 @@ const PageAction = {
     const { mutate } = useMutationData(
       ["PageAction.add"],
       async (payload: any) => {
-        const response = await axios.post(`${source}`, payload);
+        const response = await api.post(`${source}`, payload);
         return response.data;
       },
-      [["ProjectAction.getProject"]]
+      [["GetProject.getProject"]]
     );
   },
   delete: () => {
     const { mutate } = useMutationData(
       ["PageAction.delete"],
       async (payload: any) => {
-        const response = await axios.post(`${source}/delete`, payload);
+        const response = await api.delete(`${source}/${payload.id}`);
         return response.data;
       },
-      [["ProjectAction.getProject"]]
+      [["GetProject.getProject"]]
     );
   },
   update: () => {
     const { mutate } = useMutationData(
       ["PageAction.update"],
       async (payload: any) => {
-        const response = await axios.post(`${source}/update`, payload);
+        const response = await api.patch(`${source}/${payload.id}`, payload);
         return response.data;
       },
-      [["ProjectAction.getProject"]]
+      [["GetProject.getProject"]]
     );
   },
 };

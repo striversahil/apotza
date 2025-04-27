@@ -7,7 +7,7 @@ router.route("/").get(ProjectController.getProject);
 
 router.route("/new").get(ProjectController.createProject);
 
-router.route("/delete").get(ProjectController.deleteProject);
+router.route("/").delete(ProjectController.deleteProject);
 
 router.route("/name").post(ProjectController.updateName);
 
