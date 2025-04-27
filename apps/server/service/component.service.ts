@@ -44,7 +44,6 @@ class ComponentService {
         .set(clause)
         .where(eq(Component.id, id))
         .returning();
-
       return component ? component : null;
     } catch (error) {
       throw new Error(error as string);

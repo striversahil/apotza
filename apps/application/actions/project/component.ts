@@ -122,7 +122,7 @@ const ComponentAction = {
     const { mutate } = useMutationData(
       ["ComponentAction.updateWidthHeight"],
       async (payload: any) => {
-        const response = await api.patch(`${source}/update`, payload);
+        const response = await api.patch(`${source}/${payload.id}`, payload);
         return response.data;
       },
       [[`GetProject.getOneSection-${section_id}`]],
@@ -134,7 +134,6 @@ const ComponentAction = {
             components: [...previousData.payload.components].map(
               (item: any) => {
                 if (item.id === variables.id) {
-                  console.log(variables);
                   return {
                     ...item,
                     layout: {

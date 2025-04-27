@@ -52,7 +52,7 @@ api.interceptors.response.use(
       originalRequest._retry = true;
       const res = await api.post("/user/access_token");
 
-      if (res.status === 200) {
+      if (res.status === 201) {
         return api(originalRequest);
       }
     }
