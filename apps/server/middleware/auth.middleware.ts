@@ -21,7 +21,7 @@ export const authenticate = (
   res: Response,
   next: NextFunction
 ): any => {
-  const access_token = req.headers.authorization?.split(" ")[1];
+  const access_token = req.cookies.access_token;
 
   if (!access_token) {
     return ErrorResponse(res, "No Tokens Found", 401);

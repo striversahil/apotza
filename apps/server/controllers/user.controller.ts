@@ -23,6 +23,8 @@ class UserController {
       await UserService.updateUser(user.id, {
         refreshToken: refreshToken,
       });
+      res.cookie("access_token", accessToken, Usercookie);
+      res.cookie("refresh_token", refreshToken, Usercookie);
       SuccessResponse(res, "User Signed In Successfully", 201, {
         accessToken: accessToken,
         refreshToken: refreshToken,
@@ -51,6 +53,8 @@ class UserController {
         refreshToken: refreshToken,
       });
       const accessToken = TokensService.generateAccessToken(userCreated.id);
+      res.cookie("access_token", accessToken, Usercookie);
+      res.cookie("refresh_token", refreshToken, Usercookie);
       SuccessResponse(res, "User Signed Up Successfully", 201, {
         accessToken: accessToken,
         refreshToken: refreshToken,
@@ -62,6 +66,8 @@ class UserController {
 
   static async logout(req: Request, res: Response) {
     try {
+      res.clearCookie("access_token", Usercookie);
+      res.clearCookie("refresh_token", Usercookie);
       SuccessResponse(res, "User Signed Out Successfully", 210);
     } catch (error) {
       ErrorResponse(res, "", null);
@@ -72,6 +78,9 @@ class UserController {
     try {
       const userId = req.user.id;
       const deleted_user = await UserService.deleteUser(userId);
+      if (!deleted_user) return ErrorResponse(res, "User not found", 404);
+      res.clearCookie("access_token", Usercookie);
+      res.clearCookie("refresh_token", Usercookie);
       SuccessResponse(res, "User Deleted Successfully", 210);
     } catch (error) {
       ErrorResponse(res, "", null);
@@ -81,7 +90,7 @@ class UserController {
   static async updateAccessToken(req: Request, res: Response) {
     // If the refresh token is valid or the refresh token expiry time is near to expiry, create a new access token
     try {
-      const { refreshToken } = req.body;
+      const refreshToken = req.cookies.refresh_token;
 
       let newRefreshToken;
       let newAccessToken;
@@ -112,6 +121,8 @@ class UserController {
 
         newRefreshToken = newRefreshToken_token;
       }
+      res.cookie("access_token", newAccessToken, Usercookie);
+      res.cookie("refresh_token", newRefreshToken, Usercookie);
 
       SuccessResponse(res, "Access Token Updated Successfully", 201, {
         accessToken: newAccessToken,

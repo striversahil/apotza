@@ -32,7 +32,6 @@ class TokensService {
       );
       return decodedToken;
     } catch (error) {
-      console.error(error);
       return null;
     }
   }

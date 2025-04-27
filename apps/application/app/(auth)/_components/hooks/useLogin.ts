@@ -1,8 +1,7 @@
 import useZodForm from "@/hooks/useZodForm";
 import { formSchema } from "../Logins/schema";
 import { useMutationData } from "@/hooks/useMutation";
-import { useQuery } from "@/tanstack/react-query";
-import { userLogin, userSignup } from "../../../../api/user";
+import { UserAction } from "@/actions/user/user";
 
 interface formData {
   name: string;
@@ -12,14 +11,7 @@ interface formData {
 
 // Get User Sign-ed Up
 export const useLogin = () => {
-  const { mutate, isPending } = useMutationData(
-    ["user-login"],
-    (FormData: formData) => userLogin(FormData),
-    "userinfo"
-    // () => {
-    //   console.log("User updated successfully!");
-    // }
-  );
+  const { mutate } = UserAction.login();
 
   const { register, watch, reset, onFormSubmit, errors } = useZodForm(
     formSchema,
@@ -30,6 +22,6 @@ export const useLogin = () => {
   console.log(errors);
   console.log(register);
 
-  return { register, watch, reset, onFormSubmit, errors, isPending };
+  return { register, watch, reset, onFormSubmit, errors };
   // Return says You handle onFormSubmit and Register and I will handle the mutate and i only do after schema validation
 };
