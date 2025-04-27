@@ -1,21 +1,20 @@
 import { useMutationData } from "@/hooks/useMutation";
 import { useQueryData } from "@/hooks/useQueryData";
-import axios from "axios";
+import api from "..";
 
-axios.defaults.withCredentials = true; // Global axios config to enable cookies
-const codeBlock = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/codeblock";
-const stepsBlock = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/stepblock";
-const project = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/project";
-const page = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/page";
-const section = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/section";
-const component = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/component";
+const codeBlock = "/codeblock";
+const stepsBlock = "/stepblock";
+const project = "/project";
+const page = "/page";
+const section = "/section";
+const component = "/component";
 
 // Here the Index i.e. Most Used Common Get Actions will be Handled for Project
 
 const ProjectAction = {
   getProject: () => {
     return useQueryData(["ProjectAction.getProject"], async () => {
-      const response = await axios.get(`${project}`);
+      const response = await api.get(`${project}`);
       return response.data;
     });
   },
@@ -24,7 +23,7 @@ const ProjectAction = {
     return useQueryData(
       [`ProjectAction.getOneCodeBlock-${id}` as string],
       async () => {
-        const response = await axios.get(`${codeBlock}/${id}`);
+        const response = await api.get(`${codeBlock}/${id}`);
         return response.data;
       }
     );
@@ -34,7 +33,7 @@ const ProjectAction = {
     return useQueryData(
       [`ProjectAction.getOneStep-${id}` as string],
       async () => {
-        const response = await axios.get(`${stepsBlock}/${id}`);
+        const response = await api.get(`${stepsBlock}/${id}`);
         return response.data;
       }
     );
@@ -45,7 +44,7 @@ const ProjectAction = {
   getPage: (route: string) => {
     const page_id = route.split("/").pop();
     return useQueryData(["ProjectAction.getPage"], async () => {
-      const response = await axios.get(`${page}/${page_id}`);
+      const response = await api.get(`${page}/${page_id}`);
       return response.data;
     });
   },
@@ -54,7 +53,7 @@ const ProjectAction = {
     return useQueryData(
       [`ProjectAction.getOneSection-${id}` as string],
       async () => {
-        const response = await axios.get(`${section}/${id}`);
+        const response = await api.get(`${section}/${id}`);
         return response.data;
       }
     );
@@ -62,14 +61,14 @@ const ProjectAction = {
 
   getComponent: (id: string) => {
     return useQueryData([`ProjectAction.getComponent-${id}`], async () => {
-      const response = await axios.get(`${component}/${id}`);
+      const response = await api.get(`${component}/${id}`);
       return response.data;
     });
   },
 
   getComponents: () => {
     return useQueryData(["ProjectAction.getComponents"], async () => {
-      const response = await axios.get(`${component}`);
+      const response = await api.get(`${component}`);
       return response.data;
     });
   },
@@ -79,7 +78,7 @@ const ProjectAction = {
     return useMutationData(
       ["ProjectAction.nameChange"],
       async (payload: any) => {
-        const response = await axios.post(`${project}/name`, payload);
+        const response = await api.post(`${project}/name`, payload);
         return response;
       },
       [["ProjectAction.getProject"]],

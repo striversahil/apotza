@@ -1,10 +1,9 @@
 import { useCurrentTab } from "../../app/editor/_hooks/useCurrentTab";
 import { useMutationData } from "@/hooks/useMutation";
-import axios from "axios";
 import { toast } from "sonner";
+import api from "..";
 
-axios.defaults.withCredentials = true; // Global axios config to enable cookies
-const source = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/stepblock";
+const source = "/stepblock";
 
 // const currentTab = localStorage.getItem("currentTab") as string;
 
@@ -13,7 +12,7 @@ const StepsBlockAction = {
     const { mutate } = useMutationData(
       ["CodeBlockAction.addstep"],
       async (payload: any) => {
-        const response = await axios.post(`${source}/`, payload);
+        const response = await api.post(`${source}/`, payload);
         return response.data;
       },
       [
@@ -47,7 +46,7 @@ const StepsBlockAction = {
     const { mutate } = useMutationData(
       ["CodeBlockAction.codeRunner"],
       async (payload: any) => {
-        const response = await axios.post(`${source}/run`, payload);
+        const response = await api.post(`${source}/run`, payload);
         return response.data;
       },
       [[`ProjectAction.getOneStep-${step_id}` as string]],
@@ -60,7 +59,7 @@ const StepsBlockAction = {
     const { mutate } = useMutationData(
       ["CodeBlockAction.updateStep"],
       async (payload: any) => {
-        const response = await axios.patch(`${source}/${payload.id}`, payload);
+        const response = await api.patch(`${source}/${payload.id}`, payload);
         return response.data;
       },
       [[`ProjectAction.getOneCodeBlock-${codeBlock_id}` as string]],
@@ -90,7 +89,7 @@ const StepsBlockAction = {
     const { mutate } = useMutationData(
       ["CodeBlockAction.duplicateStep"],
       async (payload: any) => {
-        const response = await axios.post(`${source}/duplicate`, payload);
+        const response = await api.post(`${source}/duplicate`, payload);
         return response.data;
       },
       [[`ProjectAction.getAllSteps-${currentTab}` as string]],
@@ -117,7 +116,7 @@ const StepsBlockAction = {
     const { mutate } = useMutationData(
       ["StepsBlockAction.deleStep"],
       async (payload: any) => {
-        const response = await axios.delete(`${source}/${payload.id}`);
+        const response = await api.delete(`${source}/${payload.id}`);
         return response.data;
       },
       [[`ProjectAction.getOneCodeBlock-${currentTab}` as string]],

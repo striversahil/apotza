@@ -1,16 +1,15 @@
 import { useCurrentTab } from "../../app/editor/_hooks/useCurrentTab";
 import { useMutationData } from "@/hooks/useMutation";
-import axios from "axios";
 
-axios.defaults.withCredentials = true; // Global axios config to enable cookies
-const source = (process.env.NEXT_PUBLIC_BASE_URL as string) + "/codeblock";
+import api from "..";
+const source = "/codeblock";
 
 const TabBlockAction = {
   add: () => {
     const { mutate, data, isPending } = useMutationData(
       ["CodeBlockAction.add"],
       async (payload: any) => {
-        const response = await axios.post(`${source}/`, payload);
+        const response = await api.post(`${source}/`, payload);
         return response;
       },
       [["ProjectAction.getProject"]],
@@ -31,7 +30,7 @@ const TabBlockAction = {
     const { mutate, isPending } = useMutationData(
       ["CodeBlockAction.delete"],
       async (payload: any) => {
-        const response = await axios.delete(`${source}/${payload.metadata.id}`);
+        const response = await api.delete(`${source}/${payload.metadata.id}`);
         return response.data;
       },
       [["ProjectAction.getProject"]],
@@ -55,7 +54,7 @@ const TabBlockAction = {
     const { mutate } = useMutationData(
       ["CodeBlockAction.nameChange"],
       async (payload: any) => {
-        const response = await axios.patch(`${source}/${payload.id}`, payload);
+        const response = await api.patch(`${source}/${payload.id}`, payload);
         return response;
       },
       [
