@@ -77,6 +77,8 @@ const Output = (props: Props) => {
                   indentWidth={5}
                   displayObjectSize={true}
                   enableClipboard={false}
+                  sortKeys={false}
+                  iconStyle="square"
                   style={{
                     fontSize: "12px",
                     fontFamily: "monospace",
@@ -85,7 +87,11 @@ const Output = (props: Props) => {
                   }}
                 />
               </TabsContent>
-              <TabsContent value="code">{props.value.output}</TabsContent>
+              <TabsContent value="code">
+                <div className="h-full text-base font-mono text-white/80 hover:text-white">
+                  {props.value.output}
+                </div>
+              </TabsContent>
               <TabsContent value="stdout">{props.value.stdout}</TabsContent>
             </div>
           </div>

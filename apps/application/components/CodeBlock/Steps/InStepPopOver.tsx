@@ -41,7 +41,7 @@ const InStepPopOver = ({ value, codeBlock_id }: Props) => {
         className={cn(
           "bg-white/15 w-full p-2 rounded-md flex items-center justify-center hover:bg-white/20 cursor-pointer",
           currentStep === value.id &&
-            "outline outline-2 outline-blue-500 bg-white/25"
+            "border-b-[3px] border-l-[3px] border-blue-600 bg-white/25"
         )}
       >
         <TabsTrigger
@@ -55,7 +55,7 @@ const InStepPopOver = ({ value, codeBlock_id }: Props) => {
               width={25}
               height={25}
               alt="Image"
-              className="  rounded-md"
+              className=""
             />
             <div className="text-sm flex-1 text-center  ">{value.name}</div>
           </div>

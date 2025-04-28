@@ -6,7 +6,7 @@ import PanelResizeHandleComp from "../../utils/PanelResizeHandle";
 import { EditorHeader } from "./EditorHeader";
 import { TabsContent } from "@radix-ui/react-tabs";
 import GetProject from "../../../actions/project";
-import IDEeditor from "./IDEeditor";
+import IDEeditor from "./IDEditor";
 
 type Props = {
   value?: any;

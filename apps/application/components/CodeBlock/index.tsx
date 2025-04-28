@@ -37,7 +37,7 @@ const CodeBlock = () => {
       {openCode && <PanelResizeHandleComp />}
       {openCode && (
         <Panel
-          defaultSize={40}
+          defaultSize={43}
           minSize={20}
           maxSize={100}
           collapsible

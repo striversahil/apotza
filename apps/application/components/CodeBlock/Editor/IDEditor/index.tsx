@@ -1,7 +1,7 @@
 import React from "react";
 import { CodeiumEditor as IDE } from "@codeium/react-code-editor";
 import { useClickOutside } from "@mantine/hooks";
-import StepsBlockAction from "../../../actions/project/stepsBlock";
+import StepsBlockAction from "../../../../actions/project/stepsBlock";
 
 type Props = {
   value: any;

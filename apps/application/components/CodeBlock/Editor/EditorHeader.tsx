@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
-import IDEeditor from "./IDEeditor";
+import IDEeditor from "./IDEditor";
 import languages from "@/common/Json/languages.json";
 import Image from "next/image";
 

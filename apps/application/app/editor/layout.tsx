@@ -71,7 +71,7 @@ const layout = (props: Props) => {
               <Panel defaultSize={80}>
                 <CurrentTabProvider>
                   <PanelGroup direction="vertical" className="">
-                    <Panel defaultSize={60} className="relative">
+                    <Panel defaultSize={57} className="relative">
                       <div className="absolute inset-0  overflow-y-scroll">
                         {props.children}
                       </div>
