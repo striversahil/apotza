@@ -45,7 +45,7 @@ const Tabs = (props: Props) => {
             <div className="sticky left-0">
               <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
-                  <div className="bg-white/10 p-1  rounded-md border border-white/20 cursor-pointer inline-flex items-center gap-2">
+                  <div className="bg-white/10 p-1 py-[5px]  rounded-md border border-white/20 cursor-pointer inline-flex items-center gap-2">
                     <CirclePlus size={20} />
                     <span className="font-bold text-sm whitespace-nowrap text-ellipsis">
                       Add New API

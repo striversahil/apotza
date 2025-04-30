@@ -27,7 +27,7 @@ const HeaderChange = (props: Props) => {
     <div>
       {!mount && (
         <div
-          className="flex cursor-pointer w-full p-2 text-md text-center bg-blue-400 rounded-md shadow-lg"
+          className="flex cursor-pointer w-full p-2 bg-blue-600/50 text-md text-center rounded-md shadow-lg"
           onClick={() => setMount(true)}
         >
           <span className="flex-1">

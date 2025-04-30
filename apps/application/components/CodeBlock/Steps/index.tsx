@@ -42,9 +42,9 @@ const StepEditorRoot = (props: Props) => {
           <PanelGroup direction="horizontal" className="">
             <Panel defaultSize={20} minSize={20} maxSize={50}>
               <HeaderChange value={codeBlock} />
-              <div className=" border-r border-slate-500 w-full h-full">
-                <div className="w-full h-full">
-                  <TabsList className="flex flex-col overflow-y-scroll items-center justify-start w-full h-full gap-2 p-2">
+              <div className=" border-r border-slate-500 bg-white/5 w-full h-full">
+                <div className="relative w-full h-full">
+                  <TabsList className="flex flex-col overflow-y-scroll items-center justify-start w-full h-full gap-2 p-2 pb-[100px]">
                     {codeBlock.stepBlocks.map((item: any, index: number) => (
                       <div key={index} className="w-full">
                         <InStepPopOver

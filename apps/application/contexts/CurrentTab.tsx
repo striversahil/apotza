@@ -54,7 +54,7 @@ export const CurrentStepProvider = ({
     if (stepBlocks && !currentStep) {
       setCurrentStep(stepBlocks.payload.stepBlocks[0].id);
     }
-  }, [stepBlocks]);
+  }, [stepBlocks, currentTab]);
 
   return (
     <CurrentStepContext.Provider value={{ currentStep, setCurrentStep }}>
