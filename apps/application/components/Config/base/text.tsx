@@ -56,7 +56,7 @@ const Text_Base = ({ value, onChange, area }: Props) => {
         contentEditable
         suppressContentEditableWarning
         spellCheck={false}
-        className="flex h-10 w-full rounded-lg overflow-hidden border border-input bg-background px-5 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2  outline-none text-sm "
+        className="flex h-10 w-full rounded-lg overflow-hidden border border-input bg-inherit px-5 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none  focus-visible:ring-ring   outline-none text-sm "
       ></div>
     </div>
   );

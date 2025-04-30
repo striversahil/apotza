@@ -39,9 +39,9 @@ const InStepPopOver = ({ value, codeBlock_id }: Props) => {
     <div>
       <div
         className={cn(
-          "bg-slate-900 shadow-lg shadow-black/30 w-full rounded-lg flex items-center justify-center  duration-100  cursor-pointer",
+          "bg-slate-900 shadow-lg shadow-black/30 w-full rounded-lg flex items-center justify-center hover:translate-y-[-2px] transition-all duration-100  cursor-pointer",
           currentStep === value.id &&
-            "border-b-[3px] bg-slate-950 border-l-[3px] border-blue-600 scale-[1.01]"
+            "border-b-[3px] bg-[#141e36] border-l-[3px] border-blue-600 scale-[1.01] hover:translate-y-0"
         )}
       >
         <TabsTrigger

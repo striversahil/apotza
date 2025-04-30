@@ -21,8 +21,8 @@ export const ErrorResponse = (
   res.status(statusCode ?? 500).json({
     success: false,
     message: statusCode
-      ? "Something went wrong on our end 😓"
-      : message + ". ⚠️",
+      ? message + ". ⚠️"
+      : "Something went wrong on our end 😓",
     payload: null,
   });
 };

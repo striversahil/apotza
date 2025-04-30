@@ -9,6 +9,7 @@ import {
 import { useMutationData } from "@/hooks/useMutation";
 import { Pencil } from "lucide-react";
 import React from "react";
+import { Button } from "@repo/ui/button";
 
 type Props = {
   value: any;
@@ -24,36 +25,38 @@ const HeaderChange = (props: Props) => {
     useClickOutsideEnter(Mutation, props.value.name);
 
   return (
-    <div>
-      {!mount && (
+    <div className="flex p-2 gap-2 items-center ">
+      <div className="flex bg-[#344a5e] shadow-sm shadow-white/50 cursor-text w-full  rounded-3xl ">
         <div
-          className="flex cursor-pointer w-full p-2 bg-blue-600/50 text-md text-center rounded-md shadow-lg"
           onClick={() => setMount(true)}
+          className="flex flex-1 text-md  text-xl text-center font-bold"
         >
-          <span className="flex-1">
-            <span className=" font-bold">{value}</span>
-          </span>
-          <div className="">
-            <Tooltip>
-              <TooltipTrigger>
-                <Pencil className=" duration-100 fill-green-400 " />
-              </TooltipTrigger>
-              <TooltipContent>Change Name</TooltipContent>
-            </Tooltip>
-          </div>
+          {!mount && (
+            <div className="flex-1 py-2">
+              <div className="">{value}</div>
+            </div>
+          )}
+          {mount && (
+            <Input
+              type="text"
+              ref={ref}
+              value={value}
+              autoFocus
+              onKeyDown={EnterClick}
+              onChange={ValueChange}
+              className="border-none text-center bg-inherit ring-0 outline-none focus:outline-none"
+            />
+          )}
         </div>
-      )}
-      {mount && (
-        <Input
-          type="text"
-          ref={ref}
-          value={value}
-          autoFocus
-          onKeyDown={EnterClick}
-          onChange={ValueChange}
-          className="bg-transparent border-none text-center bg-black text-white"
-        />
-      )}
+      </div>
+      <div className="" onClick={(e) => e.preventDefault()}>
+        <Button
+          className="text-sm text-white bg-blue-700  hover:bg-blue-600"
+          size={"sm"}
+        >
+          Run All
+        </Button>
+      </div>
     </div>
   );
 };

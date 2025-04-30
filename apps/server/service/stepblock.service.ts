@@ -46,15 +46,14 @@ class StepBlockService {
   }
 
   static async runBlock(
-    stepBlock_id: string,
-    type: string
+    stepBlock_id: string
   ): Promise<StepBlockInterface | null> {
     try {
       const _stepBlock = await this.getById(stepBlock_id);
       if (!_stepBlock) return null;
 
       const response = await fetch(
-        `${process.env.TRANSFORMER_SERVER}/${type}`,
+        `${process.env.TRANSFORMER_SERVER}/${_stepBlock.type}`,
         {
           method: "POST",
           headers: {
@@ -65,18 +64,15 @@ class StepBlockService {
       );
       if (!response) return null;
       const result = await response.json();
-      console.log(result);
 
-      const [stepBlock] = await db
-        .update(StepBlock)
-        .set({
-          output: result.payload,
-        })
-        .where(eq(StepBlock.id, stepBlock_id))
-        .returning();
+      const updated_stepBlock = await this.update(stepBlock_id, {
+        output: result.output,
+        stdout: result.stdout,
+      });
 
-      return stepBlock ? stepBlock : null;
+      return updated_stepBlock ? updated_stepBlock : null;
     } catch (error) {
+      console.log(error);
       throw new Error(error as string);
     }
   }
