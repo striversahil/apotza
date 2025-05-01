@@ -4,19 +4,13 @@ import LanguageConfig from "../Language";
 import PostgresConfig from "../postgres";
 import RestConfig from "../Rest";
 
-export const ApiTypeMapper = (type: string) => {
-  switch (type) {
-    case "python":
-      return <LanguageConfig />;
-    case "javascript":
-      return <LanguageConfig />;
-    case "graphql":
-    // return <IDEeditor />;
-    case "postgres":
-      return <PostgresConfig />;
-    case "rest":
-      return <RestConfig />;
-    default:
-      return null;
-  }
+export const ApiTypeMapper = () => {
+  return {
+    python: <LanguageConfig />,
+    javascript: <LanguageConfig />,
+    graphql: <LanguageConfig />,
+    postgres: <PostgresConfig />,
+    rest: <RestConfig />,
+    default: <LanguageConfig />,
+  };
 };

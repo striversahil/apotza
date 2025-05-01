@@ -62,7 +62,7 @@ class StepBlockService {
           body: JSON.stringify({ ...(_stepBlock.config as object) }),
         }
       );
-      if (!response) return null;
+      if (!response.ok) return null;
       const result = await response.text();
 
       const updated_stepBlock = await this.update(stepBlock_id, {

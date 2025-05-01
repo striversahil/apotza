@@ -7,7 +7,7 @@ import {
   Tooltip,
 } from "@repo/ui/Tooltip/tooltip";
 import { useMutationData } from "@/hooks/useMutation";
-import { Pencil } from "lucide-react";
+import { Pencil, PlayCircle } from "lucide-react";
 import React from "react";
 import { Button } from "@repo/ui/button";
 
@@ -44,17 +44,18 @@ const HeaderChange = (props: Props) => {
               autoFocus
               onKeyDown={EnterClick}
               onChange={ValueChange}
-              className="border-none text-center bg-inherit ring-0 outline-none focus:outline-none"
+              className="border-none text-center h-full bg-inherit ring-0 outline-none focus:outline-none"
             />
           )}
         </div>
       </div>
       <div className="" onClick={(e) => e.preventDefault()}>
         <Button
-          className="text-sm text-white bg-blue-700  hover:bg-blue-600"
+          className="text-xs font-bold text-white bg-[#197b94] shadow-md shadow-black/50  hover:bg-[#1e92af91]"
           size={"sm"}
         >
-          Run All
+          <PlayCircle className="" />
+          Run API
         </Button>
       </div>
     </div>

@@ -25,7 +25,7 @@ const Text_Base = ({ value, onChange, area }: Props) => {
 
     // Replace prop("Something") with a styled badge
     html = html.replace(/\{\{\s*([^"]+)\s*\}\}/g, (match, propText) => {
-      return `<span contenteditable="false" class="inline-block bg-blue-100 text-blue-700 border border-blue-400 px-2 py-0.5 rounded-lg text-sm mx-1">${propText}</span> `;
+      return `<span contenteditable="false" class="inline-block text-center bg-blue-100 text-blue-700 border border-blue-400 px-1 py-0.5 rounded-lg text-sm ">{{${propText}}}</span> `;
     });
 
     onChange({ config: html, value: value?.value });

@@ -53,7 +53,7 @@ const EditorCode = (props: Props) => {
               <EditorHeader {...activeStep} />
               <UpdatedStepBlockProvider initialvalue={activeStep}>
                 {/* <StepBlockProvider initialvalue={activeStep}> */}
-                {ApiTypeMapper(activeStep.type)}
+                {ApiTypeMapper()[activeStep.type]}
                 {/* </StepBlockProvider> */}
               </UpdatedStepBlockProvider>
             </div>
