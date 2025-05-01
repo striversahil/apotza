@@ -24,13 +24,13 @@ export const EditorHeader = ({ id, type, name }: StepBlockInterface) => {
       />
       <div className="flex-1 flex h-full items-center">{name}</div>
       <Button
-        className="flex bg-[#1c1369] text-white hover:bg-[#1c1369ab] shadow-md shadow-black/50 mt-2 items-center rounded-md text-sm p-2 mx-5"
+        className="flex bg-[#1c1369] text-white hover:bg-[#1c1369ab] shadow-md font-bold shadow-black/50 mt-2 items-center rounded-md text-sm p-2 mx-5"
         onClick={() => mutate({ id })}
         size={"sm"}
       >
         {isPending && <Loader className="animate-spin" />}
         {!isPending && <TestTube2 />}
-        Test API
+        Test Step
       </Button>
     </div>
   );
