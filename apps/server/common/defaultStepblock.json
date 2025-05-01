@@ -43,9 +43,12 @@
     "config": {
       "endpoint": "https://jsonplaceholder.typicode.com/posts/",
       "method": "GET",
-      "headers": {
-        "Content-Type": "application/json"
-      },
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        }
+      ],
       "body": {
         "title": "foo",
         "body": "bar",

@@ -24,9 +24,12 @@ class RunnerController {
         return ErrorResponse(c, "Endpoint is required");
       }
       if (!headers) {
-        headers = {
-          "Content-Type": "application/json",
-        };
+        headers = [
+          {
+            key: "Content-Type",
+            value: "application/json",
+          },
+        ];
       }
       // if (!body) {
       //   return ErrorResponse(c, "Body is required");
