@@ -5,19 +5,19 @@ import StepsBlockAction from "../../../../actions/project/stepsBlock";
 import GetProject from "@/actions/project";
 
 type Props = {
-  value: any;
+  value?: any;
 };
 
 const IDEeditor = (props: Props) => {
-  const [code, setCode] = React.useState<string | undefined>(props.value.code);
-  const { mutate } = StepsBlockAction.update(props.value.id);
+  const [code, setCode] = React.useState<string | undefined>(props.value?.code);
+  const { mutate } = StepsBlockAction.update(props.value?.id);
 
   const MutateFunction = () => {
-    if (code === undefined || code === props.value.code) return;
+    if (code === undefined || code === props.value?.code) return;
 
-    if (code !== props.value.code) {
+    if (code !== props.value?.code) {
       mutate({
-        // id: props.value.id,
+        // id: props.value?.id,
         // code: code,
       });
     }
@@ -28,13 +28,13 @@ const IDEeditor = (props: Props) => {
   });
 
   React.useEffect(() => {
-    setCode(props.value.code);
-  }, [props.value.code]);
+    setCode(props.value?.code);
+  }, [props.value?.code]);
 
   return (
     <div className="relative  w-full h-full px-2" ref={ref}>
       <IDE
-        language={props.value.language}
+        language={props.value?.language}
         theme="vs-dark"
         path="/editor.ts"
         defaultValue={code}

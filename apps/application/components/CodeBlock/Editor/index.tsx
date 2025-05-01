@@ -3,12 +3,13 @@ import React, { useEffect, useState } from "react";
 import Output from "../Output";
 import { Panel, PanelGroup } from "react-resizable-panels";
 import PanelResizeHandleComp from "../../utils/PanelResizeHandle";
-import { EditorHeader } from "./EditorHeader";
+import { EditorHeader } from "./utils/EditorHeader";
 import { TabsContent } from "@radix-ui/react-tabs";
 import GetProject from "../../../actions/project";
 import IDEeditor from "./IDEditor";
 import { Loader } from "lucide-react";
-import { ApiTypeMapper } from "./Mapper";
+import { ApiTypeMapper } from "./utils/Mapper";
+import { StepBlockProvider } from "../../../contexts/codeBlock";
 
 type Props = {
   value?: any;
@@ -47,7 +48,9 @@ const EditorCode = (props: Props) => {
           <Panel defaultSize={50} minSize={20} maxSize={100}>
             <div className="relative h-full items-center">
               <EditorHeader {...activeStep} />
-              {ApiTypeMapper(activeStep)[activeStep.type]}
+              <StepBlockProvider initialvalue={activeStep}>
+                {ApiTypeMapper(activeStep.type)}
+              </StepBlockProvider>
             </div>
           </Panel>
           <PanelResizeHandleComp />

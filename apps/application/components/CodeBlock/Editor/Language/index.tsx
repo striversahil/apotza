@@ -1,11 +1,13 @@
 import React from "react";
+import { useStepBlock } from "../../../../contexts/codeBlock";
 
-type Props = {
-  config: any;
-};
-
-const LanguageConfig = (props: Props) => {
-  return <div>LanguageConfig{props.config.code}</div>;
+const LanguageConfig = () => {
+  const { stepBlock } = useStepBlock() || {};
+  return (
+    <div>
+      LanguageConfig{stepBlock?.config.code} {stepBlock?.type}
+    </div>
+  );
 };
 
 export default LanguageConfig;

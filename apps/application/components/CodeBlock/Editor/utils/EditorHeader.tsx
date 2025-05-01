@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect } from "react";
-import IDEeditor from "./IDEditor";
+import IDEeditor from "../IDEditor";
 import languages from "@/common/Json/languages.json";
 import Image from "next/image";
 import StepsBlockAction from "@/actions/project/stepsBlock";
-import { StepBlockInterface } from ".";
+import { StepBlockInterface } from "..";
 
 export const EditorHeader = ({ id, type, name }: StepBlockInterface) => {
   const { mutate } = StepsBlockAction.codeRunner(id);
