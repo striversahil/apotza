@@ -1,16 +1,22 @@
 import React, { useEffect } from "react";
 import { useStepBlock } from "../../../../contexts/codeBlock";
 import { useStepConfig } from "../utils/useSaveStepConfig";
+import IDEeditor from "../IDEditor";
 
 const LanguageConfig = () => {
   const { stepConfig, setStepBlock } = useStepConfig();
 
-  useEffect(() => {
-    console.log(stepConfig);
-  });
   return (
-    <div onClick={() => setStepBlock({ code: "hello" })}>
-      LanguageConfig{stepConfig?.code} {stepConfig?.type}
+    <div className="relative w-full h-full">
+      <div className="absolute inset-1 mb-12 bg-white/20 p-1 shadow-inner hover:bg-white/30 duration-200 shadow-black/50 rounded-lg overflow-hidden">
+        <IDEeditor
+          code={stepConfig.config.code}
+          language={stepConfig.type}
+          onChange={(code) => {
+            setStepBlock({ code });
+          }}
+        />
+      </div>
     </div>
   );
 };

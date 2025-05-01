@@ -74,6 +74,7 @@ const Output = ({ id, stdout, output }: StepBlockInterface) => {
                   indentWidth={5}
                   displayObjectSize={true}
                   enableClipboard={false}
+                  displayDataTypes={false}
                   sortKeys={false}
                   iconStyle="square"
                   style={{

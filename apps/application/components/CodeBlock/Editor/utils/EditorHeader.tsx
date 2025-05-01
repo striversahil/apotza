@@ -7,7 +7,7 @@ import StepsBlockAction from "@/actions/project/stepsBlock";
 import { StepBlockInterface } from "..";
 
 export const EditorHeader = ({ id, type, name }: StepBlockInterface) => {
-  const { mutate } = StepsBlockAction.codeRunner(id);
+  const { mutate, isPending } = StepsBlockAction.codeRunner(id);
   return (
     <div className="h-[50px] w-full flex gap-5 bg-gradient-to-r from-slate-800 to-slate-600">
       <Image
@@ -25,6 +25,7 @@ export const EditorHeader = ({ id, type, name }: StepBlockInterface) => {
         onClick={() => mutate({ id })}
       >
         Test API
+        {isPending && <span className="animate-spin">...</span>}
       </div>
     </div>
   );

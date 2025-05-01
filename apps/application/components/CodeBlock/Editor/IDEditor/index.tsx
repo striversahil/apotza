@@ -5,45 +5,27 @@ import StepsBlockAction from "../../../../actions/project/stepsBlock";
 import GetProject from "@/actions/project";
 
 type Props = {
-  value?: any;
+  language: string;
+  code: string;
+  onChange: (code: string) => void;
 };
 
-const IDEeditor = (props: Props) => {
-  const [code, setCode] = React.useState<string | undefined>(props.value?.code);
+const IDEeditor = ({ code, onChange, language }: Props) => {
   // const { mutate } = StepsBlockAction.update(props.value?.id);
 
-  const MutateFunction = () => {
-    if (code === undefined || code === props.value?.code) return;
-
-    if (code !== props.value?.code) {
-      // mutate({
-      //   // id: props.value?.id,
-      //   // code: code,
-      // });
-    }
-  };
-
-  const ref = useClickOutside(() => {
-    MutateFunction();
-  });
-
-  React.useEffect(() => {
-    setCode(props.value?.code);
-  }, [props.value?.code]);
-
   return (
-    <div className="relative  w-full h-full px-2" ref={ref}>
+    <div className="relative w-[100%] overscroll-none h-full rounded-lg overflow-hidden">
       <IDE
-        language={props.value?.language}
+        language={language}
         theme="vs-dark"
         path="/editor.ts"
-        defaultValue={code}
+        defaultValue={code || ""}
         height={"100%"}
         loading="Loading..."
-        onChange={(code) => setCode(code)}
+        onChange={(code) => onChange(code || "")}
         className=""
       />
-      <div className="absolute w-14 h-full z-10 top-3  right-2 bg-[#1e1e1e]"></div>
+      <div className="absolute w-14 h-full z-10 top-0 rounded-r-lg right-0 bg-[#1e1e1e]"></div>
     </div>
   );
 };

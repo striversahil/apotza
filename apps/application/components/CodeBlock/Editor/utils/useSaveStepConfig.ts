@@ -17,7 +17,7 @@ import GetProject from "@/actions/project";
 export const useStepConfig = () => {
   const { updatedStepBlock, setUpdatedStepBlock = () => {} } =
     useUpdatedStepBlock() || {};
-  const { data : stepBlock } = GetProject.getStep(updatedStepBlock?.id!);
+  const { data: stepBlock } = GetProject.getStep(updatedStepBlock?.id!);
 
   const { mutate } = StepsBlockAction.update(updatedStepBlock?.id!);
 
@@ -36,11 +36,11 @@ export const useStepConfig = () => {
   }, [updatedStepBlock]);
 
   const stepConfig = {
-    ...stepBlock?.payload.config,
+    ...stepBlock?.payload,
   };
 
   const setStepBlock = (config: any) => {
-    setUpdatedStepBlock({ ...stepBlock?.payload, config });
+    setUpdatedStepBlock({ ...stepBlock?.payload, config: config });
   };
 
   return {

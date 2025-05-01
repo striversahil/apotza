@@ -26,7 +26,7 @@ const HeaderChange = (props: Props) => {
 
   return (
     <div className="flex p-2 gap-2 items-center ">
-      <div className="flex bg-[#344a5e] shadow-sm shadow-white/50 cursor-text w-full  rounded-3xl ">
+      <div className="flex bg-[#344a5e] shadow-sm shadow-white/50 cursor-pointer w-full  rounded-3xl ">
         <div
           onClick={() => setMount(true)}
           className="flex flex-1 text-md  text-xl text-center font-bold"

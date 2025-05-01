@@ -1,6 +1,8 @@
 import { StepBlockInterface } from "..";
 import IDEeditor from "../IDEditor";
 import LanguageConfig from "../Language";
+import PostgresConfig from "../postgres";
+import RestConfig from "../Rest";
 
 export const ApiTypeMapper = (type: string) => {
   switch (type) {
@@ -9,11 +11,11 @@ export const ApiTypeMapper = (type: string) => {
     case "javascript":
       return <LanguageConfig />;
     case "graphql":
-      return <IDEeditor />;
+    // return <IDEeditor />;
     case "postgres":
-      return <IDEeditor />;
+      return <PostgresConfig />;
     case "rest":
-      return <IDEeditor />;
+      return <RestConfig />;
     default:
       return null;
   }

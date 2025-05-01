@@ -43,7 +43,7 @@ const StepsBlockAction = {
   },
 
   codeRunner: (id: string) => {
-    const { mutate } = useMutationData(
+    return useMutationData(
       ["StepsBlockAction.codeRunner"],
       async (payload: any) => {
         const response = await api.post(`${source}/run`, payload);
@@ -53,7 +53,7 @@ const StepsBlockAction = {
       () => {},
       () => {}
     );
-    return { mutate };
+    
   },
 
   update: (id: string) => {
