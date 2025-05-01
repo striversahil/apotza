@@ -32,7 +32,7 @@ class StepBlockController {
 
   static async runBlock(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const { id } = req.body;
       if (!id) return ErrorResponse(res, "Provide all fields", 400);
       const stepBlock = await StepBlockService.runBlock(id);
       if (!stepBlock)

@@ -42,27 +42,27 @@ const StepsBlockAction = {
     return { mutate };
   },
 
-  codeRunner: (step_id: string) => {
+  codeRunner: (id: string) => {
     const { mutate } = useMutationData(
       ["CodeBlockAction.codeRunner"],
       async (payload: any) => {
         const response = await api.post(`${source}/run`, payload);
         return response.data;
       },
-      [[`GetProject.getOneStep-${step_id}` as string]],
+      [[`GetProject.getOneStep-${id}` as string]],
       undefined
     );
     return { mutate };
   },
 
-  update: (codeBlock_id: string) => {
+  update: (id: string) => {
     const { mutate } = useMutationData(
       ["CodeBlockAction.updateStep"],
       async (payload: any) => {
         const response = await api.patch(`${source}/${payload.id}`, payload);
         return response.data;
       },
-      [[`GetProject.getOneCodeBlock-${codeBlock_id}` as string]],
+      [[`GetProject.getOneStep-${id}` as string]],
       (previousData: any, variables: any) => {
         return {
           ...previousData,

@@ -4,7 +4,7 @@
     "config": {
       "code": "print('Hello World')"
     },
-    "output": "Hello World",
+    "output": "{  \"stdout\": \"Hello World\"}",
     "stdout": "Hello World"
   },
   "javascript": {
@@ -12,16 +12,16 @@
     "config": {
       "code": "console.log('Hello World')"
     },
-    "stdout": "Hello World",
-    "output": "Hello World"
+    "output": "{  \"stdout\": \"Hello World\"}",
+    "stdout": "Hello World"
   },
   "graphql": {
     "name": "GraphQL",
     "config": {
       "code": "query {\n  user(id: \"1\") {\n    id\n    name\n    email\n  }\n}"
     },
-    "stdout": "Hello World",
-    "output": "Hello World"
+    "output": "{  \"stdout\": \"Hello World\"}",
+    "stdout": "Hello World"
   },
   "postgres": {
     "name": "Postgres",
@@ -35,8 +35,8 @@
         "password": "oPbDLgHLZOHrozvk"
       }
     },
-    "stdout": "Hello World",
-    "output": "Hello World"
+    "output": "{  \"stdout\": \"Hello World\"}",
+    "stdout": "Hello World"
   },
   "rest": {
     "name": "REST API",
@@ -46,7 +46,7 @@
         "Content-Type": "application/json"
       }
     },
-    "stdout": "Hello World",
-    "output": "Hello World"
+    "output": "{  \"stdout\": \"Hello World\"}",
+    "stdout": "Hello World"
   }
 }
