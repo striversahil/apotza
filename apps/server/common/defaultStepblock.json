@@ -42,8 +42,14 @@
     "name": "REST API",
     "config": {
       "endpoint": "https://jsonplaceholder.typicode.com/posts/",
+      "method": "GET",
       "headers": {
         "Content-Type": "application/json"
+      },
+      "body": {
+        "title": "foo",
+        "body": "bar",
+        "userId": 1
       }
     },
     "output": "{  \"stdout\": \"Hello World\"}",

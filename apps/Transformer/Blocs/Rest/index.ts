@@ -2,13 +2,16 @@ import axios from "axios";
 
 const RestEngine = async (
   endpoint: string,
-  headers: Record<string, string>
-  // body: Record<string, any>
+  headers: Record<string, string>,
+  body: Record<string, any>,
+  method: string
 ) => {
   try {
-    const response = await axios.get(endpoint, {
+    const response = await axios({
+      method: method,
+      url: endpoint,
       headers: headers,
-      // data: body,
+      data: body,
     });
 
     if (!response) {
