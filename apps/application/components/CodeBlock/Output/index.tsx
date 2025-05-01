@@ -5,14 +5,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { BatteryCharging, CheckCircle, Dot } from "lucide-react";
 import React from "react";
 import dynamic from "next/dynamic";
+import { StepBlockInterface } from "../Editor";
 
 const ReactJson = dynamic(() => import("react-json-view"), { ssr: false });
 
-type Props = {
-  value: any;
-};
-
-const Output = (props: Props) => {
+const Output = ({ id, stdout, output }: StepBlockInterface) => {
   const [activeTab, setActiveTab] = React.useState("output");
 
   return (
@@ -70,7 +67,7 @@ const Output = (props: Props) => {
             <div className="absolute inset-2 flex items-start p-3 rounded-md bg-[#0b1c2c]  overflow-y-auto ">
               <TabsContent value="output">
                 <ReactJson
-                  src={JSON.parse(props.value.output)}
+                  src={JSON.parse(output)}
                   shouldCollapse={false}
                   name={false}
                   theme={"harmonic"}
@@ -89,10 +86,10 @@ const Output = (props: Props) => {
               </TabsContent>
               <TabsContent value="code">
                 <div className="h-full text-base font-mono text-white/80 hover:text-white">
-                  {props.value.output}
+                  {output}
                 </div>
               </TabsContent>
-              <TabsContent value="stdout">{props.value.stdout}</TabsContent>
+              <TabsContent value="stdout">{stdout}</TabsContent>
             </div>
           </div>
         </div>

@@ -50,7 +50,8 @@ const StepsBlockAction = {
         return response.data;
       },
       [[`GetProject.getOneStep-${id}` as string]],
-      undefined
+      () => {},
+      () => {}
     );
     return { mutate };
   },
@@ -59,7 +60,7 @@ const StepsBlockAction = {
     const { mutate } = useMutationData(
       ["CodeBlockAction.updateStep"],
       async (payload: any) => {
-        const response = await api.patch(`${source}/${payload.id}`, payload);
+        const response = await api.patch(`${source}/${id}`, payload);
         return response.data;
       },
       [[`GetProject.getOneStep-${id}` as string]],

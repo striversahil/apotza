@@ -8,13 +8,26 @@ import { TabsContent } from "@radix-ui/react-tabs";
 import GetProject from "../../../actions/project";
 import IDEeditor from "./IDEditor";
 import { Loader } from "lucide-react";
+import { ApiTypeMapper } from "./Mapper";
 
 type Props = {
   value?: any;
 };
+export type StepBlockInterface = {
+  id: string;
+  name: string;
+  type: "python" | "javascript" | "graphql" | "postgres" | "rest";
+  codeblock: string;
+  config: { [key: string]: string };
+  stdout: string;
+  output: string;
+  request: string;
+};
 
 const EditorCode = (props: Props) => {
-  const [activeStep, setActiveStep] = React.useState<any>(null);
+  const [activeStep, setActiveStep] = React.useState<StepBlockInterface | null>(
+    null
+  );
 
   const { data } = GetProject.getStep(props.value.id);
 
@@ -33,13 +46,13 @@ const EditorCode = (props: Props) => {
         <PanelGroup direction="vertical">
           <Panel defaultSize={50} minSize={20} maxSize={100}>
             <div className="relative h-full items-center">
-              <EditorHeader value={activeStep} />
-              <IDEeditor value={activeStep} />
+              <EditorHeader {...activeStep} />
+              {ApiTypeMapper(activeStep)[activeStep.type]}
             </div>
           </Panel>
           <PanelResizeHandleComp />
           <Panel defaultSize={50} minSize={20} maxSize={100}>
-            <Output value={activeStep} />
+            <Output {...activeStep} />
           </Panel>
         </PanelGroup>
       )}

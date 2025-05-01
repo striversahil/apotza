@@ -1,13 +1,17 @@
+import { StepBlockInterface } from ".";
 import IDEeditor from "./IDEditor";
+import LanguageConfig from "./Language";
 
-export const ApiTypeMapper = ({ ...values }) => {
+export const ApiTypeMapper = ({ ...values }: StepBlockInterface) => {
   return {
-    python: <IDEeditor {...values} value={null} />,
+    python: <LanguageConfig {...values} />,
 
-    javascript: <IDEeditor {...values} value={null} />,
+    javascript: <LanguageConfig {...values} />,
 
-    graphql: <IDEeditor {...values} value={null} />,
+    graphql: <IDEeditor {...values} value={values} />,
 
-    postgres: <IDEeditor {...values} value={null} />,
+    postgres: <IDEeditor {...values} value={values} />,
+
+    rest: <IDEeditor {...values} value={values} />,
   };
 };
