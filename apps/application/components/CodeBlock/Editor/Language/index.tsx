@@ -1,11 +1,12 @@
 import React from "react";
 import { useStepBlock } from "../../../../contexts/codeBlock";
+import { useStepConfig } from "../utils/useSaveStepConfig";
 
 const LanguageConfig = () => {
-  const { stepBlock } = useStepBlock() || {};
+  const { stepConfig, setStepBlock } = useStepConfig();
   return (
     <div>
-      LanguageConfig{stepBlock?.config.code} {stepBlock?.type}
+      LanguageConfig{stepConfig?.code} {stepConfig?.type}
     </div>
   );
 };

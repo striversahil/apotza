@@ -9,7 +9,10 @@ import GetProject from "../../../actions/project";
 import IDEeditor from "./IDEditor";
 import { Loader } from "lucide-react";
 import { ApiTypeMapper } from "./utils/Mapper";
-import { StepBlockProvider } from "../../../contexts/codeBlock";
+import {
+  StepBlockProvider,
+  UpdatedStepBlockProvider,
+} from "../../../contexts/codeBlock";
 
 type Props = {
   value?: any;
@@ -48,9 +51,11 @@ const EditorCode = (props: Props) => {
           <Panel defaultSize={50} minSize={20} maxSize={100}>
             <div className="relative h-full items-center">
               <EditorHeader {...activeStep} />
-              <StepBlockProvider initialvalue={activeStep}>
-                {ApiTypeMapper(activeStep.type)}
-              </StepBlockProvider>
+              <UpdatedStepBlockProvider initialvalue={activeStep}>
+                <StepBlockProvider initialvalue={activeStep}>
+                  {ApiTypeMapper(activeStep.type)}
+                </StepBlockProvider>
+              </UpdatedStepBlockProvider>
             </div>
           </Panel>
           <PanelResizeHandleComp />
