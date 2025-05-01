@@ -64,7 +64,15 @@ const StepsBlockAction = {
         return response.data;
       },
       [[`GetProject.getOneStep-${id}` as string]],
-      () => {},
+      (previousData: any, variables: any) => {
+        return {
+          ...previousData,
+          payload: {
+            ...previousData.payload,
+            config: variables.config ?? previousData.payload.config,
+          },
+        };
+      },
       () => {}
     );
     return { mutate };
@@ -77,24 +85,6 @@ const StepsBlockAction = {
   //       const response = await api.patch(`${source}/${id}`, payload);
   //       return response.data;
   //     },
-  //     (previousData: any, variables: any) => {
-  //       return {
-  //         ...previousData,
-  //         payload: {
-  //           ...previousData.payload,
-  //           steps: [...previousData.payload.steps].map((item: any) => {
-  //             if (item.id === variables.id) {
-  //               return {
-  //                 ...item,
-  //                 ...variables,
-  //               };
-  //             }
-  //             return item;
-  //           }),
-  //         },
-  //       };
-  //     },
-  //     () => {}
   //     [[`GetProject.getOneStep-${id}` as string]],
   //   );
   //   return { mutate };

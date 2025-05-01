@@ -5,6 +5,7 @@ import {
 } from "../../../../contexts/codeBlock";
 import { useEffect } from "react";
 import _ from "lodash";
+import GetProject from "@/actions/project";
 
 /**
  * useStepConfig
@@ -14,17 +15,17 @@ import _ from "lodash";
  * @returns an object with the current step block config and a function to update the step block config.
  */
 export const useStepConfig = () => {
-  const { stepBlock } = useStepBlock() || {};
   const { updatedStepBlock, setUpdatedStepBlock = () => {} } =
     useUpdatedStepBlock() || {};
+  const { data : stepBlock } = GetProject.getStep(updatedStepBlock?.id!);
 
-  const { mutate } = StepsBlockAction.update(stepBlock?.id!);
+  const { mutate } = StepsBlockAction.update(updatedStepBlock?.id!);
 
   //   console.log("updatedStepBlock", updatedStepBlock);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (!_.isEqual(stepBlock?.config, updatedStepBlock?.config)) {
+      if (!_.isEqual(stepBlock.payload?.config, updatedStepBlock?.config)) {
         //     console.log("updatedStepBlock", updatedStepBlock);
         mutate({
           config: updatedStepBlock?.config,
@@ -35,11 +36,11 @@ export const useStepConfig = () => {
   }, [updatedStepBlock]);
 
   const stepConfig = {
-    ...stepBlock?.config,
+    ...stepBlock?.payload.config,
   };
 
   const setStepBlock = (config: any) => {
-    setUpdatedStepBlock({ ...stepBlock, config });
+    setUpdatedStepBlock({ ...stepBlock?.payload, config });
   };
 
   return {

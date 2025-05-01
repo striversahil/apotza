@@ -52,9 +52,9 @@ const EditorCode = (props: Props) => {
             <div className="relative h-full items-center">
               <EditorHeader {...activeStep} />
               <UpdatedStepBlockProvider initialvalue={activeStep}>
-                <StepBlockProvider initialvalue={activeStep}>
-                  {ApiTypeMapper(activeStep.type)}
-                </StepBlockProvider>
+                {/* <StepBlockProvider initialvalue={activeStep}> */}
+                {ApiTypeMapper(activeStep.type)}
+                {/* </StepBlockProvider> */}
               </UpdatedStepBlockProvider>
             </div>
           </Panel>
