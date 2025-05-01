@@ -10,16 +10,16 @@ type Props = {
 
 const IDEeditor = (props: Props) => {
   const [code, setCode] = React.useState<string | undefined>(props.value?.code);
-  const { mutate } = StepsBlockAction.update(props.value?.id);
+  // const { mutate } = StepsBlockAction.update(props.value?.id);
 
   const MutateFunction = () => {
     if (code === undefined || code === props.value?.code) return;
 
     if (code !== props.value?.code) {
-      mutate({
-        // id: props.value?.id,
-        // code: code,
-      });
+      // mutate({
+      //   // id: props.value?.id,
+      //   // code: code,
+      // });
     }
   };
 

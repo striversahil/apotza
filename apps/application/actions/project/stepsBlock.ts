@@ -10,7 +10,7 @@ const source = "/stepblock";
 const StepsBlockAction = {
   add: (currentTab: string) => {
     const { mutate } = useMutationData(
-      ["CodeBlockAction.addstep"],
+      ["StepsBlockAction.addstep"],
       async (payload: any) => {
         const response = await api.post(`${source}/`, payload);
         return response.data;
@@ -44,7 +44,7 @@ const StepsBlockAction = {
 
   codeRunner: (id: string) => {
     const { mutate } = useMutationData(
-      ["CodeBlockAction.codeRunner"],
+      ["StepsBlockAction.codeRunner"],
       async (payload: any) => {
         const response = await api.post(`${source}/run`, payload);
         return response.data;
@@ -58,37 +58,51 @@ const StepsBlockAction = {
 
   update: (id: string) => {
     const { mutate } = useMutationData(
-      ["CodeBlockAction.updateStep"],
+      ["StepsBlockAction.update"],
       async (payload: any) => {
         const response = await api.patch(`${source}/${id}`, payload);
         return response.data;
       },
       [[`GetProject.getOneStep-${id}` as string]],
-      (previousData: any, variables: any) => {
-        return {
-          ...previousData,
-          payload: {
-            ...previousData.payload,
-            steps: [...previousData.payload.steps].map((item: any) => {
-              if (item.id === variables.id) {
-                return {
-                  ...item,
-                  ...variables,
-                };
-              }
-              return item;
-            }),
-          },
-        };
-      },
+      () => {},
       () => {}
     );
     return { mutate };
   },
 
+  // update: (id: string) => {
+  //   const { mutate } = useMutationData(
+  //     ["StepsBlockAction.update"],
+  //     async (payload: any) => {
+  //       const response = await api.patch(`${source}/${id}`, payload);
+  //       return response.data;
+  //     },
+  //     (previousData: any, variables: any) => {
+  //       return {
+  //         ...previousData,
+  //         payload: {
+  //           ...previousData.payload,
+  //           steps: [...previousData.payload.steps].map((item: any) => {
+  //             if (item.id === variables.id) {
+  //               return {
+  //                 ...item,
+  //                 ...variables,
+  //               };
+  //             }
+  //             return item;
+  //           }),
+  //         },
+  //       };
+  //     },
+  //     () => {}
+  //     [[`GetProject.getOneStep-${id}` as string]],
+  //   );
+  //   return { mutate };
+  // },
+
   duplicate: (currentTab: string) => {
     const { mutate } = useMutationData(
-      ["CodeBlockAction.duplicateStep"],
+      ["StepsBlockAction.duplicateStep"],
       async (payload: any) => {
         const response = await api.post(`${source}/duplicate`, payload);
         return response.data;

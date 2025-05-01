@@ -6,21 +6,33 @@ import {
 import { useEffect } from "react";
 import _ from "lodash";
 
+/**
+ * useStepConfig
+ *
+ * This hook will automatically save the step block config to the server when it changes with debounce.
+ *
+ * @returns an object with the current step block config and a function to update the step block config.
+ */
 export const useStepConfig = () => {
-  const { stepBlock: initialStepBlock } = useStepBlock() || {};
-  const { updatedStepBlock: stepBlock, setUpdatedStepBlock = () => {} } =
+  const { stepBlock } = useStepBlock() || {};
+  const { updatedStepBlock, setUpdatedStepBlock = () => {} } =
     useUpdatedStepBlock() || {};
 
-  const { mutate } = StepsBlockAction.update(initialStepBlock?.id ?? "");
+  const { mutate } = StepsBlockAction.update(stepBlock?.id!);
+
+  //   console.log("updatedStepBlock", updatedStepBlock);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (_.isEqual(initialStepBlock?.config, stepBlock?.config)) {
-        mutate(stepBlock?.config);
+      if (!_.isEqual(stepBlock?.config, updatedStepBlock?.config)) {
+        //     console.log("updatedStepBlock", updatedStepBlock);
+        mutate({
+          config: updatedStepBlock?.config,
+        });
       }
     }, 1000);
     return () => clearTimeout(timer);
-  }, [stepBlock]);
+  }, [updatedStepBlock]);
 
   const stepConfig = {
     ...stepBlock?.config,
