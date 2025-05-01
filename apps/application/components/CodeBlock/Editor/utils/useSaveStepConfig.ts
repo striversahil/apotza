@@ -40,7 +40,11 @@ export const useStepConfig = () => {
   };
 
   const setStepBlock = (config: any) => {
-    setUpdatedStepBlock({ ...stepBlock?.payload, config: config });
+    // console.log("config", config);
+    setUpdatedStepBlock((prev: any) => ({
+      ...prev,
+      config: { ...prev.config, ...config },
+    }));
   };
 
   return {

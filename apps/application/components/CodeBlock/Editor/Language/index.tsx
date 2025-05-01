@@ -13,7 +13,7 @@ const LanguageConfig = () => {
           code={stepConfig.config.code}
           language={stepConfig.type}
           onChange={(code) => {
-            setStepBlock({ code });
+            setStepBlock({ code: code });
           }}
         />
       </div>
