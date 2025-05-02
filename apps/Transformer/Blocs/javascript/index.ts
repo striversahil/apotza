@@ -38,7 +38,7 @@ const JavaScriptEngine = async (query: string) => {
   //   })() `;
 
   try {
-    const output = await new Function(query)();
+    const output = await new Function(removedExports)();
     return {
       error: null,
       data: output, // It's Returning Data that need to be transformed

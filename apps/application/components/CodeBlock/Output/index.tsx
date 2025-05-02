@@ -67,7 +67,7 @@ const Output = ({ id, stdout, output }: StepBlockInterface) => {
             <div className="absolute inset-2 flex items-start p-3 rounded-md bg-[#0b1c2c]  overflow-y-auto ">
               <TabsContent value="output">
                 <ReactJson
-                  src={JSON.parse(output)}
+                  src={output}
                   shouldCollapse={false}
                   name={false}
                   theme={"harmonic"}

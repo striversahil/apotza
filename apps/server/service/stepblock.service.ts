@@ -67,6 +67,8 @@ class StepBlockService {
       let updated_result = null;
       const result = await response.json();
 
+      console.log(result);
+
       if (!result) return null;
 
       if (result.success === false) {
@@ -74,6 +76,9 @@ class StepBlockService {
       }
       if (result.success === true) {
         updated_result = result.payload;
+      }
+      if (typeof updated_result !== "object") {
+        updated_result = { message: updated_result };
       }
 
       const updated_stepBlock = await this.update(stepBlock_id, {

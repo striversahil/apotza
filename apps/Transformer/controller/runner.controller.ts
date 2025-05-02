@@ -91,6 +91,7 @@ class RunnerController {
       }
 
       const { error, data } = await PythonEngine(code);
+      console.log(data);
       if (error) {
         return ErrorResponse(c, error);
       }

@@ -13,13 +13,7 @@
     "code": "console.log('Hello World')",
     "output": "Hello World"
   },
-  {
-    "value": "graphql",
-    "label": "GraphQL",
-    "icon_href": "/assets/languages/graphql.svg",
-    "code": "query {\n  user(id: \"1\") {\n    id\n    name\n    email\n  }\n}",
-    "output": "Hello World"
-  },
+
   {
     "value": "postgres",
     "label": "Postgres",

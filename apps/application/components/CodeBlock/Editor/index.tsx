@@ -24,7 +24,7 @@ export type StepBlockInterface = {
   codeblock: string;
   config: { [key: string]: string };
   stdout: string;
-  output: string;
+  output: any;
   request: string;
 };
 
