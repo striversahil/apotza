@@ -63,11 +63,22 @@ class StepBlockService {
         }
       );
       if (!response.ok) return null;
-      const result = await response.text();
+
+      let updated_result = null;
+      const result = await response.json();
+
+      if (!result) return null;
+
+      if (result.success === false) {
+        updated_result = result;
+      }
+      if (result.success === true) {
+        updated_result = result.payload;
+      }
 
       const updated_stepBlock = await this.update(stepBlock_id, {
-        output: result,
-        stdout: result,
+        output: updated_result,
+        stdout: updated_result,
       });
 
       return updated_stepBlock ? updated_stepBlock : null;
