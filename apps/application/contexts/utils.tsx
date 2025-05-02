@@ -6,17 +6,9 @@ interface UtilContext {
   currentStep: number;
   toggleStep: (stepno: number) => void;
 }
-interface GlobalContext {
-  component: any | null;
-  codeBlock: any | null;
-  setComponent: React.Dispatch<React.SetStateAction<any>>;
-  setCodeBlock: React.Dispatch<React.SetStateAction<any>>;
-}
 
 // Create the context
 const UtilsContext = createContext<UtilContext | null>(null);
-
-const GlobalContext = createContext<GlobalContext | null>(null);
 
 // Create a provider component
 export const UtilityProvider = ({ children }: { children: ReactNode }) => {
@@ -40,23 +32,6 @@ export const UtilityProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const GlobalContextProvider = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
-  const [codeBlock, setCodeBlock] = useState(null);
-  const [component, setComponent] = useState(null);
-  return (
-    <GlobalContext.Provider
-      value={{ component, codeBlock, setCodeBlock, setComponent }}
-    >
-      {children}
-    </GlobalContext.Provider>
-  );
-};
-
 // Create a custom hook to use the context
-export const useGlobalContext = () => useContext(GlobalContext);
 
 export const useUtility = () => useContext(UtilsContext);

@@ -1,4 +1,4 @@
-import { Project, ProjectInterface } from "../schema";
+import { CodeBlock, Project, ProjectInterface } from "../schema";
 import { db } from "../database";
 import { eq } from "drizzle-orm";
 
@@ -7,7 +7,9 @@ class ProjectService {
     try {
       const project = await db.query.Project.findFirst({
         with: {
-          codeblocks: true,
+          codeblocks: {
+            orderBy: [CodeBlock.createdAt],
+          },
           pages: true,
         },
         where: eq(Project.id, id),

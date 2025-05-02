@@ -9,10 +9,7 @@ import GetProject from "../../../actions/project";
 import IDEeditor from "./IDEditor";
 import { Loader } from "lucide-react";
 import { ApiTypeMapper } from "./utils/Mapper";
-import {
-  StepBlockProvider,
-  UpdatedStepBlockProvider,
-} from "../../../contexts/codeBlock";
+import { UpdatedStepBlockProvider } from "../../../contexts/codeblock";
 
 type Props = {
   value?: any;

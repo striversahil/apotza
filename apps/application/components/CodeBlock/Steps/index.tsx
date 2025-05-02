@@ -10,7 +10,7 @@ import HeaderChange from "../Tab/HeaderChange";
 import InStepPopOver from "./InStepPopOver";
 import { LoaderPinwheel } from "lucide-react";
 import Loader from "../loader";
-import { useCurrentStep } from "../../../contexts/CurrentTab";
+import { useCurrentStep } from "../../../contexts/codeblock";
 
 type Props = {
   value?: any;

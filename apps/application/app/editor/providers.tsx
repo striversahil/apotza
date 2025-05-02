@@ -6,7 +6,7 @@ import {
   PrevComponentProvider,
   UpdatedComponentProvider,
 } from "../../contexts/component";
-import { GlobalContextProvider } from "../../contexts/utils";
+import { GlobalContextProvider } from "../../contexts";
 
 type Props = {
   children: React.ReactNode;

@@ -38,7 +38,7 @@ async function PythonEngine(query: string) {
 
 export default PythonEngine;
 
-// Making Wrapper Pythonic Function because of Indentation
+// Making Wrapper Pythonic Function to Execute Python Code
 const wrapperPython = (query = "") => {
   return `
 import json

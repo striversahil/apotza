@@ -12,7 +12,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@repo/ui/Tooltip/tooltip";
-import { useCurrentStep } from "../../../contexts/CurrentTab";
+import { useCurrentStep } from "../../../contexts/codeblock";
 import { cn } from "@/lib/utils";
 
 type Props = {

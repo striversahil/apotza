@@ -1,5 +1,6 @@
 "use client";
 import GetProject from "@/actions/project";
+import { StepBlockInterface } from "@/components/CodeBlock/Editor";
 import React, {
   createContext,
   ReactNode,
@@ -18,9 +19,18 @@ type CurrentStep = {
   setCurrentStep: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
+interface UpdatedStepBlockContext {
+  updatedStepBlock: StepBlockInterface;
+  setUpdatedStepBlock: React.Dispatch<React.SetStateAction<any>>;
+}
+
 const CurrentTabContext = createContext<CurrentTab | null>(null);
 
 const CurrentStepContext = createContext<CurrentStep | null>(null);
+
+const UpdatedStepBlockContext = createContext<UpdatedStepBlockContext | null>(
+  null
+);
 
 export const CurrentTabProvider = ({ children }: { children: ReactNode }) => {
   const [currentTab, setCurrentTab] = useState<string>("");
@@ -39,6 +49,7 @@ export const CurrentTabProvider = ({ children }: { children: ReactNode }) => {
     </CurrentTabContext.Provider>
   );
 };
+
 export const CurrentStepProvider = ({
   currentTab,
   children,
@@ -63,6 +74,24 @@ export const CurrentStepProvider = ({
   );
 };
 
+export const UpdatedStepBlockProvider = ({
+  initialvalue,
+  children,
+}: {
+  initialvalue: StepBlockInterface;
+  children: ReactNode;
+}) => {
+  const [updatedStepBlock, setUpdatedStepBlock] = useState(initialvalue);
+  return (
+    <UpdatedStepBlockContext.Provider
+      value={{ updatedStepBlock, setUpdatedStepBlock }}
+    >
+      {children}
+    </UpdatedStepBlockContext.Provider>
+  );
+};
+
 export const useCurrentTab = () => useContext(CurrentTabContext);
 export const useCurrentStep = () => useContext(CurrentStepContext);
+export const useUpdatedStepBlock = () => useContext(UpdatedStepBlockContext);
 // setCurrentTab should set localstorage as well

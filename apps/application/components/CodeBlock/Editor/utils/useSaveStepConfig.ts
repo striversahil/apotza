@@ -1,11 +1,9 @@
 import StepsBlockAction from "@/actions/project/stepsBlock";
-import {
-  useStepBlock,
-  useUpdatedStepBlock,
-} from "../../../../contexts/codeBlock";
+
 import { useEffect } from "react";
 import _ from "lodash";
 import GetProject from "@/actions/project";
+import { useUpdatedStepBlock } from "../../../../contexts/codeblock";
 
 /**
  * useStepConfig
@@ -31,7 +29,7 @@ export const useStepConfig = () => {
           config: updatedStepBlock?.config,
         });
       }
-    }, 1000);
+    }, 800);
     return () => clearTimeout(timer);
   }, [updatedStepBlock]);
 
