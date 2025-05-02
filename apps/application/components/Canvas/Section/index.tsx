@@ -16,8 +16,7 @@ import { sectionCommon as Default } from "@repo/common";
 import _ from "lodash";
 import { useContextSave } from "../../../app/editor/_hooks/useContextSave";
 import { useSectionDroppable } from "../hooks/sectionDroppable";
-import { Loader } from "lucide-react";
-import { LoaderLucid } from "@/components/loader";
+import { Loader } from "@/components/loader";
 
 interface SectionInterface {
   id: string;
@@ -105,7 +104,7 @@ radial-gradient(at 11% 90%, hsla(265,75%,65%,1) 0px, transparent 50%)
             </div>
           </div>
         )}
-        {!Components && <LoaderLucid />}
+        {!Components && <Loader />}
         {/* <Label className="absolute top-[50px] left-[70px]">
             {props.value.id + props.value.name}
           </Label> */}

@@ -9,7 +9,7 @@ import GetProject from "../../../actions/project";
 import HeaderChange from "../Tab/HeaderChange";
 import InStepPopOver from "./InStepPopOver";
 import { LoaderPinwheel, LucideLoader } from "lucide-react";
-import { LoaderLucid } from "../../loader";
+import { Loader } from "../../loader";
 import { useCurrentStep } from "../../../contexts/codeblock";
 
 type Props = {
@@ -44,7 +44,7 @@ const StepEditorRoot = ({ value }: Props) => {
           <div className=" border-r border-slate-500 bg-white/5 w-full h-full">
             <div className="relative w-full h-full">
               <div className="flex flex-col overflow-y-scroll items-center justify-start w-full h-full gap-2 p-2 pb-[100px]">
-                {!renderStep && <LoaderLucid />}
+                {!renderStep && <Loader />}
                 {renderStep &&
                   codeBlock.stepBlocks.map((item: any, index: number) => (
                     <div key={index} className="w-full">
@@ -70,7 +70,7 @@ const StepEditorRoot = ({ value }: Props) => {
         </Panel>
         <PanelResizeHandle className="p-[1px] cursor-row-resize hover:bg-blue-500" />
         <Panel defaultSize={80} minSize={20} maxSize={80}>
-          {!renderStep && <LoaderLucid />}
+          {!renderStep && <Loader />}
           {renderStep &&
             codeBlock.stepBlocks.map((item: any, index: number) => (
               <React.Fragment key={index}>

@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { Component as ComponentIcon } from "lucide-react";
 
 import PopOver from "./PopOver";
-import { MatchComponent } from "../EditorCanvas";
+import { MatchComponent } from "../Canvas";
 
 type SidebarProps = {
   children?: React.ReactNode;
