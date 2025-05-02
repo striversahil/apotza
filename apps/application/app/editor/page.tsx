@@ -1,7 +1,7 @@
 "use client";
 import GetProject from "@/actions/project";
 import { Skeleton } from "@repo/ui/skeleton";
-import { Loader } from "lucide-react";
+import { SimpleLoader } from "@/components/loader";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -13,11 +13,7 @@ const page = (props: Props) => {
   const navigate = useRouter();
 
   if (isLoading) {
-    return (
-      <div className="size-full flex justify-center items-center">
-        <Loader className="animate-spin" />
-      </div>
-    );
+    return <SimpleLoader size={25} />;
   }
 
   if (data && data.success === true) {

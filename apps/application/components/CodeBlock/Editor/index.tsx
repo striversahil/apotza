@@ -7,9 +7,9 @@ import { EditorHeader } from "./utils/EditorHeader";
 import { TabsContent } from "@radix-ui/react-tabs";
 import GetProject from "../../../actions/project";
 import IDEeditor from "./IDEditor";
-import { Loader } from "lucide-react";
 import { ApiTypeMapper } from "./utils/Mapper";
 import { UpdatedStepBlockProvider } from "../../../contexts/codeblock";
+import { SimpleLoader } from "@/components/loader";
 
 type Props = {
   value?: any;
@@ -41,7 +41,7 @@ const EditorCode = ({ value }: Props) => {
   return (
     <div className="w-full h-full">
       {/* {!activeStep && (
-        <Loader className="flex h-full justify-center items-center mx-auto animate-spin" />
+        <SimpleLoader className="flex h-full justify-center items-center mx-auto animate-spin" />
       )} */}
       <PanelGroup direction="vertical">
         <Panel defaultSize={50} minSize={20} maxSize={100}>
@@ -49,6 +49,7 @@ const EditorCode = ({ value }: Props) => {
             <EditorHeader {...activeStep} />
             <UpdatedStepBlockProvider initialvalue={activeStep}>
               {/* <StepBlockProvider initialvalue={activeStep}> */}
+              {!editorRendered && <SimpleLoader />}
               {editorRendered && ApiTypeMapper()[activeStep.type]}
               {/* </StepBlockProvider> */}
             </UpdatedStepBlockProvider>

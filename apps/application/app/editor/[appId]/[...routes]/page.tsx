@@ -9,7 +9,7 @@ import DeleteSection from "../../../../components/Canvas/Section/DeleteSection";
 import _, { debounce } from "lodash";
 import { useContextSave } from "../../_hooks/useContextSave";
 import { useResizePage } from "../../_hooks/useResizePage";
-import { Loader } from "@/components/loader";
+import { SimpleLoader } from "@/components/loader";
 
 type Props = {};
 
@@ -32,7 +32,7 @@ const page = (props: Props) => {
     }
   }, [data]);
 
-  if (isLoading) return <Loader size={25} />;
+  if (isLoading) return <SimpleLoader size={25} />;
 
   // if (isError) {
   //   navigate.push("/editor");

@@ -9,7 +9,7 @@ import { useOpen } from "../../app/editor/_hooks/useOpenCode";
 import PanelResizeHandleComp from "../utils/PanelResizeHandle";
 import GetProject from "../../actions/project";
 import StepEditorRoot from "./Steps";
-import { Loader } from "../loader";
+import { SimpleLoader } from "@/components/loader";
 import { CurrentStepProvider, useCurrentTab } from "../../contexts/codeblock";
 
 const CodeBlock = () => {
@@ -44,7 +44,7 @@ const CodeBlock = () => {
           onCollapse={handleOpenCode}
         >
           <div className="ml-1 h-full bg-slate-800 overflow-y-auto">
-            {!CodeBlockData && <Loader size={25} />}
+            {!CodeBlockData && <SimpleLoader size={25} />}
             {CodeBlockData?.map((item: any) => (
               <CurrentStepProvider currentTab={item.id} key={item.id}>
                 {item.id === currentTab && <StepEditorRoot value={item} />}

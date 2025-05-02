@@ -5,8 +5,9 @@ import languages from "@/common/Json/languages.json";
 import Image from "next/image";
 import StepsBlockAction from "@/actions/project/stepsBlock";
 import { StepBlockInterface } from "..";
-import { Loader, TestTube2 } from "lucide-react";
+import { TestTube2 } from "lucide-react";
 import { Button } from "@repo/ui/button";
+import { SimpleLoader } from "@/components/loader";
 
 export const EditorHeader = ({ id, type, name }: StepBlockInterface) => {
   const { mutate, isPending } = StepsBlockAction.codeRunner(id);
@@ -28,7 +29,7 @@ export const EditorHeader = ({ id, type, name }: StepBlockInterface) => {
         onClick={() => mutate({ id })}
         size={"sm"}
       >
-        {isPending && <Loader className="animate-spin" />}
+        {isPending && <SimpleLoader size={20} />}
         {!isPending && <TestTube2 />}
         Test Step
       </Button>

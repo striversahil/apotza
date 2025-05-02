@@ -3,7 +3,7 @@ import React from "react";
 
 type Props = {};
 
-const CustomLoader = (props: Props) => {
+const CustomSimpleLoader = (props: Props) => {
   return (
     <div className="flex-1 flex items-center justify-center h-full ">
       <h1 className="text-white font-bold capitalize text-center space-y-2">
@@ -22,7 +22,7 @@ const CustomLoader = (props: Props) => {
   );
 };
 
-const Loader = ({ size = 20 }: { size?: number }) => {
+const SimpleLoader = ({ size = 20 }: { size?: number }) => {
   return (
     <div className="w-full h-full flex items-center justify-center">
       <LucideLoader size={size} className=" animate-spin" />
@@ -30,4 +30,4 @@ const Loader = ({ size = 20 }: { size?: number }) => {
   );
 };
 
-export { CustomLoader, Loader };
+export { CustomSimpleLoader, SimpleLoader };
