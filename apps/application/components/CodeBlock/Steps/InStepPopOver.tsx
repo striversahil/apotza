@@ -44,11 +44,7 @@ const InStepPopOver = ({ value, codeBlock_id }: Props) => {
             "border-b-[3px] bg-[#141e36] border-l-[3px] border-blue-600 scale-[1.01] hover:translate-y-0"
         )}
       >
-        <TabsTrigger
-          className="w-full"
-          value={value.id}
-          onClick={() => setCurrentStep(value.id)}
-        >
+        <div className="w-full" onClick={() => setCurrentStep(value.id)}>
           <div className="font-bold flex-1 flex w-full text-center cursor-pointer  p-2">
             <Image
               src={languageHref}
@@ -59,7 +55,7 @@ const InStepPopOver = ({ value, codeBlock_id }: Props) => {
             />
             <div className="text-sm flex-1 text-center  ">{value.name}</div>
           </div>
-        </TabsTrigger>
+        </div>
         <Popover open={open2} onOpenChange={setOpen2}>
           <PopoverTrigger className=" p-2">
             <AlignJustify className="size-4 " />

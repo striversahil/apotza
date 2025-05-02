@@ -38,27 +38,23 @@ const StepEditorRoot = (props: Props) => {
     <div className="w-full h-full">
       {!codeBlock && <Loader />}
       {codeBlock && (
-        <TabRoot
-          className="w-full h-full"
-          defaultValue={currentStep ?? codeBlock.stepBlocks[0].id}
-        >
-          <PanelGroup direction="horizontal" className="">
-            <Panel defaultSize={20} minSize={20} maxSize={50}>
-              <HeaderChange value={codeBlock} />
-              <div className=" border-r border-slate-500 bg-white/5 w-full h-full">
-                <div className="relative w-full h-full">
-                  <TabsList className="flex flex-col overflow-y-scroll items-center justify-start w-full h-full gap-2 p-2 pb-[100px]">
-                    {codeBlock.stepBlocks.map((item: any, index: number) => (
-                      <div key={index} className="w-full">
-                        <InStepPopOver
-                          value={item}
-                          key={index}
-                          codeBlock_id={props.value.id}
-                        />
-                      </div>
-                    ))}
-                  </TabsList>
-                  {/* {props.value.steps.length === 0 && (
+        <PanelGroup direction="horizontal" className="">
+          <Panel defaultSize={20} minSize={20} maxSize={50}>
+            <HeaderChange value={codeBlock} />
+            <div className=" border-r border-slate-500 bg-white/5 w-full h-full">
+              <div className="relative w-full h-full">
+                <div className="flex flex-col overflow-y-scroll items-center justify-start w-full h-full gap-2 p-2 pb-[100px]">
+                  {codeBlock.stepBlocks.map((item: any, index: number) => (
+                    <div key={index} className="w-full">
+                      <InStepPopOver
+                        value={item}
+                        key={index}
+                        codeBlock_id={props.value.id}
+                      />
+                    </div>
+                  ))}
+                </div>
+                {/* {props.value.steps.length === 0 && (
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger className=" flex flex-col justify-center items-center cursor-pointer bg-white/20 rounded-lg px-5">
               Click to Add First API
@@ -67,23 +63,20 @@ const StepEditorRoot = (props: Props) => {
             <ComboPopAPI setOpen={setOpen} _id={props.value._id} />
           </Popover>
         )} */}
-                </div>
               </div>
-            </Panel>
-            <PanelResizeHandle className="p-[1px] cursor-row-resize hover:bg-blue-500" />
-            <Panel defaultSize={80} minSize={20} maxSize={80}>
-              {codeBlock.stepBlocks.map((item: any, index: number) => (
-                <TabsContent
-                  value={item.id}
-                  className="w-full h-full"
-                  key={index}
-                >
-                  <EditorCode value={item} />
-                </TabsContent>
-              ))}
-            </Panel>
-          </PanelGroup>
-        </TabRoot>
+            </div>
+          </Panel>
+          <PanelResizeHandle className="p-[1px] cursor-row-resize hover:bg-blue-500" />
+          <Panel defaultSize={80} minSize={20} maxSize={80}>
+            {codeBlock.stepBlocks.map((item: any, index: number) => (
+              <React.Fragment key={index}>
+                {item.id === currentStep && (
+                  <EditorCode value={item} key={index} />
+                )}
+              </React.Fragment>
+            ))}
+          </Panel>
+        </PanelGroup>
       )}
     </div>
   );
