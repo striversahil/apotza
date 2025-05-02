@@ -3,7 +3,7 @@ import axios from "axios";
 const RestEngine = async (
   endpoint: string,
   headers: Array<{ key: string; value: string }>,
-  body: Record<string, any>,
+  body: string,
   method: string
 ) => {
   try {
@@ -17,7 +17,7 @@ const RestEngine = async (
       method: method,
       url: endpoint,
       headers: processed_headers,
-      data: body,
+      data: JSON.parse(body),
     });
 
     if (!response) {

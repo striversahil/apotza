@@ -49,11 +49,7 @@
           "value": "application/json"
         }
       ],
-      "body": {
-        "title": "foo",
-        "body": "bar",
-        "userId": 1
-      }
+      "body": "{\n  \"title\": \"foo\",\n  \"body\": \"bar\",\n  \"userId\": 1\n}"
     },
     "output": "{  \"stdout\": \"Hello World\"}",
     "stdout": "Hello World"

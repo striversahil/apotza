@@ -1,3 +1,4 @@
+import { LucideLoader } from "lucide-react";
 import React from "react";
 
 type Props = {};
@@ -21,4 +22,12 @@ const Loader = (props: Props) => {
   );
 };
 
-export default Loader;
+const LoaderLucid = ({ size = 20 }: { size?: number }) => {
+  return (
+    <div className="w-full h-full flex items-center justify-center">
+      <LucideLoader size={size} className=" animate-spin" />
+    </div>
+  );
+};
+
+export { Loader, LoaderLucid };

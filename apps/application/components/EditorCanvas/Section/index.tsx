@@ -17,6 +17,7 @@ import _ from "lodash";
 import { useContextSave } from "../../../app/editor/_hooks/useContextSave";
 import { useSectionDroppable } from "../hooks/sectionDroppable";
 import { Loader } from "lucide-react";
+import { LoaderLucid } from "@/components/loader";
 
 interface SectionInterface {
   id: string;
@@ -104,11 +105,7 @@ radial-gradient(at 11% 90%, hsla(265,75%,65%,1) 0px, transparent 50%)
             </div>
           </div>
         )}
-        {!Components && (
-          <div className="relative h-full w-full flex justify-center items-center">
-            <Loader className="animate-spin" />
-          </div>
-        )}
+        {!Components && <LoaderLucid />}
         {/* <Label className="absolute top-[50px] left-[70px]">
             {props.value.id + props.value.name}
           </Label> */}

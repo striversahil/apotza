@@ -10,6 +10,7 @@ import DeleteSection from "../../../../components/EditorCanvas/Section/DeleteSec
 import _, { debounce } from "lodash";
 import { useContextSave } from "../../_hooks/useContextSave";
 import { useResizePage } from "../../_hooks/useResizePage";
+import { LoaderLucid } from "@/components/loader";
 
 type Props = {};
 
@@ -32,13 +33,7 @@ const page = (props: Props) => {
     }
   }, [data]);
 
-  if (isLoading) {
-    return (
-      <div className="h-full w-full flex justify-center items-center">
-        <Loader className="animate-spin" />
-      </div>
-    );
-  }
+  if (isLoading) return <LoaderLucid size={25} />;
 
   // if (isError) {
   //   navigate.push("/editor");
