@@ -1,7 +1,7 @@
 import { Input } from "@repo/ui/input";
 import { Textarea } from "@repo/ui/textarea";
 import React, { useEffect, useRef } from "react";
-import { useGlobalContext } from "../../../contexts/utils";
+import { useGlobalContext } from "../../../contexts";
 
 type Props = {
   value: {

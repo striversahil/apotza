@@ -9,8 +9,8 @@ import { useOpen } from "../../app/editor/_hooks/useOpenCode";
 import PanelResizeHandleComp from "../utils/PanelResizeHandle";
 import GetProject from "../../actions/project";
 import StepEditorRoot from "./Steps";
-import { CurrentStepProvider, useCurrentTab } from "../../contexts/codeblock";
 import Loader from "./loader";
+import { CurrentStepProvider, useCurrentTab } from "../../contexts/codeblock";
 
 const CodeBlock = () => {
   const { openCode, handleOpenCode } = useOpen();

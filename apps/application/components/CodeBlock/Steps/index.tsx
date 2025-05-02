@@ -22,11 +22,14 @@ const StepEditorRoot = (props: Props) => {
 
   const { data } = GetProject.getCodeBlock(props.value.id);
 
-  const { currentStep } = useCurrentStep() || {};
+  const { currentStep, setCurrentStep = () => {} } = useCurrentStep() || {};
+
+  // console.log("currentStep", currentStep);
 
   useEffect(() => {
     if (data) {
       setCodeBlock(data.payload);
+      setCurrentStep(data.payload.stepBlocks[0].id);
     }
   }, [data]);
   // const currentStep = codeBlock.steps[0]?._id;

@@ -14,6 +14,11 @@ type CurrentTab = {
   setCurrentTab: React.Dispatch<React.SetStateAction<string>>;
 };
 
+type TabStepOutputContext = {
+  steps: Array<StepBlockInterface>;
+  setSteps: React.Dispatch<React.SetStateAction<Array<StepBlockInterface>>>;
+};
+
 type CurrentStep = {
   currentStep: string | null;
   setCurrentStep: React.Dispatch<React.SetStateAction<string | null>>;
@@ -27,6 +32,8 @@ interface UpdatedStepBlockContext {
 const CurrentTabContext = createContext<CurrentTab | null>(null);
 
 const CurrentStepContext = createContext<CurrentStep | null>(null);
+
+const TabStepOutputContext = createContext<TabStepOutputContext | null>(null);
 
 const UpdatedStepBlockContext = createContext<UpdatedStepBlockContext | null>(
   null
@@ -65,12 +72,25 @@ export const CurrentStepProvider = ({
     if (stepBlocks && !currentStep) {
       setCurrentStep(stepBlocks.payload.stepBlocks[0].id);
     }
-  }, [stepBlocks, currentTab]);
+  }, [currentTab]);
 
   return (
     <CurrentStepContext.Provider value={{ currentStep, setCurrentStep }}>
       {children}
     </CurrentStepContext.Provider>
+  );
+};
+
+export const TabStepOutputProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
+  const [steps, setSteps] = useState<Array<StepBlockInterface>>([]);
+  return (
+    <TabStepOutputContext.Provider value={{ steps, setSteps }}>
+      {children}
+    </TabStepOutputContext.Provider>
   );
 };
 
@@ -93,5 +113,6 @@ export const UpdatedStepBlockProvider = ({
 
 export const useCurrentTab = () => useContext(CurrentTabContext);
 export const useCurrentStep = () => useContext(CurrentStepContext);
+export const useTabStepOutput = () => useContext(TabStepOutputContext);
 export const useUpdatedStepBlock = () => useContext(UpdatedStepBlockContext);
 // setCurrentTab should set localstorage as well
