@@ -22,7 +22,7 @@ const IDEeditor = ({ code, onChange, language }: Props) => {
         path="/editor.ts"
         loading={
           <div className="h-full w-full flex items-center justify-center bg-[#1e1e1e]">
-            <Loader className="animate-spin" />
+            {/* <Loader className="animate-spin" /> */}
           </div>
         }
         defaultValue={code || ""}

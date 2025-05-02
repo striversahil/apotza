@@ -25,42 +25,41 @@ export type StepBlockInterface = {
   request: string;
 };
 
-const EditorCode = (props: Props) => {
-  const [activeStep, setActiveStep] = React.useState<StepBlockInterface | null>(
-    null
-  );
+const EditorCode = ({ value }: Props) => {
+  const [activeStep, setActiveStep] = React.useState<StepBlockInterface>(value);
+  const [editorRendered, setEditorRendered] = React.useState(false);
 
-  const { data } = GetProject.getStep(props.value.id);
+  const { data } = GetProject.getStep(value.id);
 
   useEffect(() => {
     if (data) {
       setActiveStep(data.payload);
+      setEditorRendered(true);
     }
   }, [data]);
 
   return (
     <div className="w-full h-full">
-      {!activeStep && (
+      {/* {!activeStep && (
         <Loader className="flex h-full justify-center items-center mx-auto animate-spin" />
-      )}
-      {activeStep && (
-        <PanelGroup direction="vertical">
-          <Panel defaultSize={50} minSize={20} maxSize={100}>
-            <div className="relative h-full items-center">
-              <EditorHeader {...activeStep} />
-              <UpdatedStepBlockProvider initialvalue={activeStep}>
-                {/* <StepBlockProvider initialvalue={activeStep}> */}
-                {ApiTypeMapper()[activeStep.type]}
-                {/* </StepBlockProvider> */}
-              </UpdatedStepBlockProvider>
-            </div>
-          </Panel>
-          <PanelResizeHandleComp />
-          <Panel defaultSize={50} minSize={20} maxSize={100}>
-            <Output {...activeStep} />
-          </Panel>
-        </PanelGroup>
-      )}
+      )} */}
+      <PanelGroup direction="vertical">
+        <Panel defaultSize={50} minSize={20} maxSize={100}>
+          <div className="relative h-full items-center">
+            <EditorHeader {...activeStep} />
+            <UpdatedStepBlockProvider initialvalue={activeStep}>
+              {/* <StepBlockProvider initialvalue={activeStep}> */}
+              {editorRendered && ApiTypeMapper()[activeStep.type]}
+              {/* </StepBlockProvider> */}
+            </UpdatedStepBlockProvider>
+          </div>
+        </Panel>
+        <PanelResizeHandleComp />
+        <Panel defaultSize={50} minSize={20} maxSize={100}>
+          <Output {...activeStep} />
+        </Panel>
+      </PanelGroup>
+      {/* )} */}
     </div>
   );
 };

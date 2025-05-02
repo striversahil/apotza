@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useStepBlock } from "../../../../contexts/codeBlock";
 import { useStepConfig } from "../utils/useSaveStepConfig";
 import IDEeditor from "../IDEditor";
 
