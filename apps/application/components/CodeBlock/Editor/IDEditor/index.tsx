@@ -7,6 +7,9 @@ import { useClickOutside, useFocusWithin } from "@mantine/hooks";
 import StepsBlockAction from "../../../../actions/project/stepsBlock";
 import GetProject from "@/actions/project";
 import { Loader } from "lucide-react";
+import { Popover } from "@repo/ui/popover";
+import PopoverContext from "@/components/PopoverContext";
+import { PopoverTrigger } from "@radix-ui/react-popover";
 
 type Props = {
   language: string;
@@ -16,6 +19,7 @@ type Props = {
 
 const IDEditor = ({ code, onChange, language }: Props) => {
   const [focused, setFocused] = useState(false);
+  const [enablePopover, setEnablePopover] = useState(false);
   const editorRef = useRef(null);
 
   const handleEditorDidMount = (editor: any, monacoInstance: any) => {
@@ -23,18 +27,18 @@ const IDEditor = ({ code, onChange, language }: Props) => {
 
     editor.onDidFocusEditorWidget(() => {
       setFocused(true);
-      console.log("🔥 Editor focused");
     });
 
     editor.onDidBlurEditorWidget(() => {
       setFocused(false);
-      console.log("💤 Editor blurred");
     });
   };
 
   const PopoverContextTrigger = (e: KeyboardEvent) => {
-    if (e.code === "Space") {
-      console.log("Escape key hit! Focused? 👉", focused);
+    if (e.key === "{" && focused) {
+      setEnablePopover(true);
+    } else {
+      setEnablePopover(false);
     }
   };
 
@@ -46,28 +50,33 @@ const IDEditor = ({ code, onChange, language }: Props) => {
   }, [focused]);
 
   return (
-    <div className="relative w-[100%] overscroll-none h-full rounded-lg overflow-hidden">
-      <IDE
-        language={language}
-        theme="vs-dark"
-        path="/editor.ts"
-        loading={
-          <div className="h-full w-full flex items-center justify-center bg-[#1e1e1e]">
-            {/* <Loader className="animate-spin" /> */}
-          </div>
-        }
-        onMount={(editor, monaco) => handleEditorDidMount(editor, monaco)}
-        defaultValue={code || ""}
-        height={"100%"}
-        options={{
-          fontSize: 14,
-          fontFamily: "Consolas, 'Courier New', monospace",
-        }}
-        onChange={(code) => onChange(code || "")}
-        className=""
-      />
-      <div className="absolute w-14 h-full z-10 top-0 rounded-r-lg right-0 bg-[#1e1e1e]"></div>
-    </div>
+    <Popover open={enablePopover}>
+      <PopoverTrigger asChild>
+        <div className="relative w-[100%] overscroll-none h-full rounded-lg overflow-hidden">
+          <IDE
+            language={language}
+            theme="vs-dark"
+            path="/editor.ts"
+            loading={
+              <div className="h-full w-full flex items-center justify-center bg-[#1e1e1e]">
+                {/* <Loader className="animate-spin" /> */}
+              </div>
+            }
+            onMount={(editor, monaco) => handleEditorDidMount(editor, monaco)}
+            defaultValue={code || ""}
+            height={"100%"}
+            options={{
+              fontSize: 14,
+              fontFamily: "Consolas, 'Courier New', monospace",
+            }}
+            onChange={(code) => onChange(code || "")}
+            className=""
+          />
+          <div className="absolute w-14 h-full z-10 top-0 rounded-r-lg right-0 bg-[#1e1e1e]"></div>
+        </div>
+      </PopoverTrigger>
+      <PopoverContext setIsOpen={setEnablePopover} />
+    </Popover>
   );
 };
 

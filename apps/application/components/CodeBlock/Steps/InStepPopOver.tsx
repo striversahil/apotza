@@ -60,8 +60,8 @@ const InStepPopOver = ({ value, codeBlock_id }: Props) => {
           <PopoverTrigger className=" p-2">
             <AlignJustify className="size-4 " />
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0">
-            <div className="flex flex-col p-2 rounded-md gap-2">
+          <PopoverContent className="w-auto p-0 rounded-xl">
+            <div className="flex flex-col p-2  gap-2">
               <div
                 className="bg-white/40 flex items-center hover:bg-white/20 p-1 rounded-md cursor-pointer"
                 onClick={() => {
