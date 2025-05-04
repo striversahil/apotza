@@ -31,18 +31,13 @@ class StepBlockController {
   }
 
   static async runBlock(req: Request, res: Response) {
-    const { id, type } = req.body;
-    if (!id || !type) return ErrorResponse(res, "Provide all fields", 400);
-    const validParams = getValidParam(type);
-    if (!validParams)
-      return ErrorResponse(res, "Invalid type of Operation found", 400);
-
-    const stepBlock = await StepBlockService.runBlock(id, type);
-    if (!stepBlock)
-      return ErrorResponse(res, "StepBlock could not be run", 400);
-    SuccessResponse(res, "StepBlock Run successfully", null, stepBlock);
-
     try {
+      const { id } = req.body;
+      if (!id) return ErrorResponse(res, "Provide all fields", 400);
+      const stepBlock = await StepBlockService.runBlock(id);
+      if (!stepBlock)
+        return ErrorResponse(res, "StepBlock could not be run", 400);
+      SuccessResponse(res, "StepBlock Run successfully", null, stepBlock);
     } catch (error) {
       ErrorResponse(res, "", null);
     }

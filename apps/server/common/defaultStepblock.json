@@ -4,7 +4,7 @@
     "config": {
       "code": "print('Hello World')"
     },
-    "output": "Hello World",
+    "output": "{  \"stdout\": \"Hello World\"}",
     "stdout": "Hello World"
   },
   "javascript": {
@@ -12,16 +12,16 @@
     "config": {
       "code": "console.log('Hello World')"
     },
-    "stdout": "Hello World",
-    "output": "Hello World"
+    "output": "{  \"stdout\": \"Hello World\"}",
+    "stdout": "Hello World"
   },
   "graphql": {
     "name": "GraphQL",
     "config": {
       "code": "query {\n  user(id: \"1\") {\n    id\n    name\n    email\n  }\n}"
     },
-    "stdout": "Hello World",
-    "output": "Hello World"
+    "output": "{  \"stdout\": \"Hello World\"}",
+    "stdout": "Hello World"
   },
   "postgres": {
     "name": "Postgres",
@@ -35,18 +35,23 @@
         "password": "oPbDLgHLZOHrozvk"
       }
     },
-    "stdout": "Hello World",
-    "output": "Hello World"
+    "output": "{  \"stdout\": \"Hello World\"}",
+    "stdout": "Hello World"
   },
   "rest": {
     "name": "REST API",
     "config": {
       "endpoint": "https://jsonplaceholder.typicode.com/posts/",
-      "headers": {
-        "Content-Type": "application/json"
-      }
+      "method": "GET",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": "{\n  \"title\": \"foo\",\n  \"body\": \"bar\",\n  \"userId\": 1\n}"
     },
-    "stdout": "Hello World",
-    "output": "Hello World"
+    "output": "{  \"stdout\": \"Hello World\"}",
+    "stdout": "Hello World"
   }
 }

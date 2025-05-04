@@ -7,16 +7,16 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 import { useOpen } from "../../app/editor/_hooks/useOpenCode";
 import PanelResizeHandleComp from "../utils/PanelResizeHandle";
-import { useQueryData } from "@/hooks/useQueryData";
-import { TabsContent } from "@radix-ui/react-tabs";
 import GetProject from "../../actions/project";
 import StepEditorRoot from "./Steps";
-import { useCurrentTab } from "../../app/editor/_hooks/useCurrentTab";
-import Loader from "./loader";
+import { SimpleLoader } from "@/components/loader";
+import { CurrentStepProvider, useCurrentTab } from "../../contexts/codeblock";
 
 const CodeBlock = () => {
   const { openCode, handleOpenCode } = useOpen();
-  const [CodeBlockData, setCodeBlockData] = useState<any>(null);
+  const [CodeBlockData, setCodeBlockData] = useState<[] | null>(null);
+
+  const { currentTab } = useCurrentTab() || {};
 
   const { isLoading, data } = GetProject.getProject();
 
@@ -24,7 +24,7 @@ const CodeBlock = () => {
     if (data) {
       setCodeBlockData(data.payload.codeblocks);
     }
-  }, [data]);
+  }, [data, currentTab]);
 
   return (
     <>
@@ -37,25 +37,19 @@ const CodeBlock = () => {
       {openCode && <PanelResizeHandleComp />}
       {openCode && (
         <Panel
-          defaultSize={40}
+          defaultSize={43}
           minSize={20}
           maxSize={100}
           collapsible
           onCollapse={handleOpenCode}
         >
-          <div className="ml-1 h-full bg-slate-800">
-            {!CodeBlockData && <Loader />}
-            {CodeBlockData?.map((item: any, index: number) => {
-              return (
-                <TabsContent
-                  key={index}
-                  className="w-full h-full"
-                  value={index.toString()}
-                >
-                  <StepEditorRoot value={item} />
-                </TabsContent>
-              );
-            })}
+          <div className="ml-1 h-full bg-slate-800 overflow-y-auto">
+            {!CodeBlockData && <SimpleLoader size={25} />}
+            {CodeBlockData?.map((item: any) => (
+              <CurrentStepProvider currentTab={item.id} key={item.id}>
+                {item.id === currentTab && <StepEditorRoot value={item} />}
+              </CurrentStepProvider>
+            ))}
           </div>
         </Panel>
       )}

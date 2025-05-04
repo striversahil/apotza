@@ -3,26 +3,64 @@ import React, { useEffect, useState } from "react";
 import Output from "../Output";
 import { Panel, PanelGroup } from "react-resizable-panels";
 import PanelResizeHandleComp from "../../utils/PanelResizeHandle";
-import { EditorZone } from "./EditorZone";
+import { EditorHeader } from "./utils/EditorHeader";
 import { TabsContent } from "@radix-ui/react-tabs";
 import GetProject from "../../../actions/project";
+import IDEeditor from "./IDEditor";
+import { ApiTypeMapper } from "./utils/Mapper";
+import { UpdatedStepBlockProvider } from "../../../contexts/codeblock";
+import { SimpleLoader } from "@/components/loader";
 
 type Props = {
   value?: any;
 };
+export type StepBlockInterface = {
+  id: string;
+  name: string;
+  type: "python" | "javascript" | "graphql" | "postgres" | "rest";
+  codeblock: string;
+  config: { [key: string]: string };
+  stdout: string;
+  output: any;
+  request: string;
+};
 
-const EditorCode = (props: Props) => {
+const EditorCode = ({ value }: Props) => {
+  const [activeStep, setActiveStep] = React.useState<StepBlockInterface>(value);
+  const [editorRendered, setEditorRendered] = React.useState(false);
+
+  const { data } = GetProject.getStep(value.id);
+
+  useEffect(() => {
+    if (data) {
+      setActiveStep(data.payload);
+      setEditorRendered(true);
+    }
+  }, [data]);
+
   return (
     <div className="w-full h-full">
+      {/* {!activeStep && (
+        <SimpleLoader className="flex h-full justify-center items-center mx-auto animate-spin" />
+      )} */}
       <PanelGroup direction="vertical">
-        <Panel defaultSize={60} minSize={20} maxSize={100}>
-          <EditorZone value={props.value} />
+        <Panel defaultSize={50} minSize={20} maxSize={100}>
+          <div className="relative h-full items-center">
+            <EditorHeader {...activeStep} />
+            <UpdatedStepBlockProvider initialvalue={activeStep}>
+              {/* <StepBlockProvider initialvalue={activeStep}> */}
+              {!editorRendered && <SimpleLoader />}
+              {editorRendered && ApiTypeMapper()[activeStep.type]}
+              {/* </StepBlockProvider> */}
+            </UpdatedStepBlockProvider>
+          </div>
         </Panel>
         <PanelResizeHandleComp />
-        <Panel defaultSize={40} minSize={20} maxSize={100}>
-          <Output value={props.value} />
+        <Panel defaultSize={50} minSize={20} maxSize={100}>
+          <Output {...activeStep} />
         </Panel>
       </PanelGroup>
+      {/* )} */}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 const JavaScriptEngine = async (query: string) => {
   const isSafe =
-    !/(\b(eval|Function|require|process|child_process|globalThis|window|document|while|for)\b)/.test(
+    !/(\b(eval|Function|require|process|child_process|globalThis|window|document)\b)/.test(
       query
     );
 
@@ -27,18 +27,18 @@ const JavaScriptEngine = async (query: string) => {
     ""
   );
 
-  const runner = `return (async () => {
-      try {
-        await ${removedExports}
-        }
-      catch (error) {
-      return "⚠️ Error: " + error
-      }
-    
-    })() `;
+  // const runner = `return (async () => {
+  //     try {
+  //       await ${removedExports}
+  //       }
+  //     catch (error) {
+  //     return "⚠️ Error: " + error
+  //     }
+
+  //   })() `;
 
   try {
-    const output = await new Function(query)();
+    const output = await new Function(removedExports)();
     return {
       error: null,
       data: output, // It's Returning Data that need to be transformed

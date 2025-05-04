@@ -12,6 +12,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@repo/ui/Tooltip/tooltip";
+import { useCurrentStep } from "../../../contexts/codeblock";
+import { cn } from "@/lib/utils";
 
 type Props = {
   value: any;
@@ -21,37 +23,45 @@ type Props = {
 const InStepPopOver = ({ value, codeBlock_id }: Props) => {
   const [open, setOpen] = React.useState(true);
   const [open2, setOpen2] = React.useState(true);
+  const { currentStep, setCurrentStep = (step: string) => {} } =
+    useCurrentStep() || {};
 
   const { mutate } = StepsBlockAction.delete(codeBlock_id);
 
   const { mutate: mutateDuplicate } = StepsBlockAction.duplicate(codeBlock_id);
 
   const languageHref =
-    (value.language &&
-      languages.find((item) => item.value === value.language)?.icon_href) ||
-    "/assets/languages/mysql.svg";
+    (value.type &&
+      languages.find((item) => item.value === value.type)?.icon_href) ||
+    "/assets/languages/python.svg";
 
   return (
     <div>
-      <div className="bg-white/20 w-full p-2 rounded-md flex items-center justify-center">
-        <TabsTrigger className="w-full" value={value.id}>
-          <div className="font-bold flex-1 flex w-full text-center cursor-pointer">
+      <div
+        className={cn(
+          "bg-slate-900 shadow-lg shadow-black/30 w-full rounded-lg flex items-center justify-center hover:translate-y-[-2px] transition-all duration-100  cursor-pointer",
+          currentStep === value.id &&
+            "border-b-[3px] bg-[#141e36] border-l-[3px] border-blue-600 scale-[1.01] hover:translate-y-0"
+        )}
+      >
+        <div className="w-full" onClick={() => setCurrentStep(value.id)}>
+          <div className="font-bold flex-1 flex w-full text-center cursor-pointer  p-2">
             <Image
               src={languageHref}
               width={25}
               height={25}
               alt="Image"
-              className="p-[1px] shadow-2xl hover:bg-white/50 bg-white/30 rounded-md"
+              className=""
             />
             <div className="text-sm flex-1 text-center  ">{value.name}</div>
           </div>
-        </TabsTrigger>
+        </div>
         <Popover open={open2} onOpenChange={setOpen2}>
-          <PopoverTrigger className="">
+          <PopoverTrigger className=" p-2">
             <AlignJustify className="size-4 " />
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0">
-            <div className="flex flex-col p-2 rounded-md gap-2">
+          <PopoverContent className="w-auto p-0 rounded-xl">
+            <div className="flex flex-col p-2  gap-2">
               <div
                 className="bg-white/40 flex items-center hover:bg-white/20 p-1 rounded-md cursor-pointer"
                 onClick={() => {

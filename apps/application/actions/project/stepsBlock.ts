@@ -1,4 +1,4 @@
-import { useCurrentTab } from "../../app/editor/_hooks/useCurrentTab";
+import { useCurrentTab } from "../../contexts/codeblock";
 import { useMutationData } from "@/hooks/useMutation";
 import { toast } from "sonner";
 import api from "..";
@@ -10,7 +10,7 @@ const source = "/stepblock";
 const StepsBlockAction = {
   add: (currentTab: string) => {
     const { mutate } = useMutationData(
-      ["CodeBlockAction.addstep"],
+      ["StepsBlockAction.addstep"],
       async (payload: any) => {
         const response = await api.post(`${source}/`, payload);
         return response.data;
@@ -42,41 +42,33 @@ const StepsBlockAction = {
     return { mutate };
   },
 
-  codeRunner: (step_id: string) => {
-    const { mutate } = useMutationData(
-      ["CodeBlockAction.codeRunner"],
+  codeRunner: (id: string) => {
+    return useMutationData(
+      ["StepsBlockAction.codeRunner"],
       async (payload: any) => {
         const response = await api.post(`${source}/run`, payload);
         return response.data;
       },
-      [[`GetProject.getOneStep-${step_id}` as string]],
-      undefined
+      [[`GetProject.getOneStep-${id}` as string]],
+      () => {},
+      () => {}
     );
-    return { mutate };
   },
 
-  update: (codeBlock_id: string) => {
+  update: (id: string) => {
     const { mutate } = useMutationData(
-      ["CodeBlockAction.updateStep"],
+      ["StepsBlockAction.update"],
       async (payload: any) => {
-        const response = await api.patch(`${source}/${payload.id}`, payload);
+        const response = await api.patch(`${source}/${id}`, payload);
         return response.data;
       },
-      [[`GetProject.getOneCodeBlock-${codeBlock_id}` as string]],
+      [[`GetProject.getOneStep-${id}` as string]],
       (previousData: any, variables: any) => {
         return {
           ...previousData,
           payload: {
             ...previousData.payload,
-            steps: [...previousData.payload.steps].map((item: any) => {
-              if (item.id === variables.id) {
-                return {
-                  ...item,
-                  ...variables,
-                };
-              }
-              return item;
-            }),
+            config: variables.config ?? previousData.payload.config,
           },
         };
       },
@@ -85,9 +77,21 @@ const StepsBlockAction = {
     return { mutate };
   },
 
+  // update: (id: string) => {
+  //   const { mutate } = useMutationData(
+  //     ["StepsBlockAction.update"],
+  //     async (payload: any) => {
+  //       const response = await api.patch(`${source}/${id}`, payload);
+  //       return response.data;
+  //     },
+  //     [[`GetProject.getOneStep-${id}` as string]],
+  //   );
+  //   return { mutate };
+  // },
+
   duplicate: (currentTab: string) => {
     const { mutate } = useMutationData(
-      ["CodeBlockAction.duplicateStep"],
+      ["StepsBlockAction.duplicateStep"],
       async (payload: any) => {
         const response = await api.post(`${source}/duplicate`, payload);
         return response.data;

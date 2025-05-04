@@ -7,8 +7,9 @@ import {
   Tooltip,
 } from "@repo/ui/Tooltip/tooltip";
 import { useMutationData } from "@/hooks/useMutation";
-import { Pencil } from "lucide-react";
+import { Pencil, PlayCircle } from "lucide-react";
 import React from "react";
+import { Button } from "@repo/ui/button";
 
 type Props = {
   value: any;
@@ -24,36 +25,39 @@ const HeaderChange = (props: Props) => {
     useClickOutsideEnter(Mutation, props.value.name);
 
   return (
-    <div>
-      {!mount && (
+    <div className="flex p-2 gap-2 items-center ">
+      <div className="flex bg-[#344a5e] shadow-sm shadow-white/50 cursor-pointer w-full  rounded-3xl ">
         <div
-          className="flex cursor-pointer w-full p-2 text-md text-center bg-blue-400 rounded-md shadow-lg"
           onClick={() => setMount(true)}
+          className="flex flex-1 text-md  text-xl text-center font-bold"
         >
-          <span className="flex-1">
-            <span className=" font-bold">{value}</span>
-          </span>
-          <div className="">
-            <Tooltip>
-              <TooltipTrigger>
-                <Pencil className=" duration-100 fill-green-400 " />
-              </TooltipTrigger>
-              <TooltipContent>Change Name</TooltipContent>
-            </Tooltip>
-          </div>
+          {!mount && (
+            <div className="flex-1 py-2">
+              <div className="">{value}</div>
+            </div>
+          )}
+          {mount && (
+            <Input
+              type="text"
+              ref={ref}
+              value={value}
+              autoFocus
+              onKeyDown={EnterClick}
+              onChange={ValueChange}
+              className="border-none text-center h-full bg-inherit ring-0 outline-none focus:outline-none"
+            />
+          )}
         </div>
-      )}
-      {mount && (
-        <Input
-          type="text"
-          ref={ref}
-          value={value}
-          autoFocus
-          onKeyDown={EnterClick}
-          onChange={ValueChange}
-          className="bg-transparent border-none text-center bg-black text-white"
-        />
-      )}
+      </div>
+      <div className="" onClick={(e) => e.preventDefault()}>
+        <Button
+          className="text-xs font-bold text-white bg-[#197b94] shadow-md shadow-black/50  hover:bg-[#1e92af91]"
+          size={"sm"}
+        >
+          <PlayCircle className="" />
+          Run API
+        </Button>
+      </div>
     </div>
   );
 };

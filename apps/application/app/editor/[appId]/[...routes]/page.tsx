@@ -3,13 +3,13 @@ import React, { useEffect, useRef } from "react";
 
 import GetProject from "@/actions/project";
 import { usePathname, useRouter } from "next/navigation";
-import { Loader } from "lucide-react";
-import Section from "../../../../components/EditorCanvas/Section";
-import AddSection from "../../../../components/EditorCanvas/Section/AddSection";
-import DeleteSection from "../../../../components/EditorCanvas/Section/DeleteSection";
+import Section from "../../../../components/Canvas/Section";
+import AddSection from "../../../../components/Canvas/Section/AddSection";
+import DeleteSection from "../../../../components/Canvas/Section/DeleteSection";
 import _, { debounce } from "lodash";
 import { useContextSave } from "../../_hooks/useContextSave";
 import { useResizePage } from "../../_hooks/useResizePage";
+import { SimpleLoader } from "@/components/loader";
 
 type Props = {};
 
@@ -32,13 +32,7 @@ const page = (props: Props) => {
     }
   }, [data]);
 
-  if (isLoading) {
-    return (
-      <div className="h-full w-full flex justify-center items-center">
-        <Loader className="animate-spin" />
-      </div>
-    );
-  }
+  if (isLoading) return <SimpleLoader size={25} />;
 
   // if (isError) {
   //   navigate.push("/editor");

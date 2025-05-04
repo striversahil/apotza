@@ -7,8 +7,8 @@ const PanelResizeHandleComp = (props: Props) => {
   const [drag, setDrag] = React.useState(false);
   return (
     <div
-      className={`p-[2px]  ${drag ? "bg-blue-500" : "hover:bg-blue-500"}`}
-      onDrag={() => setDrag(true)}
+      className={`py-[2px]  ${drag ? "bg-blue-500" : "hover:bg-blue-500"}`}
+      onFocus={() => setDrag(true)}
     >
       <PanelResizeHandle />
     </div>

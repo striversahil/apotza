@@ -1,4 +1,4 @@
-import { useCurrentTab } from "../../app/editor/_hooks/useCurrentTab";
+import { useCurrentTab } from "../../contexts/codeblock";
 import { useMutationData } from "@/hooks/useMutation";
 
 import api from "..";

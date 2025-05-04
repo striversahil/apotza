@@ -2,13 +2,22 @@ import axios from "axios";
 
 const RestEngine = async (
   endpoint: string,
-  headers: Record<string, string>
-  // body: Record<string, any>
+  headers: Array<{ key: string; value: string }>,
+  body: string,
+  method: string
 ) => {
   try {
-    const response = await axios.get(endpoint, {
-      headers: headers,
-      // data: body,
+    const processed_headers: Record<string, string> = {};
+
+    headers.forEach((header) => {
+      processed_headers[header.key] = header.value;
+    });
+
+    const response = await axios({
+      method: method,
+      url: endpoint,
+      headers: processed_headers,
+      data: JSON.parse(body),
     });
 
     if (!response) {

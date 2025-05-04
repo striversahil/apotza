@@ -16,7 +16,11 @@ import Header from "../../components/Header";
 import { useOpen } from "./_hooks/useOpenCode";
 import { Tabs as TabsRoot } from "@repo/ui/tabs";
 import { TooltipProvider } from "@repo/ui/Tooltip/tooltip";
-import { useCurrentTab } from "./_hooks/useCurrentTab";
+import {
+  CurrentTabProvider,
+  TabStepOutputProvider,
+  useCurrentTab,
+} from "../../contexts/codeblock";
 import { useDragEnd } from "./_hooks/usedragEnd";
 import Provider from "./providers";
 import { restrictToWindowEdges } from "@dnd-kit/modifiers";
@@ -69,16 +73,18 @@ const layout = (props: Props) => {
               }}
             >
               <Panel defaultSize={80}>
-                <TabsRoot defaultValue={"0"} className="h-full">
-                  <PanelGroup direction="vertical" className="">
-                    <Panel defaultSize={60} className="relative">
-                      <div className="absolute inset-0  overflow-y-scroll">
-                        {props.children}
-                      </div>
-                    </Panel>
-                    <CodeBlock />
-                  </PanelGroup>
-                </TabsRoot>
+                <CurrentTabProvider>
+                  <TabStepOutputProvider>
+                    <PanelGroup direction="vertical" className="">
+                      <Panel defaultSize={57} className="relative">
+                        <div className="absolute inset-0  overflow-y-scroll">
+                          {props.children}
+                        </div>
+                      </Panel>
+                      <CodeBlock />
+                    </PanelGroup>
+                  </TabStepOutputProvider>
+                </CurrentTabProvider>
               </Panel>
               {openConfig && (
                 <PanelResizeHandle className="p-[2px] cursor-row-resize hover:bg-blue-500" />
