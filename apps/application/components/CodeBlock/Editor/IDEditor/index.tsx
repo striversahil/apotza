@@ -75,7 +75,7 @@ const IDEditor = ({ code, onChange, language }: Props) => {
           <div className="absolute w-14 h-full z-10 top-0 rounded-r-lg right-0 bg-[#1e1e1e]"></div>
         </div>
       </PopoverTrigger>
-      <PopoverContext setIsOpen={setEnablePopover} />
+      {/* <PopoverContext setIsOpen={setEnablePopover} /> */}
     </Popover>
   );
 };

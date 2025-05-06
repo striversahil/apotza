@@ -1,4 +1,6 @@
 import httpServer from "./app";
+import Redis from "ioredis";
+export const redis = new Redis(); // default localhost:6379
 import "dotenv/config";
 import { configDotenv } from "dotenv";
 import { connectDB } from "./database";

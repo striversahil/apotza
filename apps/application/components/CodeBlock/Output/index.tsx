@@ -78,7 +78,7 @@ const Output = ({ id, stdout, output }: StepBlockInterface) => {
                   sortKeys={false}
                   iconStyle="square"
                   style={{
-                    fontSize: "12px",
+                    fontSize: "13px",
                     fontFamily: "monospace",
                     width: "100%",
                     height: "100%",
