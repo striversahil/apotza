@@ -8,6 +8,7 @@ class CodeBlockController {
       const { name, language } = req.body;
       const project_id = req.cookies.project_id;
       if (!project_id) return ErrorResponse(res, "Project does not exist", 404);
+
       const codeBlock = await CodeBlockService.create(
         project_id,
         name,
@@ -77,9 +78,10 @@ class CodeBlockController {
         return ErrorResponse(res, "CodeBlock could not be fetched", 404);
 
       const context: Record<string, any> = {};
-      if (codeBlock.stepBlock?.length) {
-        for (const stepBlock of codeBlock.stepBlock) {
+      if (codeBlock.stepBlocks?.length) {
+        for (const stepBlock of codeBlock.stepBlocks) {
           context[stepBlock.name] = stepBlock.output;
+          // console.log("context", stepBlock.output);
         }
       }
 

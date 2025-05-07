@@ -2,9 +2,9 @@
  * CodeBlock Service : It will Assume that You have done all the Validation Checks
  */
 
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db } from "../database";
-import { CodeBlock, CodeBlockInterface } from "../schema";
+import { CodeBlock, CodeBlockInterface, StepBlock } from "../schema";
 import StepBlockService from "./stepblock.service";
 
 class CodeBlockService {
@@ -12,10 +12,29 @@ class CodeBlockService {
     try {
       const codeBlock = await db.query.CodeBlock.findFirst({
         with: {
-          stepBlocks: true,
+          stepBlocks: {
+            orderBy: [StepBlock.createdAt],
+          },
         },
         where: eq(CodeBlock.id, id),
       });
+
+      return codeBlock ? codeBlock : null;
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
+  static async getByConstaint(
+    project_id: string,
+    constraint: any
+  ): Promise<CodeBlockInterface | null> {
+    try {
+      const [codeBlock] = await db
+        .select()
+        .from(CodeBlock)
+        .limit(1)
+        .where(and(eq(CodeBlock.project, project_id), ...constraint));
 
       return codeBlock ? codeBlock : null;
     } catch (error) {
@@ -29,6 +48,8 @@ class CodeBlockService {
     language?: string
   ): Promise<CodeBlockInterface | null> {
     try {
+      const prevCodeblock = this.getByConstaint(project_id, {});
+
       const [codeBlock] = await db
         .insert(CodeBlock)
         .values({
