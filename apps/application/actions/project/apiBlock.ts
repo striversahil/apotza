@@ -50,7 +50,7 @@ const TabBlockAction = {
   },
 
   update: () => {
-    const { currentTab } = useCurrentTab();
+    const { currentTab } = useCurrentTab() || {};
     const { mutate } = useMutationData(
       ["CodeBlockAction.nameChange"],
       async (payload: any) => {
