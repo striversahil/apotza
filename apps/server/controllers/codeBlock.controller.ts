@@ -69,9 +69,21 @@ class CodeBlockController {
     }
   }
   static async contextCodeBlock(req: Request, res: Response) {
-    const { id } = req.params;
-
     try {
+      const { id } = req.params;
+      if (!id) return ErrorResponse(res, "CodeBlock does not exist", 404);
+      const codeBlock: any = await CodeBlockService.getById(id);
+      if (!codeBlock)
+        return ErrorResponse(res, "CodeBlock could not be fetched", 404);
+
+      const context: Record<string, any> = {};
+      if (codeBlock.stepBlock?.length) {
+        for (const stepBlock of codeBlock.stepBlock) {
+          context[stepBlock.name] = stepBlock.output;
+        }
+      }
+
+      SuccessResponse(res, "CodeBlock fetched successfully", null, context);
     } catch (error) {
       ErrorResponse(res, "", null);
     }

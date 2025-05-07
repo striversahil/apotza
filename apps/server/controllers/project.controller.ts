@@ -99,11 +99,26 @@ class ProjectController {
 
   static async globalContext(req: Request, res: Response) {
     try {
+      const { id } = req.cookies.project_id;
+      if (!id) return ErrorResponse(res, "Project does not exist", 404);
+      const project: any = await ProjectService.getById(id);
+      if (!project)
+        return ErrorResponse(res, "Project could not be fetched", 404);
+
+      const context: Record<string, any> = {};
+
+      // Todo : Add Global Context of codeBlocks not done for Component for now
+      if (project.codeblock?.length) {
+        for (const codeBlock of project.codeBlock) {
+          context[codeBlock.name] = codeBlock.output;
+        }
+      }
+
+      SuccessResponse(res, "Project fetched successfully", null, context);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
   }
-
 
   static async temp(req: Request, res: Response) {
     try {
