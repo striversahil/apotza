@@ -11,4 +11,6 @@ router.route("/").delete(ProjectController.deleteProject);
 
 router.route("/name").post(ProjectController.updateName);
 
+router.route("/context").get(ProjectController.globalContext);
+
 export default router;

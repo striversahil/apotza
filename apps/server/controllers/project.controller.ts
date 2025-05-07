@@ -97,6 +97,14 @@ class ProjectController {
     }
   }
 
+  static async globalContext(req: Request, res: Response) {
+    try {
+    } catch (error) {
+      ErrorResponse(res, "", null);
+    }
+  }
+
+
   static async temp(req: Request, res: Response) {
     try {
     } catch (error) {

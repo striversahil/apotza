@@ -13,4 +13,6 @@ router.route("/:id").patch(CodeBlockController.updateCodeBlock);
 
 router.route("/:id").delete(CodeBlockController.deleteCodeblock);
 
+router.route("/:id/context").get(CodeBlockController.contextCodeBlock);
+
 export default router;

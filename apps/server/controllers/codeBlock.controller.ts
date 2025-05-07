@@ -68,6 +68,14 @@ class CodeBlockController {
       ErrorResponse(res, "", null);
     }
   }
+  static async contextCodeBlock(req: Request, res: Response) {
+    const { id } = req.params;
+
+    try {
+    } catch (error) {
+      ErrorResponse(res, "", null);
+    }
+  }
   static async temp(req: Request, res: Response) {
     try {
     } catch (error) {

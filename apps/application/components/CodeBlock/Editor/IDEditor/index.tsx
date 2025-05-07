@@ -1,14 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  CodeiumEditorProps,
-  CodeiumEditor as IDE,
-} from "@codeium/react-code-editor";
-import { useClickOutside, useFocusWithin } from "@mantine/hooks";
-import StepsBlockAction from "../../../../actions/project/stepsBlock";
-import GetProject from "@/actions/project";
-import { Loader } from "lucide-react";
+import { CodeiumEditor as IDE } from "@codeium/react-code-editor";
 import { Popover } from "@repo/ui/popover";
-import PopoverContext from "@/components/PopoverContext";
 import { PopoverTrigger } from "@radix-ui/react-popover";
 
 type Props = {
