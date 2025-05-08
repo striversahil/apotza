@@ -3,9 +3,11 @@ import { Button } from "@repo/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/popover";
 import { Trash } from "lucide-react";
 import React from "react";
+import { useCurrentTab } from "../../../contexts/codeblock";
 
 type Props = {
   item: any;
+  onClick?: () => void;
 };
 
 const DeleteTab = (props: Props) => {
@@ -18,7 +20,7 @@ const DeleteTab = (props: Props) => {
         id: id,
       },
     });
-    localStorage.removeItem(`currentTab-${id}`);
+    props.onClick && props.onClick();
     setOpen(false);
   };
   return (

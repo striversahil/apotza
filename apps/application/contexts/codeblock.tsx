@@ -10,8 +10,8 @@ import React, {
 } from "react";
 
 type CurrentTab = {
-  currentTab: string;
-  setCurrentTab: React.Dispatch<React.SetStateAction<string>>;
+  currentTab: string | null;
+  setCurrentTab: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 type TabStepOutputContext = {
@@ -29,26 +29,30 @@ interface UpdatedStepBlockContext {
   setUpdatedStepBlock: React.Dispatch<React.SetStateAction<any>>;
 }
 
+// Context for current tab
 const CurrentTabContext = createContext<CurrentTab | null>(null);
 
+// Context for current step
 const CurrentStepContext = createContext<CurrentStep | null>(null);
 
+// Deciding for Codeblock Context for each codeblock to use {{ auto complete }}
 const TabStepOutputContext = createContext<TabStepOutputContext | null>(null);
 
+// Context for verifying changes in updated and current step
 const UpdatedStepBlockContext = createContext<UpdatedStepBlockContext | null>(
   null
 );
 
 export const CurrentTabProvider = ({ children }: { children: ReactNode }) => {
-  const [currentTab, setCurrentTab] = useState<string>("");
+  const [currentTab, setCurrentTab] = useState<string | null>(null);
 
   const { data: codeBlock } = GetProject.getProject();
 
   useEffect(() => {
-    if (codeBlock && currentTab.length === 0) {
-      setCurrentTab(codeBlock.payload.codeblocks[0].id);
+    if (codeBlock && !currentTab) {
+      setCurrentTab(codeBlock.payload?.codeblocks[0]?.id);
     }
-  }, [codeBlock]);
+  }, [codeBlock, currentTab]);
 
   return (
     <CurrentTabContext.Provider value={{ currentTab, setCurrentTab }}>
@@ -67,6 +71,12 @@ export const CurrentStepProvider = ({
   const [currentStep, setCurrentStep] = useState<string | null>(null);
 
   // const { data: stepBlocks } = GetProject.getStep(currentTab);
+
+  // useEffect(() => {
+  //   if (stepBlocks && !currentStep) {
+  //     setCurrentStep(stepBlocks.payload?.stepBlocks[0]?.id);
+  //   }
+  // }, [stepBlocks, currentStep]);
 
   // useEffect(() => {
   //   if (stepBlocks && !currentStep) {

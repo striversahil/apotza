@@ -74,7 +74,14 @@ const Tabs = (props: Props) => {
                   </div>
                 </div>
                 <div className="ml-auto">
-                  <DeleteTab item={item} />
+                  <DeleteTab
+                    item={item}
+                    onClick={() => {
+                      currentTab &&
+                        item.id === currentTab &&
+                        setCurrentTab(null);
+                    }}
+                  />
                 </div>
               </div>
             ))}

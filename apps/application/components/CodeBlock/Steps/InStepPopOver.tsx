@@ -23,7 +23,7 @@ type Props = {
 const InStepPopOver = ({ value, codeBlock_id }: Props) => {
   const [open, setOpen] = React.useState(true);
   const [open2, setOpen2] = React.useState(true);
-  const { currentStep, setCurrentStep = (step: string) => {} } =
+  const { currentStep, setCurrentStep = (step: null) => {} } =
     useCurrentStep() || {};
 
   const { mutate } = StepsBlockAction.delete(codeBlock_id);
@@ -83,6 +83,7 @@ const InStepPopOver = ({ value, codeBlock_id }: Props) => {
                   mutate({
                     id: value.id,
                   });
+                  currentStep === value.id && setCurrentStep(null);
                 }}
               >
                 <Trash2 className="size-4" />
