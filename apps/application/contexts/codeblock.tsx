@@ -66,13 +66,13 @@ export const CurrentStepProvider = ({
 }) => {
   const [currentStep, setCurrentStep] = useState<string | null>(null);
 
-  const { data: stepBlocks } = GetProject.getStep(currentTab);
+  // const { data: stepBlocks } = GetProject.getStep(currentTab);
 
-  useEffect(() => {
-    if (stepBlocks && !currentStep) {
-      setCurrentStep(stepBlocks.payload.stepBlocks[0].id);
-    }
-  }, [currentTab]);
+  // useEffect(() => {
+  //   if (stepBlocks && !currentStep) {
+  //     setCurrentStep(stepBlocks.payload.stepBlocks[0].id);
+  //   }
+  // }, [currentTab]);
 
   return (
     <CurrentStepContext.Provider value={{ currentStep, setCurrentStep }}>
