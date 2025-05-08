@@ -46,6 +46,7 @@ export const Component = pgTable("component", {
   id: uuid("id").defaultRandom().primaryKey(),
   order_no: serial("order_no").notNull(),
   type: text("type").default("component"),
+  component: text("component"),
   page: uuid("page_id"),
   section: uuid("section_id").references(() => Section.id, {
     onDelete: "cascade",

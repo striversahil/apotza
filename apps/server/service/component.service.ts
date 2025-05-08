@@ -58,7 +58,10 @@ class ComponentService {
       const compDefault = MatchComponent[payload.name];
 
       const prevComponent = await this.getOneByConstaint(
-        eq(Component.section, payload.section),
+        and(
+          eq(Component.section, payload.section),
+          eq(Component.component, payload.name)
+        ),
         desc(Component.createdAt)
       );
 
@@ -76,6 +79,7 @@ class ComponentService {
         .values({
           ...payload,
           name: name,
+          component: payload.name,
           order_no: order_no,
           ...compDefault,
         })
