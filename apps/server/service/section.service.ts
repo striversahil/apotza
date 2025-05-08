@@ -1,4 +1,4 @@
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, or } from "drizzle-orm";
 import { db } from "../database";
 import { Section, SectionInterface } from "../schema";
 import sectionDefault from "../common/sectionDefault.json";
@@ -41,11 +41,18 @@ class SectionService {
     component_id: string | null
   ): Promise<SectionInterface | null> {
     try {
+      const conditions = [];
+
+      if (page_id) {
+        conditions.push(eq(Section.page, page_id));
+      }
+
+      if (component_id) {
+        conditions.push(eq(Section.component_id, component_id));
+      }
+
       const prevSection = await this.getOneByConstaint(
-        and(
-          eq(Section.page, page_id ?? ""),
-          eq(Section.component_id, component_id ?? "")
-        ),
+        conditions.length > 1 ? or(...conditions) : conditions[0],
         desc(Section.createdAt)
       );
 
@@ -62,8 +69,8 @@ class SectionService {
         .insert(Section)
         .values({
           name: name,
-          page: page_id ?? "",
-          component_id: component_id ?? "",
+          page: page_id ?? null,
+          component_id: component_id ?? null,
           order_no: order_no,
           layout: sectionDefault.layout,
           appearance: sectionDefault.appearance,

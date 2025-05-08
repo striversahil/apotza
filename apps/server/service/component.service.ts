@@ -19,7 +19,7 @@ class ComponentService {
         with: {
           components: true,
         },
-        where: eq(Section.component_id ?? "1", id),
+        where: eq(Section.component_id ?? " ", id),
       });
 
       if (!component) return null;

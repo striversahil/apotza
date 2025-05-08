@@ -44,7 +44,7 @@ class StepBlockService {
       if (!payload) return null;
 
       const prevStepBlock = await this.getOneByConstaint(
-        eq(StepBlock.codeblock, codeBlock_id),
+        and(eq(StepBlock.codeblock, codeBlock_id), eq(StepBlock.type, type)),
         desc(StepBlock.createdAt)
       );
 
