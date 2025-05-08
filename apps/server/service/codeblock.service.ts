@@ -2,7 +2,7 @@
  * CodeBlock Service : It will Assume that You have done all the Validation Checks
  */
 
-import { and, eq } from "drizzle-orm";
+import { and, eq, desc } from "drizzle-orm";
 import { db } from "../database";
 import { CodeBlock, CodeBlockInterface, StepBlock } from "../schema";
 import StepBlockService from "./stepblock.service";
@@ -25,16 +25,18 @@ class CodeBlockService {
     }
   }
 
-  static async getByConstaint(
+  static async getOneByConstaint(
     project_id: string,
-    constraint: any
+    where: any,
+    orderBy?: any
   ): Promise<CodeBlockInterface | null> {
     try {
       const [codeBlock] = await db
         .select()
         .from(CodeBlock)
         .limit(1)
-        .where(and(eq(CodeBlock.project, project_id), ...constraint));
+        .where(and(eq(CodeBlock.project, project_id), where))
+        .orderBy(orderBy);
 
       return codeBlock ? codeBlock : null;
     } catch (error) {
@@ -44,11 +46,21 @@ class CodeBlockService {
 
   static async create(
     project_id: string,
-    name: string,
+    _name: string,
     language?: string
   ): Promise<CodeBlockInterface | null> {
     try {
-      const prevCodeblock = this.getByConstaint(project_id, {});
+      const prevCodeblock = await this.getOneByConstaint(
+        project_id,
+        desc(CodeBlock.createdAt)
+      );
+
+      let name = `${_name} 1`; // Adding default name to be "CodeBlock 1"
+
+      if (prevCodeblock) {
+        const prevCodeNo = Number(prevCodeblock.name.split(" ")[1]);
+        name = `${_name} ${prevCodeNo + 1}`;
+      }
 
       const [codeBlock] = await db
         .insert(CodeBlock)

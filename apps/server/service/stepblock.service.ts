@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db } from "../database";
 import { StepBlock, StepBlockInterface } from "../schema";
 import stepBlockDefault from "../utils/stepBlockDefault";
@@ -12,6 +12,25 @@ class StepBlockService {
         .select()
         .from(StepBlock)
         .where(eq(StepBlock.id, stepBlock_id));
+      return stepBlock ? stepBlock : null;
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
+  static async getOneByConstaint(
+    codeBlock_id: string,
+    where: any,
+    orderBy?: any
+  ): Promise<StepBlockInterface | null> {
+    try {
+      const [stepBlock] = await db
+        .select()
+        .from(StepBlock)
+        .limit(1)
+        .where(and(eq(StepBlock.codeblock, codeBlock_id), where))
+        .orderBy(orderBy);
+
       return stepBlock ? stepBlock : null;
     } catch (error) {
       throw new Error(error as string);
