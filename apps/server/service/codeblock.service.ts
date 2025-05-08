@@ -34,9 +34,9 @@ class CodeBlockService {
       const [codeBlock] = await db
         .select()
         .from(CodeBlock)
-        .limit(1)
         .where(and(eq(CodeBlock.project, project_id), where))
-        .orderBy(orderBy);
+        .orderBy(orderBy)
+        .limit(1);
 
       return codeBlock ? codeBlock : null;
     } catch (error) {

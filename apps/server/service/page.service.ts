@@ -1,6 +1,6 @@
 import { db } from "../database";
 import { and, eq } from "drizzle-orm";
-import { Component, Page, PageInterface } from "../schema";
+import { Component, Page, PageInterface, ProjectInterface } from "../schema";
 
 export class PageService {
   static async getOne(
@@ -29,6 +29,25 @@ export class PageService {
       return pageWithComponent;
     } catch (error) {
       console.log(error);
+      throw new Error(error as string);
+    }
+  }
+
+  static async getOneByConstaint(
+    project_id: string,
+    where: any,
+    orderBy?: any
+  ): Promise<PageInterface | null> {
+    try {
+      const [page] = await db
+        .select()
+        .from(Page)
+        .where(and(eq(Page.project, project_id), where))
+        .orderBy(orderBy)
+        .limit(1);
+
+      return page ? page : null;
+    } catch (error) {
       throw new Error(error as string);
     }
   }

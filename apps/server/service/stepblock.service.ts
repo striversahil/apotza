@@ -27,9 +27,9 @@ class StepBlockService {
       const [stepBlock] = await db
         .select()
         .from(StepBlock)
-        .limit(1)
         .where(and(eq(StepBlock.codeblock, codeBlock_id), where))
-        .orderBy(orderBy);
+        .orderBy(orderBy)
+        .limit(1);
 
       return stepBlock ? stepBlock : null;
     } catch (error) {

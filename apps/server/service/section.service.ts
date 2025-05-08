@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db } from "../database";
 import { Section, SectionInterface } from "../schema";
 import sectionDefault from "../common/sectionDefault.json";
@@ -12,6 +12,25 @@ class SectionService {
         },
         where: eq(Section.id, id),
       });
+      return section ? section : null;
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
+  static async getOneByConstaint(
+    page_id: string,
+    where: any,
+    orderBy?: any
+  ): Promise<SectionInterface | null> {
+    try {
+      const [section] = await db
+        .select()
+        .from(Section)
+        .where(and(eq(Section.page, page_id), where))
+        .orderBy(orderBy)
+        .limit(1);
+
       return section ? section : null;
     } catch (error) {
       throw new Error(error as string);

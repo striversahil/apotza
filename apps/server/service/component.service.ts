@@ -2,7 +2,7 @@
  * Component Service : It will Assume that You have done all the Validation Checks
  */
 
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { Component, ComponentInterface, Page, Section } from "../schema";
 import { db } from "../database";
 import { MatchComponent } from "@repo/common";
@@ -29,6 +29,41 @@ class ComponentService {
       };
 
       return compnoentWithSections;
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
+  static async getOneByConstaint(
+    section_id: string,
+    where: any,
+    orderBy?: any
+  ): Promise<ComponentInterface | null> {
+    try {
+      const [component] = await db
+        .select()
+        .from(Component)
+        .where(and(eq(Component.section, section_id), where))
+        .orderBy(orderBy)
+        .limit(1);
+
+      return component ? component : null;
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
+  static async create(...payload: any): Promise<ComponentInterface | null> {
+    try {
+      const compDefault = MatchComponent[payload[0].name];
+      const [component] = await db
+        .insert(Component)
+        .values({
+          ...payload[0],
+          ...compDefault,
+        })
+        .returning();
+      return component ? component : null;
     } catch (error) {
       throw new Error(error as string);
     }
@@ -73,22 +108,6 @@ class ComponentService {
         });
       });
       return componentId ? componentId : null;
-    } catch (error) {
-      throw new Error(error as string);
-    }
-  }
-
-  static async create(...payload: any): Promise<ComponentInterface | null> {
-    try {
-      const compDefault = MatchComponent[payload[0].name];
-      const [component] = await db
-        .insert(Component)
-        .values({
-          ...payload[0],
-          ...compDefault,
-        })
-        .returning();
-      return component ? component : null;
     } catch (error) {
       throw new Error(error as string);
     }
