@@ -16,6 +16,7 @@ export type ComponentInterface = InferSelectModel<typeof Component>;
 
 export const Page = pgTable("page", {
   id: uuid("id").defaultRandom().primaryKey(),
+  order_no: serial("order_no").notNull(),
   type: text("type").default("page"),
   project: uuid("project_id").references(() => Project.id, {
     onDelete: "cascade",
@@ -27,6 +28,7 @@ export const Page = pgTable("page", {
 
 export const Section = pgTable("section", {
   id: uuid("id").defaultRandom().primaryKey(),
+  order_no: serial("order_no").notNull(),
   type: text("type").default("section"),
   component_id: uuid("component_id"),
   page: uuid("page_id").references(() => Page.id, {
@@ -42,6 +44,7 @@ export const Section = pgTable("section", {
 
 export const Component = pgTable("component", {
   id: uuid("id").defaultRandom().primaryKey(),
+  order_no: serial("order_no").notNull(),
   type: text("type").default("component"),
   page: uuid("page_id"),
   section: uuid("section_id").references(() => Section.id, {

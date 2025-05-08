@@ -26,7 +26,6 @@ class CodeBlockService {
   }
 
   static async getOneByConstaint(
-    project_id: string,
     where: any,
     orderBy?: any
   ): Promise<CodeBlockInterface | null> {
@@ -34,7 +33,7 @@ class CodeBlockService {
       const [codeBlock] = await db
         .select()
         .from(CodeBlock)
-        .where(and(eq(CodeBlock.project, project_id), where))
+        .where(where)
         .orderBy(orderBy)
         .limit(1);
 
@@ -51,21 +50,24 @@ class CodeBlockService {
   ): Promise<CodeBlockInterface | null> {
     try {
       const prevCodeblock = await this.getOneByConstaint(
-        project_id,
+        eq(CodeBlock.project, project_id),
         desc(CodeBlock.createdAt)
       );
 
-      let name = `API 1`; // Adding default name to be "CodeBlock 1"
+      let name = `Code_API 1`; // Adding default name to be "CodeBlock 1"
+      let order_no = 1;
 
       if (prevCodeblock) {
-        const prevCodeNo = Number(prevCodeblock.name.split(" ")[1]);
-        name = `API ${prevCodeNo + 1}`;
+        const prevCodeNo = prevCodeblock.order_no;
+        order_no = prevCodeNo + 1;
+        name = `Code_API ${prevCodeNo + 1}`;
       }
 
       const [codeBlock] = await db
         .insert(CodeBlock)
         .values({
           name: name,
+          order_no: order_no,
           project: project_id,
         })
         .returning();

@@ -13,6 +13,7 @@ import { Project, Workspace } from "./user";
 // ++++++++++++++++++++++++++++++++++++++++++++++++ CodeBlock Tables +++++++++++++++++++++++++++++++++++++++++++++++++
 export const CodeBlock = pgTable("codeblock", {
   id: uuid("id").defaultRandom().primaryKey(),
+  order_no: serial("order_no").notNull(),
   project: uuid("project_id").references(() => Project.id, {
     onDelete: "cascade",
     onUpdate: "cascade",
@@ -25,6 +26,7 @@ export type CodeBlockInterface = InferSelectModel<typeof CodeBlock>;
 
 export const StepBlock = pgTable("stepblock", {
   id: uuid("id").defaultRandom().primaryKey(),
+  order_no: serial("order_no").notNull(),
   name: text("name").notNull(),
   type: text("type").notNull(),
   codeblock: uuid("codeblock_id").references(() => CodeBlock.id, {

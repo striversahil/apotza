@@ -34,7 +34,6 @@ export class PageService {
   }
 
   static async getOneByConstaint(
-    project_id: string,
     where: any,
     orderBy?: any
   ): Promise<PageInterface | null> {
@@ -42,7 +41,7 @@ export class PageService {
       const [page] = await db
         .select()
         .from(Page)
-        .where(and(eq(Page.project, project_id), where))
+        .where(where)
         .orderBy(orderBy)
         .limit(1);
 
@@ -58,15 +57,17 @@ export class PageService {
   ): Promise<PageInterface | null> {
     try {
       const prevPage = await this.getOneByConstaint(
-        project_id,
+        eq(Page.project, project_id),
         desc(Page.createdAt)
       );
 
       let name = `Page 1`; // Adding default name to be "Page 1"
+      let order_no = 1;
 
       if (prevPage) {
-        const prevCodeNo = Number(prevPage.name.split(" ")[1]);
+        const prevCodeNo = prevPage.order_no;
         name = `Page ${prevCodeNo + 1}`;
+        order_no = prevCodeNo + 1;
       }
 
       const [page] = await db
@@ -74,6 +75,7 @@ export class PageService {
         .values({
           name: name,
           project: project_id,
+          order_no: order_no,
           ...payload[0],
         })
         .returning();

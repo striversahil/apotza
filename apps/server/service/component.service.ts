@@ -35,7 +35,6 @@ class ComponentService {
   }
 
   static async getOneByConstaint(
-    section_id: string,
     where: any,
     orderBy?: any
   ): Promise<ComponentInterface | null> {
@@ -43,7 +42,7 @@ class ComponentService {
       const [component] = await db
         .select()
         .from(Component)
-        .where(and(eq(Component.section, section_id), where ?? {}))
+        .where(where)
         .orderBy(orderBy)
         .limit(1);
 
@@ -59,16 +58,17 @@ class ComponentService {
       const compDefault = MatchComponent[payload.name];
 
       const prevComponent = await this.getOneByConstaint(
-        payload.section,
-        null,
+        eq(Component.section, payload.section),
         desc(Component.createdAt)
       );
 
       let name = `${payload.name} 1`; // Adding default name to be "payload.name 1"
+      let order_no = 1;
 
       if (prevComponent) {
-        const prevCodeNo = Number(prevComponent.name.split(" ")[1]);
+        const prevCodeNo = prevComponent.order_no;
         name = `${payload.name} ${prevCodeNo + 1}`;
+        order_no = prevCodeNo + 1;
       }
 
       const [component] = await db
@@ -76,6 +76,7 @@ class ComponentService {
         .values({
           ...payload,
           name: name,
+          order_no: order_no,
           ...compDefault,
         })
         .returning();

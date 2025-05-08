@@ -19,18 +19,16 @@ class StepBlockService {
   }
 
   static async getOneByConstaint(
-    codeBlock_id: string,
-    where: any,
+    where?: any,
     orderBy?: any
   ): Promise<StepBlockInterface | null> {
     try {
       const [stepBlock] = await db
         .select()
         .from(StepBlock)
-        .where(and(eq(StepBlock.codeblock, codeBlock_id), where))
+        .where(where)
         .orderBy(orderBy)
         .limit(1);
-
       return stepBlock ? stepBlock : null;
     } catch (error) {
       throw new Error(error as string);
@@ -46,15 +44,17 @@ class StepBlockService {
       if (!payload) return null;
 
       const prevStepBlock = await this.getOneByConstaint(
-        codeBlock_id,
+        eq(StepBlock.codeblock, codeBlock_id),
         desc(StepBlock.createdAt)
       );
 
       let name = `${payload.name} 1`; // Adding default name to be "payload.name 1"
+      let order_no = 1;
 
       if (prevStepBlock) {
-        const prevCodeNo = Number(prevStepBlock.name.split(" ")[1]);
+        const prevCodeNo = prevStepBlock.order_no;
         name = `${payload.name} ${prevCodeNo + 1}`;
+        order_no = prevCodeNo + 1;
       }
       const [newStepBlock] = await db
         .insert(StepBlock)
@@ -62,6 +62,7 @@ class StepBlockService {
           name: name,
           type: type,
           codeblock: codeBlock_id,
+          order_no: order_no,
           config: payload.config,
           stdout: payload.stdout,
           output: payload.output,
