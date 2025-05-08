@@ -7,7 +7,7 @@ class ComponentController {
   static async create(req: Request, res: Response) {
     try {
       if (!req.body) return ErrorResponse(res, "Provide all fields", 400);
-      const component = await ComponentService.create({ ...req.body });
+      const component = await ComponentService.create(req.body);
       if (!component)
         return ErrorResponse(res, "Section could not be created", 400);
       SuccessResponse(res, "Component created successfully", null, component);

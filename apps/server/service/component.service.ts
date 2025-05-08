@@ -43,7 +43,7 @@ class ComponentService {
       const [component] = await db
         .select()
         .from(Component)
-        .where(and(eq(Component.section, section_id), where))
+        .where(and(eq(Component.section, section_id), where ?? {}))
         .orderBy(orderBy)
         .limit(1);
 
@@ -55,30 +55,33 @@ class ComponentService {
 
   static async create(payload: any): Promise<ComponentInterface | null> {
     try {
-      const compDefault = MatchComponent[payload[0].name];
+      // console.log(payload);
+      const compDefault = MatchComponent[payload.name];
 
       const prevComponent = await this.getOneByConstaint(
-        payload[0].section,
+        payload.section,
+        null,
         desc(Component.createdAt)
       );
 
-      let name = `${payload[0].name} 1`; // Adding default name to be "CodeBlock 1"
+      let name = `${payload.name} 1`; // Adding default name to be "payload.name 1"
 
       if (prevComponent) {
         const prevCodeNo = Number(prevComponent.name.split(" ")[1]);
-        name = `${payload[0].name} ${prevCodeNo + 1}`;
+        name = `${payload.name} ${prevCodeNo + 1}`;
       }
 
       const [component] = await db
         .insert(Component)
         .values({
-          ...payload[0],
+          ...payload,
           name: name,
           ...compDefault,
         })
         .returning();
       return component ? component : null;
     } catch (error) {
+      console.log(error);
       throw new Error(error as string);
     }
   }

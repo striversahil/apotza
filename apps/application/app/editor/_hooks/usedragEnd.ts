@@ -68,7 +68,7 @@ export const useDragEnd = () => {
       // if (!Data || event.active.id) return null;
       const PresentElement = Data.find((item: any) => item === event.active.id);
 
-      console.log(PresentElement);
+      // console.log(PresentElement);
 
       // If the active item is not in the array, add it
       if (!PresentElement) {
