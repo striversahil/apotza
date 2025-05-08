@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import SectionService from "../service/section.service";
 import { ErrorResponse, SuccessResponse } from "../utils/ApiResponse";
+import { redis } from "..";
 
 class SectionController {
   static async createSection(req: Request, res: Response) {
@@ -19,9 +20,18 @@ class SectionController {
     try {
       const { id } = req.params;
       if (!id) return ErrorResponse(res, "Section does not exist", 404);
+
+      const redis_section = await redis.get(`section:${id}`);
+      if (redis_section) {
+        const section = JSON.parse(redis_section);
+        SuccessResponse(res, "Section fetched successfully", null, section);
+        return;
+      }
       const section = await SectionService.getById(id);
       if (!section)
         return ErrorResponse(res, "Section could not be fetched", 404);
+
+      await redis.set(`section:${id}`, JSON.stringify(section));
       SuccessResponse(res, "Section fetched successfully", null, section);
     } catch (error) {
       ErrorResponse(res, "", null);

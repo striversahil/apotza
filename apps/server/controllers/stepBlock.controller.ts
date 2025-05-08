@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { ErrorResponse, SuccessResponse } from "../utils/ApiResponse";
 import StepBlockService from "../service/stepblock.service";
+import { redis } from "..";
 
 class StepBlockController {
   static async createStep(req: Request, res: Response) {
@@ -21,9 +22,18 @@ class StepBlockController {
     try {
       const { id } = req.params;
       if (!id) return ErrorResponse(res, "StepBlock does not exist", 404);
+
+      const redis_stepBlock = await redis.get(`stepBlock:${id}`);
+      if (redis_stepBlock) {
+        const stepBlock = JSON.parse(redis_stepBlock);
+        SuccessResponse(res, "StepBlock fetched successfully", null, stepBlock);
+        return;
+      }
       const stepBlock = await StepBlockService.getById(id);
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be fetched", 404);
+
+      await redis.set(`stepBlock:${id}`, JSON.stringify(stepBlock));
       SuccessResponse(res, "StepBlock fetched successfully", null, stepBlock);
     } catch (error) {
       ErrorResponse(res, "", null);

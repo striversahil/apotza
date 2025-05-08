@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { ErrorResponse, SuccessResponse } from "../utils/ApiResponse";
 import ComponentService from "../service/component.service";
 import ProjectService from "../service/project.service";
+import { redis } from "..";
 
 class ComponentController {
   static async create(req: Request, res: Response) {
@@ -20,9 +21,18 @@ class ComponentController {
     try {
       const { id } = req.params;
       if (!id) return ErrorResponse(res, "Component does not exist", 404);
+
+      const redis_component = await redis.get(`component:${id}`);
+      if (redis_component) {
+        const component = JSON.parse(redis_component);
+        SuccessResponse(res, "Component fetched successfully", null, component);
+        return;
+      }
       const component = await ComponentService.getById(id);
       if (!component)
         return ErrorResponse(res, "Component could not be fetched", 404);
+
+      await redis.set(`component:${id}`, JSON.stringify(component));
       SuccessResponse(res, "Component fetched successfully", null, component);
     } catch (error) {
       ErrorResponse(res, "", null);

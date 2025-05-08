@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { ErrorResponse, SuccessResponse } from "../utils/ApiResponse";
 import { PageService } from "../service/page.service";
+import { redis } from "..";
 
 export class PageController {
   static async getPage(req: Request, res: Response) {
@@ -9,8 +10,18 @@ export class PageController {
       const project_id = req.cookies.project_id;
       if (!id)
         return ErrorResponse(res, "Page does not exist , provide id", 404);
+      if (!project_id) return ErrorResponse(res, "Project does not exist", 404);
+
+      const redis_page = await redis.get(`page:${id}`);
+      if (redis_page) {
+        const page = JSON.parse(redis_page);
+        SuccessResponse(res, "Page fetched successfully", null, page);
+        return;
+      }
       const page = await PageService.getOne(id, project_id);
       if (!page) return ErrorResponse(res, "Page could not be fetched", 404);
+
+      await redis.set(`page:${id}`, JSON.stringify(page));
       SuccessResponse(res, "Page fetched successfully", null, page);
     } catch (error) {
       ErrorResponse(res, "", null);

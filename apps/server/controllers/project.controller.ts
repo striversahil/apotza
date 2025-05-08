@@ -7,16 +7,23 @@ import StepBlockService from "../service/stepblock.service";
 import TemplateInit from "../common/templateProject.json";
 import SectionService from "../service/section.service";
 import ComponentService from "../service/component.service";
+import { redis } from "..";
 
 class ProjectController {
   static async getProject(req: Request, res: Response) {
     try {
       const projectId = req.cookies.project_id;
       if (!projectId) return ErrorResponse(res, "Project does not exist", 404);
+      const redis_project = await redis.get(`project:${projectId}`);
+      if (redis_project) {
+        const project = JSON.parse(redis_project);
+        SuccessResponse(res, "Project fetched successfully", null, project);
+        return;
+      }
       const project = await ProjectService.getById(projectId);
-
       if (!project)
         return ErrorResponse(res, "Project could not be fetched", 404);
+      await redis.set(`project:${projectId}`, JSON.stringify(project));
       res.cookie("project_id", project.id, projectCookie);
       SuccessResponse(res, "Project fetched successfully", null, project);
     } catch (error) {

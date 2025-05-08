@@ -27,9 +27,17 @@ class CodeBlockController {
     try {
       const { id } = req.params;
       if (!id) return ErrorResponse(res, "CodeBlock does not exist", 404);
+      const redis_codeBlock = await redis.get(`codeBlock:${id}`);
+      if (redis_codeBlock) {
+        const codeBlock = JSON.parse(redis_codeBlock);
+        SuccessResponse(res, "CodeBlock fetched successfully", null, codeBlock);
+        return;
+      }
       const codeBlock = await CodeBlockService.getById(id);
       if (!codeBlock)
         return ErrorResponse(res, "CodeBlock could not be fetched", 404);
+
+      await redis.set(`codeBlock:${id}`, JSON.stringify(codeBlock));
       SuccessResponse(res, "CodeBlock fetched successfully", null, codeBlock);
     } catch (error) {
       ErrorResponse(res, "", null);
@@ -52,6 +60,7 @@ class CodeBlockController {
       const codeBlock = await CodeBlockService.update(id, data);
       if (!codeBlock)
         return ErrorResponse(res, "CodeBlock could not be updated", 400);
+      await this.refetchCodeBlock(id);
       SuccessResponse(res, "CodeBlock updated successfully", null, codeBlock);
     } catch (error) {
       ErrorResponse(res, "", null);
@@ -65,6 +74,8 @@ class CodeBlockController {
       const codeBlock = await CodeBlockService.delete(id);
       if (!codeBlock)
         return ErrorResponse(res, "CodeBlock could not be deleted", 404);
+
+      await this.refetchCodeBlock(id);
       SuccessResponse(res, "CodeBlock deleted successfully", null, codeBlock);
     } catch (error) {
       ErrorResponse(res, "", null);
@@ -93,6 +104,19 @@ class CodeBlockController {
       ErrorResponse(res, "", null);
     }
   }
+
+  static async refetchCodeBlock(id: string) {
+    try {
+      const codeBlock: any = await CodeBlockService.getById(id);
+      if (!codeBlock) return false;
+
+      await redis.set(`codeBlock:${id}`, JSON.stringify(codeBlock));
+      return true;
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
   static async temp(req: Request, res: Response) {
     try {
     } catch (error) {
