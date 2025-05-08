@@ -1,228 +1,312 @@
+"use client";
+
+import * as React from "react";
 import {
-  DndContext,
-  DragOverlay,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  rectIntersection,
-} from "@dnd-kit/core";
-import { SortableContext, useSortable, arrayMove } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import { useState, useEffect, useRef } from "react";
-import { MatchComponent } from "@repo/components";
-// Seperate components Configuration based on it's type
-interface ComponentData {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+const data: Payment[] = [
+  {
+    id: "m5gr84i9",
+    amount: 316,
+    status: "success",
+    email: "ken99@example.com",
+  },
+  {
+    id: "3u1reuv4",
+    amount: 242,
+    status: "success",
+    email: "Abe45@example.com",
+  },
+  {
+    id: "derv1ws0",
+    amount: 837,
+    status: "processing",
+    email: "Monserrat44@example.com",
+  },
+  {
+    id: "5kma53ae",
+    amount: 874,
+    status: "success",
+    email: "Silas22@example.com",
+  },
+  {
+    id: "bhqecj4p",
+    amount: 721,
+    status: "failed",
+    email: "carmella@example.com",
+  },
+];
+
+export type Payment = {
   id: string;
-  type: string;
-  x: number;
-  y: number;
-  padding: number;
-  content: string;
-  // Add more configurable properties as needed
-}
-
-// Configur Each Component Based on it's type and it's configuration
-const ConfigPanel = ({
-  selectedItem,
-  updateItem,
-}: {
-  selectedItem: ComponentData | null;
-  updateItem: (newData: ComponentData) => void;
-}) => {
-  if (!selectedItem) return null;
-
-  return (
-    <div className="fixed right-0 top-0 h-screen w-64 bg-white shadow-lg p-4">
-      <h2 className="text-lg font-bold mb-4">Component Settings</h2>
-      <div className="space-y-4">
-        {/* I will Create this Config Panel Saparately for each Component */}
-        <div>
-          <label>Padding</label>
-          <input
-            type="range"
-            min="0"
-            max="32"
-            value={selectedItem.padding}
-            onChange={(e) =>
-              updateItem({
-                ...selectedItem,
-                padding: Number(e.target.value),
-              })
-            }
-          />
-        </div>
-        <div>
-          <label>Content</label>
-          <input
-            type="text"
-            value={selectedItem.content}
-            onChange={(e) =>
-              updateItem({
-                ...selectedItem,
-                content: e.target.value,
-              })
-            }
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
-// Seperate components Configuration based on it's type
-const SortableItem = ({
-  item,
-  isSelected,
-  onClick,
-}: {
-  item: ComponentData;
-  isSelected: boolean;
-  onClick: () => void;
-}) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: item.id });
-
-  const style = {
-    transform: CSS.Translate.toString(transform),
-    transition,
-    position: "absolute" as const,
-    left: item.x,
-    top: item.y,
-    padding: `${item.padding}px`,
-    opacity: isDragging ? 0.5 : 1,
-    cursor: "grab",
-    border: isSelected ? "2px solid blue" : "none",
-  };
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-      onClick={(e) => {
-        e.stopPropagation();
-        onClick();
-      }}
-      className="bg-white rounded shadow-md touch-none"
-    >
-      {item.content}
-    </div>
-  );
+  amount: number;
+  status: "pending" | "processing" | "success" | "failed";
+  email: string;
 };
 
-const DroppableArea = () => {
-  const [items, setItems] = useState<ComponentData[]>(() => {
-    const saved = localStorage.getItem("items");
-    return saved ? JSON.parse(saved) : [];
-  });
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    })
-  );
-
-  useEffect(() => {
-    localStorage.setItem("items", JSON.stringify(items));
-  }, [items]);
-
-  //  Pushing to the Array after finding that the item is dropped
-  const handleDragEnd = (event: any) => {
-    const { active, delta } = event;
-
-    setItems(
-      items.map((item) => {
-        if (item.id === active.id) {
-          return {
-            ...item,
-            x: item.x + delta.x,
-            y: item.y + delta.y,
-          };
+export const columns: ColumnDef<Payment>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
         }
-        return item;
-      })
-    );
-  };
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("status")}</div>
+    ),
+  },
+  {
+    accessorKey: "email",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Email
+          <ArrowUpDown />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+  },
+  {
+    accessorKey: "amount",
+    header: () => <div className="text-right">Amount</div>,
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("amount"));
 
-  const handleAddComponent = (type: string) => {
-    if (!containerRef.current) return;
+      // Format the amount as a dollar amount
+      const formatted = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(amount);
 
-    const rect = containerRef.current.getBoundingClientRect();
-    const newItem: ComponentData = {
-      id: `comp-${Date.now()}`,
-      type,
-      x: rect.width / 2 - 50,
-      y: rect.height / 2 - 25,
-      padding: 8,
-      content: "New Item",
-    };
+      return <div className="text-right font-medium">{formatted}</div>;
+    },
+  },
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => {
+      const payment = row.original;
 
-    setItems([...items, newItem]);
-    setSelectedId(newItem.id);
-  };
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(payment.id)}
+            >
+              Copy payment ID
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>View customer</DropdownMenuItem>
+            <DropdownMenuItem>View payment details</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
+];
 
-  const updateItem = (newData: ComponentData) => {
-    setItems(items.map((item) => (item.id === newData.id ? newData : item)));
-  };
+export function DataTableDemo() {
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  );
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
+
+  const table = useReactTable({
+    data,
+    columns,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      rowSelection,
+    },
+  });
 
   return (
-    <div className="flex h-screen">
-      <div className="w-64 p-4 border-r">
-        <h3 className="font-bold mb-4">Components</h3>
-        <button
-          onClick={() => handleAddComponent("button")}
-          // This way we can Add Multiple Components by Mapping over the Array of Component
-          className="mb-2 p-2 w-full bg-gray-100 rounded"
-        >
-          Add Button
-        </button>
-        <button
-          onClick={() => handleAddComponent("text")}
-          className="mb-2 p-2 w-full bg-gray-100 rounded"
-        >
-          Add Text
-        </button>
+    <div className="w-full">
+      <div className="flex items-center py-4">
+        <Input
+          placeholder="Filter emails..."
+          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("email")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="ml-auto">
+              Columns <ChevronDown />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {table
+              .getAllColumns()
+              .filter((column) => column.getCanHide())
+              .map((column) => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) =>
+                      column.toggleVisibility(!!value)
+                    }
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                );
+              })}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
-
-      <div
-        ref={containerRef}
-        className="flex-1 relative p-4 bg-gray-50"
-        onClick={() => setSelectedId(null)}
-      >
-        <DndContext
-          sensors={sensors}
-          collisionDetection={rectIntersection}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext items={items}>
-            {items.map((item) => (
-              <SortableItem
-                key={item.id}
-                item={item}
-                isSelected={item.id === selectedId}
-                onClick={() => setSelectedId(item.id)}
-              />
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
             ))}
-          </SortableContext>
-        </DndContext>
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </div>
-      {/* I will get the Element Id and will render the Config Panel by Component Nature */}
-      <ConfigPanel
-        selectedItem={items.find((item) => item.id === selectedId) || null}
-        updateItem={updateItem}
-      />
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <div className="flex-1 text-sm text-muted-foreground">
+          {table.getFilteredSelectedRowModel().rows.length} of{" "}
+          {table.getFilteredRowModel().rows.length} row(s) selected.
+        </div>
+        <div className="space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
     </div>
   );
-};
-
-export default DroppableArea;
+}

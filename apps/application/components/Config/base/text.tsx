@@ -1,22 +1,15 @@
 import { Input } from "@repo/ui/input";
 import { Textarea } from "@repo/ui/textarea";
+import { MentionsInput, Mention } from "react-mentions";
 import React, { useEffect, useRef } from "react";
-import { useGlobalContext } from "../../../contexts";
 
 type Props = {
-  value: {
-    config: string;
-    value: string;
-  };
+  value: string;
   onChange: (value: any) => void;
   area?: boolean;
 };
 
 const Text_Base = ({ value, onChange, area }: Props) => {
-  console.log("value", value);
-
-  const { component, codeBlock } = useGlobalContext() || {};
-
   // const handleInput = () => {
   //   const editor = editorRef.current;
   //   if (!editor) return;
@@ -50,22 +43,57 @@ const Text_Base = ({ value, onChange, area }: Props) => {
 
   return (
     <div className="text-white">
-      {area && (
-        <Textarea
-          value={value.value}
-          onChange={(e) => onChange(e.target.value)}
-          className="bg-slate-950 outline-none"
-          typeof="text"
+      <Input
+        defaultValue={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full"
+      />
+
+      {/* <MentionsInput
+        // value={value}
+        defaultValue={value}
+        onChange={onChange}
+        style={{
+          control: {
+            backgroundColor: "#fff",
+            fontSize: 16,
+            fontWeight: "normal",
+          },
+          highlighter: {
+            overflow: "hidden",
+          },
+          input: {
+            margin: 0,
+          },
+          suggestions: {
+            list: {
+              backgroundColor: "white",
+              border: "1px solid rgba(0,0,0,0.15)",
+              fontSize: 14,
+            },
+            item: {
+              padding: "5px 15px",
+              borderBottom: "1px solid #ddd",
+              "&focused": {
+                backgroundColor: "#e6f7ff",
+              },
+            },
+          },
+          // mention: {
+          //   backgroundColor: "#d2f8d2",
+          //   padding: "3px 5px",
+          //   borderRadius: "4px",
+          // },
+        }}
+        // markup="{{__id__}}" // 🧠 This tells the lib how to format the inserted value
+        singleLine={area ? true : false}
+      >
+        <div></div>
+        <Mention
+          trigger="@"
+          data={["John", "Doe", "Jane", "Doe", "John", "Doe", "Jane", "Doe"]}
         />
-      )}
-      {!area && (
-        <Input
-          value={value.value}
-          onChange={(e) => onChange(e.target.value)}
-          className="bg-slate-950 outline-none"
-          typeof="text"
-        />
-      )}
+      </MentionsInput> */}
     </div>
   );
 };

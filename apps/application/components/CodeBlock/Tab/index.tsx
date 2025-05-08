@@ -25,7 +25,7 @@ type Props = {
 const Tabs = (props: Props) => {
   const [CodeBlockData, setCodeBlockData] = useState<any>(null);
 
-  const { isLoading, data } = GetProject.getProject();
+  const { data } = GetProject.getProject();
 
   const { currentTab, setCurrentTab = () => {} } = useCurrentTab() || {};
 

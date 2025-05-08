@@ -13,7 +13,7 @@ const PopOver = ({ setOpened, ...props }: Props) => {
 
   return (
     <div
-      className="fixed w-[300px]  h-[300px] z-50 "
+      className="fixed w-[300px]  h-[300px] left-[50px] z-50 "
       ref={ref}
       // onMouseLeave={() => {
       //   if (!props.isDragging) setOpened(false);
@@ -25,10 +25,10 @@ const PopOver = ({ setOpened, ...props }: Props) => {
           <span className="text-gray-400 text-xs text-center py-2">
             Drag and drop components to the canvas .
           </span>
-          <Input
+          {/* <Input
             className=" text-white bg-white/20 rounded-lg w-full "
             placeholder="Search ..."
-          ></Input>
+          ></Input> */}
         </div>
         <div className=" pt-4 ">
           <div className="relative grid grid-cols-2 gap-5 mx-2">

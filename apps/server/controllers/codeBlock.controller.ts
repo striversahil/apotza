@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { ErrorResponse, SuccessResponse } from "../utils/ApiResponse";
 import CodeBlockService from "../service/codeblock.service";
+import { redis } from "..";
 
 class CodeBlockController {
   static async create(req: Request, res: Response) {
@@ -84,6 +85,8 @@ class CodeBlockController {
           // console.log("context", stepBlock.output);
         }
       }
+      // Context CodeBlock is stored in redis
+      redis.set(`contextCB:${id}`, JSON.stringify(context));
 
       SuccessResponse(res, "CodeBlock fetched successfully", null, context);
     } catch (error) {

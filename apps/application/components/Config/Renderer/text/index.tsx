@@ -6,10 +6,16 @@ import { Textarea } from "@repo/ui/textarea";
 import Text_Base from "../../base/text";
 import Color_Base from "../../base/color";
 import Select_Base from "../../base/select";
+import { useGlobalContext } from "../../../../contexts";
+
+interface initialvalue {
+  config: string;
+  value: string;
+}
 
 type Props = {
   location: Array<string>;
-  initialvalue: any;
+  initialvalue: initialvalue;
   color?: boolean;
   size?: boolean;
   pixel?: boolean;
@@ -22,17 +28,32 @@ export const TextInput: React.FC<Props> = ({
   initialvalue,
   ...addOn
 }: Props) => {
-  const [value, setValue] = React.useState<any>(initialvalue);
+  const [value, setValue] = React.useState<initialvalue>(initialvalue);
+  const { component, codeBlock } = useGlobalContext() || {};
 
   useDebouncedUpdate(location, value);
 
   const isEmpty = _.isEmpty(addOn);
 
+  const onChange = (val: string) => {
+    const regex = /\{\{(.*?)\}\}/g; // regex to match "{{something}}"
+    const text = val;
+
+    // const text = 'Hello {{world}} and {{universe}}!';
+    const result = text.replace(regex, (match, p1) => {
+      return `🌟${p1.toUpperCase()}🌟`; // Or whatever transformation you want!
+    });
+    setValue({ config: val, value: result });
+  };
+
   return (
     <div className="float-end flex gap-2">
-      <Text_Base value={value} onChange={(val) => setValue(val)} area />
+      <Text_Base
+        value={initialvalue.config}
+        onChange={(val) => onChange(val)}
+      />
 
-      {/* {!isEmpty && value.text && (
+      {/* {!isEmpty && (
         <Text_Base
           value={value.text}
           onChange={(val) =>
@@ -42,8 +63,8 @@ export const TextInput: React.FC<Props> = ({
             }))
           }
         />
-      )}
-      {addOn.color && value.color && (
+      )} */}
+      {/* {addOn.color && value.color && (
         <Color_Base
           value={value.color}
           onChange={(val) => setValue((prev: any) => ({ ...prev, color: val }))}

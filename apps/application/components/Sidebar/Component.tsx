@@ -55,7 +55,7 @@ const CompSidebar = ({ children }: SidebarProps) => {
         onMouseUp={() => setOpen(false)}
       >
         <div className="absolute inset-0"></div>
-        <div>{isDragging ? <Component /> : title}</div>
+        <div>{isDragging ? <Component {...client} /> : title}</div>
       </div>
     );
   };
