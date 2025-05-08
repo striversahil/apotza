@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { db } from "../database";
 import { Section, SectionInterface } from "../schema";
 import sectionDefault from "../common/sectionDefault.json";
@@ -42,10 +42,22 @@ class SectionService {
     component_id: string | null
   ): Promise<SectionInterface | null> {
     try {
+      const prevSection = await this.getOneByConstaint(
+        page_id ?? "",
+        desc(Section.createdAt)
+      );
+
+      let name = `Section 1`; // Adding default name to be "Section 1"
+
+      if (prevSection) {
+        const prevCodeNo = Number(prevSection.name.split(" ")[1]);
+        name = `Section ${prevCodeNo + 1}`;
+      }
+
       const [section] = await db
         .insert(Section)
         .values({
-          name: "Untitled Section",
+          name: name,
           page: page_id ?? null,
           component_id: component_id ?? null,
           layout: sectionDefault.layout,

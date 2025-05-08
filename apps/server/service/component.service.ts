@@ -2,7 +2,7 @@
  * Component Service : It will Assume that You have done all the Validation Checks
  */
 
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { Component, ComponentInterface, Page, Section } from "../schema";
 import { db } from "../database";
 import { MatchComponent } from "@repo/common";
@@ -53,13 +53,27 @@ class ComponentService {
     }
   }
 
-  static async create(...payload: any): Promise<ComponentInterface | null> {
+  static async create(payload: any): Promise<ComponentInterface | null> {
     try {
       const compDefault = MatchComponent[payload[0].name];
+
+      const prevComponent = await this.getOneByConstaint(
+        payload[0].section,
+        desc(Component.createdAt)
+      );
+
+      let name = `${payload[0].name} 1`; // Adding default name to be "CodeBlock 1"
+
+      if (prevComponent) {
+        const prevCodeNo = Number(prevComponent.name.split(" ")[1]);
+        name = `${payload[0].name} ${prevCodeNo + 1}`;
+      }
+
       const [component] = await db
         .insert(Component)
         .values({
           ...payload[0],
+          name: name,
           ...compDefault,
         })
         .returning();

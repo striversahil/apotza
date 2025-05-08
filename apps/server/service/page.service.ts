@@ -1,5 +1,5 @@
 import { db } from "../database";
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { Component, Page, PageInterface, ProjectInterface } from "../schema";
 
 export class PageService {
@@ -57,10 +57,22 @@ export class PageService {
     ...payload: any
   ): Promise<PageInterface | null> {
     try {
+      const prevPage = await this.getOneByConstaint(
+        project_id,
+        desc(Page.createdAt)
+      );
+
+      let name = `Page 1`; // Adding default name to be "Page 1"
+
+      if (prevPage) {
+        const prevCodeNo = Number(prevPage.name.split(" ")[1]);
+        name = `Page ${prevCodeNo + 1}`;
+      }
+
       const [page] = await db
         .insert(Page)
         .values({
-          name: "Untitled Page",
+          name: name,
           project: project_id,
           ...payload[0],
         })

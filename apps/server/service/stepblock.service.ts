@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { db } from "../database";
 import { StepBlock, StepBlockInterface } from "../schema";
 import stepBlockDefault from "../utils/stepBlockDefault";
@@ -44,10 +44,22 @@ class StepBlockService {
     try {
       const payload = stepBlockDefault(type);
       if (!payload) return null;
+
+      const prevStepBlock = await this.getOneByConstaint(
+        codeBlock_id,
+        desc(StepBlock.createdAt)
+      );
+
+      let name = `${payload.name} 1`; // Adding default name to be "payload.name 1"
+
+      if (prevStepBlock) {
+        const prevCodeNo = Number(prevStepBlock.name.split(" ")[1]);
+        name = `${payload.name} ${prevCodeNo + 1}`;
+      }
       const [newStepBlock] = await db
         .insert(StepBlock)
         .values({
-          name: payload.name,
+          name: name,
           type: type,
           codeblock: codeBlock_id,
           config: payload.config,

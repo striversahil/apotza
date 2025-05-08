@@ -55,11 +55,11 @@ class CodeBlockService {
         desc(CodeBlock.createdAt)
       );
 
-      let name = `${_name} 1`; // Adding default name to be "CodeBlock 1"
+      let name = `API 1`; // Adding default name to be "CodeBlock 1"
 
       if (prevCodeblock) {
         const prevCodeNo = Number(prevCodeblock.name.split(" ")[1]);
-        name = `${_name} ${prevCodeNo + 1}`;
+        name = `API ${prevCodeNo + 1}`;
       }
 
       const [codeBlock] = await db
