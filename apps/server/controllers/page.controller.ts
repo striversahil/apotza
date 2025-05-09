@@ -23,7 +23,7 @@ export class PageController {
         SuccessResponse(res, "Page fetched successfully", null, page);
         return;
       }
-      console.log("From DB", current_page);
+
       const page = await PageService.getOne(id, project_id);
       if (!page) return ErrorResponse(res, "Page could not be fetched", 404);
 

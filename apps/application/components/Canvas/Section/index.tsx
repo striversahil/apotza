@@ -55,6 +55,7 @@ const Section = ({ value }: Props) => {
       ref={ref}
       // onMouseMove={onMouseHover}
       style={{
+        minHeight: "300px",
         height: currentValue.component_id ? "auto" : "500px", // Later gonna be dynamic
         borderColor: currentValue.appearance.borderColor,
         visibility: currentValue.layout.visible ? "visible" : "hidden",

@@ -2,7 +2,7 @@
 import GetProject from "../../../actions/project";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import { BatteryCharging, CheckCircle, Dot } from "lucide-react";
+import { BatteryCharging, CheckCircle, Dot, X } from "lucide-react";
 import React from "react";
 import dynamic from "next/dynamic";
 import { StepBlockInterface } from "../Editor";
@@ -51,20 +51,39 @@ const Output = ({ id, stdout, output }: StepBlockInterface) => {
           </TabsList>
           <div className="flex-1 flex justify-end">
             <div className="flex items-center gap-2 mr-3">
-              <CheckCircle size={20} className="text-green-500" />
+              {output.success === false ? (
+                <X size={20} className="text-red-500" />
+              ) : (
+                <CheckCircle size={20} className="text-green-500" />
+              )}
+
               <div className="flex items-center">
-                <span className="text-sm font-bold text-green-500">
-                  Success
+                <span
+                  className={cn(
+                    "text-sm font-bold",
+                    output.success === false ? "text-red-500" : "text-green-500"
+                  )}
+                >
+                  {output.success === false ? "Failed" : "Success"}
                 </span>{" "}
-                <Dot size={15} className="text-green-500" />
-                <div className="text-sm ">10ms</div>
+                {/* <Dot size={15} className="text-green-500" /> */}
+                {/* <div className="text-sm ">10ms</div> */}
               </div>
             </div>
           </div>
         </div>
         <div className="relative flex-1 h-full w-full">
-          <div className="absolute inset-2 rounded-md  bg-white/10">
-            <div className="absolute inset-2 flex items-start p-3 rounded-md bg-[#0b1c2c]  overflow-y-auto ">
+          <div
+            className={cn(
+              "absolute inset-2 rounded-md  ",
+              output.success === false ? "bg-[#8b1d1d]" : "bg-white/10"
+            )}
+          >
+            <div
+              className={cn(
+                "absolute inset-1 flex items-start p-3 rounded-md bg-[#0b1c2c]  overflow-y-auto "
+              )}
+            >
               <TabsContent value="output">
                 <ReactJson
                   src={output}
