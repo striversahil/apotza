@@ -36,7 +36,8 @@ class ComponentController {
       if (!component)
         return ErrorResponse(res, "Section could not be created", 400);
 
-      await redis.del(`page:${component.page}`);
+      // await redis.del(`page:${component.page}`);
+      await redis.del(`section:${component.section}`);
       // await redis.del(`getAllComponents:${project_id}`);
       SuccessResponse(res, "Component created successfully", null, component);
     } catch (error) {
@@ -92,7 +93,8 @@ class ComponentController {
       if (!component)
         return ErrorResponse(res, "Component could not be updated", 400);
 
-      await redis.del(`page:${component.page}`);
+      // await redis.del(`page:${component.page}`);
+      await redis.del(`section:${component.section}`);
       SuccessResponse(res, "Component updated successfully", null, component);
     } catch (error) {
       ErrorResponse(res, "", null);
@@ -108,7 +110,8 @@ class ComponentController {
       if (!component)
         return ErrorResponse(res, "Component could not be updated", 400);
 
-      await redis.del(`page:${component.page}`);
+      // await redis.del(`page:${component.page}`);
+      await redis.del(`section:${component.section}`);
       SuccessResponse(res, "Component updated successfully", null, component);
     } catch (error) {
       console.log(error);
@@ -124,7 +127,8 @@ class ComponentController {
       if (!component)
         return ErrorResponse(res, "Component could not be deleted", 404);
 
-      await redis.del(`page:${component.page}`);
+      // await redis.del(`page:${component.page}`);
+      await redis.del(`section:${component.section}`);
       SuccessResponse(res, "Component deleted successfully", null, component);
     } catch (error) {
       ErrorResponse(res, "", null);

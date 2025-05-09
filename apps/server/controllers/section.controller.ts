@@ -4,29 +4,10 @@ import { ErrorResponse, SuccessResponse } from "../utils/ApiResponse";
 import { redis } from "..";
 
 class SectionController {
-  static async createSection(req: Request, res: Response) {
-    try {
-      const { page_id, component_id } = req.body;
-      const current_page = req.cookies.current_page;
-      if (!page_id || !component_id || !current_page)
-        return ErrorResponse(res, "Provide all fields", 400);
-      const section = await SectionService.create(page_id, component_id);
-      if (!section)
-        return ErrorResponse(res, "Section could not be created", 400);
-
-      await redis.del(`page:${current_page}`);
-      SuccessResponse(res, "Section created successfully", null, section);
-    } catch (error) {
-      ErrorResponse(res, "", null);
-    }
-  }
-
   static async getSection(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const current_page = req.cookies.current_page;
-      if (!id || !current_page)
-        return ErrorResponse(res, "Section does not exist", 404);
+      if (!id) return ErrorResponse(res, "Section does not exist", 404);
 
       const redis_section = await redis.get(`section:${id}`);
       if (redis_section) {
@@ -45,17 +26,36 @@ class SectionController {
     }
   }
 
+  static async createSection(req: Request, res: Response) {
+    try {
+      const { page_id, component_id } = req.body;
+
+      if (!page_id)
+        return ErrorResponse(
+          res,
+          "Provide all fields" + page_id + component_id,
+          400
+        );
+      const section = await SectionService.create(page_id, component_id);
+      if (!section)
+        return ErrorResponse(res, "Section could not be created", 400);
+
+      await redis.del(`page:${section.page}`);
+      SuccessResponse(res, "Section created successfully", null, section);
+    } catch (error) {
+      ErrorResponse(res, "", null);
+    }
+  }
+
   static async deleteSection(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const current_page = req.cookies.current_page;
-      if (!id || !current_page)
-        return ErrorResponse(res, "Section does not exist", 404);
+      if (!id) return ErrorResponse(res, "Section does not exist", 404);
       const section = await SectionService.delete(id);
       if (!section)
         return ErrorResponse(res, "Section could not be deleted", 404);
 
-      await redis.del(`page:${current_page}`);
+      await redis.del(`page:${section.page}`);
       SuccessResponse(res, "Section deleted successfully", null, section);
     } catch (error) {
       ErrorResponse(res, "", null);
