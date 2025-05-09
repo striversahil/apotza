@@ -98,6 +98,8 @@ class ProjectController {
       const project = await ProjectService.update(projectId, { name });
       if (!project)
         return ErrorResponse(res, "Project could not be updated", 400);
+
+      await this.refechProject(projectId);
       SuccessResponse(res, "Project updated successfully", null, project);
     } catch (error) {
       ErrorResponse(res, "", null);
@@ -124,6 +126,19 @@ class ProjectController {
       SuccessResponse(res, "Project fetched successfully", null, context);
     } catch (error) {
       ErrorResponse(res, "", null);
+    }
+  }
+
+  static async refechProject(id: string) {
+    try {
+      const project: any = await ProjectService.getById(id);
+      if (!project) return false;
+
+      await redis.del(`project:${id}`);
+      await redis.set(`project:${id}`, JSON.stringify(project));
+      return true;
+    } catch (error) {
+      throw new Error(error as string);
     }
   }
 

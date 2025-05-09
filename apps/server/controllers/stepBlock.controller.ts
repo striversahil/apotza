@@ -4,20 +4,6 @@ import StepBlockService from "../service/stepblock.service";
 import { redis } from "..";
 
 class StepBlockController {
-  static async createStep(req: Request, res: Response) {
-    try {
-      const { id, language } = req.body;
-      if (!id || !language)
-        return ErrorResponse(res, "StepBlock does not exist", 400);
-      const stepBlock = await StepBlockService.create(id, language);
-      if (!stepBlock)
-        return ErrorResponse(res, "StepBlock could not be created", 400);
-      SuccessResponse(res, "StepBlock created successfully", null, stepBlock);
-    } catch (error) {
-      ErrorResponse(res, "", null);
-    }
-  }
-
   static async getStep(req: Request, res: Response) {
     try {
       const { id } = req.params;
@@ -40,6 +26,21 @@ class StepBlockController {
     }
   }
 
+  static async createStep(req: Request, res: Response) {
+    try {
+      const { id, language } = req.body;
+      if (!id || !language)
+        return ErrorResponse(res, "StepBlock does not exist", 400);
+      const stepBlock = await StepBlockService.create(id, language);
+      if (!stepBlock)
+        return ErrorResponse(res, "StepBlock could not be created", 400);
+      await redis.del(`codeBlock:${stepBlock.codeblock}`);
+      SuccessResponse(res, "StepBlock created successfully", null, stepBlock);
+    } catch (error) {
+      ErrorResponse(res, "", null);
+    }
+  }
+
   static async runBlock(req: Request, res: Response) {
     try {
       const { id } = req.body;
@@ -47,6 +48,10 @@ class StepBlockController {
       const stepBlock = await StepBlockService.runBlock(id);
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be run", 400);
+
+      // await redis.del(`codeBlock:${stepBlock.codeblock}`);
+      await redis.del(`stepBlock:${id}`);
+
       SuccessResponse(res, "StepBlock Run successfully", null, stepBlock);
     } catch (error) {
       ErrorResponse(res, "", null);
@@ -60,6 +65,8 @@ class StepBlockController {
       const stepBlock = await StepBlockService.delete(id);
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be deleted", 404);
+
+      await redis.del(`codeBlock:${stepBlock.codeblock}`);
       SuccessResponse(res, "StepBlock deleted successfully", null, stepBlock);
     } catch (error) {
       ErrorResponse(res, "", null);
@@ -75,11 +82,29 @@ class StepBlockController {
       const stepBlock = await StepBlockService.update(id, slug);
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be updated", 400);
+
+      // await redis.del(`codeBlock:${stepBlock.codeblock}`);
+      await redis.del(`stepBlock:${id}`);
+
       SuccessResponse(res, "StepBlock updated successfully", null, stepBlock);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
   }
+
+  // static async refechStepBlock(id: string) {
+  //   try {
+  //     const stepBlock: any = await StepBlockService.getById(id);
+  //     if (!stepBlock) return false;
+
+  //     await redis.del(`stepBlock:${id}`);
+  //     await redis.set(`stepBlock:${id}`, JSON.stringify(stepBlock));
+  //     return true;
+  //   } catch (error) {
+  //     throw new Error(error as string);
+  //   }
+  // }
+
   static async temp(req: Request, res: Response) {
     try {
     } catch (error) {

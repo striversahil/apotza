@@ -17,6 +17,8 @@ class CodeBlockController {
       );
       if (!codeBlock)
         return ErrorResponse(res, "CodeBlock could not be created", 400);
+
+      await redis.del(`project:${codeBlock.project}`);
       SuccessResponse(res, "CodeBlock created successfully", null, codeBlock);
     } catch (error) {
       ErrorResponse(res, "", null);
@@ -60,7 +62,8 @@ class CodeBlockController {
       const codeBlock = await CodeBlockService.update(id, data);
       if (!codeBlock)
         return ErrorResponse(res, "CodeBlock could not be updated", 400);
-      await this.refetchCodeBlock(id);
+
+      await redis.del(`project:${codeBlock.project}`);
       SuccessResponse(res, "CodeBlock updated successfully", null, codeBlock);
     } catch (error) {
       ErrorResponse(res, "", null);
@@ -75,7 +78,7 @@ class CodeBlockController {
       if (!codeBlock)
         return ErrorResponse(res, "CodeBlock could not be deleted", 404);
 
-      await this.refetchCodeBlock(id);
+      await redis.del(`project:${codeBlock.project}`);
       SuccessResponse(res, "CodeBlock deleted successfully", null, codeBlock);
     } catch (error) {
       ErrorResponse(res, "", null);
@@ -105,17 +108,18 @@ class CodeBlockController {
     }
   }
 
-  static async refetchCodeBlock(id: string) {
-    try {
-      const codeBlock: any = await CodeBlockService.getById(id);
-      if (!codeBlock) return false;
+  // static async refetchCodeBlock(id: string) {
+  //   try {
+  //     const codeBlock: any = await CodeBlockService.getById(id);
+  //     if (!codeBlock) return false;
 
-      await redis.set(`codeBlock:${id}`, JSON.stringify(codeBlock));
-      return true;
-    } catch (error) {
-      throw new Error(error as string);
-    }
-  }
+  //     await redis.del(`codeBlock:${id}`);
+  //     await redis.set(`codeBlock:${id}`, JSON.stringify(codeBlock));
+  //     return true;
+  //   } catch (error) {
+  //     throw new Error(error as string);
+  //   }
+  // }
 
   static async temp(req: Request, res: Response) {
     try {
