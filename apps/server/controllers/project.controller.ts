@@ -8,6 +8,7 @@ import TemplateInit from "../common/templateProject.json";
 import SectionService from "../service/section.service";
 import ComponentService from "../service/component.service";
 import { redis } from "..";
+import { PageService } from "../service/page.service";
 
 class ProjectController {
   static async getProject(req: Request, res: Response) {
@@ -108,18 +109,44 @@ class ProjectController {
 
   static async globalContext(req: Request, res: Response) {
     try {
-      const { id } = req.cookies.project_id;
-      if (!id) return ErrorResponse(res, "Project does not exist", 404);
-      const project: any = await ProjectService.getById(id);
-      if (!project)
-        return ErrorResponse(res, "Project could not be fetched", 404);
+      const projectId = req.cookies.project_id;
+      const page_id = req.cookies.current_page;
+      if (!projectId || !page_id)
+        return ErrorResponse(res, "Project or Page does not exist", 404);
+
+      const project: any = await ProjectService.getById(projectId);
+      const page: any = await PageService.getOne(page_id, projectId);
+      if (!project || !page)
+        return ErrorResponse(res, "Project or Page could not be fetched", 404);
 
       const context: Record<string, any> = {};
 
       // Todo : Add Global Context of codeBlocks not done for Component for now
       if (project.codeblock?.length) {
         for (const codeBlock of project.codeBlock) {
-          context[codeBlock.name] = codeBlock.output;
+          const data = {
+            response: codeBlock.response,
+            error: codeBlock.error,
+          };
+
+          context[codeBlock.name] = data;
+        }
+      }
+
+      if (page.sections?.length) {
+        for (const section of page.sections) {
+          const section_: any = await SectionService.getById(section.id);
+
+          for (const component of section_.components) {
+            const data = {
+              name : component.name,
+              coordinates : component.coordinates,
+              content : component.content,
+              appearance : component.appearance,
+              layout : component.layout
+            };
+            context[component.name] = data;
+          }
         }
       }
 

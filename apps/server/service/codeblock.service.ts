@@ -69,6 +69,8 @@ class CodeBlockService {
           name: name,
           order_no: order_no,
           project: project_id,
+          error: null,
+          response: null,
         })
         .returning();
 
