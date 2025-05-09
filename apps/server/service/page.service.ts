@@ -12,7 +12,7 @@ export class PageService {
         with: {
           sections: true,
         },
-        where: and(eq(Page.name, id), eq(Page.project, project_id)),
+        where: and(eq(Page.id, id), eq(Page.project, project_id)),
       });
       if (!page) return null;
 

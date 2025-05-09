@@ -119,17 +119,21 @@ class ProjectController {
       if (!project || !page)
         return ErrorResponse(res, "Project or Page could not be fetched", 404);
 
-      const context: Record<string, any> = {};
+      const context: Record<string, any> = {
+        codeBlocks: {},
+        components: {},
+      };
 
       // Todo : Add Global Context of codeBlocks not done for Component for now
-      if (project.codeblock?.length) {
-        for (const codeBlock of project.codeBlock) {
+
+      if (project.codeblocks?.length) {
+        for (const codeBlock of project.codeblocks) {
           const data = {
             response: codeBlock.response,
             error: codeBlock.error,
           };
 
-          context[codeBlock.name] = data;
+          context["codeBlocks"][codeBlock.name] = data;
         }
       }
 
@@ -139,13 +143,12 @@ class ProjectController {
 
           for (const component of section_.components) {
             const data = {
-              name : component.name,
-              coordinates : component.coordinates,
-              content : component.content,
-              appearance : component.appearance,
-              layout : component.layout
+              name: component.name,
+              ...component.content,
+              ...component.appearance,
+              ...component.layout,
             };
-            context[component.name] = data;
+            context["components"][component.name] = data;
           }
         }
       }

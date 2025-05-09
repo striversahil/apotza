@@ -20,9 +20,9 @@ const GetProject = {
   },
 
   getContext: () => {
-    return useQueryData(["GetProjec.getContext"], async () => {
+    return useQueryData(["GetProject.getContext"], async () => {
       const response = await api.get(`${project}/context`);
-      return response.data;
+      return response.data.payload;
     });
   },
 
@@ -40,7 +40,7 @@ const GetProject = {
   getContextCodeBlock: (id: string) => {
     return useQueryData(["GetProject.getContextCodeBlock"], async () => {
       const response = await api.get(`${codeBlock}/${id}/context`);
-      return response.data;
+      return response.data.payload;
     });
   },
 

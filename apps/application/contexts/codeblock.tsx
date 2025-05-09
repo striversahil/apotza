@@ -92,11 +92,22 @@ export const CurrentStepProvider = ({
 };
 
 export const TabStepOutputProvider = ({
+  id = "",
   children,
 }: {
+  id: string;
   children: ReactNode;
 }) => {
   const [steps, setSteps] = useState<Array<StepBlockInterface>>([]);
+
+  const { data } = GetProject.getContextCodeBlock(id);
+
+  useEffect(() => {
+    if (data) {
+      setSteps(data);
+    }
+  }, [id]);
+
   return (
     <TabStepOutputContext.Provider value={{ steps, setSteps }}>
       {children}

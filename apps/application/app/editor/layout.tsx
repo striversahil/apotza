@@ -74,7 +74,6 @@ const layout = (props: Props) => {
             >
               <Panel defaultSize={80}>
                 <CurrentTabProvider>
-                  <TabStepOutputProvider>
                     <PanelGroup direction="vertical" className="">
                       <Panel defaultSize={57} className="relative">
                         <div className="absolute inset-0  overflow-y-scroll">
@@ -82,8 +81,7 @@ const layout = (props: Props) => {
                         </div>
                       </Panel>
                       <CodeBlock />
-                    </PanelGroup>
-                  </TabStepOutputProvider>
+                    </PanelGroup> 
                 </CurrentTabProvider>
               </Panel>
               {openConfig && (

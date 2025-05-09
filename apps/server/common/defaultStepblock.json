@@ -2,7 +2,10 @@
   "python": {
     "name": "Python",
     "config": {
-      "code": "print('Hello World')"
+      "code": {
+        "config": "print('Hello World')",
+        "value": "print('Hello World')"
+      }
     },
     "output": "{  \"stdout\": \"Hello World\"}",
     "stdout": "Hello World"
@@ -10,7 +13,10 @@
   "javascript": {
     "name": "JavaScript",
     "config": {
-      "code": "console.log('Hello World')"
+      "code": {
+        "config": "console.log('Hello World')",
+        "value": "console.log('Hello World')"
+      }
     },
     "output": "{  \"stdout\": \"Hello World\"}",
     "stdout": "Hello World"
@@ -18,7 +24,10 @@
   "graphql": {
     "name": "GraphQL",
     "config": {
-      "code": "query {\n  user(id: \"1\") {\n    id\n    name\n    email\n  }\n}"
+      "code": {
+        "config": "query {\n  user(id: \"1\") {\n    id\n    name\n    email\n  }\n}",
+        "value": "query {\n  user(id: \"1\") {\n    id\n    name\n    email\n  }\n}"
+      }
     },
     "output": "{  \"stdout\": \"Hello World\"}",
     "stdout": "Hello World"
@@ -26,7 +35,10 @@
   "postgres": {
     "name": "Postgres",
     "config": {
-      "query": "select * from workspace",
+      "query": {
+        "config": "select * from workspace",
+        "value": "select * from workspace"
+      },
       "connection": {
         "user": "postgres.azvzblxmgjzqqpdozwmh",
         "database": "postgres",
@@ -41,15 +53,27 @@
   "rest": {
     "name": "REST API",
     "config": {
-      "endpoint": "https://jsonplaceholder.typicode.com/posts/",
+      "endpoint": {
+        "config": "https://jsonplaceholder.typicode.com/posts",
+        "value": "https://jsonplaceholder.typicode.com/posts"
+      },
       "method": "GET",
       "headers": [
         {
-          "key": "Content-Type",
-          "value": "application/json"
+          "key": {
+            "config": "Content-Type",
+            "value": "Content-Type"
+          },
+          "value": {
+            "config": "application/json",
+            "value": "application/json"
+          }
         }
       ],
-      "body": "{\n  \"title\": \"foo\",\n  \"body\": \"bar\",\n  \"userId\": 1\n}"
+      "body": {
+        "config": "{\n  \"title\": \"foo\",\n  \"body\": \"bar\",\n  \"userId\": 1\n}",
+        "value": "{\n  \"title\": \"foo\",\n  \"body\": \"bar\",\n  \"userId\": 1\n}"
+      }
     },
     "output": "{  \"stdout\": \"Hello World\"}",
     "stdout": "Hello World"
