@@ -43,6 +43,13 @@
       "when": 1746681356459,
       "tag": "0005_silly_expediter",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1746800041313,
+      "tag": "0006_handy_jane_foster",
+      "breakpoints": true
     }
   ]
 }

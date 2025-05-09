@@ -2,7 +2,7 @@
 import GetProject from "../../../actions/project";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import { BatteryCharging, CheckCircle, Dot, X } from "lucide-react";
+import { BatteryCharging, CheckCircle, Circle, Dot, X } from "lucide-react";
 import React from "react";
 import dynamic from "next/dynamic";
 import { StepBlockInterface } from "../Editor";
@@ -50,9 +50,15 @@ const Output = ({ id, stdout, output }: StepBlockInterface) => {
             </TabsTrigger>
           </TabsList>
           <div className="flex-1 flex justify-end">
-            <div className="flex items-center gap-2 mr-3">
+            <div className="flex items-center gap-2 pr-5">
               {output.success === false ? (
-                <X size={20} className="text-red-500" />
+                <div className="relative">
+                  <Circle size={22} className="text-red-500" />
+                  <X
+                    size={20}
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-red-500"
+                  />
+                </div>
               ) : (
                 <CheckCircle size={20} className="text-green-500" />
               )}
@@ -64,7 +70,7 @@ const Output = ({ id, stdout, output }: StepBlockInterface) => {
                     output.success === false ? "text-red-500" : "text-green-500"
                   )}
                 >
-                  {output.success === false ? "Failed" : "Success"}
+                  {output.success === false ? "Failed Action" : "Success"}
                 </span>{" "}
                 {/* <Dot size={15} className="text-green-500" /> */}
                 {/* <div className="text-sm ">10ms</div> */}

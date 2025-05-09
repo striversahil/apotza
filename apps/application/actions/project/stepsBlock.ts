@@ -16,8 +16,8 @@ const StepsBlockAction = {
         return response.data;
       },
       [
-        [`GetProject.getAllSteps-${currentTab}` as string],
         [`GetProject.getOneCodeBlock-${currentTab}` as string],
+        ["GetProject.getContextCodeBlock"],
       ],
       () => {},
       () => {}
@@ -49,7 +49,10 @@ const StepsBlockAction = {
         const response = await api.post(`${source}/run`, payload);
         return response.data;
       },
-      [[`GetProject.getOneStep-${id}` as string]],
+      [
+        [`GetProject.getOneStep-${id}` as string],
+        ["GetProject.getContextCodeBlock"],
+      ],
       () => {},
       () => {}
     );

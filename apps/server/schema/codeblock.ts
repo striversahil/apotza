@@ -19,6 +19,8 @@ export const CodeBlock = pgTable("codeblock", {
     onUpdate: "cascade",
   }),
   name: text("name").notNull(),
+  response: jsonb("output"),
+  error: jsonb("error"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
 

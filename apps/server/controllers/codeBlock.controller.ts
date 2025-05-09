@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { ErrorResponse, SuccessResponse } from "../utils/ApiResponse";
 import CodeBlockService from "../service/codeblock.service";
 import { redis } from "..";
+import StepBlockService from "../service/stepblock.service";
 
 class CodeBlockController {
   static async getCodeBlock(req: Request, res: Response) {
@@ -47,8 +48,39 @@ class CodeBlockController {
   }
 
   static async runAllSteps(req: Request, res: Response) {
-    const { id } = req.body;
     try {
+      const { id } = req.body;
+      if (!id) return ErrorResponse(res, "CodeBlock does not exist", 404);
+
+      const codeBlock: any = await CodeBlockService.getById(id);
+      if (!codeBlock)
+        return ErrorResponse(res, "CodeBlock could not be fetched", 404);
+
+      if (codeBlock.stepBlock?.length) {
+        for (const stepBlock of codeBlock.stepBlock) {
+          const StepBlock: any = await StepBlockService.runBlock(stepBlock.id);
+          if (!StepBlock)
+            return ErrorResponse(res, "StepBlock could not be run", 400);
+
+          if (StepBlock.output.success === false) {
+            // Updating CodeBlock with Error
+            await CodeBlockService.update(id, {
+              error: StepBlock.output.message,
+            });
+            return SuccessResponse(res, "StepBlock Got Error", null, {
+              stepBlock: StepBlock.id,
+            });
+          }
+        }
+
+        // Updating CodeBlock with Success
+        await CodeBlockService.update(id, {
+          response: codeBlock.stepBlock[codeBlock.stepBlock.length - 1].output,
+        });
+        return SuccessResponse(res, "CodeBlock Run successfully", null, {
+          stepBlock: codeBlock.stepBlock[codeBlock.stepBlock.length - 1].id, // return last stepblock Id if Codeblock run Successfully
+        });
+      }
     } catch (error) {
       ErrorResponse(res, "", null);
     }
@@ -88,6 +120,15 @@ class CodeBlockController {
     try {
       const { id } = req.params;
       if (!id) return ErrorResponse(res, "CodeBlock does not exist", 404);
+
+      // I am avoiding redis here as of Overhead for now
+
+      // const redis_contextCB = await redis.get(`contextCB:${id}`);
+      // if (redis_contextCB) {
+      //   const context = JSON.parse(redis_contextCB);
+      //   SuccessResponse(res, "CodeBlock fetched successfully", null, context);
+      //   return;
+      // }
       const codeBlock: any = await CodeBlockService.getById(id);
       if (!codeBlock)
         return ErrorResponse(res, "CodeBlock could not be fetched", 404);
@@ -100,7 +141,7 @@ class CodeBlockController {
         }
       }
       // Context CodeBlock is stored in redis
-      redis.set(`contextCB:${id}`, JSON.stringify(context));
+      // redis.set(`contextCB:${id}`, JSON.stringify(context));
 
       SuccessResponse(res, "CodeBlock fetched successfully", null, context);
     } catch (error) {

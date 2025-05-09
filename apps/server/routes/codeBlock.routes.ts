@@ -5,6 +5,8 @@ const router: Router = Router();
 
 router.route("/:id").get(CodeBlockController.getCodeBlock);
 
+router.route("/:id/context").get(CodeBlockController.contextCodeBlock);
+
 router.route("/").post(CodeBlockController.create);
 
 router.route("/run").post(CodeBlockController.runAllSteps);
@@ -12,7 +14,5 @@ router.route("/run").post(CodeBlockController.runAllSteps);
 router.route("/:id").patch(CodeBlockController.updateCodeBlock);
 
 router.route("/:id").delete(CodeBlockController.deleteCodeblock);
-
-router.route("/:id/context").get(CodeBlockController.contextCodeBlock);
 
 export default router;

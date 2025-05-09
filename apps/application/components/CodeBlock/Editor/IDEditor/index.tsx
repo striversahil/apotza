@@ -44,7 +44,7 @@ const IDEditor = ({ code, onChange, language }: Props) => {
   return (
     <Popover open={enablePopover}>
       <PopoverTrigger asChild>
-        <div className="relative w-[100%] overscroll-none h-full rounded-lg overflow-hidden">
+        <div className="relative w-[100%] overscroll-auto h-full rounded-lg overflow-hidden">
           <IDE
             language={language}
             theme="vs-dark"
