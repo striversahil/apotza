@@ -17,7 +17,7 @@ export class PageController {
 
       const redis_page = await redis.get(`page:${current_page}`);
       if (redis_page) {
-        console.log("From Redis", current_page);
+        // console.log("From Redis", current_page);
         const page = JSON.parse(redis_page);
         // res.cookie("current_page", page.id, projectCookie);
         SuccessResponse(res, "Page fetched successfully", null, page);

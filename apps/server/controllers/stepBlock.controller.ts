@@ -11,6 +11,7 @@ class StepBlockController {
 
       const redis_stepBlock = await redis.get(`stepBlock:${id}`);
       if (redis_stepBlock) {
+        console.log("From Redis StepBlock", id);
         const stepBlock = JSON.parse(redis_stepBlock);
         SuccessResponse(res, "StepBlock fetched successfully", null, stepBlock);
         return;
@@ -49,7 +50,7 @@ class StepBlockController {
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be run", 400);
 
-      // await redis.del(`codeBlock:${stepBlock.codeblock}`);
+      await redis.del(`codeBlock:${stepBlock.codeblock}`); // needed to done for initial capture of codeblock by client
       await redis.del(`stepBlock:${id}`);
 
       SuccessResponse(res, "StepBlock Run successfully", null, stepBlock);
@@ -84,6 +85,7 @@ class StepBlockController {
         return ErrorResponse(res, "StepBlock could not be updated", 400);
 
       // await redis.del(`codeBlock:${stepBlock.codeblock}`);
+      await redis.del(`codeBlock:${stepBlock.codeblock}`); // needed to done for initial capture of codeblock by client
       await redis.del(`stepBlock:${id}`);
 
       SuccessResponse(res, "StepBlock updated successfully", null, stepBlock);

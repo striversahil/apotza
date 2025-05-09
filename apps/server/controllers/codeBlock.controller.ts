@@ -4,27 +4,6 @@ import CodeBlockService from "../service/codeblock.service";
 import { redis } from "..";
 
 class CodeBlockController {
-  static async create(req: Request, res: Response) {
-    try {
-      const { name, language } = req.body;
-      const project_id = req.cookies.project_id;
-      if (!project_id) return ErrorResponse(res, "Project does not exist", 404);
-
-      const codeBlock = await CodeBlockService.create(
-        project_id,
-        name,
-        language
-      );
-      if (!codeBlock)
-        return ErrorResponse(res, "CodeBlock could not be created", 400);
-
-      await redis.del(`project:${codeBlock.project}`);
-      SuccessResponse(res, "CodeBlock created successfully", null, codeBlock);
-    } catch (error) {
-      ErrorResponse(res, "", null);
-    }
-  }
-
   static async getCodeBlock(req: Request, res: Response) {
     try {
       const { id } = req.params;
@@ -41,6 +20,27 @@ class CodeBlockController {
 
       await redis.set(`codeBlock:${id}`, JSON.stringify(codeBlock));
       SuccessResponse(res, "CodeBlock fetched successfully", null, codeBlock);
+    } catch (error) {
+      ErrorResponse(res, "", null);
+    }
+  }
+
+  static async create(req: Request, res: Response) {
+    try {
+      const { name, language } = req.body;
+      const project_id = req.cookies.project_id;
+      if (!project_id) return ErrorResponse(res, "Project does not exist", 404);
+
+      const codeBlock = await CodeBlockService.create(
+        project_id,
+        name,
+        language
+      );
+      if (!codeBlock)
+        return ErrorResponse(res, "CodeBlock could not be created", 400);
+
+      await redis.del(`project:${codeBlock.project}`);
+      SuccessResponse(res, "CodeBlock created successfully", null, codeBlock);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
