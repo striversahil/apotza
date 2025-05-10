@@ -56,7 +56,10 @@ class RunnerController {
         return ErrorResponse(c, "Connection Credentials is required");
       }
 
-      const { error, data } = await PostgresEngine(query, connection);
+      const { error, data } = await PostgresEngine(
+        query.value,
+        connection.value
+      );
       if (error) {
         return ErrorResponse(c, error);
       }
@@ -73,7 +76,7 @@ class RunnerController {
         return ErrorResponse(c, "Code is required");
       }
 
-      const { error, data } = await JavaScriptEngine(code);
+      const { error, data } = await JavaScriptEngine(code.value);
       if (error) {
         return ErrorResponse(c, error);
       }

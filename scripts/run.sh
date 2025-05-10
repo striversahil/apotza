@@ -2,10 +2,10 @@
 
 
 # Install redis and run it
-docker run --name redis -p 6379:6379 -d redis
+# docker run --name redis -p 6379:6379 -d redis
 
-# Connect to redis
-docker exec -it redis redis-cli
+# Start redis
+docker start redis
 
 
 npm run dev

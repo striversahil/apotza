@@ -106,7 +106,7 @@ export const TabStepOutputProvider = ({
     if (data) {
       setSteps(data);
     }
-  }, [id]);
+  }, [id, data]);
 
   return (
     <TabStepOutputContext.Provider value={{ steps, setSteps }}>

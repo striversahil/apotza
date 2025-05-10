@@ -31,7 +31,7 @@ export const GlobalContextProvider = ({
       setComponent(data.components);
       setCodeBlock(data.codeBlocks);
     }
-  }, []);
+  }, [data]);
 
   return (
     <GlobalContext.Provider

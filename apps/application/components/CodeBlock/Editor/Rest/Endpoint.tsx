@@ -35,9 +35,16 @@ const RestEndpoint = (props: Props) => {
       </Select>
       <div className="w-full">
         <Input
-          placeholder="URL"
+          placeholder="Enter Endpoint"
           defaultValue={stepConfig.config.endpoint}
-          onChange={(e) => setStepBlock({ endpoint: e.target.value })}
+          onChange={(e) =>
+            setStepBlock({
+              endpoint: {
+                config: e.target.value,
+                value: stepConfig.enpoint.value,
+              },
+            })
+          }
         />
       </div>
     </div>
