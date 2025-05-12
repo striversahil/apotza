@@ -24,7 +24,7 @@ export class PageController {
         return;
       }
 
-      const page = await PageService.getOne(id, project_id);
+      const page = await PageService.getOne(current_page, project_id);
       if (!page) return ErrorResponse(res, "Page could not be fetched", 404);
 
       await redis.set(`page:${current_page}`, JSON.stringify(page));

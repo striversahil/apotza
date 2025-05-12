@@ -7,6 +7,7 @@ import Text_Base from "../../base/text";
 import Color_Base from "../../base/color";
 import Select_Base from "../../base/select";
 import { useGlobalContext } from "../../../../contexts";
+import { useConfigValue } from "@/components/CodeBlock/Editor/IDEditor/useConfigValue";
 
 interface initialvalue {
   config: string;
@@ -33,24 +34,15 @@ export const TextInput: React.FC<Props> = ({
 
   useDebouncedUpdate(location, value);
 
-  const isEmpty = _.isEmpty(addOn);
+  const { setConfig } = useConfigValue(setValue);
 
-  const onChange = (val: string) => {
-    const regex = /\{\{(.*?)\}\}/g; // regex to match "{{something}}"
-    const text = val;
-
-    // const text = 'Hello {{world}} and {{universe}}!';
-    const result = text.replace(regex, (match, p1) => {
-      return `🌟${p1.toUpperCase()}🌟`; // Or whatever transformation you want!
-    });
-    setValue({ config: val, value: result });
-  };
+  // const isEmpty = _.isEmpty(addOn);
 
   return (
     <div className="float-end flex gap-2">
       <Text_Base
         value={initialvalue.config}
-        onChange={(val) => onChange(val)}
+        onChange={(val) => setConfig(val)}
       />
 
       {/* {!isEmpty && (
