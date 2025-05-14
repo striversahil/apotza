@@ -21,9 +21,9 @@ const page = (props: Props) => {
     redirect("/login");
   }
 
-  if (data && data.success === true) {
-    redirect(`/application/${data.payload.id}/edit`);
-  }
+  // if (data && data.success === true) {
+  //   redirect(`/preview/${data.payload.id}`);
+  // }
 
   return (
     <div>

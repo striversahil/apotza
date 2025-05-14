@@ -7,7 +7,7 @@ const router: Router = Router();
 
 router.route("/").post(PageController.createPage);
 
-router.route("/:id").get(PageController.getPage);
+router.route("/:page_name").get(PageController.getPage);
 
 router.route("/:id").patch(PageController.updatePage);
 
