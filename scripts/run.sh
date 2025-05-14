@@ -7,7 +7,7 @@
 # Start redis
 docker start redis
 
-
+# Running the Developement Server
 npm run dev
 
 

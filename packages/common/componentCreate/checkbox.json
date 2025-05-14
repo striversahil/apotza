@@ -1,9 +1,6 @@
 {
   "content": {
-    "label": {
-      "value": "Checkbox",
-      "config": "Checkbox"
-    },
+    "label": "Checkbox",
     "defaultChecked": true
   },
   "appearance": {
@@ -26,5 +23,9 @@
   },
   "eventHandler": {
     "onChangeCheck": "none"
+  },
+  "value": {
+    "label": "Checkbox",
+    "defaultChecked": true
   }
 }

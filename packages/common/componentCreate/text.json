@@ -1,53 +1,39 @@
 {
   "content": {
-    "text": {
-      "value": "Hello World",
-      "config": "Hello World"
-    },
+    "text": "Hello World",
     "dataType": "plainText"
   },
   "appearance": {
-    "style": {
-      "value": "",
-      "config": ""
-    },
+    "style": "",
     "textColor": "white",
     "icon": "👋",
     "horizontalAlign": "center",
     "verticalAlign": "center",
-    "loadingAnimation": {
-      "value": false,
-      "config": "false"
-    },
-    "fontSize": {
-      "value": "16",
-      "config": "16"
-    },
+    "loadingAnimation": false,
+    "fontSize": "16",
     "fontWeight": "bold",
     "textAlign": "left",
     "backgroundColor": "green",
     "borderColor": "red",
-    "borderWidth": {
-      "value": "3",
-      "config": "3"
-    },
-    "borderRadius": {
-      "value": "25",
-      "config": "25"
-    }
+    "borderWidth": "3",
+    "borderRadius": "25"
   },
   "layout": {
     "width": 25,
     "height": 50,
     "layout": "grid",
-    "padding": {
-      "value": "10",
-      "config": "10"
-    },
+    "padding": 10,
     "scrollOverflow": "auto",
-    "visible": {
-      "value": true,
-      "config": "true"
-    }
+    "visible": true
+  },
+  "value": {
+    "text": "Hello World",
+    "style": "",
+    "loadingAnimation": false,
+    "fontSize": "16",
+    "borderWidth": "3",
+    "borderRadius": "25",
+    "padding": 10,
+    "visible": true
   }
 }

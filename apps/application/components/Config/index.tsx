@@ -53,6 +53,7 @@ const ConfigFolder = () => {
   const [State, setState] = useState<any>(null);
 
   useEffect(() => {
+    // Setting Default Opening State to be True.
     const state = _.clone(Component);
     const value = _.mapValues(state, () => true);
     setState(value);

@@ -11,7 +11,7 @@ class StepBlockController {
 
       const redis_stepBlock = await redis.get(`stepBlock:${id}`);
       if (redis_stepBlock) {
-        console.log("From Redis StepBlock", id);
+        // console.log("From Redis StepBlock", id);
         const stepBlock = JSON.parse(redis_stepBlock);
         SuccessResponse(res, "StepBlock fetched successfully", null, stepBlock);
         return;
