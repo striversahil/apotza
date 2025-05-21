@@ -18,6 +18,14 @@ const GetProject = {
       return response.data;
     });
   },
+
+  getContext: () => {
+    return useQueryData(["GetProject.getContext"], async () => {
+      const response = await api.get(`${project}/context`);
+      return response.data.payload;
+    });
+  },
+
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++ CodeBlock Actions ++++++++++++++++++++++++++++++++++++++++++++++++++++++
   getCodeBlock: (id: string) => {
     return useQueryData(
@@ -27,6 +35,13 @@ const GetProject = {
         return response.data;
       }
     );
+  },
+
+  getContextCodeBlock: (id: string) => {
+    return useQueryData(["GetProject.getContextCodeBlock"], async () => {
+      const response = await api.get(`${codeBlock}/${id}/context`);
+      return response.data.payload;
+    });
   },
 
   getStep: (id: string) => {

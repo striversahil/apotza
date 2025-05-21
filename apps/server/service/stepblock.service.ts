@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { db } from "../database";
 import { StepBlock, StepBlockInterface } from "../schema";
 import stepBlockDefault from "../utils/stepBlockDefault";
@@ -18,6 +18,23 @@ class StepBlockService {
     }
   }
 
+  static async getOneByConstaint(
+    where?: any,
+    orderBy?: any
+  ): Promise<StepBlockInterface | null> {
+    try {
+      const [stepBlock] = await db
+        .select()
+        .from(StepBlock)
+        .where(where)
+        .orderBy(orderBy)
+        .limit(1);
+      return stepBlock ? stepBlock : null;
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
   static async create(
     codeBlock_id: string,
     type: string
@@ -25,12 +42,27 @@ class StepBlockService {
     try {
       const payload = stepBlockDefault(type);
       if (!payload) return null;
+
+      const prevStepBlock = await this.getOneByConstaint(
+        and(eq(StepBlock.codeblock, codeBlock_id), eq(StepBlock.type, type)),
+        desc(StepBlock.createdAt)
+      );
+
+      let name = `${payload.name} 1`; // Adding default name to be "payload.name 1"
+      let order_no = 1;
+
+      if (prevStepBlock) {
+        const prevCodeNo = prevStepBlock.order_no;
+        name = `${payload.name} ${prevCodeNo + 1}`;
+        order_no = prevCodeNo + 1;
+      }
       const [newStepBlock] = await db
         .insert(StepBlock)
         .values({
-          name: payload.name,
+          name: name,
           type: type,
           codeblock: codeBlock_id,
+          order_no: order_no,
           config: payload.config,
           stdout: payload.stdout,
           output: payload.output,
@@ -67,7 +99,7 @@ class StepBlockService {
       let updated_result = null;
       const result = await response.json();
 
-      console.log(result);
+      // console.log(result);
 
       if (!result) return null;
 

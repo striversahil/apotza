@@ -1,6 +1,6 @@
 import { db } from "../database";
-import { and, eq } from "drizzle-orm";
-import { Component, Page, PageInterface } from "../schema";
+import { and, desc, eq } from "drizzle-orm";
+import { Component, Page, PageInterface, ProjectInterface } from "../schema";
 
 export class PageService {
   static async getOne(
@@ -12,7 +12,7 @@ export class PageService {
         with: {
           sections: true,
         },
-        where: and(eq(Page.name, id), eq(Page.project, project_id)),
+        where: and(eq(Page.id, id), eq(Page.project, project_id)),
       });
       if (!page) return null;
 
@@ -33,16 +33,49 @@ export class PageService {
     }
   }
 
+  static async getOneByConstaint(
+    where: any,
+    orderBy?: any
+  ): Promise<PageInterface | null> {
+    try {
+      const [page] = await db
+        .select()
+        .from(Page)
+        .where(where)
+        .orderBy(orderBy)
+        .limit(1);
+
+      return page ? page : null;
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
   static async create(
     project_id: string,
     ...payload: any
   ): Promise<PageInterface | null> {
     try {
+      const prevPage = await this.getOneByConstaint(
+        eq(Page.project, project_id),
+        desc(Page.createdAt)
+      );
+
+      let name = `Page 1`; // Adding default name to be "Page 1"
+      let order_no = 1;
+
+      if (prevPage) {
+        const prevCodeNo = prevPage.order_no;
+        name = `Page ${prevCodeNo + 1}`;
+        order_no = prevCodeNo + 1;
+      }
+
       const [page] = await db
         .insert(Page)
         .values({
-          name: "Untitled Page",
+          name: name,
           project: project_id,
+          order_no: order_no,
           ...payload[0],
         })
         .returning();

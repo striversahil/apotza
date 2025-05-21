@@ -2,7 +2,7 @@
 import GetProject from "../../../actions/project";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import { BatteryCharging, CheckCircle, Dot } from "lucide-react";
+import { BatteryCharging, CheckCircle, Circle, Dot, X } from "lucide-react";
 import React from "react";
 import dynamic from "next/dynamic";
 import { StepBlockInterface } from "../Editor";
@@ -50,21 +50,46 @@ const Output = ({ id, stdout, output }: StepBlockInterface) => {
             </TabsTrigger>
           </TabsList>
           <div className="flex-1 flex justify-end">
-            <div className="flex items-center gap-2 mr-3">
-              <CheckCircle size={20} className="text-green-500" />
+            <div className="flex items-center gap-2 pr-5">
+              {output.success === false ? (
+                <div className="relative">
+                  <Circle size={22} className="text-red-500" />
+                  <X
+                    size={20}
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-red-500"
+                  />
+                </div>
+              ) : (
+                <CheckCircle size={20} className="text-green-500" />
+              )}
+
               <div className="flex items-center">
-                <span className="text-sm font-bold text-green-500">
-                  Success
+                <span
+                  className={cn(
+                    "text-sm font-bold",
+                    output.success === false ? "text-red-500" : "text-green-500"
+                  )}
+                >
+                  {output.success === false ? "Failed Action" : "Success"}
                 </span>{" "}
-                <Dot size={15} className="text-green-500" />
-                <div className="text-sm ">10ms</div>
+                {/* <Dot size={15} className="text-green-500" /> */}
+                {/* <div className="text-sm ">10ms</div> */}
               </div>
             </div>
           </div>
         </div>
         <div className="relative flex-1 h-full w-full">
-          <div className="absolute inset-2 rounded-md  bg-white/10">
-            <div className="absolute inset-2 flex items-start p-3 rounded-md bg-[#0b1c2c]  overflow-y-auto ">
+          <div
+            className={cn(
+              "absolute inset-2 rounded-md  ",
+              output.success === false ? "bg-[#8b1d1d]" : "bg-white/10"
+            )}
+          >
+            <div
+              className={cn(
+                "absolute inset-1 flex items-start p-3 rounded-md bg-[#0b1c2c]  overflow-y-auto "
+              )}
+            >
               <TabsContent value="output">
                 <ReactJson
                   src={output}
@@ -78,7 +103,7 @@ const Output = ({ id, stdout, output }: StepBlockInterface) => {
                   sortKeys={false}
                   iconStyle="square"
                   style={{
-                    fontSize: "12px",
+                    fontSize: "13px",
                     fontFamily: "monospace",
                     width: "100%",
                     height: "100%",

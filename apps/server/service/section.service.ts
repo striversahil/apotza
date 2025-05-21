@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, desc, eq, or } from "drizzle-orm";
 import { db } from "../database";
 import { Section, SectionInterface } from "../schema";
 import sectionDefault from "../common/sectionDefault.json";
@@ -18,17 +18,60 @@ class SectionService {
     }
   }
 
+  static async getOneByConstaint(
+    where: any,
+    orderBy?: any
+  ): Promise<SectionInterface | null> {
+    try {
+      const [section] = await db
+        .select()
+        .from(Section)
+        .where(where)
+        .orderBy(orderBy)
+        .limit(1);
+
+      return section ? section : null;
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
   static async create(
     page_id: string | null,
     component_id: string | null
   ): Promise<SectionInterface | null> {
     try {
+      const conditions = [];
+
+      if (page_id) {
+        conditions.push(eq(Section.page, page_id));
+      }
+
+      if (component_id) {
+        conditions.push(eq(Section.component_id, component_id));
+      }
+
+      const prevSection = await this.getOneByConstaint(
+        conditions.length > 1 ? or(...conditions) : conditions[0],
+        desc(Section.createdAt)
+      );
+
+      let name = `Section 1`; // Adding default name to be "Section 1"
+      let order_no = 1;
+
+      if (prevSection) {
+        const prevCodeNo = prevSection.order_no;
+        name = `Section ${prevCodeNo + 1}`;
+        order_no = prevCodeNo + 1;
+      }
+
       const [section] = await db
         .insert(Section)
         .values({
-          name: "Untitled Section",
+          name: name,
           page: page_id ?? null,
           component_id: component_id ?? null,
+          order_no: order_no,
           layout: sectionDefault.layout,
           appearance: sectionDefault.appearance,
         })

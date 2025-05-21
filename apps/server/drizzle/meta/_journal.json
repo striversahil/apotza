@@ -15,6 +15,41 @@
       "when": 1746154074743,
       "tag": "0001_smart_meltdown",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1746627954067,
+      "tag": "0002_premium_aqueduct",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1746629718458,
+      "tag": "0003_dark_jackal",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1746678859565,
+      "tag": "0004_boring_bucky",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1746681356459,
+      "tag": "0005_silly_expediter",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1746800041313,
+      "tag": "0006_handy_jane_foster",
+      "breakpoints": true
     }
   ]
 }

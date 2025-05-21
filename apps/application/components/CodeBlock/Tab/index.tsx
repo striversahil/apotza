@@ -25,7 +25,7 @@ type Props = {
 const Tabs = (props: Props) => {
   const [CodeBlockData, setCodeBlockData] = useState<any>(null);
 
-  const { isLoading, data } = GetProject.getProject();
+  const { data } = GetProject.getProject();
 
   const { currentTab, setCurrentTab = () => {} } = useCurrentTab() || {};
 
@@ -74,7 +74,14 @@ const Tabs = (props: Props) => {
                   </div>
                 </div>
                 <div className="ml-auto">
-                  <DeleteTab item={item} />
+                  <DeleteTab
+                    item={item}
+                    onClick={() => {
+                      currentTab &&
+                        item.id === currentTab &&
+                        setCurrentTab(null);
+                    }}
+                  />
                 </div>
               </div>
             ))}

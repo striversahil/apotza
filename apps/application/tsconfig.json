@@ -43,6 +43,6 @@
     "next-env.d.ts",
     "next.config.js",
     ".next/types/**/*.ts"
-  ],
+, "components/CodeBlock/Editor/IDEditor/useEnableComplete.js"  ],
   "exclude": ["node_modules"]
 }

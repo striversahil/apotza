@@ -5,7 +5,9 @@ const router: Router = Router();
 
 router.route("/").get(ProjectController.getProject);
 
-router.route("/new").get(ProjectController.createProject);
+router.route("/context").get(ProjectController.globalContext);
+
+router.route("/new").post(ProjectController.createProject);
 
 router.route("/").delete(ProjectController.deleteProject);
 

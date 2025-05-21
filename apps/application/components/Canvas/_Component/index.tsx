@@ -2,8 +2,6 @@ import React, { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { useDraggable } from "@dnd-kit/core";
 import { Resizable } from "re-resizable";
-
-import ResizableComp from "../../../../../archive/ResizableBox/ResizableComp";
 import { useContextSave } from "../../../app/editor/_hooks/useContextSave";
 import { MatchComponent } from "..";
 import { useLayout } from "../../../contexts/component";
@@ -37,7 +35,7 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
       : undefined,
   };
 
-  const { Component = () => <></> } = MatchComponent[value.name]! || {};
+  const { Component = () => <></> } = MatchComponent[value.component]! || {};
 
   return (
     <div

@@ -2,7 +2,7 @@
  * Component Service : It will Assume that You have done all the Validation Checks
  */
 
-import { eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { Component, ComponentInterface, Page, Section } from "../schema";
 import { db } from "../database";
 import { MatchComponent } from "@repo/common";
@@ -19,7 +19,7 @@ class ComponentService {
         with: {
           components: true,
         },
-        where: eq(Section.component_id ?? "1", id),
+        where: eq(Section.component_id ?? " ", id),
       });
 
       if (!component) return null;
@@ -30,6 +30,63 @@ class ComponentService {
 
       return compnoentWithSections;
     } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
+  static async getOneByConstaint(
+    where: any,
+    orderBy?: any
+  ): Promise<ComponentInterface | null> {
+    try {
+      const [component] = await db
+        .select()
+        .from(Component)
+        .where(where)
+        .orderBy(orderBy)
+        .limit(1);
+
+      return component ? component : null;
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
+  static async create(payload: any): Promise<ComponentInterface | null> {
+    try {
+      // console.log(payload);
+      const compDefault = MatchComponent[payload.name];
+
+      const prevComponent = await this.getOneByConstaint(
+        and(
+          eq(Component.section, payload.section),
+          eq(Component.component, payload.name)
+        ),
+        desc(Component.createdAt)
+      );
+
+      let name = `${payload.name} 1`; // Adding default name to be "payload.name 1"
+      let order_no = 1;
+
+      if (prevComponent) {
+        const prevCodeNo = prevComponent.order_no;
+        name = `${payload.name} ${prevCodeNo + 1}`;
+        order_no = prevCodeNo + 1;
+      }
+
+      const [component] = await db
+        .insert(Component)
+        .values({
+          ...payload,
+          name: name,
+          component: payload.name,
+          order_no: order_no,
+          ...compDefault,
+        })
+        .returning();
+      return component ? component : null;
+    } catch (error) {
+      console.log(error);
       throw new Error(error as string);
     }
   }
@@ -73,22 +130,6 @@ class ComponentService {
         });
       });
       return componentId ? componentId : null;
-    } catch (error) {
-      throw new Error(error as string);
-    }
-  }
-
-  static async create(...payload: any): Promise<ComponentInterface | null> {
-    try {
-      const compDefault = MatchComponent[payload[0].name];
-      const [component] = await db
-        .insert(Component)
-        .values({
-          ...payload[0],
-          ...compDefault,
-        })
-        .returning();
-      return component ? component : null;
     } catch (error) {
       throw new Error(error as string);
     }

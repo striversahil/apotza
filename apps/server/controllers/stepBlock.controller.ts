@@ -1,8 +1,32 @@
 import { Request, Response } from "express";
 import { ErrorResponse, SuccessResponse } from "../utils/ApiResponse";
 import StepBlockService from "../service/stepblock.service";
+import { redis } from "..";
 
 class StepBlockController {
+  static async getStep(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      if (!id) return ErrorResponse(res, "StepBlock does not exist", 404);
+
+      const redis_stepBlock = await redis.get(`stepBlock:${id}`);
+      if (redis_stepBlock) {
+        // console.log("From Redis StepBlock", id);
+        const stepBlock = JSON.parse(redis_stepBlock);
+        SuccessResponse(res, "StepBlock fetched successfully", null, stepBlock);
+        return;
+      }
+      const stepBlock = await StepBlockService.getById(id);
+      if (!stepBlock)
+        return ErrorResponse(res, "StepBlock could not be fetched", 404);
+
+      await redis.set(`stepBlock:${id}`, JSON.stringify(stepBlock));
+      SuccessResponse(res, "StepBlock fetched successfully", null, stepBlock);
+    } catch (error) {
+      ErrorResponse(res, "", null);
+    }
+  }
+
   static async createStep(req: Request, res: Response) {
     try {
       const { id, language } = req.body;
@@ -11,20 +35,8 @@ class StepBlockController {
       const stepBlock = await StepBlockService.create(id, language);
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be created", 400);
+      await redis.del(`codeBlock:${stepBlock.codeblock}`);
       SuccessResponse(res, "StepBlock created successfully", null, stepBlock);
-    } catch (error) {
-      ErrorResponse(res, "", null);
-    }
-  }
-
-  static async getStep(req: Request, res: Response) {
-    try {
-      const { id } = req.params;
-      if (!id) return ErrorResponse(res, "StepBlock does not exist", 404);
-      const stepBlock = await StepBlockService.getById(id);
-      if (!stepBlock)
-        return ErrorResponse(res, "StepBlock could not be fetched", 404);
-      SuccessResponse(res, "StepBlock fetched successfully", null, stepBlock);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
@@ -37,6 +49,10 @@ class StepBlockController {
       const stepBlock = await StepBlockService.runBlock(id);
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be run", 400);
+
+      await redis.del(`codeBlock:${stepBlock.codeblock}`); // needed to done for initial capture of codeblock by client
+      await redis.del(`stepBlock:${id}`);
+
       SuccessResponse(res, "StepBlock Run successfully", null, stepBlock);
     } catch (error) {
       ErrorResponse(res, "", null);
@@ -50,6 +66,8 @@ class StepBlockController {
       const stepBlock = await StepBlockService.delete(id);
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be deleted", 404);
+
+      await redis.del(`codeBlock:${stepBlock.codeblock}`);
       SuccessResponse(res, "StepBlock deleted successfully", null, stepBlock);
     } catch (error) {
       ErrorResponse(res, "", null);
@@ -65,11 +83,30 @@ class StepBlockController {
       const stepBlock = await StepBlockService.update(id, slug);
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be updated", 400);
+
+      // await redis.del(`codeBlock:${stepBlock.codeblock}`);
+      await redis.del(`codeBlock:${stepBlock.codeblock}`); // needed to done for initial capture of codeblock by client
+      await redis.del(`stepBlock:${id}`);
+
       SuccessResponse(res, "StepBlock updated successfully", null, stepBlock);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
   }
+
+  // static async refechStepBlock(id: string) {
+  //   try {
+  //     const stepBlock: any = await StepBlockService.getById(id);
+  //     if (!stepBlock) return false;
+
+  //     await redis.del(`stepBlock:${id}`);
+  //     await redis.set(`stepBlock:${id}`, JSON.stringify(stepBlock));
+  //     return true;
+  //   } catch (error) {
+  //     throw new Error(error as string);
+  //   }
+  // }
+
   static async temp(req: Request, res: Response) {
     try {
     } catch (error) {

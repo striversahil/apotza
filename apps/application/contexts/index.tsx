@@ -1,4 +1,11 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import GetProject from "@/actions/project";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 interface GlobalContext {
   component: any | null;
@@ -16,6 +23,16 @@ export const GlobalContextProvider = ({
 }) => {
   const [codeBlock, setCodeBlock] = useState(null);
   const [component, setComponent] = useState(null);
+
+  const { data } = GetProject.getContext();
+
+  useEffect(() => {
+    if (data) {
+      setComponent(data.components);
+      setCodeBlock(data.codeBlocks);
+    }
+  }, [data]);
+
   return (
     <GlobalContext.Provider
       value={{ component, codeBlock, setCodeBlock, setComponent }}

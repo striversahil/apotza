@@ -16,6 +16,7 @@ class ProjectService {
       });
       return project ? project : null;
     } catch (error) {
+      console.log(error);
       throw new Error(error as string);
     }
   }

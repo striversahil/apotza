@@ -53,7 +53,7 @@ export const useSaveConfig = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       saveConfig();
-    }, 2000); // 2 seconds debounce in saving config by the user Updating Config
+    }, 800); // Used debounce in saving config by the user Updating Config
     return () => clearTimeout(timer);
   }, [UpdatedComponent]);
 

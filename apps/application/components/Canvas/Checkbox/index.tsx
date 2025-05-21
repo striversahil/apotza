@@ -44,7 +44,7 @@ export const Component = ({
           color: `${appearance.textColor}`,
         }}
       >
-        {content.label}
+        {content.label.value}
       </Label>
     </div>
   );

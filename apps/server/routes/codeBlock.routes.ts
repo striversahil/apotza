@@ -5,6 +5,8 @@ const router: Router = Router();
 
 router.route("/:id").get(CodeBlockController.getCodeBlock);
 
+router.route("/:id/context").get(CodeBlockController.contextCodeBlock);
+
 router.route("/").post(CodeBlockController.create);
 
 router.route("/run").post(CodeBlockController.runAllSteps);

@@ -10,7 +10,7 @@ const useDebouncedUpdate = (
   value: any,
   debounce: number = 100
 ) => {
-  const { UpdatedComponent, setUpdatedComponent = () => {} } =
+  const { UpdatedComponent, setUpdatedComponent = () => {} }: any =
     useUpdatedComponent() || {};
 
   useEffect(() => {

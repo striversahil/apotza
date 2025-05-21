@@ -7,16 +7,24 @@ import StepBlockService from "../service/stepblock.service";
 import TemplateInit from "../common/templateProject.json";
 import SectionService from "../service/section.service";
 import ComponentService from "../service/component.service";
+import { redis } from "..";
+import { PageService } from "../service/page.service";
 
 class ProjectController {
   static async getProject(req: Request, res: Response) {
     try {
       const projectId = req.cookies.project_id;
       if (!projectId) return ErrorResponse(res, "Project does not exist", 404);
+      const redis_project = await redis.get(`project:${projectId}`);
+      if (redis_project) {
+        const project = JSON.parse(redis_project);
+        SuccessResponse(res, "Project fetched successfully", null, project);
+        return;
+      }
       const project = await ProjectService.getById(projectId);
-
       if (!project)
         return ErrorResponse(res, "Project could not be fetched", 404);
+      await redis.set(`project:${projectId}`, JSON.stringify(project));
       res.cookie("project_id", project.id, projectCookie);
       SuccessResponse(res, "Project fetched successfully", null, project);
     } catch (error) {
@@ -91,9 +99,76 @@ class ProjectController {
       const project = await ProjectService.update(projectId, { name });
       if (!project)
         return ErrorResponse(res, "Project could not be updated", 400);
+
+      await this.refechProject(projectId);
       SuccessResponse(res, "Project updated successfully", null, project);
     } catch (error) {
       ErrorResponse(res, "", null);
+    }
+  }
+
+  static async globalContext(req: Request, res: Response) {
+    try {
+      const projectId = req.cookies.project_id;
+      const page_id = req.cookies.current_page;
+      if (!projectId || !page_id)
+        return ErrorResponse(res, "Project or Page does not exist", 404);
+
+      const project: any = await ProjectService.getById(projectId);
+      const page: any = await PageService.getOne(page_id, projectId);
+      if (!project || !page)
+        return ErrorResponse(res, "Project or Page could not be fetched", 404);
+
+      const context: Record<string, any> = {
+        codeBlocks: {},
+        components: {},
+      };
+
+      // Todo : Add Global Context of codeBlocks not done for Component for now
+
+      if (project.codeblocks?.length) {
+        for (const codeBlock of project.codeblocks) {
+          const data = {
+            response: codeBlock.response,
+            error: codeBlock.error,
+          };
+
+          context["codeBlocks"][codeBlock.name] = data;
+        }
+      }
+
+      if (page.sections?.length) {
+        for (const section of page.sections) {
+          const section_: any = await SectionService.getById(section.id);
+
+          for (const component of section_.components) {
+            const data = {
+              name: component.name,
+              ...component.content,
+              ...component.appearance,
+              ...component.layout,
+            };
+            context["components"][component.name] = data;
+          }
+        }
+      }
+
+      SuccessResponse(res, "Project fetched successfully", null, context);
+    } catch (error) {
+      ErrorResponse(res, "", null);
+    }
+  }
+
+  static async refechProject(id: string) {
+    try {
+      const project: any = await ProjectService.getById(id);
+      if (!project) return false;
+
+      await redis.del(`project:${id}`);
+      await redis.set(`project:${id}`, JSON.stringify(project));
+      return true;
+    } catch (error) {
+      throw new Error(error as string);
     }
   }
 

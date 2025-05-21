@@ -1,46 +1,14 @@
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@repo/ui/command";
-import { PopoverContent } from "@repo/ui/popover";
 import React from "react";
+import { useGlobalContext } from "../../contexts";
 
-type Props = {
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-const PopoverContext = (props: Props) => {
-  const randomArray = ["one", "two", "three"];
+const PopoverContext = () => {
+  const { codeBlock, component } = useGlobalContext() || {};
 
   return (
-    <PopoverContent side="top">
-      <Command>
-        {/* <CommandInput placeholder="Search..." /> */}
-        <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup>
-            {randomArray.map((item) => {
-              return (
-                <CommandItem
-                  key={item}
-                  value={item}
-                  onSelect={() => {
-                    props.setIsOpen(false);
-                    console.log(item);
-                  }}
-                >
-                  {item}
-                </CommandItem>
-              );
-            })}
-          </CommandGroup>
-        </CommandList>
-      </Command>
-    </PopoverContent>
+    <div className="flex rounded-lg flex-col w-14 h-fit z-10 bg-black">
+      {JSON.stringify(codeBlock)}
+      {JSON.stringify(component)}
+    </div>
   );
 };
 

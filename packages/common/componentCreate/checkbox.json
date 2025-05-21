@@ -1,6 +1,9 @@
 {
   "content": {
-    "label": "Hello Guys",
+    "label": {
+      "value": "Checkbox",
+      "config": "Checkbox"
+    },
     "defaultChecked": true
   },
   "appearance": {
