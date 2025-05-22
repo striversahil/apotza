@@ -19,7 +19,7 @@ export type StepBlockInterface = {
   name: string;
   type: "python" | "javascript" | "graphql" | "postgres" | "rest";
   codeblock: string;
-  config: { [key: string]: string };
+  configuration: { [key: string]: string };
   stdout: string;
   output: any;
   request: string;

@@ -35,7 +35,7 @@ export const StepBlock = pgTable("stepblock", {
     onDelete: "cascade",
     onUpdate: "cascade",
   }),
-  config: jsonb("config").notNull().default({}),
+  configuration: jsonb("config").notNull().default({}),
   output: jsonb("output").notNull(),
   stdout: jsonb("stdout").notNull(),
   request: text("request").notNull(),

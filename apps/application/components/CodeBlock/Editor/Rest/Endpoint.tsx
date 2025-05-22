@@ -20,7 +20,7 @@ const RestEndpoint = (props: Props) => {
     <div className="w-full flex gap-5">
       <Select
         onValueChange={(method) => setStepBlock({ method })}
-        defaultValue={stepConfig.config.method}
+        defaultValue={stepConfig.configuration.method}
       >
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Select a method" />
@@ -36,7 +36,7 @@ const RestEndpoint = (props: Props) => {
       <div className="w-full">
         <Input
           placeholder="Enter Endpoint"
-          defaultValue={stepConfig.config.endpoint.config}
+          defaultValue={stepConfig.configuration.endpoint.config}
           onChange={(e) =>
             setStepBlock({
               endpoint: {

@@ -23,10 +23,10 @@ export const useStepConfig = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (!_.isEqual(stepBlock.payload?.config, updatedStepBlock?.config)) {
+      if (!_.isEqual(stepBlock.payload?.configuration, updatedStepBlock?.configuration)) {
         //     console.log("updatedStepBlock", updatedStepBlock);
         mutate({
-          config: updatedStepBlock?.config,
+          config: updatedStepBlock?.configuration,
         });
       }
     }, 800);
@@ -41,7 +41,7 @@ export const useStepConfig = () => {
     // console.log("config", config);
     setUpdatedStepBlock((prev: any) => ({
       ...prev,
-      config: { ...prev.config, ...config },
+      configuration: { ...prev.configuration, ...config },
     }));
   };
 

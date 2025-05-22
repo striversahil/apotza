@@ -21,7 +21,7 @@ const RestHeader = ({ header, index }: Props) => {
         defaultValue={header["key"].config}
         onChange={(e) =>
           setStepBlock({
-            headers: stepConfig.config.headers.map((h: any, i: number) =>
+            headers: stepConfig.configuration.headers.map((h: any, i: number) =>
               i === index ? { key: {...header["key"], config: e.target.value}, value: header["value"] } : h
             ),
           })
@@ -31,7 +31,7 @@ const RestHeader = ({ header, index }: Props) => {
         defaultValue={header["value"].config}
         onChange={(e) =>
           setStepBlock({
-            headers: stepConfig.config.headers.map((h: any, i: number) =>
+            headers: stepConfig.configuration.headers.map((h: any, i: number) =>
               i === index ? { key: header["key"], value: {...header["value"], config: e.target.value} } : h
             ),
           })
@@ -40,7 +40,7 @@ const RestHeader = ({ header, index }: Props) => {
       <button
         onClick={() => {
           setStepBlock({
-            headers: stepConfig.config.headers.filter(
+            headers: stepConfig.configuration.headers.filter(
               (h: any, i: number) => i !== index
             ),
           });

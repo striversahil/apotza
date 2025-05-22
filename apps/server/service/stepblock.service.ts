@@ -63,7 +63,7 @@ class StepBlockService {
           type: type,
           codeblock: codeBlock_id,
           order_no: order_no,
-          config: payload.config,
+          configuration: payload.configuration,
           stdout: payload.stdout,
           output: payload.output,
           request: "",
@@ -91,7 +91,7 @@ class StepBlockService {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ ...(_stepBlock.config as object) }),
+          body: JSON.stringify({ ...(_stepBlock.configuration as object) }),
         }
       );
       if (!response.ok) return null;
@@ -140,7 +140,7 @@ class StepBlockService {
           name: Valid.name,
           type: lang,
           codeblock: codeBlock_id,
-          config: Valid.config,
+          config: Valid.configuration,
           stdout: Valid.stdout,
           output: Valid.output,
           request: "",
