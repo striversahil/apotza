@@ -37,9 +37,9 @@ export const StepBlock = pgTable("stepblock", {
     onUpdate: "cascade",
   }),
   configuration: jsonb("config").notNull().default({}),
-  output: jsonb("output").notNull(),
-  stdout: jsonb("stdout").notNull(),
-  request: text("request").notNull(),
+  error: jsonb("error"),
+  response: jsonb("response"),
+  stdout: jsonb("stdout"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
 

@@ -9,7 +9,7 @@ import { StepBlockInterface } from "../Editor";
 
 const ReactJson = dynamic(() => import("react-json-view"), { ssr: false });
 
-const Output = ({ id, stdout, output }: StepBlockInterface) => {
+const Output = ({ id, response, error }: StepBlockInterface) => {
   const [activeTab, setActiveTab] = React.useState("output");
 
   return (
@@ -51,7 +51,7 @@ const Output = ({ id, stdout, output }: StepBlockInterface) => {
           </TabsList>
           <div className="flex-1 flex justify-end">
             <div className="flex items-center gap-2 pr-5">
-              {output.success === false ? (
+              {error ? (
                 <div className="relative">
                   <Circle size={22} className="text-red-500" />
                   <X
@@ -67,10 +67,10 @@ const Output = ({ id, stdout, output }: StepBlockInterface) => {
                 <span
                   className={cn(
                     "text-sm font-bold",
-                    output.success === false ? "text-red-500" : "text-green-500"
+                    error ? "text-red-500" : "text-green-500"
                   )}
                 >
-                  {output.success === false ? "Failed Action" : "Success"}
+                  {error ? "Failed Action" : "Success"}
                 </span>{" "}
                 {/* <Dot size={15} className="text-green-500" /> */}
                 {/* <div className="text-sm ">10ms</div> */}
@@ -82,7 +82,7 @@ const Output = ({ id, stdout, output }: StepBlockInterface) => {
           <div
             className={cn(
               "absolute inset-2 rounded-md  ",
-              output.success === false ? "bg-[#8b1d1d]" : "bg-white/10"
+              error ? "bg-[#8b1d1d]" : "bg-white/10"
             )}
           >
             <div
@@ -92,7 +92,7 @@ const Output = ({ id, stdout, output }: StepBlockInterface) => {
             >
               <TabsContent value="output">
                 <ReactJson
-                  src={output}
+                  src={error ? error : response}
                   shouldCollapse={false}
                   name={false}
                   theme={"harmonic"}
@@ -112,10 +112,20 @@ const Output = ({ id, stdout, output }: StepBlockInterface) => {
               </TabsContent>
               <TabsContent value="code">
                 <div className="h-full text-base font-mono text-white/80 hover:text-white">
-                  {output}
+                  <div className="text-sm text-muted-foreground">
+                    Executed Code
+                  </div>
+                  {/* {output} */}
                 </div>
               </TabsContent>
-              <TabsContent value="stdout">{stdout}</TabsContent>
+              <TabsContent value="stdout">
+                <div className="h-full text-base font-mono text-white/80 hover:text-white">
+                  <div className="text-sm text-muted-foreground">
+                    Console Output
+                  </div>
+                  {/* {output} */}
+                </div>
+              </TabsContent>
             </div>
           </div>
         </div>

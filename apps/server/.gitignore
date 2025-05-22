@@ -20,6 +20,9 @@
 .DS_Store
 *.pem
 
+# Drizzle out Folder
+drizzle/meta
+
 # debug
 npm-debug.log*
 yarn-debug.log*

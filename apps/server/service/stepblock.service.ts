@@ -66,8 +66,8 @@ class StepBlockService {
           order_no: order_no,
           configuration: payload.configuration,
           stdout: payload.stdout,
-          output: payload.output,
-          request: "",
+          response: payload.output,
+          error: null,
         })
         .returning();
 
@@ -112,13 +112,17 @@ class StepBlockService {
       let updated_result = null;
       const result = await response.json();
 
-      console.log(result);
-
       if (!result) return null;
 
+      // Checking if the result is an error so set Response and Error accordingly
       if (result.success === false) {
-        updated_result = result;
+        const updateErrorStepBlock = await this.update(stepBlock_id, {
+          error: result.message,
+          response: null,
+        });
+        return updateErrorStepBlock ? updateErrorStepBlock : null;
       }
+
       if (result.success === true) {
         updated_result = result.payload;
       }
@@ -128,8 +132,8 @@ class StepBlockService {
       }
 
       const updated_stepBlock = await this.update(stepBlock_id, {
-        output: updated_result,
-        stdout: updated_result,
+        response: updated_result,
+        error: null,
       });
 
       return updated_stepBlock ? updated_stepBlock : null;
@@ -155,8 +159,8 @@ class StepBlockService {
           codeblock: codeBlock_id,
           config: Valid.configuration,
           stdout: Valid.stdout,
-          output: Valid.output,
-          request: "",
+          response: Valid.output,
+          error: null,
         };
       });
       const filteredPayload = payload.filter((item) => item !== null);

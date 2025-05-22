@@ -21,8 +21,8 @@ export type StepBlockInterface = {
   codeblock: string;
   configuration: { [key: string]: string };
   stdout: string;
-  output: any;
-  request: string;
+  response: any;
+  error : any;
 };
 
 const EditorCode = ({ value }: Props) => {

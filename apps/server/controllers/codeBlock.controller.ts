@@ -165,6 +165,22 @@ class CodeBlockController {
     }
   }
 
+  static async syncContext(id: string) {
+    try {
+      const codeBlock: any = await CodeBlockService.getById(id);
+      if (!codeBlock) return false;
+
+      const context: Record<string, any> = {};
+      if (codeBlock.stepBlocks?.length) {
+        for (const stepBlock of codeBlock.stepBlocks) {
+          context[stepBlock.id] = stepBlock.output;
+        }
+      }
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
   // static async refetchCodeBlock(id: string) {
   //   try {
   //     const codeBlock: any = await CodeBlockService.getById(id);
