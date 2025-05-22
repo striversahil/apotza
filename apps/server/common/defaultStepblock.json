@@ -64,7 +64,7 @@
             "config": "Content-Type",
             "value": "Content-Type"
           },
-          "value": {
+          "val": {
             "config": "application/json",
             "value": "application/json"
           }

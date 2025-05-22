@@ -8,12 +8,13 @@ import { X } from "lucide-react";
 import RestEndpoint from "./Endpoint";
 
 type Props = {
+  stepConfig: any;
+  setStepBlock: (stepblock: any) => void;
   header: any;
   index: number;
 };
 
-const RestHeader = ({ header, index }: Props) => {
-  const { stepConfig, setStepBlock } = useStepConfig();
+const RestHeader = ({ stepConfig, setStepBlock, header, index }: Props) => {
 
   return (
     <>
@@ -22,13 +23,13 @@ const RestHeader = ({ header, index }: Props) => {
         onChange={(e) =>
           setStepBlock({
             headers: stepConfig.configuration.headers.map((h: any, i: number) =>
-              i === index ? { key: {...header["key"], config: e.target.value}, value: header["value"] } : h
+              i === index ? { key: {...header["key"], config: e.target.value}, val: header["val"] } : h
             ),
           })
         }
       />
       <Input
-        defaultValue={header["value"].config}
+        defaultValue={header["val"].config}
         onChange={(e) =>
           setStepBlock({
             headers: stepConfig.configuration.headers.map((h: any, i: number) =>

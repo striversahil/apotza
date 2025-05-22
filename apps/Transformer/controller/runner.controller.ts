@@ -35,7 +35,7 @@ class RunnerController {
       //   return ErrorResponse(c, "Body is required");
       // }
 
-      const { error, data } = await RestEngine(endpoint, headers, body, method);
+      const { error, data } = await RestEngine(endpoint.value, headers, body.value, method);
       if (error) {
         return ErrorResponse(c, error);
       }

@@ -25,14 +25,14 @@ const RestConfig = (props: Props) => {
     <div className="relative w-full h-full overflow-y-auto px-5 bg-black/10">
       {/* Endpoint and Fetching Method Block */}
       <RestApiTitle>Endpoint</RestApiTitle>
-      <RestEndpoint />
+      <RestEndpoint stepConfig={stepConfig} setStepBlock={setStepBlock} />
       {/* Request Header Block */}
       <div className="">
         <RestApiTitle>Headers</RestApiTitle>
         <div className="w-full h-full flex flex-col gap-2">
           {stepConfig.configuration.headers.map((header: any, index: number) => (
             <div className="relative flex gap-2" key={index}>
-              <RestHeader header={header} index={index} />
+              <RestHeader stepConfig={stepConfig} setStepBlock={setStepBlock} header={header} index={index} />
             </div>
           ))}
         </div>

@@ -11,10 +11,12 @@ import IDEeditor from "../IDEditor";
 
 import { Input } from "@repo/ui/input";
 
-type Props = {};
+type Props = {
+  stepConfig: any;
+  setStepBlock: (stepblock: any) => void;
+};
 
-const RestEndpoint = (props: Props) => {
-  const { stepConfig, setStepBlock } = useStepConfig();
+const RestEndpoint = ({ stepConfig , setStepBlock }: Props) => {
 
   return (
     <div className="w-full flex gap-5">
@@ -40,7 +42,7 @@ const RestEndpoint = (props: Props) => {
           onChange={(e) =>
             setStepBlock({
               endpoint: {
-                ...stepConfig.config.endpoint,
+                ...stepConfig.configuration.endpoint,
                 config: e.target.value,
               },
             })
