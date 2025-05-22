@@ -2,6 +2,7 @@ import { and, desc, eq } from "drizzle-orm";
 import { db } from "../database";
 import { StepBlock, StepBlockInterface } from "../schema";
 import stepBlockDefault from "../utils/stepBlockDefault";
+import CodeBlockService from "./codeblock.service";
 
 class StepBlockService {
   static async getById(
@@ -70,6 +71,18 @@ class StepBlockService {
         })
         .returning();
 
+      if (!newStepBlock) return null;
+
+      // Updating the codeBlock context with the new stepBlock
+      const codeBlock: any = await CodeBlockService.getById(codeBlock_id);
+      if (!codeBlock) return null;
+      await CodeBlockService.update(codeBlock_id, {
+        stepblockContext: {
+          ...codeBlock?.stepblockContext,
+          [newStepBlock.id]: {},
+        },
+      });
+
       return newStepBlock ? newStepBlock : null;
     } catch (error) {
       console.log(error);
@@ -109,7 +122,7 @@ class StepBlockService {
       if (result.success === true) {
         updated_result = result.payload;
       }
-      
+
       if (typeof updated_result !== "object") {
         updated_result = { message: updated_result };
       }
@@ -186,6 +199,19 @@ class StepBlockService {
         .delete(StepBlock)
         .where(eq(StepBlock.id, stepBlock_id))
         .returning();
+      if (!stepBlock) return null;
+
+      // Updating the codeBlock context with the new stepBlock
+      const codeBlock: any = await CodeBlockService.getById(
+        stepBlock.codeblock!
+      );
+      if (!codeBlock) return null;
+      const updatedCodeBlock = await CodeBlockService.update(codeBlock.id, {
+        stepblockContext: codeBlock?.stepblockContext.filter(
+          (item: any) => item !== stepBlock.id
+        ),
+      });
+      if (!updatedCodeBlock) return null;
       return stepBlock ? stepBlock : null;
     } catch (error) {
       throw new Error(error as string);

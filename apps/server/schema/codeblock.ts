@@ -19,6 +19,7 @@ export const CodeBlock = pgTable("codeblock", {
     onUpdate: "cascade",
   }),
   name: text("name").notNull(),
+  stepblockContext: jsonb("stepblock_context").notNull().default({}),
   response: jsonb("output"),
   error: jsonb("error"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),

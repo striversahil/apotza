@@ -78,7 +78,7 @@ const HeaderChange = (props: Props) => {
           {(isIdle || isPending) && "Run API"}
           {/* { && "Running..."} */}
           {isSuccess && "Success"}
-          {isError && "Error"}
+          {isError && <span className="mr-2">Error</span>}
         </Button>
       </div>
     </div>

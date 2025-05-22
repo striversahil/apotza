@@ -68,6 +68,7 @@ class CodeBlockController {
         if (result.output?.success === false) {
           const updatedErrorCodeBlock = await CodeBlockService.update(id, {
             error: result.output.message,
+            response: null,
           });
 
           if (!updatedErrorCodeBlock)
@@ -80,11 +81,13 @@ class CodeBlockController {
 
       const updatedCodeBlock = await CodeBlockService.update(id, {
         response: lastStep?.output,
+        error: null,
       });
 
       if (!updatedCodeBlock)
         return ErrorResponse(res, "CodeBlock could not be updated", 400);
 
+      await redis.del(`codeBlock:${id}`);
       // Cleanup the redis stepBlock cache
       for (const step of steps) {
         await redis.del(`stepBlock:${step.id}`);
