@@ -10,7 +10,8 @@ interface Text {
 // It will have Simple Job to set the value based on config of Text
 
 export const useConfigValue = (setValue: (code: Text) => void) => {
-  const [configText, setConfigText] = useState<string>("");
+  const [configText, setConfigText] = useState<string | null>(null);
+  // Todo : Linking with the Global Context
   const { codeBlock, component } = useGlobalContext() || {};
 
   const setConfig = (config_string: string) => {
@@ -27,7 +28,7 @@ export const useConfigValue = (setValue: (code: Text) => void) => {
   };
 
   useEffect(() => {
-    if (codeBlock && component) {
+    if (configText) {
       setConfig(configText);
     }
   }, [codeBlock, component]);

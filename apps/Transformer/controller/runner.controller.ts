@@ -93,7 +93,7 @@ class RunnerController {
         return ErrorResponse(c, "Code is required");
       }
 
-      const { error, data } = await PythonEngine(code);
+      const { error, data } = await PythonEngine(code.value);
       console.log(data);
       if (error) {
         return ErrorResponse(c, error);
