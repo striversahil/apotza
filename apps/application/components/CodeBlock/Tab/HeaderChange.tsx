@@ -63,7 +63,7 @@ const HeaderChange = (props: Props) => {
       <div className="" onClick={(e) => e.preventDefault()}>
         <Button
           className={cn(
-            "relative flex items-center gap-2 text-xs font-bold duration-100 text-white bg-[#197b94] shadow-md shadow-black/50  hover:bg-current/20",
+            "relative flex items-center gap-2 text-xs font-bold duration-100 p-2 text-white bg-[#197b94] shadow-md shadow-black/50  hover:bg-current/20",
             isSuccess && "bg-[#199448]",
             isError && "bg-red-500",
             isPending && "bg-[#197b9491]"
@@ -75,7 +75,10 @@ const HeaderChange = (props: Props) => {
           {isPending && <SimpleLoader />}
           {isSuccess && <CheckCircleIcon />}
           {isError && <XCircle />}
-          Run API
+          {(isIdle || isPending) && "Run API"}
+          {/* { && "Running..."} */}
+          {isSuccess && "Success"}
+          {isError && "Error"}
         </Button>
       </div>
     </div>

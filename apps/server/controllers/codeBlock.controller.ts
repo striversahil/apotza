@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, response, Response } from "express";
 import { ErrorResponse, SuccessResponse } from "../utils/ApiResponse";
 import CodeBlockService from "../service/codeblock.service";
 import { redis } from "..";
@@ -66,18 +66,24 @@ class CodeBlockController {
 
         // If the stepBlock is not run successfully, we need to update the codeBlock with the error
         if (result.output?.success === false) {
-          await CodeBlockService.update(id, {
+          const updatedErrorCodeBlock = await CodeBlockService.update(id, {
             error: result.output.message,
           });
+
+          if (!updatedErrorCodeBlock)
+            return ErrorResponse(res, "CodeBlock could not be updated", 400);
           return ErrorResponse(res, "StepBlock Got Error", 400);
         }
       }
 
       const lastStep = steps[steps.length - 1];
 
-      await CodeBlockService.update(id, {
+      const updatedCodeBlock = await CodeBlockService.update(id, {
         response: lastStep?.output,
       });
+
+      if (!updatedCodeBlock)
+        return ErrorResponse(res, "CodeBlock could not be updated", 400);
 
       // Cleanup the redis stepBlock cache
       for (const step of steps) {
@@ -85,7 +91,7 @@ class CodeBlockController {
       }
 
       return SuccessResponse(res, "CodeBlock Run successfully 🚀", null, {
-        stepBlock: lastStep?.id,
+        response: updatedCodeBlock.response,
       });
     } catch (error) {
       console.error("Error running all steps:", error);
