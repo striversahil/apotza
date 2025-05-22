@@ -46,43 +46,50 @@ class CodeBlockController {
       ErrorResponse(res, "", null);
     }
   }
-
   static async runAllSteps(req: Request, res: Response) {
     try {
-      const { id } = req.body;
+      const { id } = req.params;
+
       if (!id) return ErrorResponse(res, "CodeBlock does not exist", 404);
 
+      // Getting CodeBlock with all the steps that we need to run
       const codeBlock: any = await CodeBlockService.getById(id);
       if (!codeBlock)
         return ErrorResponse(res, "CodeBlock could not be fetched", 404);
 
-      if (codeBlock.stepBlock?.length) {
-        for (const stepBlock of codeBlock.stepBlock) {
-          const StepBlock: any = await StepBlockService.runBlock(stepBlock.id);
-          if (!StepBlock)
-            return ErrorResponse(res, "StepBlock could not be run", 400);
+      const steps = codeBlock.stepBlocks ?? [];
 
-          if (StepBlock.output.success === false) {
-            // Updating CodeBlock with Error
-            await CodeBlockService.update(id, {
-              error: StepBlock.output.message,
-            });
-            return SuccessResponse(res, "StepBlock Got Error", null, {
-              stepBlock: StepBlock.id,
-            });
-          }
+      for (const step of steps) {
+        const result: any = await StepBlockService.runBlock(step.id);
+        if (!result)
+          return ErrorResponse(res, "StepBlock could not be run", 400);
+
+        // If the stepBlock is not run successfully, we need to update the codeBlock with the error
+        if (result.output?.success === false) {
+          await CodeBlockService.update(id, {
+            error: result.output.message,
+          });
+          return ErrorResponse(res, "StepBlock Got Error", 400);
         }
-
-        // Updating CodeBlock with Success
-        await CodeBlockService.update(id, {
-          response: codeBlock.stepBlock[codeBlock.stepBlock.length - 1].output,
-        });
-        return SuccessResponse(res, "CodeBlock Run successfully", null, {
-          stepBlock: codeBlock.stepBlock[codeBlock.stepBlock.length - 1].id, // return last stepblock Id if Codeblock run Successfully
-        });
       }
+
+      const lastStep = steps[steps.length - 1];
+
+      await CodeBlockService.update(id, {
+        response: lastStep?.output,
+      });
+
+      // Cleanup the redis stepBlock cache
+      for (const step of steps) {
+        await redis.del(`stepBlock:${step.id}`);
+      }
+
+      return SuccessResponse(res, "CodeBlock Run successfully 🚀", null, {
+        stepBlock: lastStep?.id,
+      });
     } catch (error) {
-      ErrorResponse(res, "", null);
+      console.error("Error running all steps:", error);
+      return ErrorResponse(res, "Internal Server Error 💥", 500);
     }
   }
 
