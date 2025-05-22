@@ -173,6 +173,7 @@ class StepBlockService {
         .returning();
       return stepBlock ? stepBlock : null;
     } catch (error) {
+      console.log(error);
       throw new Error(error as string);
     }
   }

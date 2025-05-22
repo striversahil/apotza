@@ -26,7 +26,7 @@ export const useStepConfig = () => {
       if (!_.isEqual(stepBlock.payload?.configuration, updatedStepBlock?.configuration)) {
         //     console.log("updatedStepBlock", updatedStepBlock);
         mutate({
-          config: updatedStepBlock?.configuration,
+          configuration: updatedStepBlock?.configuration,
         });
       }
     }, 800);

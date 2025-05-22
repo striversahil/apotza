@@ -33,7 +33,7 @@ const RestHeader = ({ stepConfig, setStepBlock, header, index }: Props) => {
         onChange={(e) =>
           setStepBlock({
             headers: stepConfig.configuration.headers.map((h: any, i: number) =>
-              i === index ? { key: header["key"], value: {...header["value"], config: e.target.value} } : h
+              i === index ? { key: header["key"], val: {...header["value"], config: e.target.value} } : h
             ),
           })
         }

@@ -3,6 +3,7 @@ import { CodeiumEditor as IDE } from "@codeium/react-code-editor";
 import { useEnableComplete } from "./useEnableComplete";
 import { useConfigValue } from "./useConfigValue";
 import PopoverContext from "@/components/PopoverContext";
+import { useGlobalContext } from "../../../../contexts";
 
 interface Text {
   config: string;
@@ -17,6 +18,9 @@ type Props = {
 
 const IDEditor = ({ code, onChange, language }: Props) => {
   const { enablePopover, handleEditorDidMount } = useEnableComplete();
+
+  const { codeBlock } = useGlobalContext() || {};
+  console.log("codeBlock", codeBlock);
 
   const { setConfig } = useConfigValue(onChange);
 
