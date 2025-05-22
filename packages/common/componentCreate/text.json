@@ -15,10 +15,7 @@
     "icon": "👋",
     "horizontalAlign": "center",
     "verticalAlign": "center",
-    "loadingAnimation": {
-      "value": false,
-      "config": "false"
-    },
+    "loadingAnimation": false,
     "fontSize": {
       "value": "16",
       "config": "16"
@@ -45,9 +42,6 @@
       "config": "10"
     },
     "scrollOverflow": "auto",
-    "visible": {
-      "value": true,
-      "config": "true"
-    }
+    "visible": true
   }
 }
