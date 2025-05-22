@@ -1,1 +1,0 @@
-ALTER TABLE "project" ADD COLUMN "naming_node" jsonb DEFAULT '{}'::jsonb NOT NULL;

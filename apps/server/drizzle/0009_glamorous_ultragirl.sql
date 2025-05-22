@@ -1,1 +1,0 @@
-ALTER TABLE "stepblock" ALTER COLUMN "stdout" DROP NOT NULL;

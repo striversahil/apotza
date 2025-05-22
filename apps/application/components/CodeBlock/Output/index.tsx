@@ -92,7 +92,7 @@ const Output = ({ id, response, error }: StepBlockInterface) => {
             >
               <TabsContent value="output">
                 <ReactJson
-                  src={error ? error : response}
+                  src={error ? { Error: error } : response}
                   shouldCollapse={false}
                   name={false}
                   theme={"harmonic"}
