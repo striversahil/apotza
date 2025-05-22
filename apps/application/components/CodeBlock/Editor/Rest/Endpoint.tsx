@@ -36,12 +36,12 @@ const RestEndpoint = (props: Props) => {
       <div className="w-full">
         <Input
           placeholder="Enter Endpoint"
-          defaultValue={stepConfig.config.endpoint}
+          defaultValue={stepConfig.config.endpoint.config}
           onChange={(e) =>
             setStepBlock({
               endpoint: {
+                ...stepConfig.config.endpoint,
                 config: e.target.value,
-                value: stepConfig.enpoint.value,
               },
             })
           }
