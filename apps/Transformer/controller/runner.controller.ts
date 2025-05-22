@@ -58,7 +58,7 @@ class RunnerController {
 
       const { error, data } = await PostgresEngine(
         query.value,
-        connection.value
+        connection
       );
       if (error) {
         return ErrorResponse(c, error);
@@ -94,7 +94,7 @@ class RunnerController {
       }
 
       const { error, data } = await PythonEngine(code.value);
-      console.log(data);
+
       if (error) {
         return ErrorResponse(c, error);
       }
