@@ -39,7 +39,9 @@ const IDEditor = ({ code, onChange, language }: Props) => {
           fontSize: 14,
           fontFamily: "Consolas, 'Courier New', monospace",
         }}
-        onChange={(code) => setConfig(code || "")}
+        onChange={(code) =>
+          onChange((prev: Text) => ({ ...prev, config: code }))
+        }
         className=""
       />
       {/* For Removing the Right Codeium Icon */}

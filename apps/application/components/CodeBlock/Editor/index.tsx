@@ -22,7 +22,7 @@ export type StepBlockInterface = {
   configuration: { [key: string]: string };
   stdout: string;
   response: any;
-  error : any;
+  error: any;
 };
 
 const EditorCode = ({ value }: Props) => {

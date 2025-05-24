@@ -9,14 +9,14 @@ import Select_Base from "../../base/select";
 import { useGlobalContext } from "../../../../contexts";
 import { useConfigValue } from "@/components/CodeBlock/Editor/IDEditor/useConfigValue";
 
-interface initialvalue {
+interface Text {
   config: string;
   value: string;
 }
 
 type Props = {
   location: Array<string>;
-  initialvalue: initialvalue;
+  initialvalue: Text;
   color?: boolean;
   size?: boolean;
   pixel?: boolean;
@@ -29,7 +29,7 @@ export const TextInput: React.FC<Props> = ({
   initialvalue,
   ...addOn
 }: Props) => {
-  const [value, setValue] = React.useState<initialvalue>(initialvalue);
+  const [value, setValue] = React.useState<Text>(initialvalue);
   const { component, codeBlock } = useGlobalContext() || {};
 
   useDebouncedUpdate(location, value);
