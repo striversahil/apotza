@@ -9,10 +9,16 @@ const LanguageConfig = () => {
     <div className="relative w-full h-full">
       <div className="absolute inset-1 mb-12 bg-white/20 p-1 shadow-inner hover:bg-white/30 duration-200 shadow-black/50 rounded-lg overflow-hidden">
         <IDEeditor
-          code={stepConfig.configuration.code}
+          code={stepConfig.configuration.code.config}
           language={stepConfig.type}
           onChange={(code) => {
-            setStepBlock({ code: code });
+            const codeQuery = code();
+            setStepBlock({
+              code: {
+                ...stepConfig.configuration.code,
+                config: codeQuery.config,
+              },
+            });
           }}
         />
       </div>

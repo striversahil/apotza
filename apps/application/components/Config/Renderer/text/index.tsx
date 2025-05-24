@@ -34,15 +34,17 @@ export const TextInput: React.FC<Props> = ({
 
   useDebouncedUpdate(location, value);
 
-  const { setConfig } = useConfigValue(setValue);
+  // const { setConfig } = useConfigValue(setValue);
 
   // const isEmpty = _.isEmpty(addOn);
 
   return (
     <div className="float-end flex gap-2">
       <Text_Base
-        value={initialvalue.config}
-        onChange={(val) => setConfig(val)}
+        value={initialvalue?.config}
+        onChange={(val) =>
+          setValue((prev: any) => ({ value: val, config: val }))
+        }
       />
 
       {/* {!isEmpty && (

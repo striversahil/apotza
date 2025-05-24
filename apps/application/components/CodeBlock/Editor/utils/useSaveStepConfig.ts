@@ -28,6 +28,7 @@ export const useStepConfig = () => {
           updatedStepBlock?.configuration
         )
       ) {
+        console.log(updatedStepBlock);
         mutate({
           configuration: updatedStepBlock?.configuration,
         });
@@ -39,20 +40,6 @@ export const useStepConfig = () => {
   const stepConfig = {
     ...stepBlock?.payload,
   };
-
-  //  On stepblock payload change, update the updatedStepBlock state
-  useEffect(() => {
-    if (stepBlock?.payload) {
-      setUpdatedStepBlock((prev: any) => ({
-        ...prev,
-        configuration: {
-          ...prev.configuration,
-          ...stepBlock.payload.configuration,
-        },
-      }));
-    }
-  }, [stepBlock?.payload]);
-
 
   // Function to update the step block configuration
   // This will be used in the UI to update the step block configuration
