@@ -65,9 +65,9 @@ class CodeBlockController {
           return ErrorResponse(res, "StepBlock could not be run", 400);
 
         // If the stepBlock is not run successfully, we need to update the codeBlock with the error
-        if (result.output?.success === false) {
+        if (result.response === null) {
           const updatedErrorCodeBlock = await CodeBlockService.update(id, {
-            error: result.output.message,
+            error: result.error,
             response: null,
           });
 
@@ -80,7 +80,7 @@ class CodeBlockController {
       const lastStep = steps[steps.length - 1];
 
       const updatedCodeBlock = await CodeBlockService.update(id, {
-        response: lastStep?.output,
+        response: lastStep?.response,
         error: null,
       });
 
@@ -152,7 +152,13 @@ class CodeBlockController {
       const context: Record<string, any> = {};
       if (codeBlock.stepBlocks?.length) {
         for (const stepBlock of codeBlock.stepBlocks) {
-          context[stepBlock.name] = stepBlock.output;
+          context[stepBlock.name] = {
+            id: stepBlock.id,
+            name: stepBlock.name,
+            type: "stepBlock",
+            response: stepBlock.response,
+            error: stepBlock.error,
+          };
           // console.log("context", stepBlock.output);
         }
       }

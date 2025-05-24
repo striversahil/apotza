@@ -1,18 +1,23 @@
 import React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { useGlobalContext } from "../../../../contexts";
+import {
+  TabStepOutputProvider,
+  useTabStepOutput,
+} from "../../../../contexts/codeblock";
+
+// It will have Simple Job to set the value based on config of Text
 
 interface Text {
   config: string;
   value: string;
 }
 
-// It will have Simple Job to set the value based on config of Text
-
 export const useConfigValue = (setValue: (code: Text) => void) => {
-  const [configText, setConfigText] = useState<string | null>(null);
-  // Todo : Linking with the Global Context
+  const [configText, setConfigText] = useState<string>("");
   const { codeBlock, component } = useGlobalContext() || {};
+
+  const { steps } = useTabStepOutput() || {};
 
   const setConfig = (config_string: string) => {
     setConfigText(config_string);
@@ -26,12 +31,6 @@ export const useConfigValue = (setValue: (code: Text) => void) => {
     });
     setValue({ config: config_string, value: result });
   };
-
-  useEffect(() => {
-    if (configText) {
-      setConfig(configText);
-    }
-  }, [codeBlock, component]);
 
   return {
     setConfig,

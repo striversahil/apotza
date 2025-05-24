@@ -17,7 +17,7 @@ const StepsBlockAction = {
       },
       [
         [`GetProject.getOneCodeBlock-${currentTab}` as string],
-        ["GetProject.getContextCodeBlock"],
+        [`GetProject.getContextCodeBlock-${currentTab}` as string],
       ],
       () => {},
       () => {}
@@ -42,7 +42,7 @@ const StepsBlockAction = {
     return { mutate };
   },
 
-  codeRunner: (id: string) => {
+  codeRunner: (id: string, codeBlockId: string) => {
     return useMutationData(
       ["StepsBlockAction.codeRunner"],
       async (payload: any) => {
@@ -51,7 +51,7 @@ const StepsBlockAction = {
       },
       [
         [`GetProject.getOneStep-${id}` as string],
-        ["GetProject.getContextCodeBlock"],
+        [`GetProject.getContextCodeBlock-${codeBlockId}` as string],
       ],
       () => {},
       () => {}
@@ -126,7 +126,10 @@ const StepsBlockAction = {
         const response = await api.delete(`${source}/${payload.id}`);
         return response.data;
       },
-      [[`GetProject.getOneCodeBlock-${currentTab}` as string]],
+      [
+        [`GetProject.getOneCodeBlock-${currentTab}` as string],
+        [`GetProject.getContextCodeBlock-${currentTab}` as string],
+      ],
       () => {},
       () => {}
     );

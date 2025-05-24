@@ -9,8 +9,13 @@ import { TestTube2 } from "lucide-react";
 import { Button } from "@repo/ui/button";
 import { SimpleLoader } from "@/components/loader";
 
-export const EditorHeader = ({ id, type, name }: StepBlockInterface) => {
-  const { mutate, isPending } = StepsBlockAction.codeRunner(id);
+export const EditorHeader = ({
+  id,
+  type,
+  name,
+  codeblock,
+}: StepBlockInterface) => {
+  const { mutate, isPending } = StepsBlockAction.codeRunner(id, codeblock);
 
   return (
     <div className="h-[50px] w-full flex gap-5 bg-gradient-to-r from-slate-800 to-slate-600">

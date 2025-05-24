@@ -38,7 +38,7 @@ const GetProject = {
   },
 
   getContextCodeBlock: (id: string) => {
-    return useQueryData(["GetProject.getContextCodeBlock"], async () => {
+    return useQueryData([`GetProject.getContextCodeBlock-${id}`], async () => {
       const response = await api.get(`${codeBlock}/${id}/context`);
       return response.data.payload;
     });

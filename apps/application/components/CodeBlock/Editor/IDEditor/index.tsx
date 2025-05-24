@@ -12,15 +12,12 @@ interface Text {
 
 type Props = {
   language: string;
-  code: Text;
-  onChange: (code: Text) => void;
+  code: any;
+  onChange: (code: any) => void;
 };
 
 const IDEditor = ({ code, onChange, language }: Props) => {
   const { enablePopover, handleEditorDidMount } = useEnableComplete();
-
-  const { codeBlock } = useGlobalContext() || {};
-  console.log("codeBlock", codeBlock);
 
   const { setConfig } = useConfigValue(onChange);
 
@@ -36,7 +33,7 @@ const IDEditor = ({ code, onChange, language }: Props) => {
           </div>
         }
         onMount={(editor, monaco) => handleEditorDidMount(editor, monaco)}
-        defaultValue={code.config || ""}
+        defaultValue={code?.config || ""}
         height={"100%"}
         options={{
           fontSize: 14,

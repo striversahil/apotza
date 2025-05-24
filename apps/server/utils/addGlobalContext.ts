@@ -34,3 +34,7 @@ export const addGlobalContext = ({ clause = {} }: any): any => {
   }
   return newClause;
 };
+
+
+
+export const nameIdMapping 
