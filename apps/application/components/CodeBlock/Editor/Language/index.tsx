@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useStepConfig } from "../utils/useSaveStepConfig";
 import IDEeditor from "../IDEditor";
 
-const LanguageConfig = () => {
+function LanguageConfig() {
   const { stepConfig, setStepBlock } = useStepConfig();
 
   return (
@@ -24,6 +24,6 @@ const LanguageConfig = () => {
       </div>
     </div>
   );
-};
+}
 
 export default LanguageConfig;
