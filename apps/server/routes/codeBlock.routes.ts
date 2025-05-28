@@ -9,7 +9,7 @@ router.route("/:id/context").get(CodeBlockController.contextCodeBlock);
 
 router.route("/").post(CodeBlockController.create);
 
-router.route("/run").post(CodeBlockController.runAllSteps);
+router.route("/:id/run").post(CodeBlockController.runAllSteps);
 
 router.route("/:id").patch(CodeBlockController.updateCodeBlock);
 

@@ -7,20 +7,31 @@ import {
   Tooltip,
 } from "@repo/ui/Tooltip/tooltip";
 import { useMutationData } from "@/hooks/useMutation";
-import { Pencil, PlayCircle } from "lucide-react";
+import { CheckCircleIcon, Pencil, PlayCircle, XCircle } from "lucide-react";
 import React from "react";
 import { Button } from "@repo/ui/button";
+import { SimpleLoader } from "@/components/loader";
+import { cn } from "@/lib/utils";
 
 type Props = {
   value: any;
 };
 
 const HeaderChange = (props: Props) => {
-  const { mutate } = TabBlockAction.delete();
+  const { mutate } = TabBlockAction.update(props.value.id);
+
+  const {
+    mutate: Runner,
+    isPending,
+    isSuccess,
+    isError,
+    isIdle,
+  } = TabBlockAction.run(props.value.id);
 
   const Mutation = () => {
     mutate({ id: props.value.id, name: value });
   };
+
   const { mount, setMount, ref, EnterClick, ValueChange, value } =
     useClickOutsideEnter(Mutation, props.value.name);
 
@@ -51,11 +62,23 @@ const HeaderChange = (props: Props) => {
       </div>
       <div className="" onClick={(e) => e.preventDefault()}>
         <Button
-          className="text-xs font-bold text-white bg-[#197b94] shadow-md shadow-black/50  hover:bg-[#1e92af91]"
+          className={cn(
+            "relative flex items-center gap-2 text-xs font-bold duration-100 p-2 text-white bg-[#197b94] shadow-md shadow-black/50  hover:bg-current/20",
+            isSuccess && "bg-[#199448]",
+            isError && "bg-red-500",
+            isPending && "bg-[#197b9491]"
+          )}
           size={"sm"}
+          onClick={() => Runner({})}
         >
-          <PlayCircle className="" />
-          Run API
+          {isIdle && <PlayCircle className="" />}
+          {isPending && <SimpleLoader />}
+          {isSuccess && <CheckCircleIcon />}
+          {isError && <XCircle />}
+          {(isIdle || isPending) && "Run API"}
+          {/* { && "Running..."} */}
+          {isSuccess && "Success"}
+          {isError && <span className="mr-2">Failure</span>}
         </Button>
       </div>
     </div>

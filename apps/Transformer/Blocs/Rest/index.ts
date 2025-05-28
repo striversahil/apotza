@@ -2,7 +2,7 @@ import axios from "axios";
 
 const RestEngine = async (
   endpoint: string,
-  headers: Array<{ key: string; value: string }>,
+  headers: Array<{ key: any; val: any }>,
   body: string,
   method: string
 ) => {
@@ -10,7 +10,7 @@ const RestEngine = async (
     const processed_headers: Record<string, string> = {};
 
     headers.forEach((header) => {
-      processed_headers[header.key] = header.value;
+      processed_headers[header.key.value] = header.val.value;
     });
 
     const response = await axios({

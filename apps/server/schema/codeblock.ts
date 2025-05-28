@@ -19,6 +19,7 @@ export const CodeBlock = pgTable("codeblock", {
     onUpdate: "cascade",
   }),
   name: text("name").notNull(),
+  stepblockContext: jsonb("stepblock_context").notNull().default({}),
   response: jsonb("output"),
   error: jsonb("error"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
@@ -35,10 +36,10 @@ export const StepBlock = pgTable("stepblock", {
     onDelete: "cascade",
     onUpdate: "cascade",
   }),
-  config: jsonb("config").notNull().default({}),
-  output: jsonb("output").notNull(),
-  stdout: jsonb("stdout").notNull(),
-  request: text("request").notNull(),
+  configuration: jsonb("config").notNull().default({}),
+  error: jsonb("error"),
+  response: jsonb("response"),
+  stdout: jsonb("stdout"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
 

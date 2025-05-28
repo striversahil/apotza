@@ -4,16 +4,28 @@ import { Component, Page, PageInterface, ProjectInterface } from "../schema";
 
 export class PageService {
   static async getOne(
-    id: string,
-    project_id: string
+    name: string,
+    project_id: string,
+    page_id?: string
   ): Promise<PageInterface | null> {
     try {
-      const page = await db.query.Page.findFirst({
-        with: {
-          sections: true,
-        },
-        where: and(eq(Page.id, id), eq(Page.project, project_id)),
-      });
+      let page;
+      if (page_id) {
+        page = await db.query.Page.findFirst({
+          with: {
+            sections: true,
+          },
+          where: eq(Page.id, page_id),
+        });
+      } else {
+        page = await db.query.Page.findFirst({
+          with: {
+            sections: true,
+          },
+          where: and(eq(Page.name, name), eq(Page.project, project_id)),
+        });
+      }
+
       if (!page) return null;
 
       // Fetch all Additional Component's for the component

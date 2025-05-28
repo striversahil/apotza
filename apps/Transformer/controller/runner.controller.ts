@@ -35,7 +35,7 @@ class RunnerController {
       //   return ErrorResponse(c, "Body is required");
       // }
 
-      const { error, data } = await RestEngine(endpoint, headers, body, method);
+      const { error, data } = await RestEngine(endpoint.value, headers, body.value, method);
       if (error) {
         return ErrorResponse(c, error);
       }
@@ -58,7 +58,7 @@ class RunnerController {
 
       const { error, data } = await PostgresEngine(
         query.value,
-        connection.value
+        connection
       );
       if (error) {
         return ErrorResponse(c, error);
@@ -93,8 +93,8 @@ class RunnerController {
         return ErrorResponse(c, "Code is required");
       }
 
-      const { error, data } = await PythonEngine(code);
-      console.log(data);
+      const { error, data } = await PythonEngine(code.value);
+
       if (error) {
         return ErrorResponse(c, error);
       }

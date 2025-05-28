@@ -9,14 +9,14 @@ import Select_Base from "../../base/select";
 import { useGlobalContext } from "../../../../contexts";
 import { useConfigValue } from "@/components/CodeBlock/Editor/IDEditor/useConfigValue";
 
-interface initialvalue {
+interface Text {
   config: string;
   value: string;
 }
 
 type Props = {
   location: Array<string>;
-  initialvalue: initialvalue;
+  initialvalue: Text;
   color?: boolean;
   size?: boolean;
   pixel?: boolean;
@@ -29,20 +29,22 @@ export const TextInput: React.FC<Props> = ({
   initialvalue,
   ...addOn
 }: Props) => {
-  const [value, setValue] = React.useState<initialvalue>(initialvalue);
+  const [value, setValue] = React.useState<Text>(initialvalue);
   const { component, codeBlock } = useGlobalContext() || {};
 
   useDebouncedUpdate(location, value);
 
-  const { setConfig } = useConfigValue(setValue);
+  // const { setConfig } = useConfigValue(setValue);
 
   // const isEmpty = _.isEmpty(addOn);
 
   return (
     <div className="float-end flex gap-2">
       <Text_Base
-        value={initialvalue.config}
-        onChange={(val) => setConfig(val)}
+        value={initialvalue?.config}
+        onChange={(val) =>
+          setValue((prev: any) => ({ value: val, config: val }))
+        }
       />
 
       {/* {!isEmpty && (

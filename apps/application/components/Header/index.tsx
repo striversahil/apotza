@@ -4,11 +4,6 @@ import { Skeleton } from "@repo/ui/skeleton";
 import React from "react";
 import { useClickOutsideEnter } from "../../app/editor/_hooks/useClickOutsideEnter";
 import GetProject from "../../actions/project";
-import {
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-} from "@repo/ui/Tooltip/tooltip";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import EditorPreview from "./EditorPreview";

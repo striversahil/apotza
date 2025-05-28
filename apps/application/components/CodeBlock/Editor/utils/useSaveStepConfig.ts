@@ -19,14 +19,18 @@ export const useStepConfig = () => {
 
   const { mutate } = StepsBlockAction.update(updatedStepBlock?.id!);
 
-  //   console.log("updatedStepBlock", updatedStepBlock);
-
+  // Debounce the update to the step block configuration
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (!_.isEqual(stepBlock.payload?.config, updatedStepBlock?.config)) {
-        //     console.log("updatedStepBlock", updatedStepBlock);
+      if (
+        !_.isEqual(
+          stepBlock.payload?.configuration,
+          updatedStepBlock?.configuration
+        )
+      ) {
+        console.log(updatedStepBlock);
         mutate({
-          config: updatedStepBlock?.config,
+          configuration: updatedStepBlock?.configuration,
         });
       }
     }, 800);
@@ -37,11 +41,12 @@ export const useStepConfig = () => {
     ...stepBlock?.payload,
   };
 
+  // Function to update the step block configuration
+  // This will be used in the UI to update the step block configuration
   const setStepBlock = (config: any) => {
-    // console.log("config", config);
     setUpdatedStepBlock((prev: any) => ({
       ...prev,
-      config: { ...prev.config, ...config },
+      configuration: { ...prev.configuration, ...config },
     }));
   };
 

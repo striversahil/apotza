@@ -3,6 +3,7 @@ import { CodeiumEditor as IDE } from "@codeium/react-code-editor";
 import { useEnableComplete } from "./useEnableComplete";
 import { useConfigValue } from "./useConfigValue";
 import PopoverContext from "@/components/PopoverContext";
+import { useGlobalContext } from "../../../../contexts";
 
 interface Text {
   config: string;
@@ -32,13 +33,18 @@ const IDEditor = ({ code, onChange, language }: Props) => {
           </div>
         }
         onMount={(editor, monaco) => handleEditorDidMount(editor, monaco)}
-        defaultValue={code.config || ""}
+        defaultValue={code?.config || ""}
         height={"100%"}
         options={{
           fontSize: 14,
           fontFamily: "Consolas, 'Courier New', monospace",
         }}
-        onChange={(code) => setConfig(code || "")}
+        onChange={(code_: string | undefined) =>
+          onChange({
+            config: code_ || "",
+            value: code.value,
+          })
+        }
         className=""
       />
       {/* For Removing the Right Codeium Icon */}

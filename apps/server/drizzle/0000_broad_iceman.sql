@@ -1,25 +1,32 @@
 CREATE TABLE "codeblock" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"order_no" serial NOT NULL,
 	"project_id" uuid,
 	"name" text NOT NULL,
+	"stepblock_context" jsonb DEFAULT '{}'::jsonb NOT NULL,
+	"output" jsonb,
+	"error" jsonb,
 	"created_at" timestamp with time zone DEFAULT now()
 );
 --> statement-breakpoint
 CREATE TABLE "stepblock" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"order_no" serial NOT NULL,
 	"name" text NOT NULL,
 	"type" text NOT NULL,
 	"codeblock_id" uuid,
 	"config" jsonb DEFAULT '{}'::jsonb NOT NULL,
-	"output" text NOT NULL,
-	"stdout" text NOT NULL,
-	"request" text NOT NULL,
+	"error" jsonb,
+	"response" jsonb,
+	"stdout" jsonb,
 	"created_at" timestamp with time zone DEFAULT now()
 );
 --> statement-breakpoint
 CREATE TABLE "component" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"order_no" serial NOT NULL,
 	"type" text DEFAULT 'component',
+	"component" text,
 	"page_id" uuid,
 	"section_id" uuid,
 	"name" text NOT NULL,
@@ -33,6 +40,7 @@ CREATE TABLE "component" (
 --> statement-breakpoint
 CREATE TABLE "page" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"order_no" serial NOT NULL,
 	"type" text DEFAULT 'page',
 	"project_id" uuid,
 	"name" text NOT NULL,
@@ -41,6 +49,7 @@ CREATE TABLE "page" (
 --> statement-breakpoint
 CREATE TABLE "section" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"order_no" serial NOT NULL,
 	"type" text DEFAULT 'section',
 	"component_id" uuid,
 	"page_id" uuid,
@@ -67,6 +76,8 @@ CREATE TABLE "user_profile" (
 CREATE TABLE "project" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"workspace_id" uuid,
+	"component_context" jsonb DEFAULT '{}'::jsonb NOT NULL,
+	"codeblock_context" jsonb DEFAULT '{}'::jsonb NOT NULL,
 	"name" text NOT NULL,
 	"details" text DEFAULT 'Some details about this project' NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now()

@@ -15,6 +15,13 @@ async function PythonEngine(query: string) {
 
     // Calling Python Function
     const data = await callPythonFunction(query);
+    if ( !data) {
+      return {
+        error: "No Output Returned",
+        data: null,
+      };
+    }
+
     return { error: null, data: JSON.parse(data as string) };
   } catch (error) {
     return { error: error as string, data: null };
@@ -40,6 +47,7 @@ export default PythonEngine;
 
 // Making Wrapper Pythonic Function to Execute Python Code
 const wrapperPython = (query = "") => {
+
   return `
 import json
 

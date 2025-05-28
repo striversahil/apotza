@@ -115,7 +115,7 @@ class ProjectController {
         return ErrorResponse(res, "Project or Page does not exist", 404);
 
       const project: any = await ProjectService.getById(projectId);
-      const page: any = await PageService.getOne(page_id, projectId);
+      const page: any = await PageService.getOne("", projectId, page_id);
       if (!project || !page)
         return ErrorResponse(res, "Project or Page could not be fetched", 404);
 

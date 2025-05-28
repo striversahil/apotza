@@ -1,7 +1,7 @@
 {
   "python": {
     "name": "Python",
-    "config": {
+    "configuration": {
       "code": {
         "config": "print('Hello World')",
         "value": "print('Hello World')"
@@ -12,7 +12,7 @@
   },
   "javascript": {
     "name": "JavaScript",
-    "config": {
+    "configuration": {
       "code": {
         "config": "console.log('Hello World')",
         "value": "console.log('Hello World')"
@@ -23,7 +23,7 @@
   },
   "graphql": {
     "name": "GraphQL",
-    "config": {
+    "configuration": {
       "code": {
         "config": "query {\n  user(id: \"1\") {\n    id\n    name\n    email\n  }\n}",
         "value": "query {\n  user(id: \"1\") {\n    id\n    name\n    email\n  }\n}"
@@ -34,7 +34,7 @@
   },
   "postgres": {
     "name": "Postgres",
-    "config": {
+    "configuration": {
       "query": {
         "config": "select * from workspace",
         "value": "select * from workspace"
@@ -52,7 +52,7 @@
   },
   "rest": {
     "name": "REST API",
-    "config": {
+    "configuration": {
       "endpoint": {
         "config": "https://jsonplaceholder.typicode.com/posts",
         "value": "https://jsonplaceholder.typicode.com/posts"
@@ -64,7 +64,7 @@
             "config": "Content-Type",
             "value": "Content-Type"
           },
-          "value": {
+          "val": {
             "config": "application/json",
             "value": "application/json"
           }

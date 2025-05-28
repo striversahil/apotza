@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, response, Response } from "express";
 import { ErrorResponse, SuccessResponse } from "../utils/ApiResponse";
 import CodeBlockService from "../service/codeblock.service";
 import { redis } from "..";
@@ -46,43 +46,59 @@ class CodeBlockController {
       ErrorResponse(res, "", null);
     }
   }
-
   static async runAllSteps(req: Request, res: Response) {
     try {
-      const { id } = req.body;
+      const { id } = req.params;
+
       if (!id) return ErrorResponse(res, "CodeBlock does not exist", 404);
 
+      // Getting CodeBlock with all the steps that we need to run
       const codeBlock: any = await CodeBlockService.getById(id);
       if (!codeBlock)
         return ErrorResponse(res, "CodeBlock could not be fetched", 404);
 
-      if (codeBlock.stepBlock?.length) {
-        for (const stepBlock of codeBlock.stepBlock) {
-          const StepBlock: any = await StepBlockService.runBlock(stepBlock.id);
-          if (!StepBlock)
-            return ErrorResponse(res, "StepBlock could not be run", 400);
+      const steps = codeBlock.stepBlocks ?? [];
 
-          if (StepBlock.output.success === false) {
-            // Updating CodeBlock with Error
-            await CodeBlockService.update(id, {
-              error: StepBlock.output.message,
-            });
-            return SuccessResponse(res, "StepBlock Got Error", null, {
-              stepBlock: StepBlock.id,
-            });
-          }
+      for (const step of steps) {
+        const result: any = await StepBlockService.runBlock(step.id);
+        if (!result)
+          return ErrorResponse(res, "StepBlock could not be run", 400);
+
+        // If the stepBlock is not run successfully, we need to update the codeBlock with the error
+        if (result.response === null) {
+          const updatedErrorCodeBlock = await CodeBlockService.update(id, {
+            error: result.error,
+            response: null,
+          });
+
+          if (!updatedErrorCodeBlock)
+            return ErrorResponse(res, "CodeBlock could not be updated", 400);
+          return ErrorResponse(res, "StepBlock Got Error", 400);
         }
-
-        // Updating CodeBlock with Success
-        await CodeBlockService.update(id, {
-          response: codeBlock.stepBlock[codeBlock.stepBlock.length - 1].output,
-        });
-        return SuccessResponse(res, "CodeBlock Run successfully", null, {
-          stepBlock: codeBlock.stepBlock[codeBlock.stepBlock.length - 1].id, // return last stepblock Id if Codeblock run Successfully
-        });
       }
+
+      const lastStep = steps[steps.length - 1];
+
+      const updatedCodeBlock = await CodeBlockService.update(id, {
+        response: lastStep?.response,
+        error: null,
+      });
+
+      if (!updatedCodeBlock)
+        return ErrorResponse(res, "CodeBlock could not be updated", 400);
+
+      await redis.del(`codeBlock:${id}`);
+      // Cleanup the redis stepBlock cache
+      for (const step of steps) {
+        await redis.del(`stepBlock:${step.id}`);
+      }
+
+      return SuccessResponse(res, "CodeBlock Run successfully 🚀", null, {
+        response: updatedCodeBlock.response,
+      });
     } catch (error) {
-      ErrorResponse(res, "", null);
+      console.error("Error running all steps:", error);
+      return ErrorResponse(res, "Internal Server Error 💥", 500);
     }
   }
 
@@ -136,7 +152,13 @@ class CodeBlockController {
       const context: Record<string, any> = {};
       if (codeBlock.stepBlocks?.length) {
         for (const stepBlock of codeBlock.stepBlocks) {
-          context[stepBlock.name] = stepBlock.output;
+          context[stepBlock.name] = {
+            id: stepBlock.id,
+            name: stepBlock.name,
+            type: "stepBlock",
+            response: stepBlock.response,
+            error: stepBlock.error,
+          };
           // console.log("context", stepBlock.output);
         }
       }
@@ -146,6 +168,22 @@ class CodeBlockController {
       SuccessResponse(res, "CodeBlock fetched successfully", null, context);
     } catch (error) {
       ErrorResponse(res, "", null);
+    }
+  }
+
+  static async syncContext(id: string) {
+    try {
+      const codeBlock: any = await CodeBlockService.getById(id);
+      if (!codeBlock) return false;
+
+      const context: Record<string, any> = {};
+      if (codeBlock.stepBlocks?.length) {
+        for (const stepBlock of codeBlock.stepBlocks) {
+          context[stepBlock.id] = stepBlock.output;
+        }
+      }
+    } catch (error) {
+      throw new Error(error as string);
     }
   }
 

@@ -7,24 +7,28 @@ import { projectCookie } from "../utils/CookieConfig";
 export class PageController {
   static async getPage(req: Request, res: Response) {
     try {
-      const { id } = req.params;
+      const { page_name } = req.params;
       const project_id = req.cookies.project_id;
       const current_page = req.cookies.current_page;
 
-      if (!id)
+      if (!page_name || !current_page)
         return ErrorResponse(res, "Page does not exist , provide id", 404);
       if (!project_id) return ErrorResponse(res, "Project does not exist", 404);
 
       const redis_page = await redis.get(`page:${current_page}`);
+
       if (redis_page) {
-        // console.log("From Redis", current_page);
         const page = JSON.parse(redis_page);
+
+        if (page.name == page_name) {
+          SuccessResponse(res, "Page fetched successfully", null, page);
+        }
         // res.cookie("current_page", page.id, projectCookie);
-        SuccessResponse(res, "Page fetched successfully", null, page);
+
         return;
       }
 
-      const page = await PageService.getOne(current_page, project_id);
+      const page = await PageService.getOne(page_name, project_id);
       if (!page) return ErrorResponse(res, "Page could not be fetched", 404);
 
       await redis.set(`page:${current_page}`, JSON.stringify(page));

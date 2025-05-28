@@ -26,6 +26,22 @@ const TabBlockAction = {
     return { mutate, data, isPending };
   },
 
+  run: (currentTab: string) => {
+    return useMutationData(
+      ["CodeBlockAction.run"],
+      async (payload: any) => {
+        const response = await api.post(`${source}/${currentTab}/run`, payload);
+        return response;
+      },
+      [
+        [`GetProject.getOneCodeBlock-${currentTab}` as string],
+        ["GetProject.getProject"],
+      ],
+      () => {},
+      () => {}
+    );
+  },
+
   delete: () => {
     const { mutate, isPending } = useMutationData(
       ["CodeBlockAction.delete"],
@@ -45,12 +61,10 @@ const TabBlockAction = {
       //   };
       // }
     );
-
     return { mutate, isPending };
   },
 
-  update: () => {
-    const { currentTab } = useCurrentTab() || {};
+  update: (currentTab: string) => {
     const { mutate } = useMutationData(
       ["CodeBlockAction.nameChange"],
       async (payload: any) => {

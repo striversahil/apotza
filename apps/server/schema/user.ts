@@ -65,6 +65,8 @@ export const Project = pgTable("project", {
     onDelete: "cascade",
     onUpdate: "cascade",
   }),
+  componentContext: jsonb("component_context").notNull().default({}),
+  codeblockContext: jsonb("codeblock_context").notNull().default({}),
   name: text("name").notNull(),
   details: text("details").notNull().default("Some details about this project"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),

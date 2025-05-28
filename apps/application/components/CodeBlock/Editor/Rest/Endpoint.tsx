@@ -11,16 +11,18 @@ import IDEeditor from "../IDEditor";
 
 import { Input } from "@repo/ui/input";
 
-type Props = {};
+type Props = {
+  stepConfig: any;
+  setStepBlock: (stepblock: any) => void;
+};
 
-const RestEndpoint = (props: Props) => {
-  const { stepConfig, setStepBlock } = useStepConfig();
+const RestEndpoint = ({ stepConfig , setStepBlock }: Props) => {
 
   return (
     <div className="w-full flex gap-5">
       <Select
         onValueChange={(method) => setStepBlock({ method })}
-        defaultValue={stepConfig.config.method}
+        defaultValue={stepConfig.configuration.method}
       >
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Select a method" />
@@ -36,12 +38,12 @@ const RestEndpoint = (props: Props) => {
       <div className="w-full">
         <Input
           placeholder="Enter Endpoint"
-          defaultValue={stepConfig.config.endpoint}
+          defaultValue={stepConfig.configuration.endpoint.config}
           onChange={(e) =>
             setStepBlock({
               endpoint: {
+                ...stepConfig.configuration.endpoint,
                 config: e.target.value,
-                value: stepConfig.enpoint.value,
               },
             })
           }

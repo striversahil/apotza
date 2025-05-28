@@ -44,6 +44,13 @@ const JavaScriptEngine = async (query: string) => {
     //   })() `;
 
     const output = new Function(query)();
+    if ( !output) {
+      return {
+        error: "No Output Returned",
+        data: null,
+      };
+    }
+
     return {
       error: null,
       data: output, // It's Returning Data that need to be transformed

@@ -8,31 +8,32 @@ import { X } from "lucide-react";
 import RestEndpoint from "./Endpoint";
 
 type Props = {
+  stepConfig: any;
+  setStepBlock: (stepblock: any) => void;
   header: any;
   index: number;
 };
 
-const RestHeader = ({ header, index }: Props) => {
-  const { stepConfig, setStepBlock } = useStepConfig();
+const RestHeader = ({ stepConfig, setStepBlock, header, index }: Props) => {
 
   return (
     <>
       <Input
-        defaultValue={header["key"]}
+        defaultValue={header["key"].config}
         onChange={(e) =>
           setStepBlock({
-            headers: stepConfig.config.headers.map((h: any, i: number) =>
-              i === index ? { key: e.target.value, value: header["value"] } : h
+            headers: stepConfig.configuration.headers.map((h: any, i: number) =>
+              i === index ? { key: {...header["key"], config: e.target.value}, val: header["val"] } : h
             ),
           })
         }
       />
       <Input
-        defaultValue={header["value"]}
+        defaultValue={header["val"].config}
         onChange={(e) =>
           setStepBlock({
-            headers: stepConfig.config.headers.map((h: any, i: number) =>
-              i === index ? { key: header["key"], value: e.target.value } : h
+            headers: stepConfig.configuration.headers.map((h: any, i: number) =>
+              i === index ? { key: header["key"], val: {...header["value"], config: e.target.value} } : h
             ),
           })
         }
@@ -40,7 +41,7 @@ const RestHeader = ({ header, index }: Props) => {
       <button
         onClick={() => {
           setStepBlock({
-            headers: stepConfig.config.headers.filter(
+            headers: stepConfig.configuration.headers.filter(
               (h: any, i: number) => i !== index
             ),
           });
