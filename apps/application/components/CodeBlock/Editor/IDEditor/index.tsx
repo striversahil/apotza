@@ -12,8 +12,8 @@ interface Text {
 
 type Props = {
   language: string;
-  code: any;
-  onChange: (code: any) => void;
+  code: Text;
+  onChange: (code: Text) => void;
 };
 
 const IDEditor = ({ code, onChange, language }: Props) => {
@@ -39,8 +39,11 @@ const IDEditor = ({ code, onChange, language }: Props) => {
           fontSize: 14,
           fontFamily: "Consolas, 'Courier New', monospace",
         }}
-        onChange={(code) =>
-          onChange((prev: Text) => ({ ...prev, config: code }))
+        onChange={(code_: string | undefined) =>
+          onChange({
+            config: code_ || "",
+            value: code.value,
+          })
         }
         className=""
       />
