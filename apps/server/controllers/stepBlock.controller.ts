@@ -5,6 +5,7 @@ import { redis } from "..";
 import CodeBlockService from "../service/codeblock.service";
 import CodeBlockController from "./codeBlock.controller";
 import GlobalContextManager from "../utils/addGlobalContext";
+import ProjectService from "../service/project.service";
 
 class StepBlockController {
   static async getStep(req: Request, res: Response) {
@@ -81,12 +82,12 @@ class StepBlockController {
   static async Update(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const codeblock_id = req.body?.codeblock || ""; // Get codeblock Id
+      const project_id = req.cookies.project_id;
       const { ...slug } = req.body;
       if (!id || !slug)
         return ErrorResponse(res, "Id and Updated object is required", 400);
 
-      await updateContext(codeblock_id, id, JSON.stringify(slug.configuration));
+      await updateContext(project_id, id, JSON.stringify(slug.configuration));
 
       const stepBlock = await StepBlockService.update(id, slug);
       if (!stepBlock)
@@ -125,25 +126,25 @@ class StepBlockController {
 }
 
 /**
- * @param codeBlock_id - The ID of the code block to update.
- * @param name - The name of the step block.
- * @param configuration - The configuration string containing placeholders.
- * Update the context of the code block with the new configuration.
- * It extracts placeholders from the configuration string,
- * updates the step block context, and ensures that the referenced context is updated accordingly.
+ *
+ * @param project_id Project ID that we are working with
+ * @param id  StepBlock ID that we are updating
+ * @param configuration Payload of base text configuration
+ * @returns
  */
 async function updateContext(
-  codeBlock_id: string,
+  project_id: string,
   id: string,
   configuration: string
 ) {
   try {
     const stepblock: any = await StepBlockService.getById(id);
-    const referenced: any = stepblock?.referencedContext || {};
+    const prevMatches: any = stepblock?.referencedContext || {};
     if (!stepblock) return;
 
-    const codeBlock: any = await CodeBlockService.getById(codeBlock_id);
-    if (!codeBlock) return;
+    const project: any = await ProjectService.getById(project_id);
+    const prevReference: any = project?.globalContext || {};
+    if (!project) return;
     // Extract placeholders from the configuration string
 
     // if (!matchesWithoutBraces || matchesWithoutBraces.length === 0) {
@@ -152,35 +153,39 @@ async function updateContext(
     //   });
     //   return;
     // }
-    const { uniqueMatches } = GlobalContextManager.extractRegex(configuration);
+
+    const { extractedMatches, arrayForm } =
+      GlobalContextManager.extractRegex(configuration);
 
     // Trying to update so to reduce the number of calls to the database
-    const { setStepBlock } = GlobalContextManager.setContext(
-      codeBlock.stepblockContext,
-      uniqueMatches,
+    const { newReference } = GlobalContextManager.setContext(
+      prevReference,
+      arrayForm,
       id
     );
 
     const cleanedUpReference = GlobalContextManager.cleanedUpContext(
-      referenced,
-      uniqueMatches,
+      prevMatches,
+      arrayForm,
       id,
-      setStepBlock
+      newReference
     );
 
     // console.log("Mapped Matches Object:", mappedMatchesObject);
 
     const stepBlock = await StepBlockService.update(id, {
-      referencedContext: uniqueMatches,
+      referencedContext: extractedMatches,
     });
 
-    const updatedCodeBlock = await CodeBlockService.update(codeBlock_id, {
-      stepblockContext: cleanedUpReference,
+    const updatedProject = await ProjectService.update(project_id, {
+      globalContext: cleanedUpReference,
     });
 
-    console.log("Updated CodeBlock:", updatedCodeBlock?.stepblockContext);
+    console.log("Updated StepBlock:", stepBlock?.referencedContext);
 
-    if (!updatedCodeBlock) return false;
+    console.log("Updated Project:", updatedProject?.globalContext);
+
+    if (!updatedProject) return false;
   } catch (error) {
     console.error("Error in updateContext:", error);
     return false;

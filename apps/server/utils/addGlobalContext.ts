@@ -1,10 +1,12 @@
 import _ from "lodash";
 
 class GlobalContextManager {
+  static compCategory = ["comp", "sect", "page", "api", "step"];
+
   /**
    * This function returns a regular expression that matches the global context.
    * The global context is defined as a string that starts with "globalContext."
-   *
+   *@param {string} text - The raw text input that may contain global context references.
    * @returns {RegExp} - The regular expression for matching global context.
    */
   static extractRegex = (text: string) => {
@@ -16,42 +18,59 @@ class GlobalContextManager {
       match.slice(2, -2)
     );
 
-    // Remove duplicates from matchesWithoutBraces
-    const uniqueMatches = Array.from(new Set(matchesWithoutBraces));
+    const extractedMatches: Record<string, any> = {};
+    const rawArrayForm: string[] = [];
+    const arrayForm: string[] = Array.from(new Set(rawArrayForm));
+
+    // Iterate over each category and extract matches that start with the category
+    // and a dot (e.g., "comp.", "sect.", "page.", "api.", "step.")
+    this.compCategory.forEach((category: string) => {
+      extractedMatches[category] = [];
+      matchesWithoutBraces?.forEach((match: string) => {
+        // Check if the match starts with the current category with a dot
+        if (match.startsWith(`${category}.`)) {
+          const removedCategory = match.slice(category.length + 1);
+          extractedMatches[category].push(removedCategory);
+          rawArrayForm.push(removedCategory);
+        }
+      });
+    });
+
     return {
-      uniqueMatches,
-      matchesWithoutBraces,
-      regex,
+      extractedMatches,
+      arrayForm,
     };
   };
 
   /**
-   * This function takes an array of unique matches and a clause object and sets the global context in the clause object.
+   * This function sets the global context by updating the previous reference with the new ID.
    *
-   * @param {Array<string>} uniqueMatches - The array of unique matches to be set as the global context.
-   * @param {object} clause - The clause object to be updated with the global context.
+   * @param {object} prevReference - The previous reference object containing global context.
+   * @param {Array<string>} extractedMatchesArray - An array of global context matches without braces.
+   * @param {string} id - The ID of the current step block.
+   * @returns {object} - An object containing the new reference with the updated ID.
    */
   static setContext(
     prevReference: Record<string, any>,
-    uniqueMatches: Array<string>,
-    clause: any
+    extractedMatchesArray: Array<string>,
+    id: string
   ) {
-    const mappedMatches = uniqueMatches.map((match: string) => {
+    const mappedMatches = extractedMatchesArray.map((match: string) => {
       const prev = prevReference?.[match] || "";
 
       // Changes Here to be made
-      return [match, Array.from(new Set([...prev, clause]))];
+      return [match, Array.from(new Set([...prev, id]))];
     });
 
     const mappedMatchesObject = Object.fromEntries(mappedMatches);
 
-    const setStepBlock = {
+    const newReference = {
       ...prevReference,
       ...mappedMatchesObject,
     };
 
     return {
-      setStepBlock,
+      newReference,
     };
   }
 
@@ -65,23 +84,33 @@ class GlobalContextManager {
    * @param {object} setReference - The object containing the references to be cleaned up.
    */
   static cleanedUpContext(
-    prevMatches: Array<string>,
+    prevMatches: Record<string, any>,
     uniqueMatches: Array<string>,
     id: string,
-    setReference: any
+    newReference: any
   ) {
     // Remove the current step block ID from the arrays in setStepBlock if there reference are removed
 
-    let cleanedUpReference = { ...setReference };
+    const processedPrev: string[] = [];
+
+    this.compCategory.forEach((category: string) => {
+      if (prevMatches[category]) {
+        prevMatches[category].forEach((item: string) => {
+          processedPrev.push(item);
+        });
+      }
+    });
+
+    let cleanedUpReference = { ...newReference };
 
     // console.log("Previous Reference:", prevReference);
     // console.log("Unique Matches:", uniqueMatches);
     // console.log("Set Reference:", setReference);
     // console.log("ID to be cleaned up:", id);
 
-    Object.keys(setReference).forEach((key: string) => {
-      if (prevMatches.includes(key) && !uniqueMatches.includes(key)) {
-        const value = setReference[key];
+    Object.keys(newReference).forEach((key: string) => {
+      if (processedPrev.includes(key) && !uniqueMatches.includes(key)) {
+        const value = newReference[key];
         if (Array.isArray(value)) {
           // If the value is an array, filter out the current step block ID
           cleanedUpReference[key] = value.filter((item: string) => item !== id);
