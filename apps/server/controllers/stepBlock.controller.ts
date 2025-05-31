@@ -139,14 +139,23 @@ async function updateContext(
 
     const matches = configuration.match(regex);
 
-    const matchesWithoutBraces = matches?.map((match: string) =>
-      match.slice(2, -2)
-    );
-    if (!matchesWithoutBraces || matchesWithoutBraces.length === 0) return;
-    const uniqueMatches = Array.from(new Set(matchesWithoutBraces));
+    const stepblock: any = await StepBlockService.getById(id);
+    const referenced: any = stepblock?.referencedContext || [];
+    if (!stepblock) return;
 
     const codeBlock: any = await CodeBlockService.getById(codeBlock_id);
     if (!codeBlock) return;
+
+    const matchesWithoutBraces = matches?.map((match: string) =>
+      match.slice(2, -2)
+    );
+    // if (!matchesWithoutBraces || matchesWithoutBraces.length === 0) {
+    //   await StepBlockService.update(id, {
+    //     referencedContext: [],
+    //   });
+    //   return;
+    // }
+    const uniqueMatches = Array.from(new Set(matchesWithoutBraces));
 
     // Trying to update so to reduce the number of calls to the database
     const mappedMatches = uniqueMatches.map((match: string) => {
@@ -157,29 +166,37 @@ async function updateContext(
 
     const mappedMatchesObject = Object.fromEntries(mappedMatches);
 
-    // console.log("Mapped Matches Object:", mappedMatchesObject);
+    let setStepBlock = {
+      ...codeBlock.stepblockContext,
+      ...mappedMatchesObject,
+    };
 
-    let setStepBlockContext = {};
-
-    if (codeBlock.stepblockContext) {
-      setStepBlockContext = {
-        ...codeBlock.stepblockContext,
-        ...mappedMatchesObject,
-      };
-    } else {
-      setStepBlockContext = {
-        ...mappedMatchesObject,
-      };
-    }
-
-    const updatedCodeBlock = await CodeBlockService.update(codeBlock_id, {
-      stepblockContext: setStepBlockContext,
+    Object.keys(setStepBlock).forEach((key: string) => {
+      if (referenced.includes(key) && !uniqueMatches.includes(key)) {
+        const value = setStepBlock[key];
+        if (Array.isArray(value)) {
+          // If the value is an array, filter out the current step block ID
+          setStepBlock[key] = value.filter((item: string) => item !== id);
+        }
+      }
     });
 
-    // console.log(
-    //   "Updated CodeBlock Context:",
-    //   updatedCodeBlock?.stepblockContext
-    // );
+    // console.log("Mapped Matches Object:", mappedMatchesObject);
+
+    const stepBlock = await StepBlockService.update(id, {
+      referencedContext: uniqueMatches,
+    });
+
+    const updatedCodeBlock = await CodeBlockService.update(codeBlock_id, {
+      stepblockContext: setStepBlock,
+    });
+
+    console.log("Updated StepBlock:", stepBlock?.referencedContext);
+
+    console.log(
+      "Updated CodeBlock Context:",
+      updatedCodeBlock?.stepblockContext
+    );
 
     if (!updatedCodeBlock) return false;
   } catch (error) {

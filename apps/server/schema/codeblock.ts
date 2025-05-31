@@ -40,6 +40,7 @@ export const StepBlock = pgTable("stepblock", {
     onDelete: "cascade",
     onUpdate: "cascade",
   }),
+  referencedContext: jsonb("referenced_context").notNull().default([]),
   configuration: jsonb("config").notNull().default({}),
   error: jsonb("error"),
   response: jsonb("response"),

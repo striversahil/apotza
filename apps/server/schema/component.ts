@@ -22,6 +22,7 @@ export const Page = pgTable("page", {
     onDelete: "cascade",
     onUpdate: "cascade",
   }),
+  referencedContext: jsonb("referenced_context").notNull().default([]),
   name: text("name").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
@@ -39,6 +40,7 @@ export const Section = pgTable("section", {
     onDelete: "cascade",
     onUpdate: "cascade",
   }),
+  referencedContext: jsonb("referenced_context").notNull().default([]),
   name: text("name").notNull(),
   content: jsonb("content").notNull().default({}), // Contains the component data
   layout: jsonb("layout").default({ width: 200, height: 200 }),
@@ -60,6 +62,7 @@ export const Component = pgTable("component", {
     onDelete: "cascade",
     onUpdate: "cascade",
   }),
+  referencedContext: jsonb("referenced_context").notNull().default([]),
   name: text("name").notNull(),
   coordinates: jsonb("coordinates").notNull().default({}),
   content: jsonb("content").notNull().default({}), // Contains the component data
