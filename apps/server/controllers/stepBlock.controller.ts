@@ -4,6 +4,7 @@ import StepBlockService from "../service/stepblock.service";
 import { redis } from "..";
 import CodeBlockService from "../service/codeblock.service";
 import CodeBlockController from "./codeBlock.controller";
+import GlobalContextManager from "../utils/addGlobalContext";
 
 class StepBlockController {
   static async getStep(req: Request, res: Response) {
@@ -128,6 +129,8 @@ class StepBlockController {
  * @param name - The name of the step block.
  * @param configuration - The configuration string containing placeholders.
  * Update the context of the code block with the new configuration.
+ * It extracts placeholders from the configuration string,
+ * updates the step block context, and ensures that the referenced context is updated accordingly.
  */
 async function updateContext(
   codeBlock_id: string,
@@ -135,51 +138,35 @@ async function updateContext(
   configuration: string
 ) {
   try {
-    const regex = /\{\{(.*?)\}\}/g;
-
-    const matches = configuration.match(regex);
-
     const stepblock: any = await StepBlockService.getById(id);
-    const referenced: any = stepblock?.referencedContext || [];
+    const referenced: any = stepblock?.referencedContext || {};
     if (!stepblock) return;
 
     const codeBlock: any = await CodeBlockService.getById(codeBlock_id);
     if (!codeBlock) return;
+    // Extract placeholders from the configuration string
 
-    const matchesWithoutBraces = matches?.map((match: string) =>
-      match.slice(2, -2)
-    );
     // if (!matchesWithoutBraces || matchesWithoutBraces.length === 0) {
     //   await StepBlockService.update(id, {
     //     referencedContext: [],
     //   });
     //   return;
     // }
-    const uniqueMatches = Array.from(new Set(matchesWithoutBraces));
+    const { uniqueMatches } = GlobalContextManager.extractRegex(configuration);
 
     // Trying to update so to reduce the number of calls to the database
-    const mappedMatches = uniqueMatches.map((match: string) => {
-      const prev = codeBlock.stepblockContext?.[match] || "";
+    const { setStepBlock } = GlobalContextManager.setContext(
+      codeBlock.stepblockContext,
+      uniqueMatches,
+      id
+    );
 
-      return [match, Array.from(new Set([...prev, id]))];
-    });
-
-    const mappedMatchesObject = Object.fromEntries(mappedMatches);
-
-    let setStepBlock = {
-      ...codeBlock.stepblockContext,
-      ...mappedMatchesObject,
-    };
-
-    Object.keys(setStepBlock).forEach((key: string) => {
-      if (referenced.includes(key) && !uniqueMatches.includes(key)) {
-        const value = setStepBlock[key];
-        if (Array.isArray(value)) {
-          // If the value is an array, filter out the current step block ID
-          setStepBlock[key] = value.filter((item: string) => item !== id);
-        }
-      }
-    });
+    const cleanedUpReference = GlobalContextManager.cleanedUpContext(
+      referenced,
+      uniqueMatches,
+      id,
+      setStepBlock
+    );
 
     // console.log("Mapped Matches Object:", mappedMatchesObject);
 
@@ -188,15 +175,10 @@ async function updateContext(
     });
 
     const updatedCodeBlock = await CodeBlockService.update(codeBlock_id, {
-      stepblockContext: setStepBlock,
+      stepblockContext: cleanedUpReference,
     });
 
-    console.log("Updated StepBlock:", stepBlock?.referencedContext);
-
-    console.log(
-      "Updated CodeBlock Context:",
-      updatedCodeBlock?.stepblockContext
-    );
+    console.log("Updated CodeBlock:", updatedCodeBlock?.stepblockContext);
 
     if (!updatedCodeBlock) return false;
   } catch (error) {
