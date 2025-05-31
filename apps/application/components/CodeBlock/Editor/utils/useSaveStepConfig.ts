@@ -28,7 +28,6 @@ export const useStepConfig = () => {
           updatedStepBlock?.configuration
         )
       ) {
-        console.log(updatedStepBlock);
         mutate({
           configuration: updatedStepBlock?.configuration,
         });

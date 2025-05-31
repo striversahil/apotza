@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { ErrorResponse, SuccessResponse } from "../utils/ApiResponse";
 import StepBlockService from "../service/stepblock.service";
 import { redis } from "..";
+import CodeBlockService from "../service/codeblock.service";
+import CodeBlockController from "./codeBlock.controller";
 
 class StepBlockController {
   static async getStep(req: Request, res: Response) {
@@ -77,9 +79,13 @@ class StepBlockController {
   static async Update(req: Request, res: Response) {
     try {
       const { id } = req.params;
+      const codeblock_id = ""; // Get codeblock Id
       const { ...slug } = req.body;
       if (!id || !slug)
         return ErrorResponse(res, "Id and Updated object is required", 400);
+
+      updateContext(codeblock_id, JSON.stringify(slug.configuration));
+
       const stepBlock = await StepBlockService.update(id, slug);
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be updated", 400);
@@ -90,6 +96,7 @@ class StepBlockController {
 
       SuccessResponse(res, "StepBlock updated successfully", null, stepBlock);
     } catch (error) {
+      console.error("Error in StepBlockController Update:", error);
       ErrorResponse(res, "", null);
     }
   }
@@ -112,6 +119,24 @@ class StepBlockController {
     } catch (error) {
       ErrorResponse(res, "", null);
     }
+  }
+}
+
+async function updateContext(id: string, configuration: string) {
+  try {
+    const regex = /\{\{(.*?)\}\}/g;
+
+    const matches = configuration.match(regex);
+
+    const matchesWithoutBraces = matches?.map((match: string) =>
+      match.slice(2, -2)
+    );
+    if (!matchesWithoutBraces || matchesWithoutBraces.length === 0) return;
+    const uniqueMatches = Array.from(new Set(matchesWithoutBraces));
+
+    CodeBlockController.contextCodeBlock;
+  } catch (error) {
+    return false;
   }
 }
 
