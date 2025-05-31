@@ -76,7 +76,11 @@ class CodeBlockService {
 
       if (!codeBlock) return null;
       if (language) {
-        const stepBlock = await StepBlockService.create(codeBlock.id, language);
+        const stepBlock = await StepBlockService.create(
+          project_id,
+          codeBlock.id,
+          language
+        );
         if (!stepBlock) return null;
         return codeBlock;
       }

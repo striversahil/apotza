@@ -85,11 +85,7 @@ class StepBlockController {
       if (!id || !slug)
         return ErrorResponse(res, "Id and Updated object is required", 400);
 
-      await updateContext(
-        codeblock_id,
-        slug.name,
-        JSON.stringify(slug.configuration)
-      );
+      await updateContext(codeblock_id, id, JSON.stringify(slug.configuration));
 
       const stepBlock = await StepBlockService.update(id, slug);
       if (!stepBlock)
@@ -128,12 +124,16 @@ class StepBlockController {
 }
 
 /**
- * @param id - The ID of the code block to update.
+ * @param codeBlock_id - The ID of the code block to update.
  * @param name - The name of the step block.
  * @param configuration - The configuration string containing placeholders.
  * Update the context of the code block with the new configuration.
  */
-async function updateContext(id: string, name: string, configuration: string) {
+async function updateContext(
+  codeBlock_id: string,
+  id: string,
+  configuration: string
+) {
   try {
     const regex = /\{\{(.*?)\}\}/g;
 
@@ -145,23 +145,42 @@ async function updateContext(id: string, name: string, configuration: string) {
     if (!matchesWithoutBraces || matchesWithoutBraces.length === 0) return;
     const uniqueMatches = Array.from(new Set(matchesWithoutBraces));
 
-    const codeBlock: any = await CodeBlockService.getById(id);
+    const codeBlock: any = await CodeBlockService.getById(codeBlock_id);
     if (!codeBlock) return;
 
     // Trying to update so to reduce the number of calls to the database
     const mappedMatches = uniqueMatches.map((match: string) => {
       const prev = codeBlock.stepblockContext?.[match] || "";
-      return [match, Array.from(new Set([...prev, name]))];
+
+      return [match, Array.from(new Set([...prev, id]))];
     });
 
     const mappedMatchesObject = Object.fromEntries(mappedMatches);
 
-    const updatedCodeBlock = await CodeBlockService.update(id, {
-      stepblockContext: {
-        ...codeBlock.stepblockContext!,
+    // console.log("Mapped Matches Object:", mappedMatchesObject);
+
+    let setStepBlockContext = {};
+
+    if (codeBlock.stepblockContext) {
+      setStepBlockContext = {
+        ...codeBlock.stepblockContext,
         ...mappedMatchesObject,
-      },
+      };
+    } else {
+      setStepBlockContext = {
+        ...mappedMatchesObject,
+      };
+    }
+
+    const updatedCodeBlock = await CodeBlockService.update(codeBlock_id, {
+      stepblockContext: setStepBlockContext,
     });
+
+    // console.log(
+    //   "Updated CodeBlock Context:",
+    //   updatedCodeBlock?.stepblockContext
+    // );
+
     if (!updatedCodeBlock) return false;
   } catch (error) {
     console.error("Error in updateContext:", error);
