@@ -10,8 +10,8 @@ import {
   timestamp,
   uuid,
 } from "drizzle-orm/pg-core";
-import { Page } from "./component";
-import { CodeBlock } from "./codeblock";
+import { Component, Page, Section } from "./component";
+import { CodeBlock, StepBlock } from "./codeblock";
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++ User Identity Table +++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -102,6 +102,9 @@ export const projectRelations = relations(Project, ({ one, many }) => ({
   }),
   codeblocks: many(CodeBlock),
   pages: many(Page),
+  components: many(Component),
+  sections: many(Section),
+  stepblocks : many(StepBlock),
 }));
 
 // const workspaceWithRelations = await db

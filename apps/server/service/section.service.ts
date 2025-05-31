@@ -37,22 +37,23 @@ class SectionService {
   }
 
   static async create(
+    projectId: string,
     page_id: string | null,
     component_id: string | null
   ): Promise<SectionInterface | null> {
     try {
-      const conditions = [];
+      // const conditions = [];
 
-      if (page_id) {
-        conditions.push(eq(Section.page, page_id));
-      }
+      // if (page_id) {
+      //   conditions.push(eq(Section.page, page_id));
+      // }
 
-      if (component_id) {
-        conditions.push(eq(Section.component_id, component_id));
-      }
+      // if (component_id) {
+      //   conditions.push(eq(Section.component_id, component_id));
+      // }
 
       const prevSection = await this.getOneByConstaint(
-        conditions.length > 1 ? or(...conditions) : conditions[0],
+        eq(Section.project, projectId),
         desc(Section.createdAt)
       );
 
@@ -70,6 +71,7 @@ class SectionService {
         .values({
           name: name,
           page: page_id ?? null,
+          project: projectId,
           component_id: component_id ?? null,
           order_no: order_no,
           layout: sectionDefault.layout,

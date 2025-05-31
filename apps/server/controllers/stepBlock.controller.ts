@@ -31,10 +31,11 @@ class StepBlockController {
 
   static async createStep(req: Request, res: Response) {
     try {
+      const projectId = req.cookies.project_id;
       const { id, language } = req.body;
       if (!id || !language)
         return ErrorResponse(res, "StepBlock does not exist", 400);
-      const stepBlock = await StepBlockService.create(id, language);
+      const stepBlock = await StepBlockService.create(projectId, id, language);
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be created", 400);
       await redis.del(`codeBlock:${stepBlock.codeblock}`);
@@ -168,20 +169,20 @@ async function updateContext(id: string, name: string, configuration: string) {
   }
 }
 
-function getValidParam(param: string) {
-  const validType = ["rest", "postgres", "javascript", "python"];
-  if (!validType.includes(param)) return false;
-  return true;
-  // switch (param) {
-  //   case "rest":
-  //     return stepBlockParam.rest;
-  //   case "postgres":
-  //     return stepBlockParam.postgres;
-  //   case "javascript":
-  //     return stepBlockParam.javascript;
-  //   case "python":
-  //     return stepBlockParam.python;
-  // }
-}
+// function getValidParam(param: string) {
+//   const validType = ["rest", "postgres", "javascript", "python"];
+//   if (!validType.includes(param)) return false;
+//   return true;
+//   // switch (param) {
+//   //   case "rest":
+//   //     return stepBlockParam.rest;
+//   //   case "postgres":
+//   //     return stepBlockParam.postgres;
+//   //   case "javascript":
+//   //     return stepBlockParam.javascript;
+//   //   case "python":
+//   //     return stepBlockParam.python;
+//   // }
+// }
 
 export default StepBlockController;

@@ -28,15 +28,21 @@ class SectionController {
 
   static async createSection(req: Request, res: Response) {
     try {
+      const projectId = req.cookies.project_id;
+      if (!projectId) return ErrorResponse(res, "Project does not exist", 404);
       const { page_id, component_id } = req.body;
 
-      if (!page_id)
+      if (!page_id || !component_id)
         return ErrorResponse(
           res,
           "Provide all fields" + page_id + component_id,
           400
         );
-      const section = await SectionService.create(page_id, component_id);
+      const section = await SectionService.create(
+        projectId,
+        page_id,
+        component_id
+      );
       if (!section)
         return ErrorResponse(res, "Section could not be created", 400);
 

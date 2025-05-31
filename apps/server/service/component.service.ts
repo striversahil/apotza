@@ -52,16 +52,16 @@ class ComponentService {
     }
   }
 
-  static async create(payload: any): Promise<ComponentInterface | null> {
+  static async create(
+    projectId: string,
+    payload: any
+  ): Promise<ComponentInterface | null> {
     try {
       // console.log(payload);
       const compDefault = MatchComponent[payload.name];
 
       const prevComponent = await this.getOneByConstaint(
-        and(
-          eq(Component.section, payload.section),
-          eq(Component.component, payload.name)
-        ),
+        and(eq(Component.project, projectId)),
         desc(Component.createdAt)
       );
 
@@ -79,6 +79,7 @@ class ComponentService {
         .values({
           ...payload,
           name: name,
+          project: projectId,
           component: payload.name,
           order_no: order_no,
           ...compDefault,

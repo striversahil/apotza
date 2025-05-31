@@ -32,7 +32,7 @@ class ComponentController {
       if (!req.body) return ErrorResponse(res, "Provide all fields", 400);
       const project_id = req.cookies.project_id;
       if (!project_id) return ErrorResponse(res, "Project does not exist", 404);
-      const component = await ComponentService.create(req.body);
+      const component = await ComponentService.create(project_id, req.body);
       if (!component)
         return ErrorResponse(res, "Section could not be created", 400);
 

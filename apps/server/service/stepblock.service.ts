@@ -37,6 +37,7 @@ class StepBlockService {
   }
 
   static async create(
+    project_id: string,
     codeBlock_id: string,
     type: string
   ): Promise<StepBlockInterface | null> {
@@ -45,7 +46,7 @@ class StepBlockService {
       if (!payload) return null;
 
       const prevStepBlock = await this.getOneByConstaint(
-        and(eq(StepBlock.codeblock, codeBlock_id), eq(StepBlock.type, type)),
+        and(eq(StepBlock.project, project_id), eq(StepBlock.type, type)),
         desc(StepBlock.createdAt)
       );
 
@@ -62,6 +63,7 @@ class StepBlockService {
         .values({
           name: name,
           type: type,
+          project: project_id,
           codeblock: codeBlock_id,
           order_no: order_no,
           configuration: payload.configuration,

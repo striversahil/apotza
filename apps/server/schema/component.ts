@@ -31,6 +31,10 @@ export const Section = pgTable("section", {
   order_no: serial("order_no").notNull(),
   type: text("type").default("section"),
   component_id: uuid("component_id"),
+  project: uuid("project_id").references(() => Project.id, {
+    onDelete: "cascade",
+    onUpdate: "cascade",
+  }),
   page: uuid("page_id").references(() => Page.id, {
     onDelete: "cascade",
     onUpdate: "cascade",
@@ -48,6 +52,10 @@ export const Component = pgTable("component", {
   type: text("type").default("component"),
   component: text("component"),
   page: uuid("page_id"),
+  project: uuid("project_id").references(() => Project.id, {
+    onDelete: "cascade",
+    onUpdate: "cascade",
+  }),
   section: uuid("section_id").references(() => Section.id, {
     onDelete: "cascade",
     onUpdate: "cascade",
@@ -71,6 +79,10 @@ export const pageRelations = relations(Page, ({ one, many }) => ({
 
 export const sectionRelations = relations(Section, ({ one, many }) => ({
   // Section can be Called from Page and Component as Well
+  project: one(Project, {
+    fields: [Section.project],
+    references: [Project.id],
+  }),
   page: one(Page, {
     fields: [Section.page],
     references: [Page.id],
@@ -84,6 +96,10 @@ export const sectionRelations = relations(Section, ({ one, many }) => ({
 
 export const componentRelations = relations(Component, ({ one, many }) => ({
   // Component can be Called from Page and Section as Well
+  project: one(Project, {
+    fields: [Component.project],
+    references: [Project.id],
+  }),
   section: one(Section, {
     fields: [Component.section],
     references: [Section.id],

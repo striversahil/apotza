@@ -32,6 +32,10 @@ export const StepBlock = pgTable("stepblock", {
   order_no: serial("order_no").notNull(),
   name: text("name").notNull(),
   type: text("type").notNull(),
+  project: uuid("project_id").references(() => Project.id, {
+    onDelete: "cascade",
+    onUpdate: "cascade",
+  }),
   codeblock: uuid("codeblock_id").references(() => CodeBlock.id, {
     onDelete: "cascade",
     onUpdate: "cascade",
@@ -57,5 +61,9 @@ export const stepBlockRelations = relations(StepBlock, ({ one, many }) => ({
   codeBlock: one(CodeBlock, {
     fields: [StepBlock.codeblock],
     references: [CodeBlock.id],
+  }),
+  project: one(Project, {
+    fields: [StepBlock.project],
+    references: [Project.id],
   }),
 }));
