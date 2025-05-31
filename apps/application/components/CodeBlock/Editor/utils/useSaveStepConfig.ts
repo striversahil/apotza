@@ -29,7 +29,9 @@ export const useStepConfig = () => {
         )
       ) {
         mutate({
+          name: updatedStepBlock?.name,
           configuration: updatedStepBlock?.configuration,
+          codeblock: updatedStepBlock?.codeblock,
         });
       }
     }, 800);

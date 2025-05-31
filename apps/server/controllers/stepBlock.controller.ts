@@ -79,12 +79,16 @@ class StepBlockController {
   static async Update(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const codeblock_id = ""; // Get codeblock Id
+      const codeblock_id = req.body?.codeblock || ""; // Get codeblock Id
       const { ...slug } = req.body;
       if (!id || !slug)
         return ErrorResponse(res, "Id and Updated object is required", 400);
 
-      updateContext(codeblock_id, JSON.stringify(slug.configuration));
+      await updateContext(
+        codeblock_id,
+        slug.name,
+        JSON.stringify(slug.configuration)
+      );
 
       const stepBlock = await StepBlockService.update(id, slug);
       if (!stepBlock)
@@ -122,7 +126,13 @@ class StepBlockController {
   }
 }
 
-async function updateContext(id: string, configuration: string) {
+/**
+ * @param id - The ID of the code block to update.
+ * @param name - The name of the step block.
+ * @param configuration - The configuration string containing placeholders.
+ * Update the context of the code block with the new configuration.
+ */
+async function updateContext(id: string, name: string, configuration: string) {
   try {
     const regex = /\{\{(.*?)\}\}/g;
 
@@ -134,8 +144,26 @@ async function updateContext(id: string, configuration: string) {
     if (!matchesWithoutBraces || matchesWithoutBraces.length === 0) return;
     const uniqueMatches = Array.from(new Set(matchesWithoutBraces));
 
-    CodeBlockController.contextCodeBlock;
+    const codeBlock: any = await CodeBlockService.getById(id);
+    if (!codeBlock) return;
+
+    // Trying to update so to reduce the number of calls to the database
+    const mappedMatches = uniqueMatches.map((match: string) => {
+      const prev = codeBlock.stepblockContext?.[match] || "";
+      return [match, Array.from(new Set([...prev, name]))];
+    });
+
+    const mappedMatchesObject = Object.fromEntries(mappedMatches);
+
+    const updatedCodeBlock = await CodeBlockService.update(id, {
+      stepblockContext: {
+        ...codeBlock.stepblockContext!,
+        ...mappedMatchesObject,
+      },
+    });
+    if (!updatedCodeBlock) return false;
   } catch (error) {
+    console.error("Error in updateContext:", error);
     return false;
   }
 }
