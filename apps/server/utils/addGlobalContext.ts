@@ -20,7 +20,6 @@ class GlobalContextManager {
 
     const extractedMatches: Record<string, any> = {};
     const rawArrayForm: string[] = [];
-    const arrayForm: string[] = Array.from(new Set(rawArrayForm));
 
     // Iterate over each category and extract matches that start with the category
     // and a dot (e.g., "comp.", "sect.", "page.", "api.", "step.")
@@ -35,6 +34,8 @@ class GlobalContextManager {
         }
       });
     });
+
+    const arrayForm: string[] = Array.from(new Set(rawArrayForm));
 
     return {
       extractedMatches,
@@ -52,10 +53,10 @@ class GlobalContextManager {
    */
   static setContext(
     prevReference: Record<string, any>,
-    extractedMatchesArray: Array<string>,
+    uniqueMatches: Array<string>,
     id: string
   ) {
-    const mappedMatches = extractedMatchesArray.map((match: string) => {
+    const mappedMatches = uniqueMatches.map((match: string) => {
       const prev = prevReference?.[match] || "";
 
       // Changes Here to be made
@@ -114,6 +115,11 @@ class GlobalContextManager {
         if (Array.isArray(value)) {
           // If the value is an array, filter out the current step block ID
           cleanedUpReference[key] = value.filter((item: string) => item !== id);
+
+          if (!cleanedUpReference[key].length) {
+            // If the array is now empty, remove the key entirely
+            delete cleanedUpReference[key];
+          }
         }
       }
     });

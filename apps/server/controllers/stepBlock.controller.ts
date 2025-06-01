@@ -6,6 +6,7 @@ import CodeBlockService from "../service/codeblock.service";
 import CodeBlockController from "./codeBlock.controller";
 import GlobalContextManager from "../utils/addGlobalContext";
 import ProjectService from "../service/project.service";
+import _ from "lodash";
 
 class StepBlockController {
   static async getStep(req: Request, res: Response) {
@@ -157,6 +158,11 @@ async function updateContext(
     const { extractedMatches, arrayForm } =
       GlobalContextManager.extractRegex(configuration);
 
+    if (_.isEqual(prevMatches, extractedMatches)) {
+      console.log("No changes in global context, skipping Context update.");
+      return true;
+    }
+
     // Trying to update so to reduce the number of calls to the database
     const { newReference } = GlobalContextManager.setContext(
       prevReference,
@@ -185,7 +191,7 @@ async function updateContext(
 
     console.log("Updated Project:", updatedProject?.globalContext);
 
-    if (!updatedProject) return false;
+    return true;
   } catch (error) {
     console.error("Error in updateContext:", error);
     return false;

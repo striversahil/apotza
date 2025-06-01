@@ -23,12 +23,14 @@ export const Page = pgTable("page", {
     onUpdate: "cascade",
   }),
   referencedContext: jsonb("referenced_context").notNull().default([]),
+  configuration: jsonb("configuration").notNull().default({}),
   name: text("name").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
 
 export const Section = pgTable("section", {
   id: uuid("id").defaultRandom().primaryKey(),
+  name: text("name").notNull(),
   order_no: serial("order_no").notNull(),
   type: text("type").default("section"),
   component_id: uuid("component_id"),
@@ -41,10 +43,10 @@ export const Section = pgTable("section", {
     onUpdate: "cascade",
   }),
   referencedContext: jsonb("referenced_context").notNull().default([]),
-  name: text("name").notNull(),
-  content: jsonb("content").notNull().default({}), // Contains the component data
-  layout: jsonb("layout").default({ width: 200, height: 200 }),
-  appearance: jsonb("appearance").notNull().default({}),
+  configuration: jsonb("configuration").notNull().default({}),
+  // content: jsonb("content").notNull().default({}), // Contains the component data
+  // layout: jsonb("layout").default({ width: 200, height: 200 }),
+  // appearance: jsonb("appearance").notNull().default({}),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
 
@@ -65,9 +67,10 @@ export const Component = pgTable("component", {
   referencedContext: jsonb("referenced_context").notNull().default([]),
   name: text("name").notNull(),
   coordinates: jsonb("coordinates").notNull().default({}),
-  content: jsonb("content").notNull().default({}), // Contains the component data
-  layout: jsonb("layout").default({ width: 200, height: 200 }),
-  appearance: jsonb("appearance").notNull().default({}),
+  configuration: jsonb("configuration").notNull().default({}),
+  // content: jsonb("content").notNull().default({}), // Contains the component data
+  // layout: jsonb("layout").default({ width: 200, height: 200 }),
+  // appearance: jsonb("appearance").notNull().default({}),
   interaction: jsonb("interaction").notNull().default({}),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });

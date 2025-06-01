@@ -107,6 +107,9 @@ class CodeBlockController {
       const { id } = req.params;
       const { ...data } = req.body;
       if (!id || !data) return ErrorResponse(res, "Provide all fields", 400);
+
+      // TODO: Update the context of the codeBlock if u figure out it's configuration body
+      // await updateContext(project_id, id, JSON.stringify(slug.configuration));
       const codeBlock = await CodeBlockService.update(id, data);
       if (!codeBlock)
         return ErrorResponse(res, "CodeBlock could not be updated", 400);
