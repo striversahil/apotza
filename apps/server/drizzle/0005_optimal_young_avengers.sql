@@ -1,0 +1,1 @@
+ALTER TABLE "component" RENAME COLUMN "interaction" TO "event_handlers";

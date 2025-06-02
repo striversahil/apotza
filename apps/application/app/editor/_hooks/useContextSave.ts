@@ -8,6 +8,7 @@ import {
 import _ from "lodash";
 import ComponentAction from "@/actions/project/component";
 import { useFocusWithin } from "@mantine/hooks";
+import SectionAction from "@/actions/project/section";
 
 /**
  * A custom hook that manages the state of a component in a context-aware manner.
@@ -34,7 +35,8 @@ import { useFocusWithin } from "@mantine/hooks";
  * @example
  * **/
 export const useContextSave = (initialValue: ComponentInterface) => {
-  const [currentValue, setCurrentValue] = React.useState(initialValue);
+  const [currentValue, setCurrentValue] =
+    React.useState<any>(initialValue);
 
   const { setComponent = () => {}, Component: realComponent } =
     useComponent() || {};
@@ -47,7 +49,10 @@ export const useContextSave = (initialValue: ComponentInterface) => {
 
   const { setPrevComponent = () => {} } = usePrevComponent() || {};
 
-  const { mutate } = ComponentAction.delete(initialValue?.section ?? "");
+  const { mutate: deleteComponent } =
+    ComponentAction.delete(activeComponent?.section ?? "") || {};
+
+  const { mutate: deleteSection } = SectionAction.delete();
 
   // useEffect hook to update the currentValue state whenever the component or initialValue changes
   useEffect(() => {
@@ -64,13 +69,15 @@ export const useContextSave = (initialValue: ComponentInterface) => {
     // if (!focused) return;
     const _delete = (e: KeyboardEvent) => {
       if (e.key !== "Delete") return;
-      if (
-        currentValue?.type === "component" &&
-        currentValue?.id === activeComponent?.id
-      ) {
-        mutate({
-          id: currentValue.id,
-        });
+      if (currentValue?.id === activeComponent?.id) {
+        switch (currentValue?.type) {
+          case "component":
+            deleteComponent(activeComponent?.id);
+          case "section":
+            deleteSection(activeComponent?.id);
+          default:
+            break;
+        }
         setComponent(null);
         setUpdatedComponent(null);
       }
@@ -81,6 +88,7 @@ export const useContextSave = (initialValue: ComponentInterface) => {
     };
   }, [currentValue, activeComponent]);
 
+  // Setting the Component State
   const setState = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     if (JSON.stringify(activeComponent) !== JSON.stringify(initialValue)) {

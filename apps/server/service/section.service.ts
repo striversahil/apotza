@@ -74,13 +74,28 @@ class SectionService {
           project: projectId,
           component_id: component_id ?? null,
           order_no: order_no,
-          layout: sectionDefault.layout,
-          appearance: sectionDefault.appearance,
+          configuration: {
+            layout: sectionDefault.layout,
+            appearance: sectionDefault.appearance,
+          },
         })
         .returning();
       return section ? section : null;
     } catch (error) {
       console.log(error);
+      throw new Error(error as string);
+    }
+  }
+
+  static async update(section_id: string, clause: {}) {
+    try {
+      const [section] = await db
+        .update(Section)
+        .set(clause)
+        .where(eq(Section.id, section_id))
+        .returning();
+      return section ? section : null;
+    } catch (error) {
       throw new Error(error as string);
     }
   }

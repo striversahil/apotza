@@ -61,16 +61,21 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
             // Todo : Make Translate multiDirectional
           }}
           size={{
-            width: value.layout.width * Layout,
-            height: value.layout.height,
+            width: value.configuration.layout.width * Layout,
+            height: value.configuration.layout.height,
           }}
           onResizeStop={(_, direction, ref, d) => {
             mutate({
               id: value.id,
-              layout: {
-                ...value.layout,
-                width: value.layout.width + Math.round(d.width / Layout),
-                height: value.layout.height + d.height,
+              configuration: {
+                ...value.configuration,
+                layout: {
+                  ...value.configuration.layout,
+                  width:
+                    value.configuration.layout.width +
+                    Math.round(d.width / Layout),
+                  height: value.configuration.layout.height + d.height,
+                },
               },
             });
           }}

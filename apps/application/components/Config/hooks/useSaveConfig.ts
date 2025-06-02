@@ -7,6 +7,8 @@ import {
 import ComponentAction from "@/actions/project/component";
 import { useCallback, useEffect } from "react";
 import _ from "lodash";
+import SectionAction from "@/actions/project/section";
+import PageAction from "@/actions/project/page";
 
 type Props = {};
 
@@ -18,18 +20,20 @@ export const useSaveConfig = () => {
     usePrevComponent() || ({} as any);
 
   // Only we wan't specific types to go to server for Change not whole Component state
-  const configTypes = [
-    "id",
-    "appearance",
-    "content",
-    "layout",
-    "interaction",
-    "eventHandler",
-  ];
+  const configTypes = ["id", "configuration", "eventHandler"];
 
-  const { mutate: prevMutate } =
+  const { mutate: prevMutateComponent } =
     ComponentAction.update(prevComponent?.section) || {};
-  const { mutate } = ComponentAction.update(Component?.section) || {};
+  const { mutate: mutateComponent } =
+    ComponentAction.update(Component?.section) || {};
+
+  const { mutate: prevMutateSection } = SectionAction.update() || {};
+
+  const { mutate: mutateSection } = SectionAction.update() || {};
+
+  const { mutate: prevMutatePage } = PageAction.update() || {};
+
+  const { mutate: mutatePage } = PageAction.update() || {};
 
   // Used Callback to have Control over function execution
   const savePrevConfig = useCallback(() => {
@@ -42,7 +46,16 @@ export const useSaveConfig = () => {
   // Used Callback to have Control over function execution
   const saveConfig = useCallback(() => {
     if (!_.isEqual(UpdatedComponent, Component)) {
-      mutate(_.pick(UpdatedComponent, configTypes));
+      switch (Component?.type) {
+        case "section":
+          mutateSection(_.pick(UpdatedComponent, configTypes));
+        case "page":
+          mutatePage(_.pick(UpdatedComponent, configTypes));
+        case "component":
+          mutateComponent(_.pick(UpdatedComponent, configTypes));
+        default:
+          break;
+      }
       setPrevComponent(null);
       return;
     }

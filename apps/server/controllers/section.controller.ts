@@ -53,6 +53,22 @@ class SectionController {
     }
   }
 
+  static async updateSection(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      if (!id) return ErrorResponse(res, "Section does not exist", 404);
+      const { ...data } = req.body;
+      const section = await SectionService.update(id, data);
+      if (!section)
+        return ErrorResponse(res, "Section could not be updated", 400);
+
+      await redis.del(`page:${section.page}`);
+      SuccessResponse(res, "Section updated successfully", null, section);
+    } catch (error) {
+      ErrorResponse(res, "", null);
+    }
+  }
+
   static async deleteSection(req: Request, res: Response) {
     try {
       const { id } = req.params;

@@ -9,6 +9,8 @@ router.route("/").post(SectionController.createSection);
 
 router.route("/:id").get(SectionController.getSection);
 
+router.route("/:id").patch(SectionController.updateSection);
+
 router.route("/:id").delete(SectionController.deleteSection);
 
 // router.route("/update/").post(updateComponent);

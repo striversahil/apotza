@@ -1,6 +1,7 @@
 import { useMutationData } from "@/hooks/useMutation";
 import { useQueryData } from "@/hooks/useQueryData";
 import api from "..";
+import { update } from "lodash";
 const source = "/section";
 
 const SectionAction = {
@@ -9,6 +10,18 @@ const SectionAction = {
       ["SectionAction.add"],
       async (payload: any) => {
         const response = await api.post(`${source}`, payload);
+        return response.data;
+      },
+      [["GetProject.getPage"]]
+    );
+    return { mutate };
+  },
+
+  update: () => {
+    const { mutate } = useMutationData(
+      ["SectionAction.update"],
+      async (payload: any) => {
+        const response = await api.patch(`${source}/${payload.id}`, payload);
         return response.data;
       },
       [["GetProject.getPage"]]

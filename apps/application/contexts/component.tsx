@@ -1,5 +1,11 @@
 import { createContext, useContext, useState, useMemo, useEffect } from "react";
 
+interface Configuration {
+  content?: any;
+  appearance?: any;
+  layout?: any;
+}
+
 export interface ComponentInterface {
   id: string;
   type: string;
@@ -7,8 +13,8 @@ export interface ComponentInterface {
   component_id?: string;
   component?: string;
   page?: string;
-  layout?: any;
-  appearance?: any;
+  project?: string;
+  configuration?: Configuration;
   components?: any;
 }
 

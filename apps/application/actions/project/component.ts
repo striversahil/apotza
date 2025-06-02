@@ -101,10 +101,12 @@ const ComponentAction = {
                 if (item.id === variables.id) {
                   return {
                     ...item,
-                    content: variables.content ?? item.content,
-                    appearance: variables.appearance ?? item.appearance,
-                    layout: variables.layout ?? item.layout,
-                    interaction: variables.interaction ?? item.interaction,
+                    configuration: {
+                      content: variables.content ?? item.content,
+                      appearance: variables.appearance ?? item.appearance,
+                      layout: variables.layout ?? item.layout,
+                      interaction: variables.interaction ?? item.interaction,
+                    },
                   };
                 }
                 return item;

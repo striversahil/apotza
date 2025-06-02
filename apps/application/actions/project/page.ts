@@ -23,6 +23,8 @@ const PageAction = {
       },
       [["GetProject.getProject"]]
     );
+
+    return { mutate };
   },
   update: () => {
     const { mutate } = useMutationData(
@@ -33,6 +35,7 @@ const PageAction = {
       },
       [["GetProject.getProject"]]
     );
+    return { mutate };
   },
 };
 

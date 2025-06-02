@@ -23,6 +23,7 @@ class ComponentService {
       });
 
       if (!component) return null;
+      // Fetch all Additional Sections related to the component
       const compnoentWithSections = {
         ...component,
         sections,
@@ -82,7 +83,7 @@ class ComponentService {
           project: projectId,
           component: payload.name,
           order_no: order_no,
-          ...compDefault,
+          configuration: { ...compDefault },
         })
         .returning();
       return component ? component : null;

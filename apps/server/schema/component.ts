@@ -71,7 +71,8 @@ export const Component = pgTable("component", {
   // content: jsonb("content").notNull().default({}), // Contains the component data
   // layout: jsonb("layout").default({ width: 200, height: 200 }),
   // appearance: jsonb("appearance").notNull().default({}),
-  interaction: jsonb("interaction").notNull().default({}),
+  // interaction: jsonb("interaction").notNull().default({}),
+  eventHandlers: jsonb("event_handlers").notNull().default({}),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
 
