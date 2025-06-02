@@ -50,14 +50,17 @@ interface ComponentType {
 const ConfigFolder = () => {
   const [Config, setConfig] = useState<any>(null);
   const { Component = {} } = useComponent() || ({} as any);
+  const ConfigComp = Component?.configuration || {};
   const [State, setState] = useState<any>(null);
 
   useEffect(() => {
     // Setting Default Opening State to be True.
-    const state = _.clone(Component);
+    const state = _.clone(Component?.configuration);
     const value = _.mapValues(state, () => true);
     setState(value);
   }, [Component]);
+
+  // console.log("ConfigFolder Rendered", Component, "ConfigComp", ConfigComp);
 
   const handleTrigger = (item: string) => {
     setState((prev: any) => {
@@ -76,8 +79,8 @@ const ConfigFolder = () => {
     const value = CollapsiblePanels[item]?.[subitem];
 
     const initialvalue = useMemo(
-      () => Component[item][subitem],
-      [Component, item, subitem]
+      () => ConfigComp[item][subitem],
+      [ConfigComp, item, subitem]
     );
 
     const ComponentToRender: any = MapComp({
@@ -126,10 +129,10 @@ const ConfigFolder = () => {
           <ConfigHeader value={Component} />
           <div className="flex flex-col gap-3 mt-5 pb-14">
             {State &&
-              Object.keys(Component).map(
+              Object.keys(ConfigComp).map(
                 (item: any, index: number) =>
                   Object.keys(CollapsiblePanels).includes(item) &&
-                  Object.keys(Component[item]).length > 0 && (
+                  Object.keys(ConfigComp[item]).length > 0 && (
                     <div key={index}>
                       <div
                         className="flex items-center gap-2 p-2 rounded-md bg-white/5 border border-white/20 cursor-pointer select-none"
@@ -147,7 +150,7 @@ const ConfigFolder = () => {
                       </div>
                       {State[item] && (
                         <div className="p-2 flex flex-col gap-4 ">
-                          {Object.keys(Component[item]).map(
+                          {Object.keys(ConfigComp[item]).map(
                             (subitem: any, index: number) => (
                               <PanelItem
                                 key={index}

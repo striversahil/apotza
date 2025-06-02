@@ -35,8 +35,7 @@ import SectionAction from "@/actions/project/section";
  * @example
  * **/
 export const useContextSave = (initialValue: ComponentInterface) => {
-  const [currentValue, setCurrentValue] =
-    React.useState<any>(initialValue);
+  const [currentValue, setCurrentValue] = React.useState<any>(initialValue);
 
   const { setComponent = () => {}, Component: realComponent } =
     useComponent() || {};
@@ -47,7 +46,7 @@ export const useContextSave = (initialValue: ComponentInterface) => {
     useUpdatedComponent() || {};
   // Setting the Component State from the Context
 
-  const { setPrevComponent = () => {} } = usePrevComponent() || {};
+  // const { setPrevComponent = () => {} } = usePrevComponent() || {};
 
   const { mutate: deleteComponent } =
     ComponentAction.delete(activeComponent?.section ?? "") || {};
@@ -69,12 +68,14 @@ export const useContextSave = (initialValue: ComponentInterface) => {
     // if (!focused) return;
     const _delete = (e: KeyboardEvent) => {
       if (e.key !== "Delete") return;
-      if (currentValue?.id === activeComponent?.id) {
-        switch (currentValue?.type) {
+      if (initialValue?.id === activeComponent?.id) {
+        switch (initialValue?.type) {
           case "component":
-            deleteComponent(activeComponent?.id);
+            console.log("Deleting Component", initialValue?.id);
+            deleteComponent(initialValue?.id);
           case "section":
-            deleteSection(activeComponent?.id);
+            console.log("Deleting Section", initialValue?.id);
+            deleteSection(initialValue?.id);
           default:
             break;
         }
@@ -94,7 +95,7 @@ export const useContextSave = (initialValue: ComponentInterface) => {
     if (JSON.stringify(activeComponent) !== JSON.stringify(initialValue)) {
       console.log("Component Clicked");
       if (JSON.stringify(activeComponent) !== JSON.stringify(realComponent)) {
-        setPrevComponent(activeComponent ?? null);
+        // setPrevComponent(activeComponent ?? null);
       }
       setComponent(initialValue);
       setUpdatedComponent(initialValue);

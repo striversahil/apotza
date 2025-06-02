@@ -61,8 +61,8 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
             // Todo : Make Translate multiDirectional
           }}
           size={{
-            width: value.configuration.layout.width * Layout,
-            height: value.configuration.layout.height,
+            width: value?.configuration.layout?.width * Layout,
+            height: value?.configuration.layout?.height,
           }}
           onResizeStop={(_, direction, ref, d) => {
             mutate({
@@ -80,8 +80,8 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
             });
           }}
           defaultSize={{
-            width: value.layout.width * Layout,
-            height: value.layout.height,
+            width: value?.configuration.layout?.width * Layout,
+            height: value?.configuration.layout?.height,
           }}
           snap={{ x: snap, y: snap }}
           snapGap={Layout}

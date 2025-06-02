@@ -32,12 +32,8 @@ class SectionController {
       if (!projectId) return ErrorResponse(res, "Project does not exist", 404);
       const { page_id, component_id } = req.body;
 
-      if (!page_id || !component_id)
-        return ErrorResponse(
-          res,
-          "Provide all fields" + page_id + component_id,
-          400
-        );
+      if (!page_id && !component_id)
+        return ErrorResponse(res, "Provide Required fields", 400);
       const section = await SectionService.create(
         projectId,
         page_id,

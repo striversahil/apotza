@@ -32,7 +32,8 @@ const SectionAction = {
     const { mutate } = useMutationData(
       ["SectionAction.delete"],
       async (payload: any) => {
-        const response = await api.delete(`${source}/${payload.id}`);
+        console.log("payload", payload);
+        const response = await api.delete(`${source}/${payload}`);
         return response.data;
       },
       [["GetProject.getPage"]]

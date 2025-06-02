@@ -21,7 +21,7 @@ const page = (props: Props) => {
     path.split("/")[3] || ""
   );
   const ref = useRef(null);
-  const { setState } = useContextSave(Page);
+  // const { setState } = useContextSave(Page);
   // Calling the custom hook to save Width
   useResizePage(ref, isLoading);
   // useWidthDrag(ref);
@@ -42,7 +42,7 @@ const page = (props: Props) => {
     <div
       className="relative pb-[1500px] h-full w-full"
       ref={ref}
-      onClick={(e) => setState(e)}
+      // onClick={(e) => setState(e)}
     >
       {Page?.sections?.map((item: any) => (
         <div key={item.id} className="relative">

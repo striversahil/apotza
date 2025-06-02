@@ -56,9 +56,11 @@ const Section = ({ value }: Props) => {
       // onMouseMove={onMouseHover}
       style={{
         minHeight: "300px",
-        height: currentValue.component_id ? "auto" : "500px", // Later gonna be dynamic
-        borderColor: currentValue.appearance.borderColor,
-        visibility: currentValue.layout.visible ? "visible" : "hidden",
+        height: "500px", // Later gonna be dynamic
+        // borderColor: currentValue.configuration.appearance.borderColor,
+        visibility: currentValue.configuration.layout.visible
+          ? "visible"
+          : "hidden",
       }}
       onClick={(e) => setState(e)}
     >

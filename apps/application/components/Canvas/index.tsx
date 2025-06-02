@@ -13,11 +13,13 @@ interface MatchComponentProps {
 
 export const MatchComponent: MatchComponentProps = {
   text: {
-    Component: ({ ...props }) => <Text.Component {...props} />,
+    Component: ({ ...props }) => <Text.Component {...props.configuration} />,
     Default: Text.Default,
   },
   checkbox: {
-    Component: ({ ...props }) => <Checkbox.Component {...props} />,
+    Component: ({ ...props }) => (
+      <Checkbox.Component {...props.configuration} />
+    ),
     Default: Checkbox.Default,
   },
 };
