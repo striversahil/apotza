@@ -93,7 +93,7 @@ class ComponentService {
     }
   }
 
-  static async updateComponent(
+  static async update(
     id: string,
     clause = {}
   ): Promise<ComponentInterface | null> {

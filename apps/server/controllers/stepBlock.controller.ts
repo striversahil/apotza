@@ -89,11 +89,12 @@ class StepBlockController {
       if (!id || !slug)
         return ErrorResponse(res, "Id and Updated object is required", 400);
 
-      await updateContext(project_id, id, JSON.stringify(slug.configuration));
-
       const stepBlock = await StepBlockService.update(id, slug);
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be updated", 400);
+      
+      await updateContext(project_id, id, JSON.stringify(slug.configuration));
+
 
       // await redis.del(`codeBlock:${stepBlock.codeblock}`);
       await redis.del(`codeBlock:${stepBlock.codeblock}`); // needed to done for initial capture of codeblock by client

@@ -3,6 +3,8 @@ import { ErrorResponse, SuccessResponse } from "../utils/ApiResponse";
 import ComponentService from "../service/component.service";
 import ProjectService from "../service/project.service";
 import { redis } from "..";
+import GlobalContextManager from "../utils/addGlobalContext";
+import _ from "lodash";
 
 class ComponentController {
   static async getComponent(req: Request, res: Response) {
@@ -84,7 +86,7 @@ class ComponentController {
       if (!component_?.coordinates)
         return ErrorResponse(res, "Component does not exist", 404);
       const coordinates = component_.coordinates as { x: number; y: number };
-      const component = await ComponentService.updateComponent(id, {
+      const component = await ComponentService.update(id, {
         coordinates: {
           x: coordinates.x + x,
           y: coordinates.y + y,
@@ -104,11 +106,14 @@ class ComponentController {
   static async updateComponent(req: Request, res: Response) {
     try {
       const { id } = req.params;
+      const project_id = req.cookies.project_id;
       const { ...data } = req.body;
       if (!id || !data) return ErrorResponse(res, "Provide all fields", 400);
-      const component = await ComponentService.updateComponent(id, data);
+      const component = await ComponentService.update(id, data);
       if (!component)
         return ErrorResponse(res, "Component could not be updated", 400);
+
+      await updateContext(project_id, id, JSON.stringify(data.configuration));
 
       // await redis.del(`page:${component.page}`);
       await redis.del(`section:${component.section}`);
@@ -153,6 +158,78 @@ class ComponentController {
     } catch (error) {
       ErrorResponse(res, "", null);
     }
+  }
+}
+
+/**
+ *
+ * @param project_id Project ID that we are working with
+ * @param id  StepBlock ID that we are updating
+ * @param configuration Payload of base text configuration
+ * @returns
+ */
+async function updateContext(
+  project_id: string,
+  id: string,
+  configuration: string
+) {
+  try {
+    const component: any = await ComponentService.getById(id);
+    const prevMatches: any = component?.referencedContext || {};
+    if (!component) return;
+
+    const project: any = await ProjectService.getById(project_id);
+    const prevReference: any = project?.globalContext || {};
+    if (!project) return;
+    // Extract placeholders from the configuration string
+
+    // if (!matchesWithoutBraces || matchesWithoutBraces.length === 0) {
+    //   await StepBlockService.update(id, {
+    //     referencedContext: [],
+    //   });
+    //   return;
+    // }
+
+    const { extractedMatches, arrayForm } =
+      GlobalContextManager.extractRegex(configuration);
+
+    if (_.isEqual(prevMatches, extractedMatches)) {
+      console.log("No changes in global context, skipping Context update.");
+      return true;
+    }
+
+    // Trying to update so to reduce the number of calls to the database
+    const { newReference } = GlobalContextManager.setContext(
+      prevReference,
+      arrayForm,
+      id
+    );
+
+    const cleanedUpReference = GlobalContextManager.cleanedUpContext(
+      prevMatches,
+      arrayForm,
+      id,
+      newReference
+    );
+
+    // console.log("Mapped Matches Object:", mappedMatchesObject);
+
+    const compoUpdated = await ComponentService.update(id, {
+      referencedContext: extractedMatches,
+    });
+
+    const updatedProject = await ProjectService.update(project_id, {
+      globalContext: cleanedUpReference,
+    });
+
+    console.log("Updated Component:", compoUpdated?.referencedContext);
+
+    console.log("Updated Project:", updatedProject?.globalContext);
+
+    return true;
+  } catch (error) {
+    console.error("Error in updateContext:", error);
+    return false;
   }
 }
 
