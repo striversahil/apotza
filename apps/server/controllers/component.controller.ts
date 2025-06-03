@@ -164,7 +164,7 @@ class ComponentController {
 /**
  *
  * @param project_id Project ID that we are working with
- * @param id  StepBlock ID that we are updating
+ * @param id  Component ID that we are updating
  * @param configuration Payload of base text configuration
  * @returns
  */

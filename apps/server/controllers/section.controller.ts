@@ -62,7 +62,6 @@ class SectionController {
       if (!section)
         return ErrorResponse(res, "Section could not be updated", 400);
 
-
       await updateContext(project_id, id, JSON.stringify(data.configuration));
 
       await redis.del(`page:${section.page}`);
@@ -95,11 +94,10 @@ class SectionController {
   }
 }
 
-
 /**
  *
  * @param project_id Project ID that we are working with
- * @param id  StepBlock ID that we are updating
+ * @param id  Section ID that we are updating
  * @param configuration Payload of base text configuration
  * @returns
  */

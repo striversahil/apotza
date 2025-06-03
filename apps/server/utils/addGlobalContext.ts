@@ -19,7 +19,7 @@ class GlobalContextManager {
     );
 
     const extractedMatches: Record<string, any> = {};
-    const rawArrayForm: string[] = [];
+    const arrayForm: string[] = [];
 
     // Iterate over each category and extract matches that start with the category
     // and a dot (e.g., "comp.", "sect.", "page.", "api.", "step.")
@@ -29,13 +29,15 @@ class GlobalContextManager {
         // Check if the match starts with the current category with a dot
         if (match.startsWith(`${category}.`)) {
           const removedCategory = match.slice(category.length + 1);
-          extractedMatches[category].push(removedCategory);
-          rawArrayForm.push(removedCategory);
+          if (!extractedMatches[category].includes(removedCategory)) {
+            extractedMatches[category].push(removedCategory);
+            arrayForm.push(removedCategory);
+          }
         }
       });
     });
 
-    const arrayForm: string[] = Array.from(new Set(rawArrayForm));
+    // const arrayForm: string[] = Array.from(new Set(rawArrayForm));
 
     return {
       extractedMatches,

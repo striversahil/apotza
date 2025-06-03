@@ -3,6 +3,9 @@ import { ErrorResponse, SuccessResponse } from "../utils/ApiResponse";
 import CodeBlockService from "../service/codeblock.service";
 import { redis } from "..";
 import StepBlockService from "../service/stepblock.service";
+import ProjectService from "../service/project.service";
+import GlobalContextManager from "../utils/addGlobalContext";
+import _ from "lodash";
 
 class CodeBlockController {
   static async getCodeBlock(req: Request, res: Response) {
@@ -105,8 +108,8 @@ class CodeBlockController {
   static async updateCodeBlock(req: Request, res: Response) {
     try {
       const { id } = req.params;
+      const project_id = req.cookies.project_id;
       const { ...data } = req.body;
-      console.log("id, data", id, data);
       if (!id || !data) return ErrorResponse(res, "Provide all fields", 400);
 
       // TODO: Update the context of the codeBlock if u figure out it's configuration body
@@ -114,6 +117,8 @@ class CodeBlockController {
       const codeBlock = await CodeBlockService.update(id, data);
       if (!codeBlock)
         return ErrorResponse(res, "CodeBlock could not be updated", 400);
+
+      await updateContext(project_id, id, JSON.stringify(data.configuration));
 
       await redis.del(`project:${codeBlock.project}`);
       SuccessResponse(res, "CodeBlock updated successfully", null, codeBlock);
@@ -212,4 +217,75 @@ class CodeBlockController {
   }
 }
 
+/**
+ *
+ * @param project_id Project ID that we are working with
+ * @param id  CodeBlock ID that we are updating
+ * @param configuration Payload of base text configuration
+ * @returns
+ */
+async function updateContext(
+  project_id: string,
+  id: string,
+  configuration: string
+) {
+  try {
+    const codeblock: any = await CodeBlockService.getById(id);
+    const prevMatches: any = codeblock?.referencedContext || {};
+    if (!codeblock) return;
+
+    const project: any = await ProjectService.getById(project_id);
+    const prevReference: any = project?.globalContext || {};
+    if (!project) return;
+    // Extract placeholders from the configuration string
+
+    // if (!matchesWithoutBraces || matchesWithoutBraces.length === 0) {
+    //   await StepBlockService.update(id, {
+    //     referencedContext: [],
+    //   });
+    //   return;
+    // }
+
+    const { extractedMatches, arrayForm } =
+      GlobalContextManager.extractRegex(configuration);
+
+    if (_.isEqual(prevMatches, extractedMatches)) {
+      console.log("No changes in global context, skipping Context update.");
+      return true;
+    }
+
+    // Trying to update so to reduce the number of calls to the database
+    const { newReference } = GlobalContextManager.setContext(
+      prevReference,
+      arrayForm,
+      id
+    );
+
+    const cleanedUpReference = GlobalContextManager.cleanedUpContext(
+      prevMatches,
+      arrayForm,
+      id,
+      newReference
+    );
+
+    // console.log("Mapped Matches Object:", mappedMatchesObject);
+
+    const codeBlock = await CodeBlockService.update(id, {
+      referencedContext: extractedMatches,
+    });
+
+    const updatedProject = await ProjectService.update(project_id, {
+      globalContext: cleanedUpReference,
+    });
+
+    console.log("Updated CodeBlock:", codeBlock?.referencedContext);
+
+    console.log("Updated Project:", updatedProject?.globalContext);
+
+    return true;
+  } catch (error) {
+    console.error("Error in updateContext:", error);
+    return false;
+  }
+}
 export default CodeBlockController;
