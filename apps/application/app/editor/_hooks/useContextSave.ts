@@ -71,10 +71,10 @@ export const useContextSave = (initialValue: ComponentInterface) => {
       if (initialValue?.id === activeComponent?.id) {
         switch (initialValue?.type) {
           case "component":
-            console.log("Deleting Component", initialValue?.id);
+            // console.log("Deleting Component", initialValue?.id);
             deleteComponent(initialValue?.id);
           case "section":
-            console.log("Deleting Section", initialValue?.id);
+            // console.log("Deleting Section", initialValue?.id);
             deleteSection(initialValue?.id);
           default:
             break;

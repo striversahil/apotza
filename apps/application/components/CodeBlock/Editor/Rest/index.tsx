@@ -30,15 +30,30 @@ const RestConfig = (props: Props) => {
       <div className="">
         <RestApiTitle>Headers</RestApiTitle>
         <div className="w-full h-full flex flex-col gap-2">
-          {stepConfig.configuration.headers.map((header: any, index: number) => (
-            <div className="relative flex gap-2" key={index}>
-              <RestHeader stepConfig={stepConfig} setStepBlock={setStepBlock} header={header} index={index} />
-            </div>
-          ))}
+          {stepConfig.configuration.headers.map(
+            (header: any, index: number) => (
+              <div className="relative flex gap-2" key={index}>
+                <RestHeader
+                  stepConfig={stepConfig}
+                  setStepBlock={setStepBlock}
+                  header={header}
+                  index={index}
+                />
+              </div>
+            )
+          )}
         </div>
         <button
           onClick={() => {
-            setStepBlock({ headers: [...stepConfig.configuration.headers, {}] });
+            setStepBlock({
+              headers: [
+                ...stepConfig.configuration.headers,
+                {
+                  key: { value: "", config: "" },
+                  val: { value: "", config: "" },
+                },
+              ],
+            });
           }}
           className="text-xs text-muted-foreground hover:text-white/80 duration-200"
         >

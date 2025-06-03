@@ -53,7 +53,9 @@ const InStepPopOver = ({ value, codeBlock_id }: Props) => {
               alt="Image"
               className=""
             />
-            <div className="text-sm flex-1 text-center  ">{value.name}</div>
+            <div className="text-sm flex-1 text-center text-nowrap overflow-hidden">
+              {value.name}
+            </div>
           </div>
         </div>
         <Popover open={open2} onOpenChange={setOpen2}>

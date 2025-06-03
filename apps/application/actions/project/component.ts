@@ -1,6 +1,4 @@
 import { useMutationData } from "@/hooks/useMutation";
-import { useQueryData } from "@/hooks/useQueryData";
-import { toast } from "sonner";
 import api from "..";
 const source = "/component";
 
@@ -63,7 +61,7 @@ const ComponentAction = {
     const { mutate } = useMutationData(
       ["ComponentAction.delete"],
       async (payload: any) => {
-        const response = await api.delete(`${source}/${payload.id}`);
+        const response = await api.delete(`${source}/${payload}`);
         return response.data;
       },
       [[`GetProject.getOneSection-${section_id}`]],
@@ -102,10 +100,7 @@ const ComponentAction = {
                   return {
                     ...item,
                     configuration: {
-                      content: variables.content ?? item.content,
-                      appearance: variables.appearance ?? item.appearance,
-                      layout: variables.layout ?? item.layout,
-                      interaction: variables.interaction ?? item.interaction,
+                      ...variables.configuration,
                     },
                   };
                 }

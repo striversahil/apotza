@@ -33,7 +33,7 @@ const SectionAction = {
       ["SectionAction.delete"],
       async (payload: any) => {
         console.log("payload", payload);
-        const response = await api.delete(`${source}/${payload}`);
+        const response = await api.delete(`${source}/${payload.id}`);
         return response.data;
       },
       [["GetProject.getPage"]]

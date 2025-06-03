@@ -44,6 +44,7 @@ class StepBlockService {
     try {
       const payload = stepBlockDefault(type);
       if (!payload) return null;
+      // console.log("payload",);
 
       const prevStepBlock = await this.getOneByConstaint(
         and(eq(StepBlock.project, project_id), eq(StepBlock.type, type)),
@@ -73,17 +74,17 @@ class StepBlockService {
         })
         .returning();
 
-      if (!newStepBlock) return null;
+      // if (!newStepBlock) return null;
 
-      // Updating the codeBlock context with the new stepBlock
-      const codeBlock: any = await CodeBlockService.getById(codeBlock_id);
-      if (!codeBlock) return null;
-      await CodeBlockService.update(codeBlock_id, {
-        stepblockContext: {
-          ...codeBlock?.stepblockContext,
-          [newStepBlock.id]: {},
-        },
-      });
+      // // Updating the codeBlock context with the new stepBlock
+      // const codeBlock: any = await CodeBlockService.getById(codeBlock_id);
+      // if (!codeBlock) return null;
+      // await CodeBlockService.update(codeBlock_id, {
+      //   stepblockContext: {
+      //     ...codeBlock?.stepblockContext,
+      //     [newStepBlock.id]: {},
+      //   },
+      // });
 
       return newStepBlock ? newStepBlock : null;
     } catch (error) {

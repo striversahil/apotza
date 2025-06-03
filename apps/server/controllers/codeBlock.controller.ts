@@ -106,6 +106,7 @@ class CodeBlockController {
     try {
       const { id } = req.params;
       const { ...data } = req.body;
+      console.log("id, data", id, data);
       if (!id || !data) return ErrorResponse(res, "Provide all fields", 400);
 
       // TODO: Update the context of the codeBlock if u figure out it's configuration body

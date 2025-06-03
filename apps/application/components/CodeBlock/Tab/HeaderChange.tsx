@@ -40,10 +40,10 @@ const HeaderChange = (props: Props) => {
       <div className="flex bg-[#344a5e] shadow-sm shadow-white/50 cursor-pointer w-full  rounded-3xl ">
         <div
           onClick={() => setMount(true)}
-          className="flex flex-1 text-md  text-xl text-center font-bold"
+          className="flex flex-1 text-md   lg:text-xl text-center font-bold"
         >
           {!mount && (
-            <div className="flex-1 py-2">
+            <div className="flex-1 py-1 xl:py-2 text-nowrap overflow-hidden">
               <div className="">{value}</div>
             </div>
           )}

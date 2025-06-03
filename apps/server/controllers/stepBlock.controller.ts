@@ -35,6 +35,7 @@ class StepBlockController {
   static async createStep(req: Request, res: Response) {
     try {
       const projectId = req.cookies.project_id;
+
       const { id, language } = req.body;
       if (!id || !language)
         return ErrorResponse(res, "StepBlock does not exist", 400);
