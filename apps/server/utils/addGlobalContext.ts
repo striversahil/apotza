@@ -121,6 +121,8 @@ class GlobalContextManager {
       })
     );
 
+    console.log("Mapped Values:", mappedValues);
+
     // console.log("Updated Component:", valuedMatches);
 
     // Function to replace placeholders in the configuration string with actual values
@@ -129,11 +131,27 @@ class GlobalContextManager {
         /\{\{(.*?)\}\}/g,
         (match: string, p1: string) => {
           const name = p1.split(".")[0] || "";
+          console.log("Name:", name);
 
           if (mappedValues && valuedMatches.length > 0) {
-            const currentValue = mappedValues.find(
+            const currentModel = mappedValues.find(
               (item: any) => item?.name === name
             );
+
+            console.log("Current Model:", currentModel);
+
+            if (!currentModel) {
+              console.warn(`No model found for name: ${name}`);
+              return match; // Return the original match if no model found
+            }
+            const currentValue =
+              "response" in currentModel && currentModel.response
+                ? currentModel.response
+                : ("error" in currentModel && currentModel.error) ||
+                  ("configuration" in currentModel &&
+                    currentModel.configuration) ||
+                  {};
+
             return currentValue ? JSON.stringify(currentValue) : match;
           }
           return match; // Return the original match if no value found
@@ -162,8 +180,6 @@ class GlobalContextManager {
           newClause[key] = value;
         }
       }
-
-      console.log("New Clause:", newClause);
       return newClause;
     }
 
@@ -188,8 +204,6 @@ export default GlobalContextManager;
 // }
 
 const currentValue = async (name: string, projectId: string): Promise<any> => {
-  let currentValue = {};
-
   // A Priority List of Services to check for the name
   // If the name is found in any of these services, we will return the first match
   const services = [
@@ -202,19 +216,9 @@ const currentValue = async (name: string, projectId: string): Promise<any> => {
   for (const service of services) {
     const item = await service.getByName(name, projectId);
     if (item) {
-      currentValue =
-        "response" in item && item.response
-          ? item.response
-          : ("error" in item && item.error) ||
-            ("configuration" in item && item.configuration) ||
-            {};
-      break;
+      return item;
     }
   }
-
-  return {
-    currentValue,
-  };
 };
 
 const typeRegexMap = (type: string, name: string) => {
