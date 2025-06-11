@@ -43,7 +43,7 @@ export const TextInput: React.FC<Props> = ({
       <Text_Base
         value={initialvalue?.config}
         onChange={(val) =>
-          setValue((prev: any) => ({ value: val, config: val }))
+          setValue((prev: any) => ({  config: val , value: val }))
         }
       />
 

@@ -192,6 +192,12 @@ async function updateContext(
 
     const { extractedMatches, arrayForm } =
       GlobalContextManager.extractRegex(configuration);
+    
+     GlobalContextManager.setConfigValue(
+          project_id,
+          extractedMatches,
+          configuration,
+        )
 
     if (_.isEqual(prevMatches, extractedMatches)) {
       console.log("No changes in global context, skipping Context update.");

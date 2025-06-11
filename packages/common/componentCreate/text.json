@@ -1,15 +1,15 @@
 {
   "content": {
     "text": {
-      "value": "Hello World",
-      "config": "Hello World"
+      "config": "Hello World",
+      "value": "Hello World"
     },
     "dataType": "plainText"
   },
   "appearance": {
     "style": {
-      "value": "",
-      "config": ""
+      "config": "",
+      "value": ""
     },
     "textColor": "white",
     "icon": "👋",
@@ -17,20 +17,20 @@
     "verticalAlign": "center",
     "loadingAnimation": false,
     "fontSize": {
-      "value": "16",
-      "config": "16"
+      "config": "16",
+      "value": "16"
     },
     "fontWeight": "bold",
     "textAlign": "left",
     "backgroundColor": "green",
     "borderColor": "red",
     "borderWidth": {
-      "value": "3",
-      "config": "3"
+      "config": "3",
+      "value": "3"
     },
     "borderRadius": {
-      "value": "25",
-      "config": "25"
+      "config": "25",
+      "value": "25"
     }
   },
   "layout": {
@@ -38,8 +38,8 @@
     "height": 50,
     "layout": "grid",
     "padding": {
-      "value": "10",
-      "config": "10"
+      "config": "10",
+      "value": "10"
     },
     "scrollOverflow": "auto",
     "visible": true

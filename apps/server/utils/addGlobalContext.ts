@@ -110,7 +110,6 @@ class GlobalContextManager {
 
     let cleanedUpReference = { ...newReference };
 
-
     Object.keys(newReference).forEach((key: string) => {
       if (processedPrev.includes(key) && !uniqueMatches.includes(key)) {
         const value = newReference[key];
@@ -129,68 +128,113 @@ class GlobalContextManager {
     return cleanedUpReference;
   }
 
-
   static setConfigValue(
-    project_id: string,    
+    project_id: string,
     compMatches: Record<string, any>,
-    configuration: string
+    configuration: Record<string, any>
   ) {
     /**
      * This function sets the configuration value for a component based on the provided matches.
      * It iterates through the matches and updates the configuration value for each component.
      *
      * @param {object} compMatches - The matches object containing component configurations.
-     * @param {string} configuration - The configuration string to be updated.
+     * @param {object} configuration - The configuration string to be updated.
      * @returns {object} - The updated configuration object with the new values.
      */
-    const configValue: Record<string, any> = {};
 
-    
-    
-    
-    Object.keys(compMatches).forEach((key: string) => {
-      if (compMatches[key].length > 0) {
-        configValue[key] = compMatches[key];
+    const valuedMatches = { ...compMatches };
+
+    // Iterating through each type in valuedMatches
+    for (const type in valuedMatches) {
+      if (valuedMatches.hasOwnProperty(type)) {
+        if (valuedMatches[type].length === 0) {
+          // If there are no matches for this type, skip to the next iteration
+          continue;
+        }
+        valuedMatches[type] = valuedMatches[type].map((name: string) => {
+          return currentValue(type, name, project_id);
+        });
       }
-    });
-    
-    return configValue;
+    }
+
+    function setterValue(config: string) {
+      return config.replace(/\{\{(.*?)\}\}/g, (match: string, p1: string) => {
+        const [type, name] = p1.split(".");
+        if (type && valuedMatches[type] && valuedMatches[type].length > 0) {
+          const currentValue = valuedMatches[type].find(
+            (item: any) => item.name === name
+          );
+          return currentValue ? currentValue.id : match;
+        }
+        return match; // Return the original match if no value found
+      });
+    }
+
+    const newClause: any = {};
+
+    for (const key in configuration) {
+      if (configuration.hasOwnProperty(key)) {
+        const value = configuration[key];
+
+        if (typeof value === "object" && value !== null) {
+          newClause[key] = addGlobalContext({ clause: value });
+        } else {
+          newClause[key] = value;
+        }
+
+        if (key === "config") {
+          newClause["value"] = setterValue(value);
+        }
+      }
+    }
+
+    for (const type in valuedMatches) {
+      if (valuedMatches.hasOwnProperty(type)) {
+        if (valuedMatches[type].length >= 0) {
+        }
+
+        const configValue: Record<string, any> = {};
+
+        Object.keys(compMatches).forEach((key: string) => {
+          if (compMatches[key].length > 0) {
+            configValue[key] = compMatches[key];
+          }
+        });
+
+        return configValue;
+      }
+    }
   }
-  
-  
-  
-  
 }
 
 export default GlobalContextManager;
 
-
 // Updated Component: { api: [], comp: [], page: [], sect: [ 'somet' ], step: [] }
 // Updated Project: {
-  //   confg: [ 'b5ec617d-396a-4ade-9e3d-a99bc63ead74' ],
-  //   somet: [
-    //     'fe6a256d-6397-41fc-af85-28215d16236c',
-    //     '7d3336a4-d4de-48a7-a180-007148d4e13f'
-    //   ],
-    //   something: [ '59e4e601-fd41-42a1-8d64-bb5713b6d834' ]
+//   confg: [ 'b5ec617d-396a-4ade-9e3d-a99bc63ead74' ],
+//   somet: [
+//     'fe6a256d-6397-41fc-af85-28215d16236c',
+//     '7d3336a4-d4de-48a7-a180-007148d4e13f'
+//   ],
+//   something: [ '59e4e601-fd41-42a1-8d64-bb5713b6d834' ]
 // }
 
-const currenValue = async (type: string, id: string) => {
+const currentValue = async (type: string, name: string, projectId: string) => {
   switch (type) {
     case "comp":
-      return await ComponentService.getById(id);
+      return await ComponentService.getByName(name, projectId);
     case "sect":
-      return await SectionService.getById(id);
+      return await SectionService.getByName(name, projectId);
     case "page":
-      return await PageService.getById(id);
+      return await PageService.getByName(name, projectId);
     case "api":
-      return await CodeBlockService.getById(id);
+      return await CodeBlockService.getByName(name, projectId);
     case "step":
-      return await StepBlockService.getById(id);
+      return await StepBlockService.getByName(name, projectId);
     default:
       return null;
   }
-}
+};
 
 const typeRegexMap = (type: string, name: string) => {
   switch (type) {
@@ -207,42 +251,20 @@ const typeRegexMap = (type: string, name: string) => {
     default:
       return "";
   }
-}
+};
+
 export const addGlobalContext = ({ clause = {} }: any): any => {
   /**
    * This function takes a clause object and recursively adds a global context to it.
    * It checks if the value of each key in the clause is an object and if so, it calls
-  *
-  *
-  * addGlobalContext recursively on that object.
-  *
-  *
-  * @param {object} clause - The clause object to be processed.
-  *
-  * @returns {object} - The new clause object with the global context added.
-  */
- 
-  const newClause: any = {};
-
-  for (const key in clause) {
-    if (clause.hasOwnProperty(key)) {
-      const value = clause[key];
-
-      if (typeof value === "object" && value !== null) {
-        newClause[key] = addGlobalContext({ clause: value });
-      } else {
-        newClause[key] = value;
-      }
-
-      if (key === "config") {
-        // Update from global context
-        newClause["value"] = "globalContext";
-      }
-    }
-  }
-  return newClause;
+   *
+   *
+   * addGlobalContext recursively on that object.
+   *
+   *
+   * @param {object} clause - The clause object to be processed.
+   *
+   * @returns {object} - The new clause object with the global context added.
+   */
+  // return newClause;
 };
-
-
-
-// export const nameIdMapping

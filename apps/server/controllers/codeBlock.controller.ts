@@ -251,10 +251,7 @@ async function updateContext(
   
     
     
-    const { updatedConfiguration } = GlobalContextManager.setConfigValue(
-      extractedMatches,
-      configuration,
-    )
+    
 
     if (_.isEqual(prevMatches, extractedMatches)) {
       console.log("No changes in global context, skipping Context update.");
@@ -278,7 +275,7 @@ async function updateContext(
     // console.log("Mapped Matches Object:", mappedMatchesObject);
 
     const codeBlock = await CodeBlockService.update(id, {
-      configuration: updatedConfiguration,
+      // configuration: updatedConfiguration,
       referencedContext: extractedMatches,
     });
 
