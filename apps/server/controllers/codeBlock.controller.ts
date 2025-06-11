@@ -114,12 +114,12 @@ class CodeBlockController {
 
       // TODO: Update the context of the codeBlock if u figure out it's configuration body
       // await updateContext(project_id, id, JSON.stringify(slug.configuration));
+      
+      await updateContext(project_id, id, JSON.stringify(data));
+      
       const codeBlock = await CodeBlockService.update(id, data);
       if (!codeBlock)
         return ErrorResponse(res, "CodeBlock could not be updated", 400);
-
-      await updateContext(project_id, id, JSON.stringify(data.configuration));
-
       await redis.del(`project:${codeBlock.project}`);
       SuccessResponse(res, "CodeBlock updated successfully", null, codeBlock);
     } catch (error) {
@@ -248,6 +248,13 @@ async function updateContext(
 
     const { extractedMatches, arrayForm } =
       GlobalContextManager.extractRegex(configuration);
+  
+    
+    
+    const { updatedConfiguration } = GlobalContextManager.setConfigValue(
+      extractedMatches,
+      configuration,
+    )
 
     if (_.isEqual(prevMatches, extractedMatches)) {
       console.log("No changes in global context, skipping Context update.");
@@ -271,6 +278,7 @@ async function updateContext(
     // console.log("Mapped Matches Object:", mappedMatchesObject);
 
     const codeBlock = await CodeBlockService.update(id, {
+      configuration: updatedConfiguration,
       referencedContext: extractedMatches,
     });
 

@@ -55,6 +55,23 @@ export class PageService {
     }
   }
 
+  static async getById(id: string): Promise<PageInterface | null> {
+    try {
+      const page = await db.query.Page.findFirst({
+        with: {
+          sections: {
+            orderBy: [Section.createdAt],
+          },
+        },
+        where: eq(Page.id, id),
+      });
+      
+      return page ? page : null;
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
   static async getOneByConstaint(
     where: any,
     orderBy?: any

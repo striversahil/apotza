@@ -1,4 +1,9 @@
 import _ from "lodash";
+import ComponentService from "../service/component.service";
+import SectionService from "../service/section.service";
+import { PageService } from "../service/page.service";
+import CodeBlockService from "../service/codeblock.service";
+import StepBlockService from "../service/stepblock.service";
 
 class GlobalContextManager {
   static compCategory = ["comp", "sect", "page", "api", "step"];
@@ -6,12 +11,11 @@ class GlobalContextManager {
   /**
    * This function returns a regular expression that matches the global context.
    * The global context is defined as a string that starts with "globalContext."
-   *@param {string} text - The raw text input that may contain global context references.
+   *@param {string} string - The raw text input that may contain global context references.
    * @returns {RegExp} - The regular expression for matching global context.
    */
   static extractRegex = (text: string) => {
     const regex = /\{\{(.*?)\}\}/g;
-
     const matches = text.match(regex);
 
     const matchesWithoutBraces = matches?.map((match: string) =>
@@ -106,10 +110,6 @@ class GlobalContextManager {
 
     let cleanedUpReference = { ...newReference };
 
-    // console.log("Previous Reference:", prevReference);
-    // console.log("Unique Matches:", uniqueMatches);
-    // console.log("Set Reference:", setReference);
-    // console.log("ID to be cleaned up:", id);
 
     Object.keys(newReference).forEach((key: string) => {
       if (processedPrev.includes(key) && !uniqueMatches.includes(key)) {
@@ -128,24 +128,99 @@ class GlobalContextManager {
 
     return cleanedUpReference;
   }
+
+
+  static setConfigValue(
+    compMatches: Record<string, any>,
+    configuration: string
+  ) {
+    /**
+     * This function sets the configuration value for a component based on the provided matches.
+     * It iterates through the matches and updates the configuration value for each component.
+     *
+     * @param {object} compMatches - The matches object containing component configurations.
+     * @param {string} configuration - The configuration string to be updated.
+     * @returns {object} - The updated configuration object with the new values.
+     */
+    const configValue: Record<string, any> = {};
+
+    
+    
+    
+    Object.keys(compMatches).forEach((key: string) => {
+      if (compMatches[key].length > 0) {
+        configValue[key] = compMatches[key];
+      }
+    });
+    
+    return configValue;
+  }
+  
+  
+  
+  
 }
 
 export default GlobalContextManager;
 
+
+// Updated Component: { api: [], comp: [], page: [], sect: [ 'somet' ], step: [] }
+// Updated Project: {
+  //   confg: [ 'b5ec617d-396a-4ade-9e3d-a99bc63ead74' ],
+  //   somet: [
+    //     'fe6a256d-6397-41fc-af85-28215d16236c',
+    //     '7d3336a4-d4de-48a7-a180-007148d4e13f'
+    //   ],
+    //   something: [ '59e4e601-fd41-42a1-8d64-bb5713b6d834' ]
+// }
+
+const currenValue = async (type: string, id: string) => {
+  switch (type) {
+    case "comp":
+      return await ComponentService.getById(id);
+    case "sect":
+      return await SectionService.getById(id);
+    case "page":
+      return await PageService.getById(id);
+    case "api":
+      return await CodeBlockService.getById(id);
+    case "step":
+      return await StepBlockService.getById(id);
+    default:
+      return null;
+  }
+}
+
+const typeRegexMap = (type: string, name: string) => {
+  switch (type) {
+    case "comp":
+      return `{{comp.${name}}}`;
+    case "sect":
+      return `{{sect.${name}}}`;
+    case "page":
+      return `{{page.${name}}}`;
+    case "api":
+      return `{{api.${name}}}`;
+    case "step":
+      return `{{step.${name}}}`;
+    default:
+      return "";
+  }
+}
 export const addGlobalContext = ({ clause = {} }: any): any => {
   /**
    * This function takes a clause object and recursively adds a global context to it.
    * It checks if the value of each key in the clause is an object and if so, it calls
-   *
-   *
-   * addGlobalContext recursively on that object.
-   *
-   *
-   * @param {object} clause - The clause object to be processed.
-   *
-   * @returns {object} - The new clause object with the global context added.
-   */
-
+  *
+  *
+  * addGlobalContext recursively on that object.
+  *
+  *
+  * @param {object} clause - The clause object to be processed.
+  *
+  * @returns {object} - The new clause object with the global context added.
+  */
+ 
   const newClause: any = {};
 
   for (const key in clause) {
@@ -166,5 +241,7 @@ export const addGlobalContext = ({ clause = {} }: any): any => {
   }
   return newClause;
 };
+
+
 
 // export const nameIdMapping
