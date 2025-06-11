@@ -7,6 +7,7 @@ import CodeBlockController from "./codeBlock.controller";
 import GlobalContextManager from "../utils/addGlobalContext";
 import ProjectService from "../service/project.service";
 import _ from "lodash";
+import { StepBlockInterface } from "../schema";
 
 class StepBlockController {
   static async getStep(req: Request, res: Response) {
@@ -89,11 +90,9 @@ class StepBlockController {
       if (!id || !slug)
         return ErrorResponse(res, "Id and Updated object is required", 400);
 
-      const stepBlock = await StepBlockService.update(id, slug);
+      const stepBlock = await updateContext(project_id, id, slug.configuration);
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be updated", 400);
-
-      await updateContext(project_id, id, slug.configuration);
 
       // await redis.del(`codeBlock:${stepBlock.codeblock}`);
       await redis.del(`codeBlock:${stepBlock.codeblock}`); // needed to done for initial capture of codeblock by client
@@ -138,15 +137,15 @@ async function updateContext(
   project_id: string,
   id: string,
   configuration: object
-) {
+): Promise<StepBlockInterface | null> {
   try {
     const stepblock: any = await StepBlockService.getById(id);
     const prevMatches: any = stepblock?.referencedContext || {};
-    if (!stepblock) return;
+    if (!stepblock) return null;
 
     const project: any = await ProjectService.getById(project_id);
     const prevReference: any = project?.globalContext || {};
-    if (!project) return;
+    if (!project) return null;
     // Extract placeholders from the configuration string
 
     // if (!matchesWithoutBraces || matchesWithoutBraces.length === 0) {
@@ -159,16 +158,20 @@ async function updateContext(
     const { extractedMatches, arrayForm } =
       GlobalContextManager.extractRegex(configuration);
 
-    if (_.isEqual(prevMatches, extractedMatches)) {
-      console.log("No changes in global context, skipping Context update.");
-      return true;
-    }
-
     const { updatedConfiguration } = await GlobalContextManager.setConfigValue(
       project_id,
       extractedMatches,
       configuration
     );
+
+    if (_.isEqual(prevMatches, extractedMatches)) {
+      console.log("No changes in global context, skipping Context update.");
+
+      const stepBlock = await StepBlockService.update(id, {
+        configuration: updatedConfiguration,
+      });
+      return stepBlock ? stepBlock : null;
+    }
 
     // Trying to update so to reduce the number of calls to the database
     const { newReference } = GlobalContextManager.setContext(
@@ -195,10 +198,10 @@ async function updateContext(
       globalContext: cleanedUpReference,
     });
 
-    return true;
+    return stepBlock ? stepBlock : null;
   } catch (error) {
     console.error("Error in updateContext:", error);
-    return false;
+    return null;
   }
 }
 

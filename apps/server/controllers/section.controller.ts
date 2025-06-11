@@ -5,6 +5,7 @@ import { redis } from "..";
 import ProjectService from "../service/project.service";
 import GlobalContextManager from "../utils/addGlobalContext";
 import _ from "lodash";
+import { SectionInterface } from "../schema";
 
 class SectionController {
   static async getSection(req: Request, res: Response) {
@@ -58,11 +59,10 @@ class SectionController {
       const project_id = req.cookies.project_id;
       if (!id) return ErrorResponse(res, "Section does not exist", 404);
       const { ...data } = req.body;
-      const section = await SectionService.update(id, data);
+
+      const section = await updateContext(project_id, id, data.configuration);
       if (!section)
         return ErrorResponse(res, "Section could not be updated", 400);
-
-      await updateContext(project_id, id, data.configuration);
 
       await redis.del(`page:${section.page}`);
       SuccessResponse(res, "Section updated successfully", null, section);
@@ -105,15 +105,15 @@ async function updateContext(
   project_id: string,
   id: string,
   configuration: object
-) {
+): Promise<SectionInterface | null> {
   try {
     const section: any = await SectionService.getById(id);
     const prevMatches: any = section?.referencedContext || {};
-    if (!section) return;
+    if (!section) return null;
 
     const project: any = await ProjectService.getById(project_id);
     const prevReference: any = project?.globalContext || {};
-    if (!project) return;
+    if (!project) return null;
     // Extract placeholders from the configuration string
 
     // if (!matchesWithoutBraces || matchesWithoutBraces.length === 0) {
@@ -126,16 +126,20 @@ async function updateContext(
     const { extractedMatches, arrayForm } =
       GlobalContextManager.extractRegex(configuration);
 
-    if (_.isEqual(prevMatches, extractedMatches)) {
-      console.log("No changes in global context, skipping Context update.");
-      return true;
-    }
-
     const { updatedConfiguration } = await GlobalContextManager.setConfigValue(
       project_id,
       extractedMatches,
       configuration
     );
+
+    if (_.isEqual(prevMatches, extractedMatches)) {
+      console.log("No changes in global context, skipping Context update.");
+
+      const sectionUpdated = await SectionService.update(id, {
+        configuration: updatedConfiguration,
+      });
+      return sectionUpdated ? sectionUpdated : null;
+    }
 
     // Trying to update so to reduce the number of calls to the database
     const { newReference } = GlobalContextManager.setContext(
@@ -162,10 +166,10 @@ async function updateContext(
       globalContext: cleanedUpReference,
     });
 
-    return true;
+    return sectionUpdated ? sectionUpdated : null;
   } catch (error) {
     console.error("Error in updateContext:", error);
-    return false;
+    return null;
   }
 }
 

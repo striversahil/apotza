@@ -5,6 +5,7 @@ import ProjectService from "../service/project.service";
 import { redis } from "..";
 import GlobalContextManager from "../utils/addGlobalContext";
 import _ from "lodash";
+import { ComponentInterface } from "../schema";
 
 class ComponentController {
   static async getComponent(req: Request, res: Response) {
@@ -109,11 +110,10 @@ class ComponentController {
       const project_id = req.cookies.project_id;
       const { ...data } = req.body;
       if (!id || !data) return ErrorResponse(res, "Provide all fields", 400);
-      const component = await ComponentService.update(id, data);
+
+      const component = await updateContext(project_id, id, data.configuration);
       if (!component)
         return ErrorResponse(res, "Component could not be updated", 400);
-
-      await updateContext(project_id, id, data.configuration);
 
       // await redis.del(`page:${component.page}`);
       await redis.del(`section:${component.section}`);
@@ -172,15 +172,15 @@ async function updateContext(
   project_id: string,
   id: string,
   configuration: object
-) {
+): Promise<ComponentInterface | null> {
   try {
     const component: any = await ComponentService.getById(id);
     const prevMatches: any = component?.referencedContext || {};
-    if (!component) return;
+    if (!component) return null;
 
     const project: any = await ProjectService.getById(project_id);
     const prevReference: any = project?.globalContext || {};
-    if (!project) return;
+    if (!project) return null;
     // Extract placeholders from the configuration string
 
     // if (!matchesWithoutBraces || matchesWithoutBraces.length === 0) {
@@ -193,16 +193,20 @@ async function updateContext(
     const { extractedMatches, arrayForm } =
       GlobalContextManager.extractRegex(configuration);
 
-    if (_.isEqual(prevMatches, extractedMatches)) {
-      console.log("No changes in global context, skipping Context update.");
-      return true;
-    }
-
     const { updatedConfiguration } = await GlobalContextManager.setConfigValue(
       project_id,
       extractedMatches,
       configuration
     );
+
+    if (_.isEqual(prevMatches, extractedMatches)) {
+      console.log("No changes in global context, skipping Context update.");
+
+      const compoUpdated = await ComponentService.update(id, {
+        configuration: updatedConfiguration,
+      });
+      return compoUpdated ? compoUpdated : null;
+    }
 
     // Trying to update so to reduce the number of calls to the database
     const { newReference } = GlobalContextManager.setContext(
@@ -229,10 +233,10 @@ async function updateContext(
       globalContext: cleanedUpReference,
     });
 
-    return true;
+    return compoUpdated ? compoUpdated : null;
   } catch (error) {
     console.error("Error in updateContext:", error);
-    return false;
+    return null;
   }
 }
 
