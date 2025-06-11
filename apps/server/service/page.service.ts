@@ -55,6 +55,22 @@ export class PageService {
     }
   }
 
+    static async getByName(
+      name: string,
+      projectId: string,
+    ) : Promise<PageInterface | null> {
+      try {
+        const page = await this.getOneByConstaint(and(eq(Page.name, name) , eq(Page.project , projectId)), {
+          createdAt: "desc",
+        });
+        return page ? page : null;
+        
+      } catch (error) {
+        console.log(error);
+        throw new Error(error as string);
+      }
+    }
+
   static async getById(id: string): Promise<PageInterface | null> {
     try {
       const page = await db.query.Page.findFirst({

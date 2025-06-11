@@ -43,6 +43,23 @@ class CodeBlockService {
     }
   }
 
+    static async getByName(
+      name: string,
+      projectId: string,
+    ) : Promise<CodeBlockInterface | null> {
+      try {
+        const codeBlock = await this.getOneByConstaint(and(eq(CodeBlock.name, name) , eq(CodeBlock.project , projectId)), {
+          createdAt: "desc",
+        });
+        return codeBlock ? codeBlock : null;
+        
+      } catch (error) {
+        console.log(error);
+        throw new Error(error as string);
+      }
+    }
+  
+
   static async create(
     project_id: string,
     _name: string,

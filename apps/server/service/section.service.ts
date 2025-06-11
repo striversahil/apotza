@@ -18,6 +18,22 @@ class SectionService {
     }
   }
 
+    static async getByName(
+      name: string,
+      projectId: string,
+    ) : Promise<SectionInterface | null> {
+      try {
+        const section = await this.getOneByConstaint(and(eq(Section.name, name) , eq(Section.project , projectId)), {
+          createdAt: "desc",
+        });
+        return section ? section : null;
+        
+      } catch (error) {
+        console.log(error);
+        throw new Error(error as string);
+      }
+    }
+
   static async getOneByConstaint(
     where: any,
     orderBy?: any

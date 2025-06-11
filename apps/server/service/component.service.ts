@@ -33,6 +33,22 @@ class ComponentService {
     } catch (error) {
       throw new Error(error as string);
     }
+  } 
+
+  static async getByName(
+    name: string,
+    projectId: string,
+  ) : Promise<ComponentInterface | null> {
+    try {
+      const component = await this.getOneByConstaint(and(eq(Component.name, name) , eq(Component.project , projectId)), {
+        createdAt: "desc",
+      });
+      return component ? component : null;
+      
+    } catch (error) {
+      console.log(error);
+      throw new Error(error as string);
+    }
   }
 
   static async getOneByConstaint(

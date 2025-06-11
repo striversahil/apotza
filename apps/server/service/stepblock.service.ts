@@ -19,6 +19,22 @@ class StepBlockService {
     }
   }
 
+    static async getByName(
+      name: string,
+      projectId: string,
+    ) : Promise<StepBlockInterface | null> {
+      try {
+        const stepblock = await this.getOneByConstaint(and(eq(StepBlock.name, name) , eq(StepBlock.project , projectId)), {
+          createdAt: "desc",
+        });
+        return stepblock ? stepblock : null;
+        
+      } catch (error) {
+        console.log(error);
+        throw new Error(error as string);
+      }
+    }
+
   static async getOneByConstaint(
     where?: any,
     orderBy?: any
