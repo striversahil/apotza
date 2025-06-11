@@ -62,7 +62,7 @@ class SectionController {
       if (!section)
         return ErrorResponse(res, "Section could not be updated", 400);
 
-      await updateContext(project_id, id, JSON.stringify(data.configuration));
+      await updateContext(project_id, id, data.configuration);
 
       await redis.del(`page:${section.page}`);
       SuccessResponse(res, "Section updated successfully", null, section);
@@ -104,7 +104,7 @@ class SectionController {
 async function updateContext(
   project_id: string,
   id: string,
-  configuration: string
+  configuration: object
 ) {
   try {
     const section: any = await SectionService.getById(id);
@@ -131,6 +131,12 @@ async function updateContext(
       return true;
     }
 
+    const { updatedConfiguration } = await GlobalContextManager.setConfigValue(
+      project_id,
+      extractedMatches,
+      configuration
+    );
+
     // Trying to update so to reduce the number of calls to the database
     const { newReference } = GlobalContextManager.setContext(
       prevReference,
@@ -148,16 +154,13 @@ async function updateContext(
     // console.log("Mapped Matches Object:", mappedMatchesObject);
 
     const sectionUpdated = await SectionService.update(id, {
+      configuration: updatedConfiguration,
       referencedContext: extractedMatches,
     });
 
     const updatedProject = await ProjectService.update(project_id, {
       globalContext: cleanedUpReference,
     });
-
-    console.log("Updated Section:", sectionUpdated?.referencedContext);
-
-    console.log("Updated Project:", updatedProject?.globalContext);
 
     return true;
   } catch (error) {

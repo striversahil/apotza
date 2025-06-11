@@ -11,12 +11,14 @@ class GlobalContextManager {
   /**
    * This function returns a regular expression that matches the global context.
    * The global context is defined as a string that starts with "globalContext."
-   *@param {string} string - The raw text input that may contain global context references.
+   *@param {object} text - The raw text input that may contain global context references.
    * @returns {RegExp} - The regular expression for matching global context.
    */
-  static extractRegex = (text: string) => {
+  static extractRegex = (text: object) => {
     const regex = /\{\{(.*?)\}\}/g;
-    const matches = text.match(regex);
+    const textString = typeof text === "string" ? text : JSON.stringify(text);
+
+    const matches = textString.match(regex);
 
     const matchesWithoutBraces = matches?.map((match: string) =>
       match.slice(2, -2)
@@ -128,7 +130,7 @@ class GlobalContextManager {
     return cleanedUpReference;
   }
 
-  static setConfigValue(
+  static async setConfigValue(
     project_id: string,
     compMatches: Record<string, any>,
     configuration: Record<string, any>
@@ -145,65 +147,70 @@ class GlobalContextManager {
     const valuedMatches = { ...compMatches };
 
     // Iterating through each type in valuedMatches
-    for (const type in valuedMatches) {
-      if (valuedMatches.hasOwnProperty(type)) {
-        if (valuedMatches[type].length === 0) {
-          // If there are no matches for this type, skip to the next iteration
+    for (const type of Object.keys(valuedMatches)) {
+      if (valuedMatches[type].length === 0) {
+        // If there are no matches for this type, skip to the next iteration
+        continue;
+      }
+      valuedMatches[type] = await Promise.all(
+        valuedMatches[type].map((name: string) => {
+          return currentValue(type, name, project_id);
+        })
+      );
+    }
+
+    // console.log("Updated Component:", valuedMatches);
+
+    // Function to replace placeholders in the configuration string with actual values
+    function setterValue(config: string) {
+      const updatedConfig = config.replace(
+        /\{\{(.*?)\}\}/g,
+        (match: string, p1: string) => {
+          const [type, name] = p1.split(".");
+
+          if (type && valuedMatches[type] && valuedMatches[type].length > 0) {
+            const currentValue = valuedMatches[type].find(
+              (item: any) => item?.name === name
+            );
+            return currentValue ? currentValue.id : match;
+          }
+          return match; // Return the original match if no value found
+        }
+      );
+      console.log("Updated Configuration:", updatedConfig);
+
+      return updatedConfig;
+    }
+
+    // Iterate through the configuration object and add global context
+
+    function addContext(configuration: Record<string, any>) {
+      const newClause: any = {};
+
+      for (const [key, value] of Object.entries(configuration)) {
+        if (key === "value") {
           continue;
         }
-        valuedMatches[type] = valuedMatches[type].map((name: string) => {
-          return currentValue(type, name, project_id);
-        });
-      }
-    }
-
-    function setterValue(config: string) {
-      return config.replace(/\{\{(.*?)\}\}/g, (match: string, p1: string) => {
-        const [type, name] = p1.split(".");
-        if (type && valuedMatches[type] && valuedMatches[type].length > 0) {
-          const currentValue = valuedMatches[type].find(
-            (item: any) => item.name === name
-          );
-          return currentValue ? currentValue.id : match;
-        }
-        return match; // Return the original match if no value found
-      });
-    }
-
-    const newClause: any = {};
-
-    for (const key in configuration) {
-      if (configuration.hasOwnProperty(key)) {
-        const value = configuration[key];
-
-        if (typeof value === "object" && value !== null) {
-          newClause[key] = addGlobalContext({ clause: value });
+        if (key === "config") {
+          newClause["config"] = value;
+          newClause["value"] = setterValue(value);
+        } else if (typeof value === "object" && value !== null) {
+          console.log("recursive call");
+          newClause[key] = addContext(value);
         } else {
           newClause[key] = value;
         }
-
-        if (key === "config") {
-          newClause["value"] = setterValue(value);
-        }
       }
+
+      console.log("New Clause:", newClause);
+      return newClause;
     }
 
-    for (const type in valuedMatches) {
-      if (valuedMatches.hasOwnProperty(type)) {
-        if (valuedMatches[type].length >= 0) {
-        }
+    const newConfiguration = addContext(configuration);
 
-        const configValue: Record<string, any> = {};
-
-        Object.keys(compMatches).forEach((key: string) => {
-          if (compMatches[key].length > 0) {
-            configValue[key] = compMatches[key];
-          }
-        });
-
-        return configValue;
-      }
-    }
+    return {
+      updatedConfiguration: newConfiguration,
+    };
   }
 }
 
@@ -219,7 +226,11 @@ export default GlobalContextManager;
 //   something: [ '59e4e601-fd41-42a1-8d64-bb5713b6d834' ]
 // }
 
-const currentValue = async (type: string, name: string, projectId: string) => {
+const currentValue = async (
+  type: string,
+  name: string,
+  projectId: string
+): Promise<any> => {
   switch (type) {
     case "comp":
       return await ComponentService.getByName(name, projectId);

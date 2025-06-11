@@ -114,9 +114,9 @@ class CodeBlockController {
 
       // TODO: Update the context of the codeBlock if u figure out it's configuration body
       // await updateContext(project_id, id, JSON.stringify(slug.configuration));
-      
-      await updateContext(project_id, id, JSON.stringify(data));
-      
+
+      await updateContext(project_id, id, data);
+
       const codeBlock = await CodeBlockService.update(id, data);
       if (!codeBlock)
         return ErrorResponse(res, "CodeBlock could not be updated", 400);
@@ -227,7 +227,7 @@ class CodeBlockController {
 async function updateContext(
   project_id: string,
   id: string,
-  configuration: string
+  configuration: object
 ) {
   try {
     const codeblock: any = await CodeBlockService.getById(id);
@@ -248,15 +248,17 @@ async function updateContext(
 
     const { extractedMatches, arrayForm } =
       GlobalContextManager.extractRegex(configuration);
-  
-    
-    
-    
 
     if (_.isEqual(prevMatches, extractedMatches)) {
       console.log("No changes in global context, skipping Context update.");
       return true;
     }
+
+    const { updatedConfiguration } = await GlobalContextManager.setConfigValue(
+      project_id,
+      extractedMatches,
+      configuration
+    );
 
     // Trying to update so to reduce the number of calls to the database
     const { newReference } = GlobalContextManager.setContext(
@@ -275,17 +277,13 @@ async function updateContext(
     // console.log("Mapped Matches Object:", mappedMatchesObject);
 
     const codeBlock = await CodeBlockService.update(id, {
-      // configuration: updatedConfiguration,
+      configuration: updatedConfiguration,
       referencedContext: extractedMatches,
     });
 
     const updatedProject = await ProjectService.update(project_id, {
       globalContext: cleanedUpReference,
     });
-
-    console.log("Updated CodeBlock:", codeBlock?.referencedContext);
-
-    console.log("Updated Project:", updatedProject?.globalContext);
 
     return true;
   } catch (error) {

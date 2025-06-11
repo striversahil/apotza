@@ -93,7 +93,7 @@ class StepBlockController {
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be updated", 400);
 
-      await updateContext(project_id, id, JSON.stringify(slug.configuration));
+      await updateContext(project_id, id, slug.configuration);
 
       // await redis.del(`codeBlock:${stepBlock.codeblock}`);
       await redis.del(`codeBlock:${stepBlock.codeblock}`); // needed to done for initial capture of codeblock by client
@@ -137,7 +137,7 @@ class StepBlockController {
 async function updateContext(
   project_id: string,
   id: string,
-  configuration: string
+  configuration: object
 ) {
   try {
     const stepblock: any = await StepBlockService.getById(id);
@@ -158,18 +158,17 @@ async function updateContext(
 
     const { extractedMatches, arrayForm } =
       GlobalContextManager.extractRegex(configuration);
-    
-    
-    GlobalContextManager.setConfigValue(
-          project_id,
-          extractedMatches,
-          configuration,
-        )
 
     if (_.isEqual(prevMatches, extractedMatches)) {
       console.log("No changes in global context, skipping Context update.");
       return true;
     }
+
+    const { updatedConfiguration } = await GlobalContextManager.setConfigValue(
+      project_id,
+      extractedMatches,
+      configuration
+    );
 
     // Trying to update so to reduce the number of calls to the database
     const { newReference } = GlobalContextManager.setContext(
@@ -188,16 +187,13 @@ async function updateContext(
     // console.log("Mapped Matches Object:", mappedMatchesObject);
 
     const stepBlock = await StepBlockService.update(id, {
+      configuration: updatedConfiguration,
       referencedContext: extractedMatches,
     });
 
     const updatedProject = await ProjectService.update(project_id, {
       globalContext: cleanedUpReference,
     });
-
-    console.log("Updated StepBlock:", stepBlock?.referencedContext);
-
-    console.log("Updated Project:", updatedProject?.globalContext);
 
     return true;
   } catch (error) {

@@ -113,7 +113,7 @@ class ComponentController {
       if (!component)
         return ErrorResponse(res, "Component could not be updated", 400);
 
-      await updateContext(project_id, id, JSON.stringify(data.configuration));
+      await updateContext(project_id, id, data.configuration);
 
       // await redis.del(`page:${component.page}`);
       await redis.del(`section:${component.section}`);
@@ -171,7 +171,7 @@ class ComponentController {
 async function updateContext(
   project_id: string,
   id: string,
-  configuration: string
+  configuration: object
 ) {
   try {
     const component: any = await ComponentService.getById(id);
@@ -192,17 +192,17 @@ async function updateContext(
 
     const { extractedMatches, arrayForm } =
       GlobalContextManager.extractRegex(configuration);
-    
-     GlobalContextManager.setConfigValue(
-          project_id,
-          extractedMatches,
-          configuration,
-        )
 
     if (_.isEqual(prevMatches, extractedMatches)) {
       console.log("No changes in global context, skipping Context update.");
       return true;
     }
+
+    const { updatedConfiguration } = await GlobalContextManager.setConfigValue(
+      project_id,
+      extractedMatches,
+      configuration
+    );
 
     // Trying to update so to reduce the number of calls to the database
     const { newReference } = GlobalContextManager.setContext(
@@ -221,16 +221,13 @@ async function updateContext(
     // console.log("Mapped Matches Object:", mappedMatchesObject);
 
     const compoUpdated = await ComponentService.update(id, {
+      configuration: updatedConfiguration,
       referencedContext: extractedMatches,
     });
 
     const updatedProject = await ProjectService.update(project_id, {
       globalContext: cleanedUpReference,
     });
-
-    console.log("Updated Component:", compoUpdated?.referencedContext);
-
-    console.log("Updated Project:", updatedProject?.globalContext);
 
     return true;
   } catch (error) {
