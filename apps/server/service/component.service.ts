@@ -6,6 +6,7 @@ import { and, desc, eq } from "drizzle-orm";
 import { Component, ComponentInterface, Page, Section } from "../schema";
 import { db } from "../database";
 import { MatchComponent } from "@repo/common";
+import _ from "lodash";
 
 class ComponentService {
   static async getById(id: string): Promise<ComponentInterface | null> {
@@ -85,7 +86,7 @@ class ComponentService {
         desc(Component.createdAt)
       );
 
-      let name = `${payload.name} 1`; // Adding default name to be "payload.name 1"
+      let name = `${_.capitalize(payload.name)} 1`; // Adding default name to be "payload.name 1"
       let order_no = 1;
 
       if (prevComponent) {
