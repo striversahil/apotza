@@ -6,7 +6,7 @@ import CodeBlockService from "../service/codeblock.service";
 import StepBlockService from "../service/stepblock.service";
 
 class GlobalContextManager {
-  static compCategory = ["comp", "sect", "page", "api", "step"];
+  // static compCategory = ["comp", "sect", "page", "api", "step"];
 
   /**
    * This function returns a regular expression that matches the global context.
@@ -20,34 +20,14 @@ class GlobalContextManager {
 
     const matches = textString.match(regex);
 
-    const matchesWithoutBraces = matches?.map((match: string) =>
-      match.slice(2, -2)
-    );
+    const extractedRegex = matches?.map((match: string) => match.slice(2, -2));
 
-    const extractedMatches: Record<string, any> = {};
-    const arrayForm: string[] = [];
-
-    // Iterate over each category and extract matches that start with the category
-    // and a dot (e.g., "comp.", "sect.", "page.", "api.", "step.")
-    this.compCategory.forEach((category: string) => {
-      extractedMatches[category] = [];
-      matchesWithoutBraces?.forEach((match: string) => {
-        // Check if the match starts with the current category with a dot
-        if (match.startsWith(`${category}.`)) {
-          const removedCategory = match.slice(category.length + 1);
-          if (!extractedMatches[category].includes(removedCategory)) {
-            extractedMatches[category].push(removedCategory);
-            arrayForm.push(removedCategory);
-          }
-        }
-      });
-    });
+    const extractedMatches = extractedRegex ? extractedRegex : [];
 
     // const arrayForm: string[] = Array.from(new Set(rawArrayForm));
 
     return {
       extractedMatches,
-      arrayForm,
     };
   };
 
@@ -93,27 +73,17 @@ class GlobalContextManager {
    * @param {object} setReference - The object containing the references to be cleaned up.
    */
   static cleanedUpContext(
-    prevMatches: Record<string, any>,
+    prevMatches: Array<string>,
     uniqueMatches: Array<string>,
     id: string,
     newReference: any
   ) {
     // Remove the current step block ID from the arrays in setStepBlock if there reference are removed
 
-    const processedPrev: string[] = [];
-
-    this.compCategory.forEach((category: string) => {
-      if (prevMatches[category]) {
-        prevMatches[category].forEach((item: string) => {
-          processedPrev.push(item);
-        });
-      }
-    });
-
     let cleanedUpReference = { ...newReference };
 
     Object.keys(newReference).forEach((key: string) => {
-      if (processedPrev.includes(key) && !uniqueMatches.includes(key)) {
+      if (prevMatches.includes(key) && !uniqueMatches.includes(key)) {
         const value = newReference[key];
         if (Array.isArray(value)) {
           // If the value is an array, filter out the current step block ID
@@ -130,34 +100,26 @@ class GlobalContextManager {
     return cleanedUpReference;
   }
 
+  /**
+   * This function sets the configuration value for a component based on the provided matches.
+   * It iterates through the matches and updates the configuration value for each component.
+   *
+   * @param {Array} compMatches - The matches object containing component configurations.
+   * @param {object} configuration - The configuration string to be updated.
+   * @returns {object} - The updated configuration object with the new values.
+   */
   static async setConfigValue(
     project_id: string,
-    compMatches: Record<string, any>,
+    compMatches: Array<string>,
     configuration: Record<string, any>
   ) {
-    /**
-     * This function sets the configuration value for a component based on the provided matches.
-     * It iterates through the matches and updates the configuration value for each component.
-     *
-     * @param {object} compMatches - The matches object containing component configurations.
-     * @param {object} configuration - The configuration string to be updated.
-     * @returns {object} - The updated configuration object with the new values.
-     */
+    const valuedMatches = [...compMatches];
 
-    const valuedMatches = { ...compMatches };
-
-    // Iterating through each type in valuedMatches
-    for (const type of Object.keys(valuedMatches)) {
-      if (valuedMatches[type].length === 0) {
-        // If there are no matches for this type, skip to the next iteration
-        continue;
-      }
-      valuedMatches[type] = await Promise.all(
-        valuedMatches[type].map((name: string) => {
-          return currentValue(type, name, project_id);
-        })
-      );
-    }
+    const mappedValues = await Promise.all(
+      valuedMatches.map((match: string) => {
+        return currentValue(match.split(".")[0] || "", project_id);
+      })
+    );
 
     // console.log("Updated Component:", valuedMatches);
 
@@ -166,18 +128,17 @@ class GlobalContextManager {
       const updatedConfig = config.replace(
         /\{\{(.*?)\}\}/g,
         (match: string, p1: string) => {
-          const [type, name] = p1.split(".");
+          const name = p1.split(".")[0] || "";
 
-          if (type && valuedMatches[type] && valuedMatches[type].length > 0) {
-            const currentValue = valuedMatches[type].find(
+          if (mappedValues && valuedMatches.length > 0) {
+            const currentValue = mappedValues.find(
               (item: any) => item?.name === name
             );
-            return currentValue ? currentValue.id : match;
+            return currentValue ? JSON.stringify(currentValue) : match;
           }
           return match; // Return the original match if no value found
         }
       );
-      console.log("Updated Configuration:", updatedConfig);
 
       return updatedConfig;
     }
@@ -226,25 +187,34 @@ export default GlobalContextManager;
 //   something: [ '59e4e601-fd41-42a1-8d64-bb5713b6d834' ]
 // }
 
-const currentValue = async (
-  type: string,
-  name: string,
-  projectId: string
-): Promise<any> => {
-  switch (type) {
-    case "comp":
-      return await ComponentService.getByName(name, projectId);
-    case "sect":
-      return await SectionService.getByName(name, projectId);
-    case "page":
-      return await PageService.getByName(name, projectId);
-    case "api":
-      return await CodeBlockService.getByName(name, projectId);
-    case "step":
-      return await StepBlockService.getByName(name, projectId);
-    default:
-      return null;
+const currentValue = async (name: string, projectId: string): Promise<any> => {
+  let currentValue = {};
+
+  // A Priority List of Services to check for the name
+  // If the name is found in any of these services, we will return the first match
+  const services = [
+    StepBlockService,
+    ComponentService,
+    SectionService,
+    CodeBlockService,
+    PageService,
+  ];
+  for (const service of services) {
+    const item = await service.getByName(name, projectId);
+    if (item) {
+      currentValue =
+        "response" in item && item.response
+          ? item.response
+          : ("error" in item && item.error) ||
+            ("configuration" in item && item.configuration) ||
+            {};
+      break;
+    }
   }
+
+  return {
+    currentValue,
+  };
 };
 
 const typeRegexMap = (type: string, name: string) => {

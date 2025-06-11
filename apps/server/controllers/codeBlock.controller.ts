@@ -246,7 +246,7 @@ async function updateContext(
     //   return;
     // }
 
-    const { extractedMatches, arrayForm } =
+    const { extractedMatches } =
       GlobalContextManager.extractRegex(configuration);
 
     const { updatedConfiguration } = await GlobalContextManager.setConfigValue(
@@ -267,13 +267,13 @@ async function updateContext(
     // Trying to update so to reduce the number of calls to the database
     const { newReference } = GlobalContextManager.setContext(
       prevReference,
-      arrayForm,
+      extractedMatches,
       id
     );
 
     const cleanedUpReference = GlobalContextManager.cleanedUpContext(
       prevMatches,
-      arrayForm,
+      extractedMatches,
       id,
       newReference
     );
