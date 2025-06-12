@@ -13,8 +13,12 @@ async function PythonEngine(query: string) {
       return { error: "Unsafe code", data: null };
     }
 
+    const formattedQuery = query
+      .replace(/\btrue\b/g, "True")
+      .replace(/\bfalse\b/g, "False");
+
     // Calling Python Function
-    const data = await callPythonFunction(query);
+    const data = await callPythonFunction(formattedQuery);
     if (!data) {
       return {
         error: "No Output Returned",

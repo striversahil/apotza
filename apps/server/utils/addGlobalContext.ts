@@ -122,6 +122,9 @@ class GlobalContextManager {
     );
 
     // console.log("Updated Component:", valuedMatches);
+    function getNestedValue(obj: object, keys: any[]) {
+      return keys.reduce((acc, key) => acc && acc[key], obj);
+    }
 
     // Function to replace placeholders in the configuration string with actual values
     function setterValue(config: string) {
@@ -129,6 +132,13 @@ class GlobalContextManager {
         /\{\{(.*?)\}\}/g,
         (match: string, p1: string) => {
           const name = p1.split(".")[0] || "";
+          const unprocessedKeys = p1.split(".").slice(1);
+          const nestedKey = unprocessedKeys.map((key: string) => {
+            if (Number.isNaN(Number(key))) {
+              return key; // Return the key as is if it's not a number
+            }
+            return Number(key); // Convert to number if it's a valid number
+          });
 
           if (mappedValues && valuedMatches.length > 0) {
             const currentModel = mappedValues.find(
@@ -145,6 +155,14 @@ class GlobalContextManager {
                   ("configuration" in currentModel &&
                     currentModel.configuration) ||
                   {};
+
+            // If nested keys are provided, get the nested value
+            if (nestedKey.length > 0) {
+              const nestedValue = getNestedValue(currentValue, nestedKey);
+              return nestedValue !== undefined
+                ? JSON.stringify(nestedValue)
+                : match;
+            }
 
             return currentValue ? JSON.stringify(currentValue) : match;
           }
