@@ -116,13 +116,11 @@ export const TabStepOutputProvider = ({
 };
 
 export const UpdatedStepBlockProvider = ({
-  initialvalue,
   children,
 }: {
-  initialvalue: StepBlockInterface;
   children: ReactNode;
 }) => {
-  const [updatedStepBlock, setUpdatedStepBlock] = useState(initialvalue);
+  const [updatedStepBlock, setUpdatedStepBlock] = useState<any>(null);
   return (
     <UpdatedStepBlockContext.Provider
       value={{ updatedStepBlock, setUpdatedStepBlock }}

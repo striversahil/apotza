@@ -8,7 +8,10 @@ import { TabsContent } from "@radix-ui/react-tabs";
 import GetProject from "../../../actions/project";
 import IDEeditor from "./IDEditor";
 import { ApiTypeMapper } from "./utils/Mapper";
-import { UpdatedStepBlockProvider } from "../../../contexts/codeblock";
+import {
+  UpdatedStepBlockProvider,
+  useUpdatedStepBlock,
+} from "../../../contexts/codeblock";
 import { SimpleLoader } from "@/components/loader";
 
 type Props = {
@@ -25,16 +28,29 @@ export type StepBlockInterface = {
   error: any;
 };
 
+const StepBlockEditor = ({ value }: any) => {
+  const { setUpdatedStepBlock = () => {}, updatedStepBlock } =
+    useUpdatedStepBlock() || {};
+
+  useEffect(() => {
+    if (value) {
+      setUpdatedStepBlock(value);
+    }
+  }, [value]);
+
+  return <>{updatedStepBlock && ApiTypeMapper()[updatedStepBlock.type]}</>;
+};
+
 const EditorCode = ({ value }: Props) => {
   const [activeStep, setActiveStep] = React.useState<StepBlockInterface>(value);
-  const [editorRendered, setEditorRendered] = React.useState(false);
+  const [renderEditor, setRenderEditor] = useState(false);
 
   const { data } = GetProject.getStep(value.id);
 
   useEffect(() => {
     if (data) {
       setActiveStep(data.payload);
-      setEditorRendered(true);
+      setRenderEditor(true);
     }
   }, [data]);
 
@@ -47,10 +63,12 @@ const EditorCode = ({ value }: Props) => {
         <Panel defaultSize={50} minSize={20} maxSize={100}>
           <div className="relative h-full items-center">
             <EditorHeader {...activeStep} />
-            <UpdatedStepBlockProvider initialvalue={activeStep}>
+            <UpdatedStepBlockProvider>
               {/* <StepBlockProvider initialvalue={activeStep}> */}
-              {!editorRendered && <SimpleLoader />}
-              {editorRendered && ApiTypeMapper()[activeStep.type]}
+
+              {!renderEditor && <SimpleLoader />}
+              {renderEditor && <StepBlockEditor value={activeStep} />}
+
               {/* </StepBlockProvider> */}
             </UpdatedStepBlockProvider>
           </div>

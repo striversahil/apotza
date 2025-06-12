@@ -121,8 +121,6 @@ class GlobalContextManager {
       })
     );
 
-    console.log("Mapped Values:", mappedValues);
-
     // console.log("Updated Component:", valuedMatches);
 
     // Function to replace placeholders in the configuration string with actual values
@@ -131,17 +129,13 @@ class GlobalContextManager {
         /\{\{(.*?)\}\}/g,
         (match: string, p1: string) => {
           const name = p1.split(".")[0] || "";
-          console.log("Name:", name);
 
           if (mappedValues && valuedMatches.length > 0) {
             const currentModel = mappedValues.find(
               (item: any) => item?.name === name
             );
 
-            console.log("Current Model:", currentModel);
-
             if (!currentModel) {
-              console.warn(`No model found for name: ${name}`);
               return match; // Return the original match if no model found
             }
             const currentValue =
@@ -174,7 +168,6 @@ class GlobalContextManager {
           newClause["config"] = value;
           newClause["value"] = setterValue(value);
         } else if (typeof value === "object" && value !== null) {
-          console.log("recursive call");
           newClause[key] = addContext(value);
         } else {
           newClause[key] = value;
