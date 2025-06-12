@@ -47,7 +47,7 @@ const page = (props: Props) => {
       {Page?.sections?.map((item: any) => (
         <div key={item.id} className="relative">
           <Section value={item} />
-          <DeleteSection id={item.id} />
+          {/* <DeleteSection id={item.id} /> */}
           <AddSection id={Page.id} />
         </div>
       ))}

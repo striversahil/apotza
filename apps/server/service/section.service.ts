@@ -18,21 +18,23 @@ class SectionService {
     }
   }
 
-    static async getByName(
-      name: string,
-      projectId: string,
-    ) : Promise<SectionInterface | null> {
-      try {
-        const section = await this.getOneByConstaint(and(eq(Section.name, name) , eq(Section.project , projectId)), {
+  static async getByName(
+    name: string,
+    projectId: string
+  ): Promise<SectionInterface | null> {
+    try {
+      const section = await this.getOneByConstaint(
+        and(eq(Section.name, name), eq(Section.project, projectId)),
+        {
           createdAt: "desc",
-        });
-        return section ? section : null;
-        
-      } catch (error) {
-        console.log(error);
-        throw new Error(error as string);
-      }
+        }
+      );
+      return section ? section : null;
+    } catch (error) {
+      console.log(error);
+      throw new Error(error as string);
     }
+  }
 
   static async getOneByConstaint(
     where: any,
@@ -73,12 +75,12 @@ class SectionService {
         desc(Section.createdAt)
       );
 
-      let name = `Section 1`; // Adding default name to be "Section 1"
+      let name = `Section1`; // Adding default name to be "Section 1"
       let order_no = 1;
 
       if (prevSection) {
         const prevCodeNo = prevSection.order_no;
-        name = `Section ${prevCodeNo + 1}`;
+        name = `Section${prevCodeNo + 1}`;
         order_no = prevCodeNo + 1;
       }
 

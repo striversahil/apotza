@@ -16,7 +16,7 @@ const AddSection = ({ id }: Props) => {
   const router = usePathname();
   const { mutate } = SectionAction.create();
   return (
-    <div className="flex justify-center items-center py-2">
+    <div className="flex justify-center items-center ">
       <Tooltip>
         <TooltipTrigger className="flex">
           <div
@@ -27,7 +27,7 @@ const AddSection = ({ id }: Props) => {
             }
             className="cursor-pointer hover:text-blue-500 duration-300"
           >
-            <PlusCircleIcon />
+            <PlusCircleIcon className="size-4 hover:size-5 hover:rotate-90 transition-all duration-300" />
           </div>
         </TooltipTrigger>
         <TooltipContent>Add Section</TooltipContent>

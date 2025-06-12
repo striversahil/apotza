@@ -61,7 +61,7 @@ const ComponentAction = {
     const { mutate } = useMutationData(
       ["ComponentAction.delete"],
       async (payload: any) => {
-        const response = await api.delete(`${source}/${payload}`);
+        const response = await api.delete(`${source}/${payload.id}`);
         return response.data;
       },
       [[`GetProject.getOneSection-${section_id}`]],

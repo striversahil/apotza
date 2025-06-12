@@ -19,21 +19,23 @@ class StepBlockService {
     }
   }
 
-    static async getByName(
-      name: string,
-      projectId: string,
-    ) : Promise<StepBlockInterface | null> {
-      try {
-        const stepblock = await this.getOneByConstaint(and(eq(StepBlock.name, name) , eq(StepBlock.project , projectId)), {
+  static async getByName(
+    name: string,
+    projectId: string
+  ): Promise<StepBlockInterface | null> {
+    try {
+      const stepblock = await this.getOneByConstaint(
+        and(eq(StepBlock.name, name), eq(StepBlock.project, projectId)),
+        {
           createdAt: "desc",
-        });
-        return stepblock ? stepblock : null;
-        
-      } catch (error) {
-        console.log(error);
-        throw new Error(error as string);
-      }
+        }
+      );
+      return stepblock ? stepblock : null;
+    } catch (error) {
+      console.log(error);
+      throw new Error(error as string);
     }
+  }
 
   static async getOneByConstaint(
     where?: any,
@@ -67,12 +69,12 @@ class StepBlockService {
         desc(StepBlock.createdAt)
       );
 
-      let name = `${payload.name} 1`; // Adding default name to be "payload.name 1"
+      let name = `${payload.name}1`; // Adding default name to be "payload.name 1"
       let order_no = 1;
 
       if (prevStepBlock) {
         const prevCodeNo = prevStepBlock.order_no;
-        name = `${payload.name} ${prevCodeNo + 1}`;
+        name = `${payload.name}${prevCodeNo + 1}`;
         order_no = prevCodeNo + 1;
       }
       const [newStepBlock] = await db

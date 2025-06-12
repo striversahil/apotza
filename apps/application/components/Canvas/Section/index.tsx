@@ -2,7 +2,6 @@ import { cn } from "@/lib/utils";
 import { useDroppable } from "@dnd-kit/core";
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
-import DeleteSection from "./DeleteSection";
 import AddSection from "./AddSection";
 import DraggableComponent from "../_Component";
 import GetProject from "../../../actions/project";

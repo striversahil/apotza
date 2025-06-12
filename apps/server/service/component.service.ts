@@ -86,12 +86,12 @@ class ComponentService {
         desc(Component.createdAt)
       );
 
-      let name = `${_.capitalize(payload.name)} 1`; // Adding default name to be "payload.name 1"
+      let name = `${_.capitalize(payload.name)}1`; // Adding default name to be "payload.name 1"
       let order_no = 1;
 
       if (prevComponent) {
         const prevCodeNo = prevComponent.order_no;
-        name = `${payload.name} ${prevCodeNo + 1}`;
+        name = `${_.capitalize(payload.name)}${prevCodeNo + 1}`;
         order_no = prevCodeNo + 1;
       }
 

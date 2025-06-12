@@ -63,31 +63,32 @@ export const useContextSave = (initialValue: ComponentInterface) => {
   }, [activeComponent, initialValue]);
 
   // Adding Delete Functionality for the Active Component
-  useEffect(() => {
-    // console.log("focus", focused);
-    // if (!focused) return;
-    const _delete = (e: KeyboardEvent) => {
-      if (e.key !== "Delete") return;
-      if (initialValue?.id === activeComponent?.id) {
-        switch (initialValue?.type) {
-          case "component":
-            // console.log("Deleting Component", initialValue?.id);
-            deleteComponent(initialValue?.id);
-          case "section":
-            // console.log("Deleting Section", initialValue?.id);
-            deleteSection(initialValue?.id);
-          default:
-            break;
-        }
-        setComponent(null);
-        setUpdatedComponent(null);
-      }
-    };
-    window.addEventListener("keydown", _delete);
-    return () => {
-      window.removeEventListener("keydown", _delete);
-    };
-  }, [currentValue, activeComponent]);
+  // Important: This functionality is currently commented out due to lack of UX support.
+  // useEffect(() => {
+  //   // console.log("focus", focused);
+  //   // if (!focused) return;
+  //   const _delete = (e: KeyboardEvent) => {
+  //     if (e.key !== "Delete") return;
+  //     if (initialValue?.id === activeComponent?.id) {
+  //       switch (initialValue?.type) {
+  //         case "component":
+  //           // console.log("Deleting Component", initialValue?.id);
+  //           deleteComponent(initialValue?.id);
+  //         case "section":
+  //           // console.log("Deleting Section", initialValue?.id);
+  //           deleteSection(initialValue?.id);
+  //         default:
+  //           break;
+  //       }
+  //       setComponent(null);
+  //       setUpdatedComponent(null);
+  //     }
+  //   };
+  //   window.addEventListener("keydown", _delete);
+  //   return () => {
+  //     window.removeEventListener("keydown", _delete);
+  //   };
+  // }, [currentValue, activeComponent]);
 
   // Setting the Component State
   const setState = (e: React.MouseEvent<HTMLDivElement>) => {
