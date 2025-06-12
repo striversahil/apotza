@@ -125,22 +125,22 @@ async function updateContext(
 
     const { extractedMatches } =
       GlobalContextManager.extractRegex(configuration);
-      
-      if (_.isEqual(prevMatches, extractedMatches)) {
-        console.log("No changes in global context, skipping Context update.");
-        
-        const sectionUpdated = await SectionService.update(id, {
-          configuration: configuration,
-        });
-        return sectionUpdated ? sectionUpdated : null;
-      }
-      
-          const { updatedConfiguration } = await GlobalContextManager.setConfigValue(
-            project_id,
-            extractedMatches,
-            configuration
-          );
-      
+
+    const { updatedConfiguration } = await GlobalContextManager.setConfigValue(
+      project_id,
+      extractedMatches,
+      configuration
+    );
+
+    if (_.isEqual(prevMatches, extractedMatches)) {
+      console.log("No changes in global context, skipping Context update.");
+
+      const sectionUpdated = await SectionService.update(id, {
+        configuration: updatedConfiguration,
+      });
+      return sectionUpdated ? sectionUpdated : null;
+    }
+
     // Trying to update so to reduce the number of calls to the database
     const { newReference } = GlobalContextManager.setContext(
       prevReference,

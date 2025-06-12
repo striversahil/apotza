@@ -193,20 +193,20 @@ async function updateContext(
     const { extractedMatches } =
       GlobalContextManager.extractRegex(configuration);
 
-    if (_.isEqual(prevMatches, extractedMatches)) {
-      console.log("No changes in global context, skipping Context update.");
-
-      const compoUpdated = await ComponentService.update(id, {
-        configuration: configuration,
-      });
-      return compoUpdated ? compoUpdated : null;
-    }
-
     const { updatedConfiguration } = await GlobalContextManager.setConfigValue(
       project_id,
       extractedMatches,
       configuration
     );
+
+    if (_.isEqual(prevMatches, extractedMatches)) {
+      console.log("No changes in global context, skipping Context update.");
+
+      const compoUpdated = await ComponentService.update(id, {
+        configuration: updatedConfiguration,
+      });
+      return compoUpdated ? compoUpdated : null;
+    }
     // Trying to update so to reduce the number of calls to the database
     const { newReference } = GlobalContextManager.setContext(
       prevReference,

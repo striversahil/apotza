@@ -249,20 +249,20 @@ async function updateContext(
     const { extractedMatches } =
       GlobalContextManager.extractRegex(configuration);
 
-    if (_.isEqual(prevMatches, extractedMatches)) {
-      console.log("No changes in global context, skipping Context update.");
-
-      const codeBlock = await CodeBlockService.update(id, {
-        configuration: configuration,
-      });
-      return codeBlock ? codeBlock : null;
-    }
-
     const { updatedConfiguration } = await GlobalContextManager.setConfigValue(
       project_id,
       extractedMatches,
       configuration
     );
+
+    if (_.isEqual(prevMatches, extractedMatches)) {
+      console.log("No changes in global context, skipping Context update.");
+
+      const codeBlock = await CodeBlockService.update(id, {
+        configuration: updatedConfiguration,
+      });
+      return codeBlock ? codeBlock : null;
+    }
 
     // Trying to update so to reduce the number of calls to the database
     const { newReference } = GlobalContextManager.setContext(
