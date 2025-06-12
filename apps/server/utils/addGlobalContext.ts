@@ -146,7 +146,7 @@ class GlobalContextManager {
             );
 
             if (!currentModel) {
-              return match; // Return the original match if no model found
+              return JSON.stringify(match); // Return the original match if no model found
             }
             const currentValue =
               "response" in currentModel && currentModel.response
@@ -161,12 +161,14 @@ class GlobalContextManager {
               const nestedValue = getNestedValue(currentValue, nestedKey);
               return nestedValue !== undefined
                 ? JSON.stringify(nestedValue)
-                : match;
+                : JSON.stringify(match);
             }
 
-            return currentValue ? JSON.stringify(currentValue) : match;
+            return currentValue
+              ? JSON.stringify(currentValue)
+              : JSON.stringify(match);
           }
-          return match; // Return the original match if no value found
+          return JSON.stringify(match); // Return the original match if no value found
         }
       );
 
