@@ -70,6 +70,8 @@ class StepBlockController {
   static async deleteStep(req: Request, res: Response) {
     try {
       const { id } = req.params;
+
+      console.log("Deleting StepBlock with ID:", id);
       if (!id) return ErrorResponse(res, "StepBlock does not exist", 404);
       const stepBlock = await StepBlockService.delete(id);
       if (!stepBlock)
@@ -78,6 +80,7 @@ class StepBlockController {
       await redis.del(`codeBlock:${stepBlock.codeblock}`);
       SuccessResponse(res, "StepBlock deleted successfully", null, stepBlock);
     } catch (error) {
+      console.error("Error in StepBlockController deleteStep:\n", error);
       ErrorResponse(res, "", null);
     }
   }

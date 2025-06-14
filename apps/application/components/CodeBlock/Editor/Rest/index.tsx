@@ -19,7 +19,9 @@ const RestApiTitle = ({ children }: { children: React.ReactNode }) => {
 };
 
 const RestConfig = (props: Props) => {
+
   const { stepConfig, setStepBlock } = useStepConfig();
+
 
   return (
     <div className="relative w-full h-full overflow-y-auto px-5 bg-black/10">

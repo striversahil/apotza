@@ -19,7 +19,9 @@ type Props = {
 };
 
 const ConfigHeader = ({ value }: Props) => {
-  // useSaveConfig();
+  // Don't Remove this, usSaveConfig as it's Rendering whole Config
+  useSaveConfig();
+
   const { mutate: deleteComponent } =
     ComponentAction.delete(value?.section ?? "") || {};
 

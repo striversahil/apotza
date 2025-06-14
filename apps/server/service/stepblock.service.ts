@@ -226,17 +226,6 @@ class StepBlockService {
         .returning();
       if (!stepBlock) return null;
 
-      // Updating the codeBlock context with the new stepBlock
-      const codeBlock: any = await CodeBlockService.getById(
-        stepBlock.codeblock!
-      );
-      if (!codeBlock) return null;
-      const updatedCodeBlock = await CodeBlockService.update(codeBlock.id, {
-        stepblockContext: codeBlock?.stepblockContext.filter(
-          (item: any) => item !== stepBlock.id
-        ),
-      });
-      if (!updatedCodeBlock) return null;
       return stepBlock ? stepBlock : null;
     } catch (error) {
       throw new Error(error as string);

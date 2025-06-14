@@ -131,6 +131,7 @@ class GlobalContextManager {
       const updatedConfig = config.replace(
         /\{\{(.*?)\}\}/g,
         (match: string, p1: string) => {
+          console.log("Match:", match, "p1:", p1);
           const name = p1.split(".")[0] || "";
           const unprocessedKeys = p1.split(".").slice(1);
           const nestedKey = unprocessedKeys.map((key: string) => {
@@ -177,16 +178,23 @@ class GlobalContextManager {
 
     // Iterate through the configuration object and add global context
 
-    function addContext(configuration: Record<string, any>) {
+    function addContext(config: Record<string, any>) {
       const newClause: any = {};
 
-      for (const [key, value] of Object.entries(configuration)) {
+      for (const [key, value] of Object.entries(config)) {
         if (key === "value") {
           continue;
         }
         if (key === "config") {
           newClause["config"] = value;
           newClause["value"] = setterValue(value);
+        } else if (Array.isArray(value)) {
+          newClause[key] = value.map((item: any) => {
+            if (typeof item === "object" && item !== null) {
+              return addContext(item);
+            }
+            return item;
+          });
         } else if (typeof value === "object" && value !== null) {
           newClause[key] = addContext(value);
         } else {
@@ -197,6 +205,9 @@ class GlobalContextManager {
     }
 
     const newConfiguration = addContext(configuration);
+
+    console.log("Updated Component:", valuedMatches);
+    console.log("Updated Project:", newConfiguration);
 
     return {
       updatedConfiguration: newConfiguration,
