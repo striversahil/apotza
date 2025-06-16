@@ -2,8 +2,6 @@ import { Request, Response } from "express";
 import { ErrorResponse, SuccessResponse } from "../utils/ApiResponse";
 import StepBlockService from "../service/stepblock.service";
 import { redis } from "..";
-import CodeBlockService from "../service/codeblock.service";
-import CodeBlockController from "./codeBlock.controller";
 import GlobalContextManager from "../utils/addGlobalContext";
 import ProjectService from "../service/project.service";
 import _ from "lodash";
@@ -212,8 +210,6 @@ async function updateContext(
       configuration: updatedConfiguration,
       referencedContext: extractedMatches,
     });
-
-    console.log("Global Context Updated:", cleanedUpReference);
 
     const updatedProject = await ProjectService.update(project_id, {
       globalContext: cleanedUpReference,

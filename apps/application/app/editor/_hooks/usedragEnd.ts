@@ -20,7 +20,7 @@ export const useDragEnd = () => {
 
   const { data } = GetProject.getComponents();
   const { mutate: mutateAdd } = ComponentAction.add(activeId);
-  const { mutate: mutateUpdate } = ComponentAction.coordinatesUpdate(activeId);
+  const { mutate: mutateUpdate } = ComponentAction.coordinateUpdate(activeId);
 
   // useEffect(() => {
   //   if (activeId) {
@@ -54,8 +54,7 @@ export const useDragEnd = () => {
 
   const handleDragEnd = (event: DragEndEvent) => {
     if (event.over?.id) {
-      setActiveId(event.over.id as string);
-      console.log(event.activatorEvent);
+      setActiveId(event.active.id as string);
 
       // Get the current mouse position , Currently not finding any way to get it
       // const mouseX = event.activatorEvent.clientX;

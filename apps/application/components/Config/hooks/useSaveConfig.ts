@@ -23,9 +23,9 @@ export const useSaveConfig = () => {
   const configTypes = ["id", "configuration", "eventHandler"];
 
   const { mutate: prevMutateComponent } =
-    ComponentAction.update(prevComponent?.section) || {};
+    ComponentAction.updateComponent(prevComponent?.id) || {};
   const { mutate: mutateComponent } =
-    ComponentAction.update(Component?.section) || {};
+    ComponentAction.updateComponent(Component?.id) || {};
 
   const { mutate: prevMutateSection } = SectionAction.update() || {};
 

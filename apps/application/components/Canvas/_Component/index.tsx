@@ -18,7 +18,7 @@ const DraggableComponent = ({ value }: ComponentInterface) => {
       id: value.id,
     });
 
-  const { mutate } = ComponentAction.updateWidthHeight(value.section);
+  const { mutate } = ComponentAction.updateSize(value.id);
 
   const { ref, focused, currentValue, setState, activeComponent } =
     useContextSave(value);

@@ -19,36 +19,23 @@ const ComponentAction = {
     );
     return { mutate };
   },
-  coordinatesUpdate: (section_id: string) => {
+  coordinateUpdate: (id: string) => {
     const { mutate } = useMutationData(
-      ["ComponentAction.coordinatesUpdate"],
+      ["ComponentAction.coordinateUpdate"],
       async (payload: any) => {
         const response = await api.patch(`${source}/coordinates`, payload);
         return response.data;
       },
-      [
-        [`GetProject.getOneSection-${section_id}`],
-        ["GetProject.getComponents"],
-      ],
+      [[`GetProject.getComponent-${id}`], ["GetProject.getComponents"]],
       (previousData: any, variables: any) => {
         return {
           ...previousData,
           payload: {
             ...previousData.payload,
-            components: [...previousData.payload.components].map(
-              (item: any) => {
-                if (item.id === variables.id) {
-                  return {
-                    ...item,
-                    coordinates: {
-                      x: item.coordinates.x + variables.x,
-                      y: item.coordinates.y + variables.y,
-                    },
-                  };
-                }
-                return item;
-              }
-            ),
+            coordinates: {
+              x: previousData.payload.coordinates.x + variables.x,
+              y: previousData.payload.coordinates.y + variables.y,
+            },
           },
         };
       },
@@ -81,14 +68,38 @@ const ComponentAction = {
     return { mutate };
   },
 
-  update: (section_id: string) => {
+  updateComponent: (id: string) => {
+    const { mutate } = useMutationData(
+      ["ComponentAction.updateComponent"],
+      async (payload: any) => {
+        const response = await api.patch(`${source}/${id}`, payload);
+        return response.data;
+      },
+      [[`GetProject.getComponent-${id}`]],
+      (previousData: any, variables: any) => {
+        return {
+          ...previousData,
+          payload: {
+            ...previousData.payload,
+            configuration: {
+              ...variables.configuration,
+            },
+          },
+        };
+      },
+      () => {}
+    );
+    return { mutate };
+  },
+
+  update: (id: string) => {
     const { mutate } = useMutationData(
       ["ComponentAction.update"],
       async (payload: any) => {
         const response = await api.patch(`${source}/${payload.id}`, payload);
         return response.data;
       },
-      [[`GetProject.getOneSection-${section_id}`]],
+      [[`GetProject.getComponent-${id}`]],
       (previousData: any, variables: any) => {
         return {
           ...previousData,
@@ -115,32 +126,23 @@ const ComponentAction = {
 
     return { mutate };
   },
-  updateWidthHeight: (section_id: string) => {
+  updateSize: (id: string) => {
     const { mutate } = useMutationData(
-      ["ComponentAction.updateWidthHeight"],
+      ["ComponentAction.updateSize"],
       async (payload: any) => {
         const response = await api.patch(`${source}/${payload.id}`, payload);
         return response.data;
       },
-      [[`GetProject.getOneSection-${section_id}`]],
+      [[`GetProject.getComponent-${id}`]],
       (previousData: any, variables: any) => {
+        console.log("variables", variables);
         return {
           ...previousData,
           payload: {
             ...previousData.payload,
-            components: [...previousData.payload.components].map(
-              (item: any) => {
-                if (item.id === variables.id) {
-                  return {
-                    ...item,
-                    layout: {
-                      ...variables.layout,
-                    },
-                  };
-                }
-                return item;
-              }
-            ),
+            configuration: {
+              ...variables.configuration,
+            },
           },
         };
       },

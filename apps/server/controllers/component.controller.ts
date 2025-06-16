@@ -98,6 +98,7 @@ class ComponentController {
 
       // await redis.del(`page:${component.page}`);
       await redis.del(`section:${component.section}`);
+      await redis.del(`component:${id}`);
       SuccessResponse(res, "Component updated successfully", null, component);
     } catch (error) {
       ErrorResponse(res, "", null);
@@ -116,7 +117,7 @@ class ComponentController {
         return ErrorResponse(res, "Component could not be updated", 400);
 
       // await redis.del(`page:${component.page}`);
-      await redis.del(`section:${component.section}`);
+      await redis.del(`component:${id}`);
       SuccessResponse(res, "Component updated successfully", null, component);
     } catch (error) {
       console.log(error);
