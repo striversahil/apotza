@@ -65,7 +65,9 @@ class SectionController {
         return ErrorResponse(res, "Section could not be updated", 400);
 
       await redis.del(`page:${section.page}`);
-      SuccessResponse(res, "Section updated successfully", null, section);
+      SuccessResponse(res, "Section updated successfully", null, {
+        refetchIds: section.refetchIds,
+      });
     } catch (error) {
       ErrorResponse(res, "", null);
     }
@@ -121,7 +123,7 @@ async function updateContext(
   project_id: string,
   id: string,
   configuration: object
-): Promise<SectionInterface | null> {
+): Promise<any | null> {
   try {
     const section: any = await SectionService.getById(id);
     const prevMatches: any = section?.referencedContext || {};
@@ -148,17 +150,17 @@ async function updateContext(
       configuration
     );
 
-    if (_.isEqual(prevMatches, extractedMatches)) {
-      console.log("No changes in global context, skipping Context update.");
+    // if (_.isEqual(prevMatches, extractedMatches)) {
+    //   console.log("No changes in global context, skipping Context update.");
 
-      const sectionUpdated = await SectionService.update(id, {
-        configuration: updatedConfiguration,
-      });
-      return sectionUpdated ? sectionUpdated : null;
-    }
+    //   const sectionUpdated = await SectionService.update(id, {
+    //     configuration: updatedConfiguration,
+    //   });
+    //   return sectionUpdated ? sectionUpdated : null;
+    // }
 
     // Trying to update so to reduce the number of calls to the database
-    const { newReference } = GlobalContextManager.setContext(
+    const { newReference, refinedBase } = GlobalContextManager.setContext(
       prevReference,
       extractedMatches,
       id
@@ -175,14 +177,22 @@ async function updateContext(
 
     const sectionUpdated = await SectionService.update(id, {
       configuration: updatedConfiguration,
-      referencedContext: extractedMatches,
+      referencedContext: refinedBase,
     });
 
-    const updatedProject = await ProjectService.update(project_id, {
+    const updatedProject: any = await ProjectService.update(project_id, {
       globalContext: cleanedUpReference,
     });
 
-    return sectionUpdated ? sectionUpdated : null;
+    // Id's that need to be refetched after the update
+    const refetchIds = updatedProject?.globalContext[section.name] || [];
+
+    await GlobalContextManager.updateReferencing(project_id, refetchIds);
+
+    return {
+      section: sectionUpdated,
+      refetchIds: refetchIds,
+    };
   } catch (error) {
     console.error("Error in updateContext:", error);
     return null;

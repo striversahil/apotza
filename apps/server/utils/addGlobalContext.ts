@@ -41,13 +41,16 @@ class GlobalContextManager {
    */
   static setContext(
     prevReference: Record<string, any>,
-    uniqueMatches: Array<string>,
+    extractedMatches: Array<string>,
     id: string
   ) {
-    const mappedMatches = uniqueMatches.map((match: string) => {
+    const refinedBase : Array<any> = [];
+    const mappedMatches = extractedMatches.map((match: string) => {
       const prev = prevReference?.[match] || "";
 
       const base = match.split(".")[0] || "";
+
+      refinedBase.push(base);
 
       // Changes Here to be made
       return [base, Array.from(new Set([...prev, id]))];
@@ -62,6 +65,7 @@ class GlobalContextManager {
 
     return {
       newReference,
+      refinedBase
     };
   }
 
@@ -117,9 +121,10 @@ class GlobalContextManager {
   ) {
     const valuedMatches = [...compMatches];
 
+    // Fetching current value of each match in the Start so that we can update easily
     const mappedValues = await Promise.all(
       valuedMatches.map((match: string) => {
-        return currentValue(match.split(".")[0] || "", project_id);
+        return currentValueByName(match.split(".")[0] || "", project_id);
       })
     );
 
@@ -212,6 +217,41 @@ class GlobalContextManager {
       updatedConfiguration: newConfiguration,
     };
   }
+
+  static async updateReferencing(projectId: string, allMatches: Array<string>) {
+    /**
+     * This function updates the referencing of components based on the provided matches.
+     * It iterates through the matches and updates the referencing for each component.
+     *
+     * @param {Array} allMatches - The Array Contain Id's of Referced Componenet to be updated.
+     * @returns {Promise<void>} - A promise that resolves when the referencing is updated.
+     */
+    await Promise.all(
+      allMatches.map(async (id: string) => {
+        const { item, update } = await currentValueById(id);
+        console.log(update);
+
+        if (item) {
+          // Fetching the current configuration of each component
+          const extractedMatches = GlobalContextManager.extractRegex(
+            item.configuration
+          ).extractedMatches;
+
+          const updatedValue = await GlobalContextManager.setConfigValue(
+            projectId,
+            extractedMatches,
+            item.configuration
+          );
+          if (updatedValue) {
+            console.log(update);
+            const updated = await update({
+              configuration: updatedValue.updatedConfiguration,
+            });
+          }
+        }
+      })
+    );
+  }
 }
 
 export default GlobalContextManager;
@@ -225,23 +265,44 @@ export default GlobalContextManager;
 //   ],
 //   something: [ '59e4e601-fd41-42a1-8d64-bb5713b6d834' ]
 // }
+const services = [
+  StepBlockService,
+  ComponentService,
+  SectionService,
+  CodeBlockService,
+  PageService,
+];
 
-const currentValue = async (name: string, projectId: string): Promise<any> => {
+const currentValueByName = async (
+  name: string,
+  projectId: string
+): Promise<any> => {
   // A Priority List of Services to check for the name
   // If the name is found in any of these services, we will return the first match
-  const services = [
-    StepBlockService,
-    ComponentService,
-    SectionService,
-    CodeBlockService,
-    PageService,
-  ];
   for (const service of services) {
     const item = await service.getByName(name, projectId);
     if (item) {
       return item;
     }
   }
+};
+
+const currentValueById = async (id: string): Promise<any> => {
+  // A Priority List of Services to check for the ID
+  for (const service of services) {
+    const item = await service.getById(id);
+    const update = async (clause = {}) => {
+      const value = await service.update(id, clause);
+    };
+
+    if (item) {
+      return {
+        item: item,
+        update: update,
+      };
+    }
+  }
+  return null;
 };
 
 const typeRegexMap = (type: string, name: string) => {

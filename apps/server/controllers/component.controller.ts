@@ -118,7 +118,9 @@ class ComponentController {
 
       // await redis.del(`page:${component.page}`);
       await redis.del(`component:${id}`);
-      SuccessResponse(res, "Component updated successfully", null, component);
+      SuccessResponse(res, "Component updated successfully", null, {
+        refetchIds: component.refetchIds,
+      });
     } catch (error) {
       console.log(error);
       ErrorResponse(res, "", null);
@@ -189,7 +191,7 @@ async function updateContext(
   project_id: string,
   id: string,
   configuration: object
-): Promise<ComponentInterface | null> {
+): Promise<any | null> {
   try {
     const component: any = await ComponentService.getById(id);
     const prevMatches: any = component?.referencedContext || {};
@@ -216,16 +218,16 @@ async function updateContext(
       configuration
     );
 
-    if (_.isEqual(prevMatches, extractedMatches)) {
-      console.log("No changes in global context, skipping Context update.");
+    // if (_.isEqual(prevMatches, extractedMatches)) {
+    //   console.log("No changes in global context, skipping Context update.");
 
-      const compoUpdated = await ComponentService.update(id, {
-        configuration: updatedConfiguration,
-      });
-      return compoUpdated ? compoUpdated : null;
-    }
+    //   const compoUpdated = await ComponentService.update(id, {
+    //     configuration: updatedConfiguration,
+    //   });
+    //   return compoUpdated ? compoUpdated : null;
+    // }
     // Trying to update so to reduce the number of calls to the database
-    const { newReference } = GlobalContextManager.setContext(
+    const { newReference, refinedBase } = GlobalContextManager.setContext(
       prevReference,
       extractedMatches,
       id
@@ -242,14 +244,22 @@ async function updateContext(
 
     const compoUpdated = await ComponentService.update(id, {
       configuration: updatedConfiguration,
-      referencedContext: extractedMatches,
+      referencedContext: refinedBase,
     });
 
-    const updatedProject = await ProjectService.update(project_id, {
+    const updatedProject: any = await ProjectService.update(project_id, {
       globalContext: cleanedUpReference,
     });
 
-    return compoUpdated ? compoUpdated : null;
+    // Id's that need to be refetched after the update
+    const refetchIds = updatedProject?.globalContext[component.name] || [];
+
+    await GlobalContextManager.updateReferencing(project_id, refetchIds);
+
+    return {
+      component: compoUpdated,
+      refetchIds: refetchIds,
+    };
   } catch (error) {
     console.error("Error in updateContext:", error);
     return null;

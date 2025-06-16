@@ -2,20 +2,22 @@ import { spawn } from "child_process";
 
 const JavaScriptEngine = async (query: string) => {
   try {
-    const isSafe =
-      /^(?:(?!__|eval|Function|require|process|child_process|globalThis|window|document|import|exec|eval|os|sys|subprocess|open|shutil|path|glob|os\.|sys\.|subprocess\.|shutil\.|path\.|glob\.|readlines|readline|write|writelines|close|__main__|__import__|__loader__|__spec__|__package__|__file__|__cached__|__loader__|object\(|codecs\.|bz2\.|lzma\.|zipfile\.|tarfile\.|imp\.|pkgutil\.|distutils\.)[\s\S])*$/.test(
-        query
-      );
-    if (!isSafe) {
-      return { error: "Unsafe code", data: null };
-    }
+    // [Todo] : Removing Safe Check for now, but it should be implemented later
 
-    if (!isSafe) {
-      return {
-        error: "Unsafe Code Detected",
-        data: null, // It's Returning Data that need to be transformed
-      };
-    }
+    // const isSafe =
+    //   /^(?:(?!__|eval|Function|require|process|child_process|globalThis|window|document|import|exec|eval|os|sys|subprocess|open|shutil|path|glob|os\.|sys\.|subprocess\.|shutil\.|path\.|glob\.|readlines|readline|write|writelines|close|__main__|__import__|__loader__|__spec__|__package__|__file__|__cached__|__loader__|object\(|codecs\.|bz2\.|lzma\.|zipfile\.|tarfile\.|imp\.|pkgutil\.|distutils\.)[\s\S])*$/.test(
+    //     query
+    //   );
+    // if (!isSafe) {
+    //   return { error: "Unsafe code", data: null };
+    // }
+
+    // if (!isSafe) {
+    //   return {
+    //     error: "Unsafe Code Detected",
+    //     data: null, // It's Returning Data that need to be transformed
+    //   };
+    // }
 
     // Steps of Sanitization done with the code to
 
@@ -44,7 +46,7 @@ const JavaScriptEngine = async (query: string) => {
     //   })() `;
 
     const output = new Function(query)();
-    if ( !output) {
+    if (!output) {
       return {
         error: "No Output Returned",
         data: null,

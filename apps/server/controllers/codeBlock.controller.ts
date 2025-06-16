@@ -121,7 +121,9 @@ class CodeBlockController {
         return ErrorResponse(res, "CodeBlock could not be updated", 400);
 
       await redis.del(`project:${codeBlock.project}`);
-      SuccessResponse(res, "CodeBlock updated successfully", null, codeBlock);
+      SuccessResponse(res, "CodeBlock updated successfully", null, {
+        refetchIds: codeBlock.refetchIds,
+      });
     } catch (error) {
       ErrorResponse(res, "", null);
     }
@@ -244,7 +246,7 @@ async function updateContext(
   project_id: string,
   id: string,
   configuration: object
-): Promise<CodeBlockInterface | null> {
+): Promise<any | null> {
   try {
     const codeblock: any = await CodeBlockService.getById(id);
     const prevMatches: any = codeblock?.referencedContext || {};
@@ -271,17 +273,17 @@ async function updateContext(
       configuration
     );
 
-    if (_.isEqual(prevMatches, extractedMatches)) {
-      console.log("No changes in global context, skipping Context update.");
+    // if (_.isEqual(prevMatches, extractedMatches)) {
+    //   console.log("No changes in global context, skipping Context update.");
 
-      const codeBlock = await CodeBlockService.update(id, {
-        configuration: updatedConfiguration,
-      });
-      return codeBlock ? codeBlock : null;
-    }
+    //   const codeBlock = await CodeBlockService.update(id, {
+    //     configuration: updatedConfiguration,
+    //   });
+    //   return codeBlock ? codeBlock : null;
+    // }
 
     // Trying to update so to reduce the number of calls to the database
-    const { newReference } = GlobalContextManager.setContext(
+    const { newReference, refinedBase } = GlobalContextManager.setContext(
       prevReference,
       extractedMatches,
       id
@@ -298,14 +300,22 @@ async function updateContext(
 
     const codeBlock = await CodeBlockService.update(id, {
       configuration: updatedConfiguration,
-      referencedContext: extractedMatches,
+      referencedContext: refinedBase,
     });
 
-    const updatedProject = await ProjectService.update(project_id, {
+    const updatedProject: any = await ProjectService.update(project_id, {
       globalContext: cleanedUpReference,
     });
 
-    return codeBlock ? codeBlock : null;
+    // Id's that need to be refetched after the update
+    const refetchIds = updatedProject?.globalContext[codeblock.name] || [];
+
+    await GlobalContextManager.updateReferencing(project_id, refetchIds);
+
+    return {
+      codeblock: codeBlock,
+      refetchIds: refetchIds,
+    };
   } catch (error) {
     console.error("Error in updateContext:", error);
     return null;

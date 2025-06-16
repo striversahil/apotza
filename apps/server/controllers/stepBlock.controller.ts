@@ -6,6 +6,7 @@ import GlobalContextManager from "../utils/addGlobalContext";
 import ProjectService from "../service/project.service";
 import _ from "lodash";
 import { StepBlockInterface } from "../schema";
+import { A } from "@electric-sql/pglite/dist/pglite-Csk75SCB";
 
 class StepBlockController {
   static async getStep(req: Request, res: Response) {
@@ -111,11 +112,15 @@ class StepBlockController {
       if (!stepBlock)
         return ErrorResponse(res, "StepBlock could not be updated", 400);
 
+      const refetchIds = stepBlock?.refetchIds || [];
+
       // await redis.del(`codeBlock:${stepBlock.codeblock}`);
       await redis.del(`codeBlock:${stepBlock.codeblock}`); // needed to done for initial capture of codeblock by client
       await redis.del(`stepBlock:${id}`);
 
-      SuccessResponse(res, "StepBlock updated successfully", null, stepBlock);
+      SuccessResponse(res, "StepBlock updated successfully", null, {
+        refetchIds: refetchIds,
+      });
     } catch (error) {
       console.error("Error in StepBlockController Update:", error);
       ErrorResponse(res, "", null);
@@ -154,7 +159,7 @@ async function updateContext(
   project_id: string,
   id: string,
   configuration: object
-): Promise<StepBlockInterface | null> {
+): Promise<any | null> {
   try {
     const stepblock: any = await StepBlockService.getById(id);
     const prevMatches: any = stepblock?.referencedContext || {};
@@ -184,14 +189,22 @@ async function updateContext(
     // if (_.isEqual(prevMatches, extractedMatches)) {
     //   console.log("No changes in global context, skipping Context update.");
 
+    //   const project: any = await ProjectService.getById(project_id);
+    //   const refetchIds = project?.globalContext[stepblock.name] || [];
+
     //   const stepBlock = await StepBlockService.update(id, {
     //     configuration: updatedConfiguration,
     //   });
-    //   return stepBlock ? stepBlock : null;
+    //   return stepBlock
+    //     ? {
+    //         stepblock: stepBlock,
+    //         refetchIds: refetchIds,
+    //       }
+    //     : null;
     // }
 
     // Trying to update so to reduce the number of calls to the database
-    const { newReference } = GlobalContextManager.setContext(
+    const { newReference, refinedBase } = GlobalContextManager.setContext(
       prevReference,
       extractedMatches,
       id
@@ -208,14 +221,22 @@ async function updateContext(
 
     const stepBlock = await StepBlockService.update(id, {
       configuration: updatedConfiguration,
-      referencedContext: extractedMatches,
+      referencedContext: refinedBase,
     });
 
-    const updatedProject = await ProjectService.update(project_id, {
+    const updatedProject: any = await ProjectService.update(project_id, {
       globalContext: cleanedUpReference,
     });
 
-    return stepBlock ? stepBlock : null;
+    // Id's that need to be refetched after the update
+    const refetchIds = updatedProject?.globalContext[stepblock.name] || [];
+
+    await GlobalContextManager.updateReferencing(project_id, refetchIds);
+
+    return {
+      stepblock: stepBlock,
+      refetchIds: refetchIds,
+    };
   } catch (error) {
     console.error("Error in updateContext:", error);
     return null;
