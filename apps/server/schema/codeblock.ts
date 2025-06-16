@@ -19,7 +19,8 @@ export const CodeBlock = pgTable("codeblock", {
     onUpdate: "cascade",
   }),
   name: text("name").notNull(),
-  stepblockContext: jsonb("stepblock_context").notNull().default({}),
+  referencedContext: jsonb("referenced_context").notNull().default([]),
+  configuration: jsonb("configuration").notNull().default({}),
   response: jsonb("output"),
   error: jsonb("error"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
@@ -32,11 +33,16 @@ export const StepBlock = pgTable("stepblock", {
   order_no: serial("order_no").notNull(),
   name: text("name").notNull(),
   type: text("type").notNull(),
+  project: uuid("project_id").references(() => Project.id, {
+    onDelete: "cascade",
+    onUpdate: "cascade",
+  }),
   codeblock: uuid("codeblock_id").references(() => CodeBlock.id, {
     onDelete: "cascade",
     onUpdate: "cascade",
   }),
-  configuration: jsonb("config").notNull().default({}),
+  referencedContext: jsonb("referenced_context").notNull().default([]),
+  configuration: jsonb("configuration").notNull().default({}),
   error: jsonb("error"),
   response: jsonb("response"),
   stdout: jsonb("stdout"),
@@ -57,5 +63,9 @@ export const stepBlockRelations = relations(StepBlock, ({ one, many }) => ({
   codeBlock: one(CodeBlock, {
     fields: [StepBlock.codeblock],
     references: [CodeBlock.id],
+  }),
+  project: one(Project, {
+    fields: [StepBlock.project],
+    references: [Project.id],
   }),
 }));

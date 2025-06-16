@@ -6,6 +6,7 @@ import { and, desc, eq } from "drizzle-orm";
 import { Component, ComponentInterface, Page, Section } from "../schema";
 import { db } from "../database";
 import { MatchComponent } from "@repo/common";
+import _ from "lodash";
 
 class ComponentService {
   static async getById(id: string): Promise<ComponentInterface | null> {
@@ -23,6 +24,7 @@ class ComponentService {
       });
 
       if (!component) return null;
+      // Fetch all Additional Sections related to the component
       const compnoentWithSections = {
         ...component,
         sections,
@@ -30,6 +32,25 @@ class ComponentService {
 
       return compnoentWithSections;
     } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
+  static async getByName(
+    name: string,
+    projectId: string
+  ): Promise<ComponentInterface | null> {
+    try {
+      const component = await this.getOneByConstaint(
+        and(eq(Component.name, name), eq(Component.project, projectId)),
+        {
+          createdAt: "desc",
+        }
+      );
+      console.log("component", component, name, projectId);
+      return component ? component : null;
+    } catch (error) {
+      console.log(error);
       throw new Error(error as string);
     }
   }
@@ -52,25 +73,25 @@ class ComponentService {
     }
   }
 
-  static async create(payload: any): Promise<ComponentInterface | null> {
+  static async create(
+    projectId: string,
+    payload: any
+  ): Promise<ComponentInterface | null> {
     try {
       // console.log(payload);
       const compDefault = MatchComponent[payload.name];
 
       const prevComponent = await this.getOneByConstaint(
-        and(
-          eq(Component.section, payload.section),
-          eq(Component.component, payload.name)
-        ),
+        and(eq(Component.project, projectId)),
         desc(Component.createdAt)
       );
 
-      let name = `${payload.name} 1`; // Adding default name to be "payload.name 1"
+      let name = `${_.capitalize(payload.name)}1`; // Adding default name to be "payload.name 1"
       let order_no = 1;
 
       if (prevComponent) {
         const prevCodeNo = prevComponent.order_no;
-        name = `${payload.name} ${prevCodeNo + 1}`;
+        name = `${_.capitalize(payload.name)}${prevCodeNo + 1}`;
         order_no = prevCodeNo + 1;
       }
 
@@ -79,9 +100,10 @@ class ComponentService {
         .values({
           ...payload,
           name: name,
+          project: projectId,
           component: payload.name,
           order_no: order_no,
-          ...compDefault,
+          configuration: { ...compDefault },
         })
         .returning();
       return component ? component : null;
@@ -91,7 +113,7 @@ class ComponentService {
     }
   }
 
-  static async updateComponent(
+  static async update(
     id: string,
     clause = {}
   ): Promise<ComponentInterface | null> {

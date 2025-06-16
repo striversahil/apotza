@@ -8,6 +8,7 @@ import {
 import _ from "lodash";
 import ComponentAction from "@/actions/project/component";
 import { useFocusWithin } from "@mantine/hooks";
+import SectionAction from "@/actions/project/section";
 
 /**
  * A custom hook that manages the state of a component in a context-aware manner.
@@ -34,7 +35,7 @@ import { useFocusWithin } from "@mantine/hooks";
  * @example
  * **/
 export const useContextSave = (initialValue: ComponentInterface) => {
-  const [currentValue, setCurrentValue] = React.useState(initialValue);
+  const [currentValue, setCurrentValue] = React.useState<any>(initialValue);
 
   const { setComponent = () => {}, Component: realComponent } =
     useComponent() || {};
@@ -45,9 +46,12 @@ export const useContextSave = (initialValue: ComponentInterface) => {
     useUpdatedComponent() || {};
   // Setting the Component State from the Context
 
-  const { setPrevComponent = () => {} } = usePrevComponent() || {};
+  // const { setPrevComponent = () => {} } = usePrevComponent() || {};
 
-  const { mutate } = ComponentAction.delete(initialValue?.section ?? "");
+  const { mutate: deleteComponent } =
+    ComponentAction.delete(activeComponent?.section ?? "") || {};
+
+  const { mutate: deleteSection } = SectionAction.delete();
 
   // useEffect hook to update the currentValue state whenever the component or initialValue changes
   useEffect(() => {
@@ -59,34 +63,40 @@ export const useContextSave = (initialValue: ComponentInterface) => {
   }, [activeComponent, initialValue]);
 
   // Adding Delete Functionality for the Active Component
-  useEffect(() => {
-    // console.log("focus", focused);
-    // if (!focused) return;
-    const _delete = (e: KeyboardEvent) => {
-      if (e.key !== "Delete") return;
-      if (
-        currentValue?.type === "component" &&
-        currentValue?.id === activeComponent?.id
-      ) {
-        mutate({
-          id: currentValue.id,
-        });
-        setComponent(null);
-        setUpdatedComponent(null);
-      }
-    };
-    window.addEventListener("keydown", _delete);
-    return () => {
-      window.removeEventListener("keydown", _delete);
-    };
-  }, [currentValue, activeComponent]);
+  // Important: This functionality is currently commented out due to lack of UX support.
+  // useEffect(() => {
+  //   // console.log("focus", focused);
+  //   // if (!focused) return;
+  //   const _delete = (e: KeyboardEvent) => {
+  //     if (e.key !== "Delete") return;
+  //     if (initialValue?.id === activeComponent?.id) {
+  //       switch (initialValue?.type) {
+  //         case "component":
+  //           // console.log("Deleting Component", initialValue?.id);
+  //           deleteComponent(initialValue?.id);
+  //         case "section":
+  //           // console.log("Deleting Section", initialValue?.id);
+  //           deleteSection(initialValue?.id);
+  //         default:
+  //           break;
+  //       }
+  //       setComponent(null);
+  //       setUpdatedComponent(null);
+  //     }
+  //   };
+  //   window.addEventListener("keydown", _delete);
+  //   return () => {
+  //     window.removeEventListener("keydown", _delete);
+  //   };
+  // }, [currentValue, activeComponent]);
 
+  // Setting the Component State
   const setState = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     if (JSON.stringify(activeComponent) !== JSON.stringify(initialValue)) {
       console.log("Component Clicked");
       if (JSON.stringify(activeComponent) !== JSON.stringify(realComponent)) {
-        setPrevComponent(activeComponent ?? null);
+        // setPrevComponent(activeComponent ?? null);
       }
       setComponent(initialValue);
       setUpdatedComponent(initialValue);

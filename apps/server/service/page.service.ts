@@ -1,6 +1,12 @@
 import { db } from "../database";
 import { and, desc, eq } from "drizzle-orm";
-import { Component, Page, PageInterface, ProjectInterface } from "../schema";
+import {
+  Component,
+  Page,
+  PageInterface,
+  ProjectInterface,
+  Section,
+} from "../schema";
 
 export class PageService {
   static async getOne(
@@ -13,14 +19,18 @@ export class PageService {
       if (page_id) {
         page = await db.query.Page.findFirst({
           with: {
-            sections: true,
+            sections: {
+              orderBy: [Section.createdAt],
+            },
           },
           where: eq(Page.id, page_id),
         });
       } else {
         page = await db.query.Page.findFirst({
           with: {
-            sections: true,
+            sections: {
+              orderBy: [Section.createdAt],
+            },
           },
           where: and(eq(Page.name, name), eq(Page.project, project_id)),
         });
@@ -41,6 +51,39 @@ export class PageService {
       return pageWithComponent;
     } catch (error) {
       console.log(error);
+      throw new Error(error as string);
+    }
+  }
+
+    static async getByName(
+      name: string,
+      projectId: string,
+    ) : Promise<PageInterface | null> {
+      try {
+        const page = await this.getOneByConstaint(and(eq(Page.name, name) , eq(Page.project , projectId)), {
+          createdAt: "desc",
+        });
+        return page ? page : null;
+        
+      } catch (error) {
+        console.log(error);
+        throw new Error(error as string);
+      }
+    }
+
+  static async getById(id: string): Promise<PageInterface | null> {
+    try {
+      const page = await db.query.Page.findFirst({
+        with: {
+          sections: {
+            orderBy: [Section.createdAt],
+          },
+        },
+        where: eq(Page.id, id),
+      });
+      
+      return page ? page : null;
+    } catch (error) {
       throw new Error(error as string);
     }
   }

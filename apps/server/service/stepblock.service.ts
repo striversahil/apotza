@@ -19,6 +19,24 @@ class StepBlockService {
     }
   }
 
+  static async getByName(
+    name: string,
+    projectId: string
+  ): Promise<StepBlockInterface | null> {
+    try {
+      const stepblock = await this.getOneByConstaint(
+        and(eq(StepBlock.name, name), eq(StepBlock.project, projectId)),
+        {
+          createdAt: "desc",
+        }
+      );
+      return stepblock ? stepblock : null;
+    } catch (error) {
+      console.log(error);
+      throw new Error(error as string);
+    }
+  }
+
   static async getOneByConstaint(
     where?: any,
     orderBy?: any
@@ -37,24 +55,26 @@ class StepBlockService {
   }
 
   static async create(
+    project_id: string,
     codeBlock_id: string,
     type: string
   ): Promise<StepBlockInterface | null> {
     try {
       const payload = stepBlockDefault(type);
       if (!payload) return null;
+      // console.log("payload",);
 
       const prevStepBlock = await this.getOneByConstaint(
-        and(eq(StepBlock.codeblock, codeBlock_id), eq(StepBlock.type, type)),
+        and(eq(StepBlock.project, project_id), eq(StepBlock.type, type)),
         desc(StepBlock.createdAt)
       );
 
-      let name = `${payload.name} 1`; // Adding default name to be "payload.name 1"
+      let name = `${payload.name}1`; // Adding default name to be "payload.name 1"
       let order_no = 1;
 
       if (prevStepBlock) {
         const prevCodeNo = prevStepBlock.order_no;
-        name = `${payload.name} ${prevCodeNo + 1}`;
+        name = `${payload.name}${prevCodeNo + 1}`;
         order_no = prevCodeNo + 1;
       }
       const [newStepBlock] = await db
@@ -62,6 +82,7 @@ class StepBlockService {
         .values({
           name: name,
           type: type,
+          project: project_id,
           codeblock: codeBlock_id,
           order_no: order_no,
           configuration: payload.configuration,
@@ -71,17 +92,17 @@ class StepBlockService {
         })
         .returning();
 
-      if (!newStepBlock) return null;
+      // if (!newStepBlock) return null;
 
-      // Updating the codeBlock context with the new stepBlock
-      const codeBlock: any = await CodeBlockService.getById(codeBlock_id);
-      if (!codeBlock) return null;
-      await CodeBlockService.update(codeBlock_id, {
-        stepblockContext: {
-          ...codeBlock?.stepblockContext,
-          [newStepBlock.id]: {},
-        },
-      });
+      // // Updating the codeBlock context with the new stepBlock
+      // const codeBlock: any = await CodeBlockService.getById(codeBlock_id);
+      // if (!codeBlock) return null;
+      // await CodeBlockService.update(codeBlock_id, {
+      //   stepblockContext: {
+      //     ...codeBlock?.stepblockContext,
+      //     [newStepBlock.id]: {},
+      //   },
+      // });
 
       return newStepBlock ? newStepBlock : null;
     } catch (error) {
@@ -205,17 +226,6 @@ class StepBlockService {
         .returning();
       if (!stepBlock) return null;
 
-      // Updating the codeBlock context with the new stepBlock
-      const codeBlock: any = await CodeBlockService.getById(
-        stepBlock.codeblock!
-      );
-      if (!codeBlock) return null;
-      const updatedCodeBlock = await CodeBlockService.update(codeBlock.id, {
-        stepblockContext: codeBlock?.stepblockContext.filter(
-          (item: any) => item !== stepBlock.id
-        ),
-      });
-      if (!updatedCodeBlock) return null;
       return stepBlock ? stepBlock : null;
     } catch (error) {
       throw new Error(error as string);

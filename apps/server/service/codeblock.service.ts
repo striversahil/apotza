@@ -43,6 +43,24 @@ class CodeBlockService {
     }
   }
 
+  static async getByName(
+    name: string,
+    projectId: string
+  ): Promise<CodeBlockInterface | null> {
+    try {
+      const codeBlock = await this.getOneByConstaint(
+        and(eq(CodeBlock.name, name), eq(CodeBlock.project, projectId)),
+        {
+          createdAt: "desc",
+        }
+      );
+      return codeBlock ? codeBlock : null;
+    } catch (error) {
+      console.log(error);
+      throw new Error(error as string);
+    }
+  }
+
   static async create(
     project_id: string,
     _name: string,
@@ -54,13 +72,13 @@ class CodeBlockService {
         desc(CodeBlock.createdAt)
       );
 
-      let name = `Code_API 1`; // Adding default name to be "CodeBlock 1"
+      let name = `API1`; // Adding default name to be "CodeBlock 1"
       let order_no = 1;
 
       if (prevCodeblock) {
         const prevCodeNo = prevCodeblock.order_no;
         order_no = prevCodeNo + 1;
-        name = `Code_API ${prevCodeNo + 1}`;
+        name = `API${prevCodeNo + 1}`;
       }
 
       const [codeBlock] = await db
@@ -76,7 +94,11 @@ class CodeBlockService {
 
       if (!codeBlock) return null;
       if (language) {
-        const stepBlock = await StepBlockService.create(codeBlock.id, language);
+        const stepBlock = await StepBlockService.create(
+          project_id,
+          codeBlock.id,
+          language
+        );
         if (!stepBlock) return null;
         return codeBlock;
       }

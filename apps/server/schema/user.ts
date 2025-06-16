@@ -10,8 +10,8 @@ import {
   timestamp,
   uuid,
 } from "drizzle-orm/pg-core";
-import { Page } from "./component";
-import { CodeBlock } from "./codeblock";
+import { Component, Page, Section } from "./component";
+import { CodeBlock, StepBlock } from "./codeblock";
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++ User Identity Table +++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -65,8 +65,7 @@ export const Project = pgTable("project", {
     onDelete: "cascade",
     onUpdate: "cascade",
   }),
-  componentContext: jsonb("component_context").notNull().default({}),
-  codeblockContext: jsonb("codeblock_context").notNull().default({}),
+  globalContext: jsonb("global_context").notNull().default({}),
   name: text("name").notNull(),
   details: text("details").notNull().default("Some details about this project"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
@@ -102,6 +101,9 @@ export const projectRelations = relations(Project, ({ one, many }) => ({
   }),
   codeblocks: many(CodeBlock),
   pages: many(Page),
+  components: many(Component),
+  sections: many(Section),
+  stepblocks: many(StepBlock),
 }));
 
 // const workspaceWithRelations = await db

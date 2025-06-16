@@ -2,7 +2,6 @@ import { cn } from "@/lib/utils";
 import { useDroppable } from "@dnd-kit/core";
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
-import DeleteSection from "./DeleteSection";
 import AddSection from "./AddSection";
 import DraggableComponent from "../_Component";
 import GetProject from "../../../actions/project";
@@ -56,9 +55,11 @@ const Section = ({ value }: Props) => {
       // onMouseMove={onMouseHover}
       style={{
         minHeight: "300px",
-        height: currentValue.component_id ? "auto" : "500px", // Later gonna be dynamic
-        borderColor: currentValue.appearance.borderColor,
-        visibility: currentValue.layout.visible ? "visible" : "hidden",
+        height: "500px", // Later gonna be dynamic
+        // borderColor: currentValue.configuration.appearance.borderColor,
+        visibility: currentValue.configuration.layout.visible
+          ? "visible"
+          : "hidden",
       }}
       onClick={(e) => setState(e)}
     >

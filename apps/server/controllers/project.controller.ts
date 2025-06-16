@@ -58,7 +58,7 @@ class ProjectController {
       }
       // Todo : Add Default Section with component and section for Template
       for (const section of TemplateInit.sections) {
-        const section_ = await SectionService.create(project.id, null);
+        const section_ = await SectionService.create(project.id, null, null);
         if (!section_)
           return ErrorResponse(res, "Section could not be created", 400);
         // for (const component of section.components) {

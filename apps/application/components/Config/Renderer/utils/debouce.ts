@@ -17,7 +17,7 @@ const useDebouncedUpdate = (
     const timer = setTimeout(() => {
       const newValue = _.set(
         _.cloneDeep(UpdatedComponent),
-        route.join("."),
+        `configuration.${route.join(".")}`,
         value
       );
       setUpdatedComponent(newValue);

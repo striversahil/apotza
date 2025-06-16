@@ -21,7 +21,7 @@ export const Component = ({
       style={{
         padding: `${layout.padding}px`,
         overflow: `${layout.scrollOverflow}`,
-        visibility: layout.visible.value ? "visible" : "hidden",
+        visibility: layout.visible ? "visible" : "hidden",
         alignItems: `${appearance.verticalAlign}`,
         justifyContent: `${appearance.horizontalAlign}`,
         backgroundColor: `${appearance.backgroundColor}`,

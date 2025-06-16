@@ -13,9 +13,13 @@ async function PythonEngine(query: string) {
       return { error: "Unsafe code", data: null };
     }
 
+    const formattedQuery = query
+      .replace(/\btrue\b/g, "True")
+      .replace(/\bfalse\b/g, "False");
+
     // Calling Python Function
-    const data = await callPythonFunction(query);
-    if ( !data) {
+    const data = await callPythonFunction(formattedQuery);
+    if (!data) {
       return {
         error: "No Output Returned",
         data: null,
@@ -47,7 +51,7 @@ export default PythonEngine;
 
 // Making Wrapper Pythonic Function to Execute Python Code
 const wrapperPython = (query = "") => {
-
+  console.log("Query", query);
   return `
 import json
 

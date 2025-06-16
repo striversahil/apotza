@@ -1,6 +1,4 @@
 import { useMutationData } from "@/hooks/useMutation";
-import { useQueryData } from "@/hooks/useQueryData";
-import { toast } from "sonner";
 import api from "..";
 const source = "/component";
 
@@ -101,10 +99,9 @@ const ComponentAction = {
                 if (item.id === variables.id) {
                   return {
                     ...item,
-                    content: variables.content ?? item.content,
-                    appearance: variables.appearance ?? item.appearance,
-                    layout: variables.layout ?? item.layout,
-                    interaction: variables.interaction ?? item.interaction,
+                    configuration: {
+                      ...variables.configuration,
+                    },
                   };
                 }
                 return item;

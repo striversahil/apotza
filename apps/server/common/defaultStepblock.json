@@ -11,7 +11,7 @@
     "stdout": "Hello World"
   },
   "javascript": {
-    "name": "JavaScript",
+    "name": "Javascript",
     "configuration": {
       "code": {
         "config": "console.log('Hello World')",
@@ -22,7 +22,7 @@
     "stdout": "Hello World"
   },
   "graphql": {
-    "name": "GraphQL",
+    "name": "Graphql",
     "configuration": {
       "code": {
         "config": "query {\n  user(id: \"1\") {\n    id\n    name\n    email\n  }\n}",
@@ -51,7 +51,7 @@
     "stdout": "Hello World"
   },
   "rest": {
-    "name": "REST API",
+    "name": "REST",
     "configuration": {
       "endpoint": {
         "config": "https://jsonplaceholder.typicode.com/posts",

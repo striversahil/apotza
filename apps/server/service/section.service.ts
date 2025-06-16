@@ -18,6 +18,24 @@ class SectionService {
     }
   }
 
+  static async getByName(
+    name: string,
+    projectId: string
+  ): Promise<SectionInterface | null> {
+    try {
+      const section = await this.getOneByConstaint(
+        and(eq(Section.name, name), eq(Section.project, projectId)),
+        {
+          createdAt: "desc",
+        }
+      );
+      return section ? section : null;
+    } catch (error) {
+      console.log(error);
+      throw new Error(error as string);
+    }
+  }
+
   static async getOneByConstaint(
     where: any,
     orderBy?: any
@@ -37,31 +55,32 @@ class SectionService {
   }
 
   static async create(
+    projectId: string,
     page_id: string | null,
     component_id: string | null
   ): Promise<SectionInterface | null> {
     try {
-      const conditions = [];
+      // const conditions = [];
 
-      if (page_id) {
-        conditions.push(eq(Section.page, page_id));
-      }
+      // if (page_id) {
+      //   conditions.push(eq(Section.page, page_id));
+      // }
 
-      if (component_id) {
-        conditions.push(eq(Section.component_id, component_id));
-      }
+      // if (component_id) {
+      //   conditions.push(eq(Section.component_id, component_id));
+      // }
 
       const prevSection = await this.getOneByConstaint(
-        conditions.length > 1 ? or(...conditions) : conditions[0],
+        eq(Section.project, projectId),
         desc(Section.createdAt)
       );
 
-      let name = `Section 1`; // Adding default name to be "Section 1"
+      let name = `Section1`; // Adding default name to be "Section 1"
       let order_no = 1;
 
       if (prevSection) {
         const prevCodeNo = prevSection.order_no;
-        name = `Section ${prevCodeNo + 1}`;
+        name = `Section${prevCodeNo + 1}`;
         order_no = prevCodeNo + 1;
       }
 
@@ -70,15 +89,31 @@ class SectionService {
         .values({
           name: name,
           page: page_id ?? null,
+          project: projectId,
           component_id: component_id ?? null,
           order_no: order_no,
-          layout: sectionDefault.layout,
-          appearance: sectionDefault.appearance,
+          configuration: {
+            layout: sectionDefault.layout,
+            appearance: sectionDefault.appearance,
+          },
         })
         .returning();
       return section ? section : null;
     } catch (error) {
       console.log(error);
+      throw new Error(error as string);
+    }
+  }
+
+  static async update(section_id: string, clause: {}) {
+    try {
+      const [section] = await db
+        .update(Section)
+        .set(clause)
+        .where(eq(Section.id, section_id))
+        .returning();
+      return section ? section : null;
+    } catch (error) {
       throw new Error(error as string);
     }
   }
