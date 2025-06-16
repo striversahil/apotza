@@ -127,9 +127,25 @@ class ComponentController {
   static async deleteComponent(req: Request, res: Response) {
     try {
       const { id } = req.params;
+      const project_id = req.cookies.project_id;
       if (!id) return ErrorResponse(res, "Component does not exist", 404);
-      const component = await ComponentService.delete(id);
+
+      const component = await ComponentService.getById(id);
       if (!component)
+        return ErrorResponse(res, "StepBlock could not be fetched", 404);
+
+      const project = await ProjectService.getById(project_id);
+
+      const globalContext: any = project?.globalContext || {};
+
+      delete globalContext[component.name];
+
+      await ProjectService.update(project_id, {
+        globalContext: globalContext,
+      });
+
+      const componentDelete = await ComponentService.delete(id);
+      if (!componentDelete)
         return ErrorResponse(res, "Component could not be deleted", 404);
 
       // await redis.del(`page:${component.page}`);

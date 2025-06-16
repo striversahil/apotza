@@ -130,7 +130,23 @@ class CodeBlockController {
   static async deleteCodeblock(req: Request, res: Response) {
     try {
       const { id } = req.params;
+      const project_id = req.cookies.project_id;
       if (!id) return ErrorResponse(res, "CodeBlock does not exist", 404);
+
+      const codeblock = await CodeBlockService.getById(id);
+      if (!codeblock)
+        return ErrorResponse(res, "StepBlock could not be fetched", 404);
+
+      const project = await ProjectService.getById(project_id);
+
+      const globalContext: any = project?.globalContext || {};
+
+      delete globalContext[codeblock.name];
+
+      await ProjectService.update(project_id, {
+        globalContext: globalContext,
+      });
+
       const codeBlock = await CodeBlockService.delete(id);
       if (!codeBlock)
         return ErrorResponse(res, "CodeBlock could not be deleted", 404);

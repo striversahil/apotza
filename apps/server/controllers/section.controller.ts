@@ -74,9 +74,25 @@ class SectionController {
   static async deleteSection(req: Request, res: Response) {
     try {
       const { id } = req.params;
+      const project_id = req.cookies.project_id;
       if (!id) return ErrorResponse(res, "Section does not exist", 404);
-      const section = await SectionService.delete(id);
+
+      const section = await SectionService.getById(id);
       if (!section)
+        return ErrorResponse(res, "StepBlock could not be fetched", 404);
+
+      const project = await ProjectService.getById(project_id);
+
+      const globalContext: any = project?.globalContext || {};
+
+      delete globalContext[section.name];
+
+      await ProjectService.update(project_id, {
+        globalContext: globalContext,
+      });
+
+      const sectionDeleted = await SectionService.delete(id);
+      if (!sectionDeleted)
         return ErrorResponse(res, "Section could not be deleted", 404);
 
       await redis.del(`page:${section.page}`);

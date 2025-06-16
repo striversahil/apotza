@@ -47,8 +47,10 @@ class GlobalContextManager {
     const mappedMatches = uniqueMatches.map((match: string) => {
       const prev = prevReference?.[match] || "";
 
+      const base = match.split(".")[0] || "";
+
       // Changes Here to be made
-      return [match, Array.from(new Set([...prev, id]))];
+      return [base, Array.from(new Set([...prev, id]))];
     });
 
     const mappedMatchesObject = Object.fromEntries(mappedMatches);
@@ -131,7 +133,6 @@ class GlobalContextManager {
       const updatedConfig = config.replace(
         /\{\{(.*?)\}\}/g,
         (match: string, p1: string) => {
-          console.log("Match:", match, "p1:", p1);
           const name = p1.split(".")[0] || "";
           const unprocessedKeys = p1.split(".").slice(1);
           const nestedKey = unprocessedKeys.map((key: string) => {
@@ -160,6 +161,7 @@ class GlobalContextManager {
             // If nested keys are provided, get the nested value
             if (nestedKey.length > 0) {
               const nestedValue = getNestedValue(currentValue, nestedKey);
+
               return nestedValue !== undefined
                 ? JSON.stringify(nestedValue)
                 : JSON.stringify(match);

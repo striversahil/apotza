@@ -70,14 +70,30 @@ class StepBlockController {
   static async deleteStep(req: Request, res: Response) {
     try {
       const { id } = req.params;
+      const project_id = req.cookies.project_id;
 
       console.log("Deleting StepBlock with ID:", id);
       if (!id) return ErrorResponse(res, "StepBlock does not exist", 404);
-      const stepBlock = await StepBlockService.delete(id);
+
+      const stepBlock = await StepBlockService.getById(id);
       if (!stepBlock)
+        return ErrorResponse(res, "StepBlock could not be fetched", 404);
+
+      const project = await ProjectService.getById(project_id);
+
+      const globalContext: any = project?.globalContext || {};
+
+      delete globalContext[stepBlock.name];
+
+      await ProjectService.update(project_id, {
+        globalContext: globalContext,
+      });
+
+      const stepBlockDelete = await StepBlockService.delete(id);
+      if (!stepBlockDelete)
         return ErrorResponse(res, "StepBlock could not be deleted", 404);
 
-      await redis.del(`codeBlock:${stepBlock.codeblock}`);
+      await redis.del(`codeBlock:${stepBlock?.codeblock}`);
       SuccessResponse(res, "StepBlock deleted successfully", null, stepBlock);
     } catch (error) {
       console.error("Error in StepBlockController deleteStep:\n", error);
@@ -167,14 +183,14 @@ async function updateContext(
       configuration
     );
 
-    if (_.isEqual(prevMatches, extractedMatches)) {
-      console.log("No changes in global context, skipping Context update.");
+    // if (_.isEqual(prevMatches, extractedMatches)) {
+    //   console.log("No changes in global context, skipping Context update.");
 
-      const stepBlock = await StepBlockService.update(id, {
-        configuration: updatedConfiguration,
-      });
-      return stepBlock ? stepBlock : null;
-    }
+    //   const stepBlock = await StepBlockService.update(id, {
+    //     configuration: updatedConfiguration,
+    //   });
+    //   return stepBlock ? stepBlock : null;
+    // }
 
     // Trying to update so to reduce the number of calls to the database
     const { newReference } = GlobalContextManager.setContext(
@@ -196,6 +212,8 @@ async function updateContext(
       configuration: updatedConfiguration,
       referencedContext: extractedMatches,
     });
+
+    console.log("Global Context Updated:", cleanedUpReference);
 
     const updatedProject = await ProjectService.update(project_id, {
       globalContext: cleanedUpReference,

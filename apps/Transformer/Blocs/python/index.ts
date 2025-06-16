@@ -5,13 +5,13 @@ import { fileURLToPath } from "url";
 async function PythonEngine(query: string) {
   try {
     // Regex to safe code
-    const isSafe =
-      /^(?:(?!__|import|exec|eval|os|sys|subprocess|open|shutil|path|glob|os\.|sys\.|subprocess\.|shutil\.|path\.|glob\.|readlines|readline|write|writelines|close|__import__|__loader__|__spec__|__package__|__file__|__cached__|__loader__|object\(|codecs\.|bz2\.|lzma\.|zipfile\.|tarfile\.|pyexpat\.|imp\.|pkgutil\.|distutils\.)[\s\S])*$/.test(
-        query
-      );
-    if (!isSafe) {
-      return { error: "Unsafe code", data: null };
-    }
+    // const isSafe =
+    //   /^(?:(?!__|import|exec|eval|os|sys|subprocess|open|shutil|path|glob|os\.|sys\.|subprocess\.|shutil\.|path\.|glob\.|readlines|readline|write|writelines|close|__import__|__loader__|__spec__|__package__|__file__|__cached__|__loader__|object\(|codecs\.|bz2\.|lzma\.|zipfile\.|tarfile\.|pyexpat\.|imp\.|pkgutil\.|distutils\.)[\s\S])*$/.test(
+    //     query
+    //   );
+    // if (!isSafe) {
+    //   return { error: "Unsafe code", data: null };
+    // }
 
     const formattedQuery = query
       .replace(/\btrue\b/g, "True")
