@@ -30,7 +30,7 @@ const StepEditorRoot = ({ value }: Props) => {
     if (data) {
       // If no current step is set earlier then set it to the first step and render it
       if (!currentStep) {
-        setCurrentStep(data.payload.stepBlocks[0].id);
+        setCurrentStep(data.payload?.stepBlocks[0]?.id);
       }
       setRenderStep(true);
       setCodeBlock(data.payload);

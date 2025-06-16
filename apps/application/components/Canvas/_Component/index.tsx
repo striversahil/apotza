@@ -6,6 +6,7 @@ import { useContextSave } from "../../../app/editor/_hooks/useContextSave";
 import { MatchComponent } from "..";
 import { useLayout } from "../../../contexts/component";
 import ComponentAction from "@/actions/project/component";
+import GetProject from "@/actions/project";
 
 interface ComponentInterface {
   value: any;

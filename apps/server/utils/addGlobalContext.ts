@@ -208,9 +208,6 @@ class GlobalContextManager {
 
     const newConfiguration = addContext(configuration);
 
-    console.log("Updated Component:", valuedMatches);
-    console.log("Updated Project:", newConfiguration);
-
     return {
       updatedConfiguration: newConfiguration,
     };

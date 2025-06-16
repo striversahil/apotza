@@ -12,7 +12,7 @@ import {
   useUpdatedComponent,
 } from "../../../contexts/component";
 import { sectionCommon as Default } from "@repo/common";
-import _ from "lodash";
+import _, { set } from "lodash";
 import { useContextSave } from "../../../app/editor/_hooks/useContextSave";
 import { useSectionDroppable } from "../hooks/sectionDroppable";
 import { SimpleLoader } from "@/components/loader";
@@ -112,11 +112,20 @@ radial-gradient(at 11% 90%, hsla(265,75%,65%,1) 0px, transparent 50%)
           </Label> */}
         {Components &&
           Components.map((item: any) => (
-            <DraggableComponent value={item} key={item.id} />
+            <RenderComponent key={item.id} id={item.id} />
           ))}
       </div>
     </div>
   );
 };
+
+function RenderComponent({ id }: { id: string }) {
+  const { data } = GetProject.getComponent(id);
+
+  if (data) {
+    return <DraggableComponent value={data.payload} />;
+  }
+  return <div></div>;
+}
 
 export default Section;
