@@ -144,21 +144,6 @@ async function updateContext(
     const { extractedMatches } =
       GlobalContextManager.extractRegex(configuration);
 
-    const { updatedConfiguration } = await GlobalContextManager.setConfigValue(
-      project_id,
-      extractedMatches,
-      configuration
-    );
-
-    // if (_.isEqual(prevMatches, extractedMatches)) {
-    //   console.log("No changes in global context, skipping Context update.");
-
-    //   const sectionUpdated = await SectionService.update(id, {
-    //     configuration: updatedConfiguration,
-    //   });
-    //   return sectionUpdated ? sectionUpdated : null;
-    // }
-
     // Trying to update so to reduce the number of calls to the database
     const { newReference, refinedBase } = GlobalContextManager.setContext(
       prevReference,
@@ -176,7 +161,7 @@ async function updateContext(
     // console.log("Mapped Matches Object:", mappedMatchesObject);
 
     const sectionUpdated = await SectionService.update(id, {
-      configuration: updatedConfiguration,
+      configuration: configuration,
       referencedContext: refinedBase,
     });
 
@@ -186,8 +171,6 @@ async function updateContext(
 
     // Id's that need to be refetched after the update
     const refetchIds = updatedProject?.globalContext[section.name] || [];
-
-    await GlobalContextManager.updateReferencing(project_id, refetchIds);
 
     return {
       section: sectionUpdated,

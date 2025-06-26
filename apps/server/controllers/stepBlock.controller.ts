@@ -180,11 +180,11 @@ async function updateContext(
     const { extractedMatches } =
       GlobalContextManager.extractRegex(configuration);
 
-    const { updatedConfiguration } = await GlobalContextManager.setConfigValue(
-      project_id,
-      extractedMatches,
-      configuration
-    );
+    // const { updatedConfiguration } = await GlobalContextManager.setConfigValue(
+    //   project_id,
+    //   extractedMatches,
+    //   configuration
+    // );
 
     // if (_.isEqual(prevMatches, extractedMatches)) {
     //   console.log("No changes in global context, skipping Context update.");
@@ -220,7 +220,7 @@ async function updateContext(
     // console.log("Mapped Matches Object:", mappedMatchesObject);
 
     const stepBlock = await StepBlockService.update(id, {
-      configuration: updatedConfiguration,
+      configuration: configuration,
       referencedContext: refinedBase,
     });
 
@@ -228,10 +228,13 @@ async function updateContext(
       globalContext: cleanedUpReference,
     });
 
+    if (!stepBlock || !updatedProject)
+      return null;
+    
+
     // Id's that need to be refetched after the update
     const refetchIds = updatedProject?.globalContext[stepblock.name] || [];
 
-    await GlobalContextManager.updateReferencing(project_id, refetchIds);
 
     return {
       stepblock: stepBlock,

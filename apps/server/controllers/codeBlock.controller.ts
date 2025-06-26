@@ -267,12 +267,6 @@ async function updateContext(
     const { extractedMatches } =
       GlobalContextManager.extractRegex(configuration);
 
-    const { updatedConfiguration } = await GlobalContextManager.setConfigValue(
-      project_id,
-      extractedMatches,
-      configuration
-    );
-
     // if (_.isEqual(prevMatches, extractedMatches)) {
     //   console.log("No changes in global context, skipping Context update.");
 
@@ -299,7 +293,7 @@ async function updateContext(
     // console.log("Mapped Matches Object:", mappedMatchesObject);
 
     const codeBlock = await CodeBlockService.update(id, {
-      configuration: updatedConfiguration,
+      configuration: configuration,
       referencedContext: refinedBase,
     });
 
@@ -309,8 +303,6 @@ async function updateContext(
 
     // Id's that need to be refetched after the update
     const refetchIds = updatedProject?.globalContext[codeblock.name] || [];
-
-    await GlobalContextManager.updateReferencing(project_id, refetchIds);
 
     return {
       codeblock: codeBlock,

@@ -44,11 +44,11 @@ class GlobalContextManager {
     extractedMatches: Array<string>,
     id: string
   ) {
-    const refinedBase : Array<any> = [];
+    const refinedBase: Array<any> = [];
     const mappedMatches = extractedMatches.map((match: string) => {
-      const prev = prevReference?.[match] || "";
-
       const base = match.split(".")[0] || "";
+
+      const prev = prevReference?.[base] || "";
 
       refinedBase.push(base);
 
@@ -65,7 +65,7 @@ class GlobalContextManager {
 
     return {
       newReference,
-      refinedBase
+      refinedBase,
     };
   }
 
@@ -114,144 +114,154 @@ class GlobalContextManager {
    * @param {object} configuration - The configuration string to be updated.
    * @returns {object} - The updated configuration object with the new values.
    */
-  static async setConfigValue(
-    project_id: string,
-    compMatches: Array<string>,
-    configuration: Record<string, any>
-  ) {
-    const valuedMatches = [...compMatches];
+  // static async setConfigValue(
+  //   project_id: string,
+  //   compMatches: Array<string>,
+  //   configuration: Record<string, any>
+  // ) {
+  //   const valuedMatches = [...compMatches];
 
-    // Fetching current value of each match in the Start so that we can update easily
-    const mappedValues = await Promise.all(
-      valuedMatches.map((match: string) => {
-        return currentValueByName(match.split(".")[0] || "", project_id);
-      })
-    );
+  //   // Fetching current value of each match in the Start so that we can update easily
+  //   const mappedValues = await Promise.all(
+  //     valuedMatches.map((match: string) => {
+  //       return currentValueByName(match.split(".")[0] || "", project_id);
+  //     })
+  //   );
 
-    // console.log("Updated Component:", valuedMatches);
-    function getNestedValue(obj: object, keys: any[]) {
-      return keys.reduce((acc, key) => acc && acc[key], obj);
-    }
+  //   // console.log("Updated Component:", valuedMatches);
+  //   function getNestedValue(obj: object, keys: any[]) {
+  //     return keys.reduce((acc, key) => acc && acc[key], obj);
+  //   }
 
-    // Function to replace placeholders in the configuration string with actual values
-    function setterValue(config: string) {
-      const updatedConfig = config.replace(
-        /\{\{(.*?)\}\}/g,
-        (match: string, p1: string) => {
-          const name = p1.split(".")[0] || "";
-          const unprocessedKeys = p1.split(".").slice(1);
-          const nestedKey = unprocessedKeys.map((key: string) => {
-            if (Number.isNaN(Number(key))) {
-              return key; // Return the key as is if it's not a number
-            }
-            return Number(key); // Convert to number if it's a valid number
-          });
+  //   // Function to replace placeholders in the configuration string with actual values
+  //   function setterValue(config: string) {
+  //     // console.log("Configuration:", config);
+  //     const updatedConfig = config.replace(
+  //       /\{\{(.*?)\}\}/g,
+  //       (match: string, p1: string) => {
+  //         const name = p1.split(".")[0] || "";
+  //         const unprocessedKeys = p1.split(".").slice(1);
+  //         const nestedKey = unprocessedKeys.map((key: string) => {
+  //           if (Number.isNaN(Number(key))) {
+  //             return key; // Return the key as is if it's not a number
+  //           }
+  //           return Number(key); // Convert to number if it's a valid number
+  //         });
 
-          if (mappedValues && valuedMatches.length > 0) {
-            const currentModel = mappedValues.find(
-              (item: any) => item?.name === name
-            );
+  //         if (mappedValues && valuedMatches.length > 0) {
+  //           const currentModel = mappedValues.find(
+  //             (item: any) => item?.name === name
+  //           );
 
-            if (!currentModel) {
-              return JSON.stringify(match); // Return the original match if no model found
-            }
-            const currentValue =
-              "response" in currentModel && currentModel.response
-                ? currentModel.response
-                : ("error" in currentModel && currentModel.error) ||
-                  ("configuration" in currentModel &&
-                    currentModel.configuration) ||
-                  {};
+  //           if (!currentModel) {
+  //             return match; // Return the original match if no model found
+  //           }
+  //           const currentValue =
+  //             "response" in currentModel && currentModel.response
+  //               ? currentModel.response
+  //               : ("error" in currentModel && currentModel.error) ||
+  //                 ("configuration" in currentModel &&
+  //                   currentModel.configuration) ||
+  //                 {};
 
-            // If nested keys are provided, get the nested value
-            if (nestedKey.length > 0) {
-              const nestedValue = getNestedValue(currentValue, nestedKey);
+  //           // If nested keys are provided, get the nested value
+  //           if (nestedKey.length > 0) {
+  //             const nestedValue = getNestedValue(currentValue, nestedKey);
+  //             // console.log("Nested Value:", nestedValue);
 
-              return nestedValue !== undefined
-                ? JSON.stringify(nestedValue)
-                : JSON.stringify(match);
-            }
+  //             return nestedValue !== undefined
+  //               ? nestedValue
+  //               : match
+  //           }
 
-            return currentValue
-              ? JSON.stringify(currentValue)
-              : JSON.stringify(match);
-          }
-          return JSON.stringify(match); // Return the original match if no value found
-        }
-      );
+  //           return currentValue
+  //             ? currentValue
+  //             : match; // Return the current value if it exists, otherwise return the original match
+  //         }
+  //         return match // Return the original match if no value found
+  //       }
+  //     );
 
-      return updatedConfig;
-    }
+  //     return updatedConfig;
+  //   }
 
-    // Iterate through the configuration object and add global context
+  //   // Iterate through the configuration object and add global context
 
-    function addContext(config: Record<string, any>) {
-      const newClause: any = {};
+  //   function addContext(config: Record<string, any>) {
+  //     const newClause: any = {};
 
-      for (const [key, value] of Object.entries(config)) {
-        if (key === "value") {
-          continue;
-        }
-        if (key === "config") {
-          newClause["config"] = value;
-          newClause["value"] = setterValue(value);
-        } else if (Array.isArray(value)) {
-          newClause[key] = value.map((item: any) => {
-            if (typeof item === "object" && item !== null) {
-              return addContext(item);
-            }
-            return item;
-          });
-        } else if (typeof value === "object" && value !== null) {
-          newClause[key] = addContext(value);
-        } else {
-          newClause[key] = value;
-        }
-      }
-      return newClause;
-    }
+  //     for (const [key, value] of Object.entries(config)) {
+  //       if (key === "value") {
+  //         continue;
+  //       }
+  //       if (key === "config") {
+  //         newClause["config"] = value;
+  //         newClause["value"] = setterValue(value);
+  //         return newClause;
+  //       } else if (Array.isArray(value)) {
+  //         newClause[key] = value.map((item: any) => {
+  //           if (typeof item === "object" && item !== null) {
+  //             return addContext(item);
+  //           }
+  //           return item;
+  //         });
+  //       } else if (typeof value === "object" && value !== null) {
+  //         newClause[key] = addContext(value);
+  //       } else {
+  //         newClause[key] = value;
+  //       }
+  //     }
+  //     return newClause;
+  //   }
 
-    const newConfiguration = addContext(configuration);
+  //   const newConfiguration = addContext(configuration);
 
-    return {
-      updatedConfiguration: newConfiguration,
-    };
-  }
+  //   return {
+  //     updatedConfiguration: newConfiguration,
+  //   };
+  // }
 
-  static async updateReferencing(projectId: string, allMatches: Array<string>) {
-    /**
-     * This function updates the referencing of components based on the provided matches.
-     * It iterates through the matches and updates the referencing for each component.
-     *
-     * @param {Array} allMatches - The Array Contain Id's of Referced Componenet to be updated.
-     * @returns {Promise<void>} - A promise that resolves when the referencing is updated.
-     */
-    await Promise.all(
-      allMatches.map(async (id: string) => {
-        const { item, update } = await currentValueById(id);
-        console.log(update);
+  // static async updateReferencing(projectId: string, allMatches: Array<string>) {
+  //   /**
+  //    * This function updates the referencing of components based on the provided matches.
+  //    * It iterates through the matches and updates the referencing for each component.
+  //    *
+  //    * @param {Array} allMatches - The Array Contain Id's of Referced Componenet to be updated.
+  //    * @returns {Promise<void>} - A promise that resolves when the referencing is updated.
+  //   */
+    
+  //   console.log("Updating Referencing for Matches:", allMatches);
+  //   await Promise.all(
+  //     allMatches.map(async (id: string) => {
+  //       const { item, update } = await currentValueById(id);
 
-        if (item) {
-          // Fetching the current configuration of each component
-          const extractedMatches = GlobalContextManager.extractRegex(
-            item.configuration
-          ).extractedMatches;
+  //       console.log("Current Item:", item);
+        
 
-          const updatedValue = await GlobalContextManager.setConfigValue(
-            projectId,
-            extractedMatches,
-            item.configuration
-          );
-          if (updatedValue) {
-            console.log(update);
-            const updated = await update({
-              configuration: updatedValue.updatedConfiguration,
-            });
-          }
-        }
-      })
-    );
-  }
+  //       if (item) {
+  //         // Fetching the current configuration of each component
+  //         const extractedMatches = GlobalContextManager.extractRegex(
+  //           item.configuration
+  //         ).extractedMatches;
+
+  //         console.log("Extracted Matches:", extractedMatches);
+
+  //         const updatedValue = await GlobalContextManager.setConfigValue(
+  //           projectId,
+  //           extractedMatches,
+  //           item.configuration
+  //         );
+  //         if (updatedValue) {
+  //           // console.log(update);
+  //           const updated = await update({
+  //             configuration: updatedValue.updatedConfiguration,
+  //           });
+  //           console.log("Updated Component:", updated.configuration.content , updatedValue.updatedConfiguration.content);
+  //         }
+  //       }
+  //     })
+  //   );
+  // }
 }
 
 export default GlobalContextManager;
@@ -293,6 +303,8 @@ const currentValueById = async (id: string): Promise<any> => {
     const item = await service.getById(id);
     const update = async (clause = {}) => {
       const value = await service.update(id, clause);
+      return value;
+      // console.log("Updated Value:", clause?.configuration.content);
     };
 
     if (item) {
