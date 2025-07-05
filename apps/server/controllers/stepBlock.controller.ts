@@ -6,7 +6,7 @@ import GlobalContextManager from "../utils/addGlobalContext";
 import ProjectService from "../service/project.service";
 import _ from "lodash";
 import { StepBlockInterface } from "../schema";
-import { A } from "@electric-sql/pglite/dist/pglite-Csk75SCB";
+import Mustache from "mustache";
 
 class StepBlockController {
   static async getStep(req: Request, res: Response) {
@@ -53,14 +53,25 @@ class StepBlockController {
     try {
       const { id } = req.body;
       if (!id) return ErrorResponse(res, "Provide all fields", 400);
-      const stepBlock = await StepBlockService.runBlock(id);
+
+      const stepBlock: StepBlockInterface | null =
+        await StepBlockService.getById(id);
       if (!stepBlock)
+        return ErrorResponse(res, "StepBlock does not exist", 404);
+      
+      const configuration = stepBlock.configuration || {};
+
+      
+
+
+      const runner = await StepBlockService.runBlock( id , stepBlock.type , );
+      if (!runner)
         return ErrorResponse(res, "StepBlock could not be run", 400);
 
-      await redis.del(`codeBlock:${stepBlock.codeblock}`); // needed to done for initial capture of codeblock by client
+      await redis.del(`codeBlock:${runner.codeblock}`); // needed to done for initial capture of codeblock by client
       await redis.del(`stepBlock:${id}`);
 
-      SuccessResponse(res, "StepBlock Run successfully", null, stepBlock);
+      SuccessResponse(res, "StepBlock Run successfully", null, runner);
     } catch (error) {
       ErrorResponse(res, "", null);
     }
@@ -221,7 +232,7 @@ async function updateContext(
 
     const stepBlock = await StepBlockService.update(id, {
       configuration: configuration,
-      referencedContext: refinedBase,
+      referencedContext: extractedMatches,
     });
 
     const updatedProject: any = await ProjectService.update(project_id, {

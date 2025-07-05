@@ -1,4 +1,4 @@
-import { CodeBlock, Project, ProjectInterface } from "../schema";
+import { CodeBlock, Component, Project, ProjectInterface, Section, StepBlock } from "../schema";
 import { db } from "../database";
 import { eq } from "drizzle-orm";
 
@@ -57,6 +57,70 @@ class ProjectService {
         .returning();
       return project ? project : null;
     } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
+  static async globalContext(
+    projectId: string,
+  ) : Promise<Record<string, any> | null> {
+    try {
+      const project: any = await this.getById(projectId);
+      if (!project) return null;
+
+      // Getting codeblocks, components, and stepblocks
+      const component = await db.query.Component.findMany({
+        where: eq(Component.project , projectId)
+      })
+
+      const section = await db.query.Section.findMany({
+        where: eq(Section.project, projectId)
+      });
+
+      const stepblock = await db.query.StepBlock.findMany({
+        where: eq(StepBlock.project , projectId)
+      });
+
+      const context: Record<string, any> = {};
+
+      // Setting up the global context
+      if (project.codeblocks?.length) {
+        project.codeblocks.forEach((codeBlock: any) => {
+          context[codeBlock.name] = {
+            response : codeBlock.response,
+            error: codeBlock.error,
+          }
+        }
+        );
+      }
+
+      if (component?.length) {
+        component.forEach((component: any) => {
+          context[component.name] = {
+            ...component.configuration
+          };
+        });
+      }
+
+      if (section?.length) {
+        section.forEach((section: any) => {
+          context[section.name] = {
+            ...section.configuration
+          };
+        });
+      }
+
+      if (stepblock?.length) {
+        stepblock.forEach((stepblock: any) => {
+          context[stepblock.name] = {
+            ...stepblock.configuration
+          };
+        });
+      }
+
+      return context;
+    } catch (error) {
+      console.log(error);
       throw new Error(error as string);
     }
   }

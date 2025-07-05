@@ -114,45 +114,10 @@ class ProjectController {
       if (!projectId || !page_id)
         return ErrorResponse(res, "Project or Page does not exist", 404);
 
-      const project: any = await ProjectService.getById(projectId);
-      const page: any = await PageService.getOne("", projectId, page_id);
-      if (!project || !page)
-        return ErrorResponse(res, "Project or Page could not be fetched", 404);
-
-      const context: Record<string, any> = {
-        codeBlocks: {},
-        components: {},
-      };
-
-      // Todo : Add Global Context of codeBlocks not done for Component for now
-
-      if (project.codeblocks?.length) {
-        for (const codeBlock of project.codeblocks) {
-          const data = {
-            response: codeBlock.response,
-            error: codeBlock.error,
-          };
-
-          context["codeBlocks"][codeBlock.name] = data;
-        }
-      }
-
-      if (page.sections?.length) {
-        for (const section of page.sections) {
-          const section_: any = await SectionService.getById(section.id);
-
-          for (const component of section_.components) {
-            const data = {
-              name: component.name,
-              ...component.content,
-              ...component.appearance,
-              ...component.layout,
-            };
-            context["components"][component.name] = data;
-          }
-        }
-      }
-
+      const context = await ProjectService.globalContext(projectId);
+      if (!context)
+        return ErrorResponse(res, "Project could not be fetched", 404);
+      
       SuccessResponse(res, "Project fetched successfully", null, context);
     } catch (error) {
       ErrorResponse(res, "", null);

@@ -294,7 +294,7 @@ async function updateContext(
 
     const codeBlock = await CodeBlockService.update(id, {
       configuration: configuration,
-      referencedContext: refinedBase,
+      referencedContext: extractedMatches,  // Whole Raw Matches
     });
 
     const updatedProject: any = await ProjectService.update(project_id, {

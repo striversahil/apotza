@@ -4,6 +4,7 @@ import { StepBlock, StepBlockInterface } from "../schema";
 import stepBlockDefault from "../utils/stepBlockDefault";
 import CodeBlockService from "./codeblock.service";
 
+
 class StepBlockService {
   static async getById(
     stepBlock_id: string
@@ -112,20 +113,20 @@ class StepBlockService {
   }
 
   static async runBlock(
-    stepBlock_id: string
+    stepBlock_id: string,
+    type: string,
+    configuration: string,
   ): Promise<StepBlockInterface | null> {
     try {
-      const _stepBlock = await this.getById(stepBlock_id);
-      if (!_stepBlock) return null;
 
       const response = await fetch(
-        `${process.env.TRANSFORMER_SERVER}/${_stepBlock.type}`,
+        `${process.env.TRANSFORMER_SERVER}/${type}`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ ...(_stepBlock.configuration as object) }),
+          body: configuration,
         }
       );
       if (!response.ok) return null;
